@@ -23,7 +23,16 @@ diagram and page. Open it in a browser (best from the hosted site; works locally
 library and content, and writes `knowledge-hub.html`. Build paths are specific to the
 authoring environment; this repo is the versioned record of the work.
 
+## Sections (16)
+
+Minimum Viable Personality · Social Mastery · Brain as a System · Media Hub ·
+Systems Thinking · Swimming · Card Games · Workout · Nutrition · Fashion ·
+Humor Development · Daily NCR Mapping · Travel · Sports Mindset · Cricket · Board Games
+
 ## Focus
 
 Actively worked on: Minimum Viable Personality · Social Mastery · Swimming.
 The rest are structured references, revisited as needed.
+
+---
+*Versioned via GitHub Desktop. Edits land in this folder; commit + push to publish.*
