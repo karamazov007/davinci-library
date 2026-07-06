@@ -1,0 +1,31 @@
+{
+ "intro":"The best place to watch a big match is often NOT the best place to watch a movie. Cinema wins on visuals; sports bars and fan screenings win on memories — the screen is smaller, but the crowd makes up for it.",
+ "tiers":[
+  {"rank":1,"type":"IPL Screening Events / Fan Parks","examples":"Social, Imperfecto, Lord of the Drinks, Soho Garden, FIO, Verandah Moonshine, Noida Social","crowd":10,"screen":8,"comfort":8,"food":9,"social":10,"overall":9.7},
+  {"rank":2,"type":"Sports Bars & Sports Pubs","examples":"The Irish House, Underdoggs, Noida Pub Exchange, The Beer Café, My Bar HQ","crowd":10,"screen":8,"comfort":8,"food":8,"social":10,"overall":9.5},
+  {"rank":3,"type":"Open-Air Screening Events","examples":"Seasonal fan parks, stadium-style screenings, outdoor IPL events","crowd":9,"screen":9,"comfort":7,"food":8,"social":10,"overall":9.0},
+  {"rank":4,"type":"Cinema Screenings","examples":"PVR, INOX, Cinepolis","crowd":7,"screen":10,"comfort":10,"food":7,"social":6,"overall":8.8},
+  {"rank":5,"type":"Breweries with Match Screenings","examples":"Dearie, Noidawery, Time Machine","crowd":8,"screen":8,"comfort":8,"food":9,"social":8,"overall":9.0},
+  {"rank":6,"type":"Entertainment Venues with Screening","examples":"SMAAASH Noida","crowd":8,"screen":8,"comfort":8,"food":7,"social":8,"overall":8.7},
+  {"rank":7,"type":"Sports Cafés / Lounges","examples":"Glued Reloaded","crowd":7,"screen":7,"comfort":8,"food":8,"social":7,"overall":8.4},
+  {"rank":8,"type":"Rooftop Restaurants","examples":"Float, Ministry of Daru, Skyhouse, Roovez","crowd":6,"screen":7,"comfort":8,"food":9,"social":7,"overall":7.5},
+  {"rank":9,"type":"Regular Restaurants","examples":"Typical restaurants screening matches","crowd":4,"screen":6,"comfort":8,"food":9,"social":4,"overall":5.0}
+ ],
+ "venues":[
+  {"venue":"The Irish House","category":"Sports Bar / Pub","why":"Built around drinks, large screens, sports-viewing culture","score":9.5},
+  {"venue":"Dearie — Noida's Best Microbrewery","category":"Brewery + Screening","why":"Craft beer, large seating, energetic cricket crowd","score":9.3},
+  {"venue":"Noidawery — Sector 63","category":"Brewery + Screening","why":"Similar to Dearie, crowd-heavy during sports events","score":9.2},
+  {"venue":"Noida Social","category":"Social Bar + Screening Event","why":"Excellent atmosphere during major matches","score":9.2},
+  {"venue":"Time Machine","category":"Bar + Screening","why":"More party- than sports-oriented, but strong screening atmosphere","score":8.8},
+  {"venue":"My Bar Headquarters Noida","category":"Budget Sports Bar","why":"One of the best crowd-energy-per-rupee places","score":8.8},
+  {"venue":"SMAAASH Noida","category":"Entertainment Zone + Screening","why":"Massive venue, games + cricket viewing","score":8.7},
+  {"venue":"Glued Reloaded","category":"Sports Café / Lounge","why":"More café-lounge than pure sports bar; good for groups","score":8.4}
+ ],
+ "recs":[
+  {"who":"Maximum excitement","order":["Stadium (if tickets available)","Dedicated screening event","Sports bar","Open-air fan park","Cinema","Home"]},
+  {"who":"Going alone","order":["Sports bar","Cinema","Screening event"]},
+  {"who":"With family","order":["Cinema","Rooftop restaurant","Premium screening event"]},
+  {"who":"India vs Pakistan (book early — sells out)","order":["Sports bar (Underdoggs-type)","Screening event at a major brewery","PVR/INOX giant-screen screening"]}
+ ],
+ "idealOrder":["IPL / World Cup Screening Event","Sports Bar","Cinema","Rooftop Restaurant","Regular Restaurant"]
+}

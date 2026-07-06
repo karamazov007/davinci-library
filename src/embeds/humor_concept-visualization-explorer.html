@@ -1,0 +1,1459 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Concept Visualization Explorer</title>
+<style>
+  :root{
+    --bg:#fbfbfa; --panel:#ffffff; --soft:#f5f6f7; --fig:#fafbfc;
+    --ink:#1f2328; --ink2:#3a4048; --muted:#6b7280; --line:#e8e9ec; --line2:#eceef1;
+    --a1:#4f46e5; --a2:#0891b2; --a3:#db2777; --a4:#ea580c; --a5:#16a34a; --a6:#9333ea;
+    --good:#15803d; --goodbg:#f0faf3; --bad:#b91c1c; --badbg:#fdf3f2; --warnbg:#fff8ec; --warnbd:#f3d9a4;
+    --shadow:0 1px 2px rgba(16,24,40,.04),0 1px 3px rgba(16,24,40,.06);
+    --shadow2:0 6px 24px rgba(16,24,40,.08);
+  }
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+  a{color:var(--a1);text-decoration:none}
+  a:hover{text-decoration:underline}
+  .wrap{max-width:1120px;margin:0 auto;padding:0 24px}
+
+  /* Left sidebar navigation */
+  .sidebar{position:fixed;top:0;left:0;width:216px;height:100vh;background:#fff;border-right:1px solid var(--line);padding:24px 14px;overflow-y:auto;z-index:60}
+  .sidebar .brand{font-size:14.5px;font-weight:800;letter-spacing:-.01em;color:var(--ink);line-height:1.25}
+  .sidebar .brand span{color:var(--a1)}
+  .sidebar .brandtag{font-size:11px;color:var(--muted);margin:4px 0 20px;display:block}
+  .sidebar nav{display:flex;flex-direction:column;gap:3px}
+  .sidebar nav a{display:flex;align-items:center;gap:10px;font-size:13.5px;color:var(--ink2);padding:9px 11px;border-radius:9px;text-decoration:none;transition:.13s}
+  .sidebar nav a:hover{background:var(--soft);color:var(--ink);text-decoration:none}
+  .sidebar nav a.active{background:#eef0ff;color:var(--a1);font-weight:600}
+  .sidebar nav a .dot{width:7px;height:7px;border-radius:50%;background:var(--line);flex:none;transition:.13s}
+  .sidebar nav a:hover .dot{background:var(--muted)}
+  .sidebar nav a.active .dot{background:var(--a1)}
+  .page{margin-left:216px}
+  @media(max-width:860px){
+    .sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:12px 16px}
+    .sidebar .brandtag{display:none}
+    .sidebar .brand{margin-bottom:10px}
+    .sidebar nav{flex-direction:row;flex-wrap:wrap;gap:6px}
+    .sidebar nav a{padding:6px 11px;border:1px solid var(--line);border-radius:20px}
+    .sidebar nav a .dot{display:none}
+    .page{margin-left:0}
+  }
+  header{padding:56px 24px 30px;max-width:1120px;margin:0 auto}
+  .kicker{color:var(--a1);font-size:12.5px;font-weight:600;letter-spacing:.09em;text-transform:uppercase;margin-bottom:12px}
+  h1{font-size:34px;margin:0 0 12px;letter-spacing:-.025em;font-weight:700}
+  .sub{color:var(--muted);max-width:720px;font-size:16px}
+  nav.toc{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+  nav.toc a{font-size:13px;color:var(--ink2);background:var(--panel);border:1px solid var(--line);
+    padding:6px 13px;border-radius:20px}
+  nav.toc a:hover{border-color:var(--a1);color:var(--a1);text-decoration:none}
+
+  section{padding-top:18px}
+  h2{font-size:23px;margin:52px 0 6px;letter-spacing:-.02em;font-weight:700}
+  h2 .n{color:var(--a1);font-variant-numeric:tabular-nums;margin-right:10px;font-weight:700}
+  .lead{color:var(--muted);margin:0 0 20px;max-width:800px}
+
+  /* Why cards */
+  .why{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+  .why .c{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+  .why .c h4{margin:0 0 6px;font-size:15px}
+  .why .c p{margin:0;color:var(--muted);font-size:13.5px}
+  .why .c .ic{width:34px;height:34px;border-radius:9px;background:var(--soft);display:flex;align-items:center;justify-content:center;margin-bottom:12px}
+  .why .c .ic svg{width:20px;height:20px}
+
+  /* Building blocks */
+  .blocks{display:grid;grid-template-columns:repeat(auto-fill,minmax(238px,1fr));gap:14px}
+  .block{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:0;overflow:hidden;
+    box-shadow:var(--shadow);cursor:pointer;transition:.15s}
+  .block:hover{border-color:#d5d7f2;box-shadow:var(--shadow2)}
+  .block .ill{background:var(--fig);border-bottom:1px solid var(--line2);display:flex;align-items:center;justify-content:center;height:96px}
+  .block .ill svg{height:64px;width:auto}
+  .block .bb{padding:13px 16px 15px}
+  .block h4{margin:0;font-size:14.5px;display:flex;align-items:center;justify-content:space-between}
+  .block h4 .chev{color:var(--muted);font-size:12px;transition:.2s}
+  .block.open h4 .chev{transform:rotate(90deg)}
+  .block p{margin:6px 0 0;color:var(--muted);font-size:13px}
+  .block .more{max-height:0;overflow:hidden;transition:max-height .28s ease}
+  .block.open .more{max-height:220px}
+  .block .more p{margin-top:10px;padding-top:10px;border-top:1px dashed var(--line);color:var(--ink2)}
+  .block .more b{color:var(--ink)}
+
+  /* Filters */
+  .filters{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 10px}
+  .filters button{background:var(--panel);color:var(--muted);border:1px solid var(--line);
+    padding:7px 15px;border-radius:22px;cursor:pointer;font-size:13px;transition:.15s;font-family:inherit}
+  .filters button:hover{color:var(--ink);border-color:#c7c9f0}
+  .filters button.active{background:var(--a1);color:#fff;border-color:var(--a1);font-weight:600}
+  .count{color:var(--muted);font-size:13px;margin:6px 0 16px}
+  .cat-trigger{color:var(--ink2);font-size:13.5px;line-height:1.5;margin:2px 0 4px;background:var(--soft);border:1px solid var(--line);border-radius:11px;padding:12px 15px}
+  .cat-trigger b{color:var(--a1)}
+  .cardtrig{font-size:12.5px;line-height:1.45;color:var(--ink2);margin:0 0 12px;background:#fff7ed;border-left:3px solid var(--a4);padding:7px 10px;border-radius:6px}
+  .cardtrig b{color:var(--a4)}
+  .trigcallout{background:#fff7ed;border:1px solid #fbd8a6;border-radius:11px;padding:11px 14px;margin:0 0 14px;font-size:13.5px;line-height:1.5;color:#7c4a03}
+  .trigcallout b{color:#b45309}
+
+  /* Cards */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(330px,1fr));gap:18px;align-items:start}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:16px;overflow:hidden;
+    box-shadow:var(--shadow);transition:box-shadow .18s,border-color .18s}
+  .card:hover{border-color:#d5d7f2;box-shadow:var(--shadow2)}
+  .card .fig{background:var(--fig);padding:16px;display:flex;align-items:center;justify-content:center;min-height:196px;cursor:pointer}
+  .card .fig svg{width:100%;height:auto;max-height:184px}
+  .card .body{padding:16px 18px 18px;cursor:pointer}
+  .cat{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--a1);font-weight:700}
+  .card h3{margin:5px 0 8px;font-size:18px;letter-spacing:-.01em}
+  .oneline{color:var(--ink2);font-size:13.5px;margin:0 0 12px}
+  .toggle{display:inline-flex;align-items:center;gap:6px;font-size:12.5px;color:var(--a1);font-weight:600;user-select:none}
+  .toggle .chev{transition:.2s}
+  .card.open .toggle .chev{transform:rotate(90deg)}
+
+  /* Expanded detail */
+  .card.open{grid-column:1/-1;box-shadow:var(--shadow2);border-color:#c7c9f0}
+  .card.open .layout{display:grid;grid-template-columns:300px 1fr;gap:0}
+  .card.open .fig{min-height:260px;border-right:1px solid var(--line2)}
+  .card:not(.open) .detail{display:none}
+  .detail{padding:2px 20px 22px;border-top:1px solid var(--line2)}
+  .card.open .layout .rightcol{padding-top:2px}
+  .card.open .layout .detail{border-top:none;padding-top:16px}
+  .quick{display:grid;grid-template-columns:1fr;gap:2px;margin:0 0 14px}
+  .quick .q{font-size:13.5px;color:var(--ink2)}
+  .quick .q b{color:var(--ink)}
+  .pc{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:14px 0}
+  .pc .box{border-radius:12px;padding:12px 14px}
+  .pc .pro{background:var(--goodbg)}
+  .pc .con{background:var(--badbg)}
+  .pc h5{margin:0 0 7px;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase}
+  .pc .pro h5{color:var(--good)} .pc .con h5{color:var(--bad)}
+  .pc ul{margin:0;padding-left:17px} .pc li{font-size:13px;margin:3px 0;color:var(--ink2)}
+  .ex{margin:14px 0}
+  .ex h5{margin:0 0 5px;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--a2)}
+  .ex p{margin:0;font-size:13.5px;color:var(--ink2)}
+  .misuse{background:var(--warnbg);border:1px solid var(--warnbd);border-radius:12px;padding:12px 15px;margin:14px 0}
+  .misuse h5{margin:0 0 5px;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:#b45309}
+  .misuse p{margin:0;font-size:13.5px;color:#7c5410}
+  .combos{margin-top:14px}
+  .combos h5{margin:0 0 8px;font-size:12.5px;letter-spacing:.03em;text-transform:uppercase;color:var(--a6)}
+  .combo{display:flex;gap:10px;margin:7px 0;font-size:13px;color:var(--ink2)}
+  .combo .tag{flex:none;background:#f2f0ff;color:var(--a1);border:1px solid #e0ddfb;border-radius:20px;
+    padding:2px 11px;font-size:12px;font-weight:600;height:fit-content}
+
+  /* prose */
+  .prose{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:22px 24px;box-shadow:var(--shadow)}
+  .prose p{margin:0 0 13px;color:var(--ink2)} .prose p:last-child{margin-bottom:0}
+  .prose b{color:var(--ink)}
+  .recipe{border-left:3px solid var(--a4);padding:3px 0 3px 16px;margin:15px 0;color:var(--ink2)}
+  .recipe b{color:var(--a4)}
+
+  /* resources */
+  .resgroup{margin-top:22px}
+  .resgroup h3{font-size:15px;margin:0 0 4px;color:var(--ink)}
+  .resgroup .rd{color:var(--muted);font-size:13px;margin:0 0 12px}
+  .links{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:10px}
+  .links a{display:block;background:var(--panel);border:1px solid var(--line);border-radius:11px;
+    padding:12px 14px;box-shadow:var(--shadow)}
+  .links a:hover{border-color:#c7c9f0;text-decoration:none;transform:translateY(-1px);box-shadow:var(--shadow2)}
+  .links a b{display:block;color:var(--ink);font-size:14px;margin-bottom:2px}
+  .links a span{color:var(--muted);font-size:12.5px}
+  .links a .host{color:var(--a1);font-size:11.5px;margin-top:5px;display:block}
+
+  /* Modal popup */
+  .overlay{position:fixed;inset:0;background:rgba(22,25,32,.55);-webkit-backdrop-filter:blur(3px);backdrop-filter:blur(3px);
+    display:none;align-items:flex-start;justify-content:center;z-index:100;padding:44px 18px;overflow-y:auto}
+  .overlay.show{display:flex}
+  body.modal-open{overflow:hidden}
+  .modal{position:relative;background:var(--panel);border-radius:18px;max-width:780px;width:100%;
+    box-shadow:0 30px 70px rgba(10,14,24,.35);overflow:hidden;animation:pop .16s ease}
+  @keyframes pop{from{transform:translateY(10px);opacity:0}to{transform:none;opacity:1}}
+  .modal .mfig{background:var(--fig);padding:26px;display:flex;align-items:center;justify-content:center;border-bottom:1px solid var(--line2)}
+  .modal .mfig svg{max-height:240px;width:100%;height:auto}
+  .modal .mbody{padding:20px 26px 8px}
+  .modal .mbody h3.mtitle{margin:5px 0 4px;font-size:23px;letter-spacing:-.01em}
+  .modal .mhint{text-align:center;color:var(--muted);font-size:12px;padding:12px 0 18px}
+  .mclose{position:absolute;top:12px;right:14px;z-index:2;width:34px;height:34px;border-radius:50%;
+    border:1px solid var(--line);background:rgba(255,255,255,.92);color:var(--ink2);font-size:20px;
+    line-height:1;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .mclose:hover{border-color:var(--a1);color:var(--a1)}
+
+  /* Example gallery inside level-1 popup */
+  .gallery-h{margin:20px 0 4px;font-size:12.5px;letter-spacing:.04em;text-transform:uppercase;color:var(--a2);font-weight:700}
+  .gallery-s{color:var(--muted);font-size:12.5px;margin:0 0 12px}
+  .gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(150px,1fr));gap:12px;margin-bottom:10px}
+  .exemp{border:1px solid var(--line);border-radius:12px;overflow:hidden;cursor:pointer;background:var(--panel);transition:.15s}
+  .exemp:hover{border-color:var(--a1);box-shadow:var(--shadow2);transform:translateY(-2px)}
+  .exemp .exthumb{background:var(--fig);height:104px;display:flex;align-items:center;justify-content:center;padding:6px;border-bottom:1px solid var(--line2)}
+  .exemp .exthumb svg{max-height:92px;max-width:100%;height:auto;width:auto}
+  .exemp .exdom{display:block;padding:9px 11px 0;font-size:10px;letter-spacing:.05em;text-transform:uppercase;color:var(--a1);font-weight:700}
+  .exemp .extitle{padding:2px 11px 11px;font-size:12.5px;color:var(--ink);font-weight:600}
+
+  /* level-2 popup */
+  .overlay2{position:fixed;inset:0;background:rgba(15,17,22,.66);-webkit-backdrop-filter:blur(4px);backdrop-filter:blur(4px);
+    display:none;align-items:flex-start;justify-content:center;z-index:200;padding:30px 16px;overflow-y:auto}
+  .overlay2.show{display:flex}
+  .modal2{position:relative;background:var(--panel);border-radius:18px;max-width:1000px;width:100%;
+    box-shadow:0 30px 80px rgba(0,0,0,.42);overflow:hidden;animation:pop .16s ease}
+  .modal2 .m2fig{background:var(--fig);padding:20px;display:flex;justify-content:center;border-bottom:1px solid var(--line2)}
+  .modal2 .m2fig svg{width:100%;height:auto;max-height:64vh}
+  .modal2 .m2body{padding:16px 26px 20px}
+  .modal2 .m2body h3{margin:4px 0 8px;font-size:21px;letter-spacing:-.01em}
+  .modal2 .m2note{color:var(--ink2);font-size:14.5px;line-height:1.55}
+  .modal2 .exdom{color:var(--a1);font-size:11px;font-weight:700;letter-spacing:.05em;text-transform:uppercase}
+  .modal2 .mhint{text-align:center}
+
+  /* star button on resources */
+  .links a{position:relative}
+  .star{position:absolute;top:9px;right:9px;width:28px;height:28px;border-radius:8px;border:1px solid var(--line);
+    background:#fff;cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;line-height:1;
+    color:#c9ccd3;transition:.14s;z-index:2}
+  .star:hover{border-color:var(--a4);color:var(--a4);transform:scale(1.08)}
+  .star.on{color:#f59e0b;border-color:#f6d488;background:#fffdf6}
+  .links a b{padding-right:30px}
+
+  /* Starred section */
+  .starred-empty{background:var(--panel);border:1px dashed var(--line);border-radius:14px;padding:26px;text-align:center;color:var(--muted);font-size:14px}
+  .starred-empty b{color:var(--ink)}
+
+  /* Worked examples */
+  .wx{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:24px 26px 22px;margin-bottom:26px;box-shadow:var(--shadow)}
+  .wx-field{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--a1);font-weight:700}
+  .wx h3{margin:6px 0 8px;font-size:24px;letter-spacing:-.02em}
+  .wx-why{color:var(--muted);margin:0 0 6px;max-width:840px;font-size:14.5px}
+  .wx-steps{margin-top:20px}
+  .wx-step{display:flex;gap:16px;padding-bottom:26px;position:relative}
+  .wx-step:not(:last-child):after{content:'';position:absolute;left:16px;top:36px;bottom:0;width:2px;background:var(--line)}
+  .wx-num{flex:none;width:34px;height:34px;border-radius:50%;background:var(--a1);color:#fff;font-weight:700;display:flex;align-items:center;justify-content:center;font-size:13px;z-index:1}
+  .wx-body{flex:1;min-width:0}
+  .wx-tag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.04em;text-transform:uppercase;color:var(--a2);background:#eefafc;border:1px solid #cdeef3;border-radius:20px;padding:2px 11px;margin-bottom:7px}
+  .wx-body h4{margin:3px 0 6px;font-size:16.5px}
+  .wx-body>p{margin:0 0 12px;color:var(--ink2);font-size:14px;max-width:820px}
+  .wx-fig{background:var(--fig);border:1px solid var(--line2);border-radius:12px;padding:14px;cursor:pointer;position:relative;transition:.15s}
+  .wx-fig:hover{border-color:var(--a1);box-shadow:var(--shadow2)}
+  .wx-fig svg{width:100%;height:auto;max-height:600px;display:block}
+  .wx-fig.big{margin-bottom:18px}
+  .wx-fig .enlarge{position:absolute;top:10px;right:12px;font-size:11px;color:var(--muted);background:#fff;border:1px solid var(--line);border-radius:20px;padding:2px 10px}
+  .wx-syn{margin-top:6px;background:#f6f5ff;border:1px solid #e5e2fb;border-radius:12px;padding:14px 17px;color:var(--ink2);font-size:14px}
+  .wx-syn b{color:var(--a1)}
+  @media(max-width:640px){ .wx-step:not(:last-child):after{left:16px} }
+  footer{color:var(--muted);font-size:13px;text-align:center;padding:34px 20px 20px;border-top:1px solid var(--line);margin-top:56px}
+  @media(max-width:640px){ .card.open .layout{grid-template-columns:1fr} .card.open .fig{border-right:none} .pc{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="brand">Concept<br>Visualization<span>.</span></div>
+  <span class="brandtag">Knowledge maps &amp; mental models</span>
+  <nav id="sidenav">
+    <a href="#why"><span class="dot"></span>Why visualize</a>
+    <a href="#blocks"><span class="dot"></span>Building blocks</a>
+    <a href="#types"><span class="dot"></span>Diagram types</a>
+    <a href="#worked"><span class="dot"></span>Worked examples</a>
+    <a href="#mix"><span class="dot"></span>Mix &amp; match</a>
+    <a href="#starred"><span class="dot"></span>&#9733; Starred</a>
+    <a href="#res"><span class="dot"></span>Resources</a>
+  </nav>
+</aside>
+
+<div class="page">
+<header>
+  <div class="kicker">Knowledge Visualization &middot; Concept Mapping</div>
+  <h1>Concept Visualization Explorer</h1>
+  <p class="sub">A working reference for turning what you read &mdash; psychology, mental models, power &amp; social dynamics &mdash; into structured maps you can revise from. Learn why it works, the visual grammar, then click any diagram to open its full playbook.</p>
+</header>
+
+<div class="wrap">
+
+  <!-- WHY -->
+  <section id="why">
+    <h2><span class="n">01</span>Why concept visualization?</h2>
+    <p class="lead">Reading gives you information; it does not give you a model. The gap between "I read that book" and "I understand it well enough to use and teach it" is bridged by <b>structure</b> &mdash; and structure is exactly what a diagram makes visible.</p>
+    <div class="why" id="why-grid"></div>
+  </section>
+
+  <!-- BUILDING BLOCKS -->
+  <section id="blocks">
+    <h2><span class="n">02</span>The building blocks (visual grammar)</h2>
+    <p class="lead">Every diagram is assembled from a handful of primitives. See what each one <i>is</i> and how it <i>looks</i> &mdash; click any block for a concrete example. Once you can read the grammar, every "type" is just a recipe of these, and you can invent your own.</p>
+    <div class="blocks" id="blocks-grid"></div>
+  </section>
+
+  <!-- TYPES -->
+  <section id="types">
+    <h2><span class="n">03</span>The diagram types</h2>
+    <p class="lead">Filter by the <b>relationship you want to express</b> (that's the real choice, not "which looks nice"). Click any card to open its full playbook &mdash; pros, cons, a big worked example, a common misuse, and its best combinations.</p>
+    <div class="filters" id="filters"></div>
+    <p class="cat-trigger" id="cat-trigger"></p>
+    <div class="count" id="count"></div>
+    <div class="grid" id="grid"></div>
+  </section>
+
+  <!-- WORKED EXAMPLES -->
+  <section id="worked">
+    <h2><span class="n">04</span>Worked examples &mdash; charting a whole concept</h2>
+    <p class="lead">The real skill is combining diagram types. Here are three genuinely complex concepts, each mapped with four to five different diagrams in sequence &mdash; with a walkthrough of <b>why</b> I reach for each one, in that order, and how they stack into complete understanding. Click any diagram to enlarge it.</p>
+    <div id="worked-list"></div>
+  </section>
+
+  <!-- MIX -->
+  <section id="mix">
+    <h2><span class="n">05</span>How to mix &amp; match them</h2>
+    <div class="prose">
+      <p>The one rule that matters: <b>pick the diagram by the relationship, not the topic.</b> Ask "what is the dominant relationship here?" &mdash; <b>hierarchy</b> (part/whole), <b>sequence</b> (time/cause), <b>network</b> (mutual influence), <b>comparison</b> (overlap/difference), or <b>dimension</b> (position on axes). That answer picks your base diagram. Real topics contain several relationships at once, so you layer and nest types.</p>
+      <p class="recipe"><b>Nest:</b> one type as the container, another inside each node. A <b>mind map</b> of a whole book where each branch opens into its own <b>flowchart</b> or <b>2&times;2 matrix</b>. This is the classic "master map."</p>
+      <p class="recipe"><b>Sequence a series:</b> place small diagrams on a <b>timeline</b> &mdash; one <b>triad</b> or <b>cycle</b> per era &mdash; to watch a concept evolve.</p>
+      <p class="recipe"><b>Keep three altitudes</b> of the same topic: a one-glance <b>framework</b> (triad/pyramid) for recall, a <b>concept map</b> for relationships, and a <b>network</b> for how it links to everything else you know. Revise top-down.</p>
+      <p class="recipe"><b>Overlay encodings:</b> add a second meaning to any diagram with <b>colour</b> (theme/source), <b>size</b> (importance) and <b>edge style</b> (strong vs. weak, causes vs. correlates). A plain network becomes a systems map the instant you add +/&minus; to the edges.</p>
+      <p>A reliable personal workflow: <b>(1)</b> dump every highlight and margin note as raw nodes; <b>(2)</b> cluster them into 4&ndash;7 groups &mdash; that's your first hierarchy; <b>(3)</b> name the relationship inside each cluster and pick its diagram; <b>(4)</b> draw the links <i>between</i> clusters &mdash; those cross-links are where real understanding lives; <b>(5)</b> compress to a single framework you can redraw from memory. If you can redraw it blank, you own it.</p>
+    </div>
+  </section>
+
+  <!-- STARRED -->
+  <section id="starred">
+    <h2><span class="n">06</span>&#9733; Starred</h2>
+    <p class="lead">Everything you star in Resources collects here so your most useful links live in one place. Saved on this device &mdash; they'll still be here next time you open the file.</p>
+    <div id="starred-list"></div>
+  </section>
+
+  <!-- RESOURCES -->
+  <section id="res">
+    <h2><span class="n">07</span>Resources to go deeper</h2>
+    <p class="lead">A large, categorized library &mdash; theory, books, galleries for choosing a diagram, per-type references, tools to build your own, and the learning-science of revision. All open in a new tab.</p>
+    <div id="res-list"></div>
+  </section>
+
+  <footer>Pick the diagram by the relationship, not the topic &middot; if you can redraw it from memory, you own it.</footer>
+</div>
+</div><!-- /page -->
+
+<div class="overlay" id="overlay" aria-hidden="true"><div class="modal" id="modal" role="dialog" aria-modal="true"></div></div>
+<div class="overlay2" id="overlay2" aria-hidden="true"><div class="modal2" id="modal2" role="dialog" aria-modal="true"></div></div>
+
+<script>
+/* ============ small icon helper ============ */
+const ico = p => `<svg viewBox="0 0 24 24" fill="none" stroke="#4f46e5" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">${p}</svg>`;
+
+/* ============ WHY section ============ */
+const why = [
+  [ico('<path d="M4 5h16"/><path d="M4 12h10"/><path d="M4 19h7"/>'),
+   "Working memory is tiny","You can hold only ~4&ndash;7 items at once (Miller). A map offloads the structure so your mind is free to reason, not just remember."],
+  [ico('<circle cx="12" cy="12" r="9"/><path d="M12 8v8M8 12h8"/>'),
+   "Notes &ne; a model","A pile of highlights is storage. A model is structure. Only structure lets you recall, transfer, and apply ideas to new situations."],
+  [ico('<rect x="3" y="4" width="18" height="14" rx="2"/><path d="M3 9h18"/>'),
+   "Dual coding","The brain encodes visual + verbal separately. A labelled diagram is remembered roughly twice as well as text alone."],
+  [ico('<path d="M12 3v18M5 8l7-5 7 5"/>'),
+   "Gaps become visible","Drawing forces you to state relationships. The moment you can't draw an arrow, you've found what you don't actually understand."],
+  [ico('<path d="M4 12a8 8 0 1 1 8 8"/><path d="M4 12H2m2 0 3-3m-3 3 3 3"/>'),
+   "Revision, not re-reading","One good map replaces re-scanning ten sources. Redraw it from memory (active recall) and understanding compounds."],
+  [ico('<circle cx="6" cy="6" r="2"/><circle cx="18" cy="8" r="2"/><circle cx="10" cy="17" r="2"/><path d="M8 7l8 1M8 8l1 7M16 9l-5 7"/>'),
+   "Connection is understanding","Isolated facts fade. A concept that's linked to many others is both easier to recall and more useful &mdash; maps make the links explicit."],
+];
+
+/* ============ BUILDING BLOCKS ============ */
+const bC={ink:'#1f2328',mut:'#6b7280',line:'#c7ccd6',a1:'#4f46e5',a2:'#0891b2',a3:'#db2777',a4:'#ea580c',a5:'#16a34a',a6:'#9333ea'};
+const bsvg = inner => `<svg viewBox="0 0 130 76" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Arial">${inner}</svg>`;
+const blocks = [
+ {name:"Node", desc:"A single concept, entity, or idea &mdash; the atom of every map.",
+  more:"<b>Example:</b> “Reciprocity.” On its own it's inert; it only means something once you link it to others.",
+  svg:bsvg(`<circle cx="65" cy="38" r="24" fill="${bC.a1}"/><text x="65" y="42" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Idea</text>`)},
+ {name:"Edge / Link", desc:"A relationship between two nodes &mdash; can be directed (&rarr;), labelled, or weighted.",
+  more:"<b>Example:</b> Fear &rarr; Compliance labelled “produces.” The <b>label</b> is what turns two dots into a proposition you actually understand.",
+  svg:bsvg(`<circle cx="28" cy="38" r="14" fill="${bC.a2}"/><circle cx="102" cy="38" r="14" fill="${bC.a3}"/><line x1="42" y1="38" x2="84" y2="38" stroke="${bC.mut}" stroke-width="2" marker-end="url(#bm)"/><text x="65" y="30" text-anchor="middle" fill="${bC.mut}" font-size="9">causes</text><defs><marker id="bm" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${bC.mut}"/></marker></defs>`)},
+ {name:"Container / Set", desc:"A boundary that says “these belong together.”",
+  more:"<b>Powers:</b> Venn diagrams, treemaps, swimlanes, grouped clusters. Overlap two containers and the intersection carries meaning.",
+  svg:bsvg(`<rect x="22" y="18" width="86" height="40" rx="12" fill="none" stroke="${bC.a5}" stroke-width="2" stroke-dasharray="5 4"/><circle cx="52" cy="38" r="9" fill="${bC.a5}"/><circle cx="80" cy="38" r="9" fill="${bC.a5}"/>`)},
+ {name:"Hierarchy", desc:"Levels of part&ndash;whole or general&ndash;specific.",
+  more:"<b>Powers:</b> trees, pyramids, mind maps, treemaps. The core question: what contains what?",
+  svg:bsvg(`<rect x="50" y="12" width="30" height="18" rx="4" fill="${bC.a1}"/><line x1="65" y1="30" x2="38" y2="46" stroke="${bC.line}" stroke-width="2"/><line x1="65" y1="30" x2="92" y2="46" stroke="${bC.line}" stroke-width="2"/><rect x="22" y="46" width="30" height="16" rx="4" fill="#fff" stroke="${bC.a2}" stroke-width="2"/><rect x="78" y="46" width="30" height="16" rx="4" fill="#fff" stroke="${bC.a2}" stroke-width="2"/>`)},
+ {name:"Sequence", desc:"Order in time or logic &mdash; one thing leads to the next.",
+  more:"<b>Powers:</b> timelines, flowcharts, cycles. The core question: what comes before what?",
+  svg:bsvg(`${[18,54,90].map((x,i)=>`<rect x="${x}" y="28" width="26" height="20" rx="4" fill="${[bC.a1,bC.a4,bC.a5][i]}"/>`).join('')}${[44,80].map(x=>`<line x1="${x}" y1="38" x2="${x+10}" y2="38" stroke="${bC.mut}" stroke-width="2" marker-end="url(#bm2)"/>`).join('')}<defs><marker id="bm2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${bC.mut}"/></marker></defs>`)},
+ {name:"Position / Axis", desc:"Meaning from where something sits on one or two axes.",
+  more:"<b>Powers:</b> 2&times;2 matrices, spectrums, radar, scatter/perceptual maps. The core question: how much, on what dimension?",
+  svg:bsvg(`<line x1="26" y1="62" x2="26" y2="14" stroke="${bC.line}" stroke-width="2"/><line x1="26" y1="62" x2="108" y2="62" stroke="${bC.line}" stroke-width="2"/><circle cx="80" cy="30" r="7" fill="${bC.a3}"/>`)},
+ {name:"Size / Area", desc:"Magnitude shown by area or thickness.",
+  more:"<b>Powers:</b> treemaps, Sankey flows, weighted nodes. The core question: which is bigger / carries more?",
+  svg:bsvg(`<circle cx="38" cy="40" r="22" fill="${bC.a4}" opacity=".85"/><circle cx="92" cy="44" r="12" fill="${bC.a4}" opacity=".85"/>`)},
+ {name:"Colour / Style", desc:"A second variable layered onto any diagram.",
+  more:"<b>Use for:</b> theme, source, valence (good/bad), or strength. The cheapest way to add a whole extra dimension of meaning.",
+  svg:bsvg(`<circle cx="34" cy="38" r="12" fill="${bC.a1}"/><circle cx="65" cy="38" r="12" fill="${bC.a3}"/><circle cx="96" cy="38" r="12" fill="${bC.a5}"/>`)},
+];
+
+/* ============ DIAGRAM CATALOGUE ============ */
+const S = (inner,vb="0 0 340 210") => `<svg viewBox="${vb}" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Arial,sans-serif">${inner}</svg>`;
+const C={ink:'#1f2933',mut:'#5b6572',line:'#c3cbd8',a1:'#4f46e5',a2:'#0891b2',a3:'#db2777',a4:'#ea580c',a5:'#16a34a',a6:'#9333ea'};
+
+const viz = [
+/* ---------- HIERARCHY ---------- */
+{
+ cat:"hierarchy", name:"Mind Map",
+ shows:"One central idea radiating into branches and sub-branches (radial hierarchy).",
+ best:"Unpacking a whole book/topic fast; brainstorming; your default 'master map'.",
+ watch:"Only parent&ndash;child links; it hides how branches relate to each other.",
+ pros:["Fast to make; almost no rules to slow you down","Mirrors associative memory, so it's easy to recall","Trivial to extend &mdash; just add a branch","Gives a one-page overview of a large topic"],
+ cons:["Shows only radial hierarchy; can't show cross-links","Gets messy and huge past ~3 levels","Creates a false sense of completeness","Useless for process, causation, or feedback"],
+ big:"Compress a whole book. Centre = <i>Influence</i> (Cialdini); six branches for the six principles; under each, three sub-nodes: the mechanism, one experiment, one real-world use. One page becomes the entire book's skeleton &mdash; perfect for a 5-minute revision pass.",
+ misuse:"Using a mind map to model the <b>habit loop</b> or a <b>stress spiral</b>. Branches can't loop back, so you lose the cycle &mdash; the one thing that matters. Use a cycle or causal-loop diagram. Also wrong when you need to show how two branches relate (that's a concept map's job).",
+ combos:[["Concept Map","Add labelled cross-links to fix the 'no relationships between branches' weakness."],["2&times;2 Matrix","Let a branch open into a matrix to prioritise its items."],["Flowchart","Turn any branch that is actually a procedure into a flow."],["Timeline","Order the branches when they represent stages."]]
+},
+{
+ cat:"hierarchy", name:"Tree / Hierarchy",
+ shows:"Strict parent&ndash;child branching from one root; top-down or left-right.",
+ best:"Taxonomies and classifications where every item has exactly one parent.",
+ watch:"Rigid &mdash; real ideas often belong to several parents.",
+ pros:["Unambiguous; every item has one place","Makes levels of abstraction explicit","Easy to navigate and search","Ideal for clean classifications"],
+ cons:["Assumes a single parent &mdash; brittle for overlaps","No relationships across branches","Implies a neatness reality may lack","Deep trees get unwieldy"],
+ big:"A taxonomy of memory: Memory &rarr; Sensory / Short-term / Long-term &rarr; (Long-term &rarr; Explicit / Implicit &rarr; Episodic / Semantic). Great for exam-style recall where the categories genuinely nest.",
+ misuse:"Forcing <b>overlapping</b> categories into a strict tree &mdash; e.g. classifying emotions as if each has exactly one parent. Emotions blend; a tree hides the overlaps. Use a network or Venn instead.",
+ combos:[["Treemap","Same hierarchy, but add proportion/importance by area."],["Mind Map","Same data, radial, for faster recall."],["Concept Map","Add the cross-branch links a tree can't show."]]
+},
+{
+ cat:"hierarchy", name:"Pyramid (Layered)",
+ shows:"Ranked levels where each tier rests on the one below.",
+ best:"Prerequisite or priority orders &mdash; foundations first.",
+ watch:"Implies a strict order that may be false; oversimplifies.",
+ pros:["Communicates priority/foundation instantly","Highly memorable shape","Good for 'you need X before Y' logic","Compact"],
+ cons:["Implied sequence is often contested (e.g. Maslow)","Single dimension only","Can flatten nuance into neat tiers"],
+ big:"DIKW: Data &rarr; Information &rarr; Knowledge &rarr; Wisdom. Or a learning stack: fundamentals &rarr; application &rarr; synthesis &rarr; mastery. Use when lower tiers genuinely enable the higher ones.",
+ misuse:"Presenting items that operate <b>in parallel</b> as tiers &mdash; implying you must 'complete' safety before belonging, when in reality people pursue several at once.",
+ combos:[["Cycle","When the tiers actually feed back into each other."],["Spectrum","Treat each tier as a matter of degree."],["Concentric","Same idea, drawn as core&rarr;surface rings."]]
+},
+{
+ cat:"hierarchy", name:"Treemap",
+ shows:"Nested rectangles whose area encodes proportion or importance.",
+ best:"'Where does it all go?' &mdash; how a whole splits into parts by size.",
+ watch:"Hard to read exact values or deep nesting; relative weight only.",
+ pros:["Shows proportion AND hierarchy at once","Space-efficient for many items","Great gut-punch of 'where the mass is'"],
+ cons:["Can't read precise values","Deep nesting / tiny slices become unreadable","Not for relationships between items"],
+ big:"Audit where your day's attention actually goes: one big rectangle for reactive phone time, smaller ones for deep work, admin, rest, learning. Seeing the areas side-by-side is far more honest than a to-do list.",
+ misuse:"Using it for items that are <b>not parts of one whole</b>, or where you need to compare two values precisely &mdash; area is bad for exact comparison.",
+ combos:[["Mind Map","Show how one branch's mass is distributed."],["Sankey","Add movement/flow on top of size."]]
+},
+/* ---------- SEQUENCE ---------- */
+{
+ cat:"sequence", name:"Flowchart",
+ shows:"Steps and decision branches leading to outcomes.",
+ best:"Procedures, algorithms, decision rules ('if X then Y').",
+ watch:"Explodes with too many branches; not for fuzzy relationships.",
+ pros:["Precise and unambiguous for procedures","Decision logic is testable","Anyone can follow it step by step"],
+ cons:["Grows huge with many branches","Poor for feedback, parallelism, or fuzziness","Tedious to keep updated"],
+ big:"The Stoic dichotomy of control: a worry appears &rarr; 'is it in my control?' &rarr; No: practice acceptance / Yes: take one concrete action. A tiny flowchart that turns a philosophy into a reflex.",
+ misuse:"Using a flowchart for a system with <b>feedback loops</b> (e.g. burnout). It forces a start and end and hides the recursion. Use a causal-loop diagram. Also wrong for 'mapping a concept' that isn't a process at all.",
+ combos:[["Mind Map","A branch that's a procedure opens into a flow."],["Swimlanes","Add 'who does what' as parallel lanes."],["2&times;2 Matrix","Use a matrix at a decision point instead of many branches."]]
+},
+{
+ cat:"sequence", name:"Timeline",
+ shows:"Events or ideas placed along a time axis.",
+ best:"How a field or idea evolved; chronology; cause-over-time.",
+ watch:"Encodes only time &mdash; add colour/lanes for a second dimension.",
+ pros:["Makes evolution and chronology obvious","Strong narrative device","Shows cause and effect across time"],
+ cons:["One axis (time) only","Can't show non-temporal relationships","Encourages a linear-progress bias"],
+ big:"The schools of psychology across a century: Structuralism (1890s) &rarr; Behaviourism (1920s) &rarr; Cognitive (1960s) &rarr; Positive (2000s), colour-coded by what each rejected in the last. Instantly shows the field as a conversation, not a list.",
+ misuse:"Placing non-sequential concepts on a timeline just because it looks tidy &mdash; implying a false progression where none exists.",
+ combos:[["Triad / Cycle","Put a small one at each point to track how a model changed."],["Sankey","Show a quantity flowing across the timeline."],["Concept Map","Link events by cause, not just order."]]
+},
+{
+ cat:"sequence", name:"Cycle / Loop",
+ shows:"A closed sequence of stages that repeats.",
+ best:"Habits, routines, feedback processes with no start or end.",
+ watch:"Don't force linear things into a circle.",
+ pros:["Captures repetition naturally","No misleading start/end point","Very memorable for habits and routines"],
+ cons:["Forces circularity that may be false","Hides magnitude and branching","Oversimplifies multi-path processes"],
+ big:"The habit loop: Cue &rarr; Craving &rarr; Response &rarr; Reward &rarr; (back to Cue). Annotate each stage with a lever you can pull to build or break a habit &mdash; it turns theory into an intervention checklist.",
+ misuse:"Drawing a genuinely <b>one-time linear</b> process as a circle, implying it repeats when it doesn't (e.g. a one-off onboarding).",
+ combos:[["Flowchart","Open a single stage into its detailed steps."],["Causal Loop","Add +/&minus; signs to reveal whether it's virtuous or vicious."],["Timeline","Unroll several cycles to show change over time."]]
+},
+{
+ cat:"sequence", name:"Sankey / Flow",
+ shows:"Flows between stages where thickness encodes magnitude.",
+ best:"How a finite resource (time, energy, budget, attention) splits and moves.",
+ watch:"Needs rough quantities; too many flows become spaghetti.",
+ pros:["Shows magnitude AND direction together","Reveals where the mass goes and leaks","Great for 'follow the resource'"],
+ cons:["Requires real quantities to be honest","Many flows turn into spaghetti","Not for categorical relationships"],
+ big:"Your weekly energy budget: one source bar splitting into deep work, meetings, and distraction, with band thickness = hours. The 'distraction' band being fat is more persuasive than any number.",
+ misuse:"Drawing it <b>without real magnitudes</b>, or for relationships that aren't flows &mdash; then the thickness is meaningless decoration.",
+ combos:[["Treemap","Establish the sizes first, then show them moving."],["Timeline","Track how the flows shift week to week."]]
+},
+{
+ cat:"sequence", name:"Fishbone (Ishikawa)",
+ shows:"A single effect with branching categories of contributing causes.",
+ best:"Root-cause analysis &mdash; why does X keep happening?",
+ watch:"Shows candidate causes, not proven ones or their interactions.",
+ pros:["Structures messy brainstorming by category","Prevents fixating on one obvious cause","Great for teams / self-diagnosis"],
+ cons:["Lists possible, not proven, causes","Ignores how causes interact","Static snapshot, no feedback"],
+ big:"Why do I procrastinate? Bones for Fear, Task-too-big, Low energy, Distraction, No deadline, Unclear goal. Suddenly the problem is six tractable levers, not one vague failing.",
+ misuse:"Treating the finished diagram as <b>the answer</b> (proven causes) instead of a hypothesis list to test &mdash; and ignoring that several causes reinforce each other.",
+ combos:[["Causal Loop","Take the top causes and test how they feed back."],["2&times;2 Matrix","Plot causes by impact &times; ease-to-fix to prioritise."]]
+},
+/* ---------- NETWORK ---------- */
+{
+ cat:"network", name:"Concept Map (Novak)",
+ shows:"Nodes joined by labelled links that read as propositions ('X leads to Y').",
+ best:"Capturing understanding &mdash; labels force you to state the relationship.",
+ watch:"Gets crowded fast; keep one clear link per pair.",
+ pros:["Labels force real understanding (the key benefit)","Shows cross-links a tree/mind map can't","Flexible &mdash; any relationship, any direction","Exposes gaps: no label = no understanding"],
+ cons:["Crowds into a hairball without discipline","Slower to build than a mind map","Needs practice to keep readable"],
+ big:"Map power dynamics: nodes Power, Fear, Respect, Legitimacy, with labelled links &mdash; 'fear creates compliance', 'but erodes legitimacy', 'respect earns power without fear'. Reading the sentences off the map <i>is</i> the understanding; this is the single best format for genuine mastery.",
+ misuse:"Drawing one <b>without labelling the links</b>. An unlabelled concept map is just a messy mind map &mdash; the labels are the entire point.",
+ combos:[["Mind Map","Build the skeleton fast, then add cross-links to deepen it."],["Causal Loop","Add polarity to the links to turn it into a system."],["2&times;2 Matrix","Pull two key variables out into a matrix."]]
+},
+{
+ cat:"network", name:"Causal Loop (Systems)",
+ shows:"Variables linked by +/&minus; arrows forming reinforcing or balancing loops.",
+ best:"Feedback, vicious/virtuous cycles, why systems spiral or stabilise.",
+ watch:"Requires disciplined polarity thinking; easy to hand-wave.",
+ pros:["Reveals feedback and leverage points","Explains why problems persist or escalate","A core mental-model / systems skill"],
+ cons:["Demands rigorous +/&minus; reasoning","Easy to draw sloppily and fool yourself","Not quantitative on its own"],
+ big:"The burnout spiral: Stress &rarr;(+) Poor sleep &rarr;(+) Low willpower &rarr;(+) Stress &mdash; a reinforcing (R) loop. Naming it as a loop shows why willpower advice fails and where to intervene (protect sleep to break the reinforcement).",
+ misuse:"Drawing arrows <b>without +/&minus; signs</b> or without checking each loop's polarity. Then it's just a network, not a system, and it can't tell you if things spiral or settle.",
+ combos:[["Fishbone","Source the variables from a root-cause pass first."],["Network Graph","Zoom out to see how loops connect to other loops."],["Cycle","Simplify one clean loop for teaching."]]
+},
+{
+ cat:"network", name:"Network Graph",
+ shows:"Many nodes with many-to-many links; no fixed hierarchy.",
+ best:"Seeing how everything connects; spotting hubs and clusters.",
+ watch:"Becomes a hairball without grouping/colour.",
+ pros:["Shows the true many-to-many web of ideas","Reveals hubs (key ideas) and clusters (themes)","Scales to hundreds of nodes"],
+ cons:["A hairball without clustering/colour","Imprecise; hard to read specifics","Layout can mislead"],
+ big:"Your personal knowledge graph (e.g. in Obsidian): every note a node, every link an edge. Over months the hubs that emerge reveal your real intellectual centre of gravity &mdash; and orphan nodes show what you never connected.",
+ misuse:"Using a raw network when a clean <b>hierarchy</b> would communicate far better, or dumping nodes with <b>no clustering</b> so it reads as noise.",
+ combos:[["Mind Map","Zoom into any hub and expand it radially."],["Concept Map","Label the edges to make the connections meaningful."],["Treemap","Size the clusters by how much sits in each."]]
+},
+/* ---------- COMPARISON ---------- */
+{
+ cat:"comparison", name:"Venn / Euler",
+ shows:"Overlapping sets; the intersections carry the meaning.",
+ best:"Shared vs. unique traits; 'what do these have in common?'",
+ watch:"Breaks down past 3 circles; overlaps must be logically real.",
+ pros:["Intersections are instantly intuitive","Perfect for shared-vs-unique","Memorable and quick to draw"],
+ cons:["Unreadable past 3&ndash;4 sets","Overlaps must be genuine, not decorative","No magnitude"],
+ big:"Aristotle's rhetoric: Ethos &cap; Pathos &cap; Logos, with the centre labelled <i>Persuasion</i>. It shows that credibility, emotion and logic each help alone, but real persuasion lives where all three overlap.",
+ misuse:"Forcing <b>four or more</b> circles for symmetry, or drawing overlaps that don't logically exist just to fill the middle.",
+ combos:[["Concept Map","Name the centre, then expand it into its own map."],["2&times;2 Matrix","When you have two crisp dimensions rather than sets."]]
+},
+/* ---------- DIMENSIONAL ---------- */
+{
+ cat:"dimensional", name:"2&times;2 Matrix / Quadrant",
+ shows:"Two axes crossing to form four categories.",
+ best:"Prioritising and typologies &mdash; the fastest 'aha' framework.",
+ watch:"Binary axes hide gradients; axis choice biases the answer.",
+ pros:["Delivers insight in seconds","Forces you to name the two key variables","Excellent for prioritisation and typologies"],
+ cons:["Turns continuous reality into four hard boxes","Wrong axes = misleading conclusions","Only two dimensions"],
+ big:"The Eisenhower matrix: Urgent &times; Important &rarr; Do now / Schedule / Delegate / Eliminate. Or map people by Power &times; Interest to decide who to manage closely (stakeholder analysis).",
+ misuse:"Treating continuous variables as <b>four hard boxes</b>, or picking axes that aren't the real drivers &mdash; the matrix will then 'prove' a false story.",
+ combos:[["Mind Map","Each quadrant opens into its own list/branch."],["Radar","When you have more than two dimensions to compare."],["Scatter","Add a real gradient instead of four bins."]]
+},
+{
+ cat:"dimensional", name:"Radar / Spider",
+ shows:"Several variables on spokes from a centre; a shape emerges.",
+ best:"Profiles across fixed dimensions &mdash; personality, skills, options.",
+ watch:"Area misleads; axis order changes the shape; keep to ~4&ndash;8 spokes.",
+ pros:["Compact profile across many dimensions","Great for overlaying two things to compare","Shape is memorable"],
+ cons:["Enclosed area is visually misleading","Axis order arbitrarily changes the shape","Unreadable with many overlaid items"],
+ big:"A Big Five personality profile (Openness, Conscientiousness, Extraversion, Agreeableness, Neuroticism) &mdash; overlay 'now' vs 'ideal' to see exactly where to grow.",
+ misuse:"Overlaying <b>many</b> entities at once (unreadable), or implying the <b>enclosed area</b> means 'more/better' &mdash; it doesn't.",
+ combos:[["Spectrum","Break one spoke out for a detailed look."],["2&times;2 Matrix","Collapse to the two dimensions that matter most."]]
+},
+{
+ cat:"dimensional", name:"Spectrum / Continuum",
+ shows:"A single axis between two poles, with positions marked.",
+ best:"Anything that's a matter of degree, not a category.",
+ watch:"One dimension only; don't collapse rich traits to a line.",
+ pros:["Captures 'a matter of degree' honestly","Dead simple to read","Kills false either/or thinking"],
+ cons:["Only one dimension","Can oversimplify multi-faceted traits"],
+ big:"Introvert &harr; Extravert with your position marked and an 'ambivert' band in the middle &mdash; it reframes a supposed identity as a dial you sit somewhere along, and can move.",
+ misuse:"Collapsing a genuinely <b>multi-dimensional</b> trait to one line, or treating a spectrum as if it were two hard categories at the ends.",
+ combos:[["Radar","Stack several spectrums into one profile."],["2&times;2 Matrix","Cross two spectrums for a richer picture."]]
+},
+/* ---------- FRAMEWORKS ---------- */
+{
+ cat:"frameworks", name:"Triad (Triangle)",
+ shows:"Three interdependent elements, each affecting the other two.",
+ best:"Classic three-part models where balance between parts is the point.",
+ watch:"Don't shoehorn three unrelated items into a triangle.",
+ pros:["Highly memorable","Emphasises interdependence and balance","A classic, credible explanatory shape"],
+ cons:["Forces exactly three parts","Can imply equal weight that isn't real","Tempting to fake profundity"],
+ big:"The CBT cognitive triangle: Thoughts &harr; Feelings &harr; Behaviour, all mutually reinforcing. It shows why changing any one corner (e.g. behaviour) can shift the other two &mdash; the whole basis of the therapy.",
+ misuse:"Cramming three <b>unrelated</b> items into a triangle to look deep, when there's no real interdependence between them.",
+ combos:[["Timeline","One triad per era to show a model evolving."],["Mind Map","Nest a triad inside a branch as a sub-framework."]]
+},
+{
+ cat:"frameworks", name:"Concentric / Onion",
+ shows:"Nested rings from a core outward; inner layers drive outer ones.",
+ best:"Core&rarr;surface models &mdash; values driving beliefs driving behaviour.",
+ watch:"Implies clean layering reality may not have.",
+ pros:["Communicates 'inner drives outer' clearly","Memorable, 'why-first' framing","Compact"],
+ cons:["Implies strict, clean layering","Can oversimplify two-way influence"],
+ big:"Simon Sinek's Golden Circle: Why (core) &rarr; How &rarr; What (surface). It argues that people buy the 'why', not the 'what' &mdash; and the rings make the priority obvious at a glance.",
+ misuse:"Implying strict one-way <b>causal layering</b> where influence is actually bidirectional (behaviour also reshapes beliefs over time).",
+ combos:[["Spectrum","Give each ring a degree, not just a label."],["Causal Loop","Show the outer rings feeding back to the core."]]
+},
+];
+
+/* attach the diagram SVGs to each type by name */
+const svgByName = {
+"Mind Map": S(`
+  <ellipse cx="170" cy="105" rx="52" ry="26" fill="${C.a1}"/>
+  <text x="170" y="109" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Influence</text>
+  ${[['Reciprocity',40,32,C.a2],['Scarcity',300,34,C.a3],['Authority',312,105,C.a4],['Commitment',300,176,C.a5],['Liking',40,178,C.a6],['Social proof',30,105,C.a2]].map(([t,x,y,c])=>`
+   <line x1="170" y1="105" x2="${x}" y2="${y}" stroke="${c}" stroke-width="2"/>
+   <text x="${x}" y="${y+ (y<60?-6: y>150?16:4)}" text-anchor="middle" fill="${C.ink}" font-size="10.5" font-weight="600">${t}</text>`).join('')}`),
+
+"Tree / Hierarchy": S(`
+  <rect x="124" y="12" width="92" height="28" rx="6" fill="${C.a1}"/><text x="170" y="30" text-anchor="middle" fill="#fff" font-size="11" font-weight="700">Memory</text>
+  ${[[70,'Sensory'],[170,'Short-term'],[270,'Long-term']].map(([x,t])=>`
+    <line x1="170" y1="40" x2="${x}" y2="88" stroke="${C.line}" stroke-width="1.6"/>
+    <rect x="${x-44}" y="88" width="88" height="26" rx="6" fill="#fff" stroke="${C.a2}" stroke-width="1.6"/>
+    <text x="${x}" y="104" text-anchor="middle" fill="${C.ink}" font-size="10.5">${t}</text>`).join('')}
+  ${[[228,'Explicit'],[312,'Implicit']].map(([x,t])=>`
+    <line x1="270" y1="114" x2="${x}" y2="158" stroke="${C.line}" stroke-width="1.4"/>
+    <rect x="${x-40}" y="158" width="80" height="24" rx="6" fill="#fff" stroke="${C.line}" stroke-width="1.4"/>
+    <text x="${x}" y="173" text-anchor="middle" fill="${C.mut}" font-size="10">${t}</text>`).join('')}`),
+
+"Pyramid (Layered)": S(`
+  ${[['Self-actualization',C.a3,150,26],['Esteem',C.a4,120,58],['Belonging',C.a5,90,90],['Safety',C.a2,60,122],['Physiological',C.a1,30,154]].map(([t,c,pad,y])=>`
+    <polygon points="${pad+40},${y} ${300-pad},${y} ${260-pad},${y+30} ${pad+80},${y+30}" fill="${c}"/>
+    <text x="170" y="${y+20}" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="600">${t}</text>`).join('')}`),
+
+"Treemap": S(`
+  <text x="170" y="16" text-anchor="middle" fill="${C.mut}" font-size="10">Where daily attention goes</text>
+  <rect x="20" y="26" width="180" height="110" fill="${C.a1}"/><text x="110" y="86" text-anchor="middle" fill="#fff" font-size="12" font-weight="700">Reactive / phone</text>
+  <rect x="204" y="26" width="116" height="60" fill="${C.a2}"/><text x="262" y="60" text-anchor="middle" fill="#fff" font-size="10.5">Deep work</text>
+  <rect x="204" y="90" width="116" height="46" fill="${C.a4}"/><text x="262" y="117" text-anchor="middle" fill="#fff" font-size="10.5">Admin</text>
+  <rect x="20" y="140" width="120" height="48" fill="${C.a5}"/><text x="80" y="168" text-anchor="middle" fill="#fff" font-size="10.5">Rest</text>
+  <rect x="144" y="140" width="80" height="48" fill="${C.a3}"/><text x="184" y="168" text-anchor="middle" fill="#fff" font-size="10">Social</text>
+  <rect x="228" y="140" width="92" height="48" fill="${C.a6}"/><text x="274" y="168" text-anchor="middle" fill="#fff" font-size="10">Learning</text>`),
+
+"Flowchart": S(`
+  <rect x="118" y="16" width="104" height="30" rx="15" fill="${C.a1}"/><text x="170" y="35" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="600">A worry appears</text>
+  <polygon points="170,60 236,92 170,124 104,92" fill="#fff" stroke="${C.a4}" stroke-width="2"/>
+  <text x="170" y="89" text-anchor="middle" fill="${C.ink}" font-size="9.5">In my</text><text x="170" y="100" text-anchor="middle" fill="${C.ink}" font-size="9.5">control?</text>
+  <line x1="104" y1="92" x2="52" y2="92" stroke="${C.line}" stroke-width="1.6"/><text x="86" y="86" fill="${C.mut}" font-size="9">no</text>
+  <line x1="236" y1="92" x2="288" y2="92" stroke="${C.line}" stroke-width="1.6"/><text x="252" y="86" fill="${C.mut}" font-size="9">yes</text>
+  <rect x="8" y="140" width="90" height="30" rx="6" fill="${C.a3}"/><text x="53" y="159" text-anchor="middle" fill="#fff" font-size="9.5">Let it go</text>
+  <line x1="52" y1="92" x2="52" y2="140" stroke="${C.line}" stroke-width="1.6"/>
+  <rect x="242" y="140" width="90" height="30" rx="6" fill="${C.a5}"/><text x="287" y="159" text-anchor="middle" fill="#fff" font-size="9.5">Act on it</text>
+  <line x1="288" y1="92" x2="288" y2="140" stroke="${C.line}" stroke-width="1.6"/>`),
+
+"Timeline": S(`
+  <line x1="24" y1="105" x2="316" y2="105" stroke="${C.line}" stroke-width="2"/>
+  ${[[52,'Structuralism','1890s',C.a1,-1],[128,'Behaviourism','1920s',C.a2,1],[200,'Cognitive','1960s',C.a4,-1],[280,'Positive','2000s',C.a5,1]].map(([x,t,y2,c,dir])=>`
+   <circle cx="${x}" cy="105" r="6" fill="${c}"/>
+   <line x1="${x}" y1="105" x2="${x}" y2="${105+dir*26}" stroke="${c}" stroke-width="1.4"/>
+   <text x="${x}" y="${dir<0?66:150}" text-anchor="middle" fill="${C.ink}" font-size="10.5" font-weight="600">${t}</text>
+   <text x="${x}" y="${dir<0?78:162}" text-anchor="middle" fill="${C.mut}" font-size="9">${y2}</text>`).join('')}`),
+
+"Cycle / Loop": S(`
+  <circle cx="170" cy="105" r="66" fill="none" stroke="${C.line}" stroke-width="1.5" stroke-dasharray="4 4"/>
+  ${[['Cue',170,30,C.a1],['Craving',256,105,C.a3],['Response',170,180,C.a4],['Reward',84,105,C.a5]].map(([t,x,y,c])=>`
+    <circle cx="${x}" cy="${y}" r="26" fill="${c}"/><text x="${x}" y="${y+4}" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="600">${t}</text>`).join('')}
+  ${[[170,56,232,88],[240,128,196,158],[144,158,100,128],[100,82,150,52]].map(([x1,y1,x2,y2])=>`<path d="M${x1},${y1} Q170,105 ${x2},${y2}" fill="none" stroke="${C.mut}" stroke-width="1.4" marker-end="url(#ah)"/>`).join('')}
+  <defs><marker id="ah" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="${C.mut}"/></marker></defs>`),
+
+"Sankey / Flow": S(`
+  <rect x="20" y="60" width="16" height="90" fill="${C.a1}"/><text x="28" y="52" text-anchor="middle" fill="${C.ink}" font-size="10" font-weight="600">Energy</text>
+  <path d="M36,66 C130,66 150,40 300,40 L300,74 C150,74 130,96 36,96 Z" fill="${C.a5}" opacity=".55"/>
+  <path d="M36,100 C130,100 150,110 300,110 L300,130 C150,130 130,120 36,120 Z" fill="${C.a4}" opacity=".55"/>
+  <path d="M36,124 C130,124 150,150 300,150 L300,168 C150,168 130,140 36,140 Z" fill="${C.a3}" opacity=".55"/>
+  <text x="306" y="60" fill="${C.ink}" font-size="9.5">Deep work</text>
+  <text x="306" y="124" fill="${C.ink}" font-size="9.5">Meetings</text>
+  <text x="306" y="162" fill="${C.ink}" font-size="9.5">Distraction</text>`),
+
+"Fishbone (Ishikawa)": S(`
+  <line x1="24" y1="105" x2="280" y2="105" stroke="${C.ink}" stroke-width="2"/>
+  <polygon points="280,98 300,105 280,112" fill="${C.ink}"/>
+  <text x="303" y="102" fill="${C.a4}" font-size="9" font-weight="700">Procras-</text><text x="303" y="113" fill="${C.a4}" font-size="9" font-weight="700">tination</text>
+  ${[['Fear',70,-1,C.a1],['Task too big',150,-1,C.a2],['Low energy',230,-1,C.a5],['Distraction',70,1,C.a3],['No deadline',150,1,C.a6],['Unclear goal',230,1,C.a4]].map(([t,x,dir,c])=>`
+    <line x1="${x}" y1="105" x2="${x-24}" y2="${105+dir*44}" stroke="${c}" stroke-width="1.6"/>
+    <text x="${x-26}" y="${105+dir*(44)+(dir<0?-3:11)}" text-anchor="middle" fill="${C.ink}" font-size="9">${t}</text>`).join('')}`),
+
+"Concept Map (Novak)": S(`
+  ${[['Power',60,40,C.a1],['Fear',260,40,C.a3],['Respect',60,160,C.a5],['Legitimacy',260,160,C.a4]].map(([t,x,y,c])=>`
+    <rect x="${x-42}" y="${y-15}" width="84" height="30" rx="15" fill="${c}"/><text x="${x}" y="${y+4}" text-anchor="middle" fill="#fff" font-size="10.5" font-weight="600">${t}</text>`).join('')}
+  <line x1="102" y1="40" x2="218" y2="40" stroke="${C.mut}" stroke-width="1.4"/><text x="160" y="34" text-anchor="middle" fill="${C.mut}" font-size="9">can create</text>
+  <line x1="60" y1="55" x2="60" y2="145" stroke="${C.mut}" stroke-width="1.4"/><text x="60" y="103" text-anchor="middle" fill="${C.mut}" font-size="9">earns</text>
+  <line x1="102" y1="150" x2="218" y2="52" stroke="${C.mut}" stroke-width="1.4"/><text x="176" y="108" text-anchor="middle" fill="${C.mut}" font-size="9">without</text>
+  <line x1="260" y1="55" x2="260" y2="145" stroke="${C.mut}" stroke-width="1.4"/><text x="260" y="103" text-anchor="middle" fill="${C.mut}" font-size="9">grants</text>`),
+
+"Causal Loop (Systems)": S(`
+  ${[['Stress',170,32,C.a3],['Poor sleep',280,120,C.a4],['Low willpower',60,120,C.a1]].map(([t,x,y,c])=>`
+    <circle cx="${x}" cy="${y}" r="30" fill="#fff" stroke="${c}" stroke-width="2"/><text x="${x}" y="${y-1}" text-anchor="middle" fill="${C.ink}" font-size="9.5" font-weight="600">${t.split(' ')[0]}</text><text x="${x}" y="${y+11}" text-anchor="middle" fill="${C.ink}" font-size="9.5" font-weight="600">${t.split(' ')[1]||''}</text>`).join('')}
+  <path d="M196,44 Q250,66 268,96" fill="none" stroke="${C.mut}" stroke-width="1.5" marker-end="url(#ah2)"/><text x="250" y="60" fill="${C.a3}" font-size="11" font-weight="700">+</text>
+  <path d="M262,142 Q170,180 82,142" fill="none" stroke="${C.mut}" stroke-width="1.5" marker-end="url(#ah2)"/><text x="170" y="178" fill="${C.a3}" font-size="11" font-weight="700">+</text>
+  <path d="M72,96 Q90,66 146,46" fill="none" stroke="${C.mut}" stroke-width="1.5" marker-end="url(#ah2)"/><text x="86" y="66" fill="${C.a3}" font-size="11" font-weight="700">+</text>
+  <text x="170" y="112" text-anchor="middle" fill="${C.a4}" font-size="13" font-weight="800">R</text>
+  <defs><marker id="ah2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 z" fill="${C.mut}"/></marker></defs>`),
+
+"Network Graph": S(`
+  ${(() => {
+    const nodes=[['Incentives',170,40,C.a1,15],['Feedback',70,90,C.a2,11],['Scarcity',270,80,C.a3,11],['Framing',110,160,C.a4,11],['Reciprocity',250,160,C.a5,11],['Bias',175,110,C.a6,13]];
+    const edges=[[0,5],[0,1],[0,2],[5,3],[5,4],[1,3],[2,4],[1,5]];
+    return edges.map(([a,b])=>`<line x1="${nodes[a][1]}" y1="${nodes[a][2]}" x2="${nodes[b][1]}" y2="${nodes[b][2]}" stroke="${C.line}" stroke-width="1.4"/>`).join('')+
+      nodes.map(([t,x,y,c,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="${c}"/><text x="${x}" y="${y-r-3}" text-anchor="middle" fill="${C.ink}" font-size="9.5">${t}</text>`).join('');
+  })()}`),
+
+"Venn / Euler": S(`
+  <circle cx="135" cy="85" r="58" fill="${C.a1}" opacity=".45"/>
+  <circle cx="205" cy="85" r="58" fill="${C.a3}" opacity=".45"/>
+  <circle cx="170" cy="140" r="58" fill="${C.a5}" opacity=".45"/>
+  <text x="108" y="70" text-anchor="middle" fill="${C.ink}" font-size="11" font-weight="700">Ethos</text>
+  <text x="232" y="70" text-anchor="middle" fill="${C.ink}" font-size="11" font-weight="700">Pathos</text>
+  <text x="170" y="168" text-anchor="middle" fill="${C.ink}" font-size="11" font-weight="700">Logos</text>
+  <text x="170" y="100" text-anchor="middle" fill="${C.ink}" font-size="9.5" font-weight="700">Persuasion</text>`),
+
+"2&times;2 Matrix / Quadrant": S(`
+  <line x1="40" y1="105" x2="312" y2="105" stroke="${C.line}" stroke-width="1.4"/>
+  <line x1="176" y1="18" x2="176" y2="192" stroke="${C.line}" stroke-width="1.4"/>
+  <rect x="50" y="26" width="118" height="70" fill="${C.a4}" opacity=".18"/><text x="109" y="66" text-anchor="middle" fill="${C.ink}" font-size="10">Schedule</text>
+  <rect x="184" y="26" width="118" height="70" fill="${C.a3}" opacity=".18"/><text x="243" y="66" text-anchor="middle" fill="${C.ink}" font-size="10">Do now</text>
+  <rect x="50" y="114" width="118" height="70" fill="${C.a2}" opacity=".18"/><text x="109" y="154" text-anchor="middle" fill="${C.ink}" font-size="10">Eliminate</text>
+  <rect x="184" y="114" width="118" height="70" fill="${C.a5}" opacity=".18"/><text x="243" y="154" text-anchor="middle" fill="${C.ink}" font-size="10">Delegate</text>
+  <text x="176" y="12" text-anchor="middle" fill="${C.mut}" font-size="9">Urgent &#8594;</text>
+  <text x="18" y="108" fill="${C.mut}" font-size="9" transform="rotate(-90 18 108)">Important &#8594;</text>`),
+
+"Radar / Spider": S(`
+  ${(() => {
+    const cx=170,cy=105,R=72,axes=['Openness','Conscient.','Extraversion','Agreeable.','Neurotic.'];
+    const vals=[.9,.7,.5,.8,.35];const n=5;
+    let poly=[],grid='';
+    for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;const x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;
+      grid+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${C.line}" stroke-width="1"/>`;
+      const lx=cx+Math.cos(a)*(R+18),ly=cy+Math.sin(a)*(R+12);
+      grid+=`<text x="${lx}" y="${ly}" text-anchor="middle" fill="${C.mut}" font-size="8.5">${axes[i]}</text>`;
+      const px=cx+Math.cos(a)*R*vals[i],py=cy+Math.sin(a)*R*vals[i];poly.push(`${px},${py}`);}
+    let rings='';[.5,1].forEach(f=>{let p=[];for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;p.push(`${cx+Math.cos(a)*R*f},${cy+Math.sin(a)*R*f}`);}rings+=`<polygon points="${p.join(' ')}" fill="none" stroke="${C.line}" stroke-width="1"/>`;});
+    return rings+grid+`<polygon points="${poly.join(' ')}" fill="${C.a1}" opacity=".35" stroke="${C.a1}" stroke-width="2"/>`;
+  })()}`),
+
+"Spectrum / Continuum": S(`
+  <defs><linearGradient id="sp" x1="0" x2="1"><stop offset="0" stop-color="${C.a2}"/><stop offset="1" stop-color="${C.a3}"/></linearGradient></defs>
+  <rect x="30" y="96" width="280" height="14" rx="7" fill="url(#sp)"/>
+  <text x="30" y="86" fill="${C.ink}" font-size="11" font-weight="600">Introvert</text>
+  <text x="310" y="86" text-anchor="end" fill="${C.ink}" font-size="11" font-weight="600">Extravert</text>
+  <circle cx="128" cy="103" r="9" fill="#fff" stroke="${C.ink}" stroke-width="2"/>
+  <text x="128" y="134" text-anchor="middle" fill="${C.mut}" font-size="9.5">you</text>
+  <line x1="170" y1="90" x2="170" y2="116" stroke="${C.mut}" stroke-width="1" stroke-dasharray="3 3"/>
+  <text x="170" y="150" text-anchor="middle" fill="${C.mut}" font-size="8.5">ambivert range</text>`),
+
+"Triad (Triangle)": S(`
+  <polygon points="170,30 292,168 48,168" fill="none" stroke="${C.line}" stroke-width="1.5"/>
+  <circle cx="170" cy="34" r="30" fill="${C.a1}"/><text x="170" y="38" text-anchor="middle" fill="#fff" font-size="10" font-weight="600">Thoughts</text>
+  <circle cx="292" cy="168" r="30" fill="${C.a3}"/><text x="292" y="172" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="600">Feelings</text>
+  <circle cx="48" cy="168" r="30" fill="${C.a5}"/><text x="48" y="172" text-anchor="middle" fill="#fff" font-size="9.5" font-weight="600">Behaviour</text>
+  <text x="170" y="192" text-anchor="middle" fill="${C.mut}" font-size="9">CBT cognitive triangle</text>`),
+
+"Concentric / Onion": S(`
+  <circle cx="170" cy="105" r="82" fill="${C.a1}" opacity=".18"/>
+  <circle cx="170" cy="105" r="58" fill="${C.a1}" opacity=".28"/>
+  <circle cx="170" cy="105" r="32" fill="${C.a1}" opacity=".55"/>
+  <text x="170" y="109" text-anchor="middle" fill="#fff" font-size="10" font-weight="700">Why</text>
+  <text x="170" y="60" text-anchor="middle" fill="${C.ink}" font-size="10" font-weight="600">How</text>
+  <text x="170" y="34" text-anchor="middle" fill="${C.ink}" font-size="10" font-weight="600">What</text>
+  <text x="170" y="200" text-anchor="middle" fill="${C.mut}" font-size="9">Golden Circle</text>`),
+};
+viz.forEach(v=>{ v.svg = svgByName[v.name] || ''; });
+
+/* ============ DETAILED-DIAGRAM ENGINE ============ */
+const P=[C.a1,C.a2,C.a4,C.a5,C.a6,C.a3];
+const escT=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+const MK=`<defs>
+<marker id="mA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.mut}"/></marker>
+<marker id="mR" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.a3}"/></marker>
+<marker id="mB" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.a1}"/></marker></defs>`;
+function SV(inner,w=680,h=460){return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Arial">${MK}${inner}</svg>`;}
+function T(x,y,txt,{fill=C.ink,fs=12,fw=400,anchor='middle',tr=''}={}){return `<text x="${x}" y="${y}" text-anchor="${anchor}" fill="${fill}" font-size="${fs}" font-weight="${fw}"${tr?` transform="${tr}"`:''}>${escT(txt)}</text>`;}
+function ML(x,y,label,o={}){const lines=String(label).split('\n');const lh=o.lh||13;const off=(lines.length-1)*lh/2;return lines.map((ln,i)=>T(x,y-off+i*lh,ln,o)).join('');}
+function boxN(x,y,w,h,label,{fill=C.a1,tc='#fff',fs=12,r=9,stroke='',sw=0}={}){const lines=String(label).split('\n');const startY=y+h/2-((lines.length-1)*7)+4;return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}"${stroke?` stroke="${stroke}" stroke-width="${sw}"`:''}/>`+lines.map((ln,i)=>T(x+w/2,startY+i*14,ln,{fill:tc,fs,fw:600})).join('');}
+
+function genGraph(nodes,edges,{w=700,h=460,pad=26}={}){
+  const px=n=>pad+n.x*(w-2*pad), py=n=>pad+n.y*(h-2*pad); const byId={}; nodes.forEach(n=>byId[n.id]=n); let s='';
+  (edges||[]).forEach(e=>{const a=byId[e.from],b=byId[e.to]; if(!a||!b)return; let x1=px(a),y1=py(a),x2=px(b),y2=py(b);
+    const dx=x2-x1,dy=y2-y1,d=Math.hypot(dx,dy)||1;
+    const o1=(a.r||(a.w?Math.max(a.w,a.h)/2:26))+2, o2=(b.r||(b.w?Math.max(b.w,b.h)/2:26))+7;
+    x1+=dx/d*o1; y1+=dy/d*o1; x2-=dx/d*o2; y2-=dy/d*o2;
+    const mk=e.arrow===false?'':`marker-end="url(#${e.mk||'mA'})"`, col=e.color||C.mut; let lmx,lmy;
+    if(e.curve){const mxp=(x1+x2)/2-dy/d*e.curve, myp=(y1+y2)/2+dx/d*e.curve; s+=`<path d="M${x1},${y1} Q${mxp},${myp} ${x2},${y2}" fill="none" stroke="${col}" stroke-width="${e.w||1.7}" ${e.dash?`stroke-dasharray="${e.dash}"`:''} ${mk}/>`; lmx=(x1+2*mxp+x2)/4; lmy=(y1+2*myp+y2)/4;}
+    else {s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="${e.w||1.7}" ${e.dash?`stroke-dasharray="${e.dash}"`:''} ${mk}/>`; lmx=(x1+x2)/2; lmy=(y1+y2)/2;}
+    if(e.label){const lw=String(e.label).length*6+8; s+=`<rect x="${lmx-lw/2}" y="${lmy-9}" width="${lw}" height="16" rx="4" fill="#fff" opacity=".92"/>`+T(lmx,lmy+3,e.label,{fill:e.lc||C.mut,fs:e.label.length<3?12:9.5,fw:e.label.length<3?800:400});}
+  });
+  nodes.forEach((n,i)=>{const cx=px(n),cy=py(n),fill=n.fill||P[i%P.length],tc=n.tc||'#fff',shape=n.shape||'round';
+    if(shape==='circle'){const r=n.r||30; s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${n.hollow?'#fff':fill}"${n.hollow?` stroke="${fill}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,n.label,{fill:n.hollow?C.ink:tc,fs:n.fs||11,fw:600});}
+    else if(shape==='diamond'){const ww=n.w||96,hh=n.h||64; s+=`<polygon points="${cx},${cy-hh/2} ${cx+ww/2},${cy} ${cx},${cy+hh/2} ${cx-ww/2},${cy}" fill="${n.hollow?'#fff':fill}"${n.hollow?` stroke="${fill}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,n.label,{fill:n.hollow?C.ink:tc,fs:n.fs||10,fw:600});}
+    else {const ww=n.w||110,hh=n.h||44; s+=boxN(cx-ww/2,cy-hh/2,ww,hh,n.label,{fill,tc,fs:n.fs||11,r:shape==='rect'?4:12});}
+  });
+  return SV(s,w,h);
+}
+function genMindMap(center,branches,{w=780,h=540}={}){const cx=w/2,cy=h/2,R1=Math.min(w,h)*0.29,rr=Math.min(w,h)*0.185,n=branches.length; let s='';
+  branches.forEach((br,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,bx=cx+Math.cos(ang)*R1,by=cy+Math.sin(ang)*R1,col=P[i%P.length];
+    s+=`<path d="M${cx},${cy} Q${(cx+bx)/2},${(cy+by)/2} ${bx},${by}" fill="none" stroke="${col}" stroke-width="2.5"/>`;
+    const kids=br.children||[],spread=Math.PI/2.6;
+    kids.forEach((k,j)=>{const ka=ang+(kids.length>1?(-spread/2+j*spread/(kids.length-1)):0),kx=bx+Math.cos(ka)*rr,ky=by+Math.sin(ka)*rr;
+      s+=`<line x1="${bx}" y1="${by}" x2="${kx}" y2="${ky}" stroke="${col}" stroke-width="1.4" opacity=".65"/>`;
+      s+=`<rect x="${kx-48}" y="${ky-13}" width="96" height="26" rx="13" fill="#fff" stroke="${col}" stroke-width="1.4"/>`+ML(kx,ky+4,k,{fill:C.ink,fs:9.5,fw:600});});
+    s+=boxN(bx-58,by-19,116,38,br.label,{fill:col,fs:11,r:19});});
+  s+=`<circle cx="${cx}" cy="${cy}" r="48" fill="${C.ink}"/>`+ML(cx,cy+4,center,{fill:'#fff',fs:13,fw:700});
+  return SV(s,w,h);}
+function genTree(root,{w=720,h=440,pad=44,boxW=104,boxH=40}={}){let leaves=[];const levels=[];
+  (function walk(n,d){n._d=d;levels[d]=1;if(!n.children||!n.children.length)leaves.push(n);else n.children.forEach(c=>walk(c,d+1));})(root,0);
+  const maxD=levels.length-1,xGap=(w-2*pad)/Math.max(1,leaves.length-1);
+  leaves.forEach((lf,i)=>lf._x=leaves.length===1?w/2:pad+i*xGap);
+  const yGap=(h-2*pad-boxH)/Math.max(1,maxD);
+  (function setx(n){if(n.children&&n.children.length){n.children.forEach(setx);n._x=(n.children[0]._x+n.children[n.children.length-1]._x)/2;}n._y=pad+n._d*yGap;})(root);
+  let s='';const pal=[C.a2,C.a4,C.a5,C.a6,C.a3];
+  (function ed(n){if(n.children)n.children.forEach(c=>{s+=`<path d="M${n._x},${n._y+boxH} C${n._x},${(n._y+boxH+c._y)/2} ${c._x},${(n._y+boxH+c._y)/2} ${c._x},${c._y}" fill="none" stroke="${C.line}" stroke-width="1.6"/>`;ed(c);});})(root);
+  (function nd(n){const col=n._d===0?C.a1:pal[(n._d-1)%pal.length];s+=boxN(n._x-boxW/2,n._y,boxW,boxH,n.label,{fill:n._d===0?C.a1:'#fff',tc:n._d===0?'#fff':C.ink,stroke:n._d===0?'':col,sw:1.8,fs:10.5,r:8});if(n.children)n.children.forEach(nd);})(root);
+  return SV(s,w,h);}
+function genPyramid(levels,{w=680,h=460}={}){const n=levels.length,top=44,botW=w-160,ax=w/2,H=h-100,lh=H/n;let s='';
+  levels.forEach((lv,i)=>{const y0=top+i*lh,y1=top+(i+1)*lh,wt=botW*i/n,wb=botW*(i+1)/n;
+    s+=`<polygon points="${ax-wt/2},${y0} ${ax+wt/2},${y0} ${ax+wb/2},${y1} ${ax-wb/2},${y1}" fill="${lv.color||P[i%P.length]}"/>`;
+    s+=ML(ax,(y0+y1)/2+4,lv.label,{fill:'#fff',fs:12,fw:700});
+    if(lv.sub)s+=T(ax+wb/2+10,(y0+y1)/2+4,lv.sub,{fill:C.mut,fs:10,anchor:'start'});});
+  return SV(s,w,h);}
+function genTreemap(items,{w=680,h=440,pad=8}={}){const total=items.reduce((a,b)=>a+b.weight,0);let it=items.slice().sort((a,b)=>b.weight-a.weight);
+  const x=pad,rw=w-2*pad,rh=h-2*pad;let curY=pad,s='',rem=it.slice();
+  while(rem.length){const rc=Math.min(rem.length,rem.length<=3?rem.length:2),row=rem.splice(0,rc),rowW=row.reduce((a,b)=>a+b.weight,0),rowH=rh*(rowW/total);let curX=x;
+    row.forEach(item=>{const cw=rw*(item.weight/rowW);s+=`<rect x="${curX}" y="${curY}" width="${cw-4}" height="${rowH-4}" rx="6" fill="${item.color||C.a1}"/>`;
+      s+=ML(curX+(cw-4)/2,curY+rowH/2-2,item.label,{fill:'#fff',fs:11.5,fw:700});
+      s+=T(curX+(cw-4)/2,curY+rowH/2+16,Math.round(item.weight/total*100)+'%',{fill:'rgba(255,255,255,.85)',fs:10});curX+=cw;});curY+=rowH;}
+  return SV(s,w,h);}
+function genTimeline(events,{w=780,h=420}={}){const y=h/2,x0=54,x1=w-54,n=events.length;let s=`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="${C.line}" stroke-width="3"/>`;
+  events.forEach((e,i)=>{const x=x0+(x1-x0)*(n===1?0.5:i/(n-1)),dir=i%2===0?-1:1,col=P[i%P.length];
+    s+=`<circle cx="${x}" cy="${y}" r="7" fill="${col}"/>`;const ly=y+dir*74;
+    s+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${ly+(dir<0?24:-24)}" stroke="${col}" stroke-width="1.6"/>`;
+    s+=`<rect x="${x-72}" y="${ly-24}" width="144" height="54" rx="9" fill="#fff" stroke="${col}" stroke-width="1.6"/>`;
+    s+=T(x,ly-6,e.when,{fill:col,fs:11.5,fw:700})+ML(x,ly+13,e.label,{fill:C.ink,fs:9.5,fw:600,lh:11});});
+  return SV(s,w,h);}
+function genCycle(stages,{w=620,h=560,center=''}={}){const cx=w/2,cy=h/2,R=Math.min(w,h)*0.30,n=stages.length;let s=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.line}" stroke-width="1.5" stroke-dasharray="5 5"/>`;
+  const pts=stages.map((st,i)=>{const a=-Math.PI/2+i*2*Math.PI/n;return{x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R,a};});
+  for(let i=0;i<n;i++){const p=pts[i],q=pts[(i+1)%n],a1=p.a+0.44,a2=q.a-0.44,x1=cx+Math.cos(a1)*R,y1=cy+Math.sin(a1)*R,x2=cx+Math.cos(a2)*R,y2=cy+Math.sin(a2)*R;
+    s+=`<path d="M${x1},${y1} A${R},${R} 0 0 1 ${x2},${y2}" fill="none" stroke="${C.mut}" stroke-width="2" marker-end="url(#mA)"/>`;}
+  stages.forEach((st,i)=>{const p=pts[i],col=P[i%P.length];s+=`<circle cx="${p.x}" cy="${p.y}" r="46" fill="${col}"/>`+ML(p.x,p.y+4,st.label,{fill:'#fff',fs:11,fw:700});
+    if(st.note){const ox=cx+(p.x-cx)*1.62,oy=cy+(p.y-cy)*1.62;s+=ML(ox,oy,st.note,{fill:C.mut,fs:9,lh:10});}});
+  if(center)s+=ML(cx,cy,center,{fill:C.ink,fs:12,fw:700});
+  return SV(s,w,h);}
+function genSankey(source,flows,{w=740,h=460}={}){const total=flows.reduce((a,b)=>a+b.value,0),pad=34,barX=64,barW=28,sy0=pad,sy1=h-pad,H=sy1-sy0;
+  let s=`<rect x="${barX}" y="${sy0}" width="${barW}" height="${H}" rx="5" fill="${C.a1}"/>`+ML(barX+barW/2,sy0-14,source,{fill:C.ink,fs:12,fw:700,lh:12});
+  const rightX=w-250;let cur=sy0;
+  flows.forEach((f,i)=>{const th=H*(f.value/total),col=f.color||P[i%P.length],x1=barX+barW,x2=rightX;
+    s+=`<path d="M${x1},${cur} C${(x1+x2)/2},${cur} ${(x1+x2)/2},${cur} ${x2},${cur} L${x2},${cur+th} C${(x1+x2)/2},${cur+th} ${(x1+x2)/2},${cur+th} ${x1},${cur+th} Z" fill="${col}" opacity=".5"/>`;
+    s+=`<rect x="${x2}" y="${cur}" width="15" height="${th}" fill="${col}"/>`;
+    s+=T(x2+24,cur+th/2+4,`${f.label} (${Math.round(f.value/total*100)}%)`,{fill:C.ink,fs:11,anchor:'start',fw:600});cur+=th;});
+  return SV(s,w,h);}
+function genFishbone(effect,bones,{w=800,h=470}={}){const y=h/2,x0=40,xEnd=w-170;let s=`<line x1="${x0}" y1="${y}" x2="${xEnd}" y2="${y}" stroke="${C.ink}" stroke-width="2.5"/>`;
+  s+=`<polygon points="${xEnd},${y-9} ${xEnd+22},${y} ${xEnd},${y+9}" fill="${C.ink}"/>`+boxN(xEnd+26,y-27,132,54,effect,{fill:C.a4,fs:11});
+  const ups=bones.filter((_,i)=>i%2===0),downs=bones.filter((_,i)=>i%2===1);
+  const place=(arr,dir)=>{const m=arr.length;arr.forEach((b,k)=>{const bx=x0+90+(xEnd-x0-150)*((k+0.5)/m),tipx=bx-64,tipy=y+dir*150,col=P[bones.indexOf(b)%P.length];
+    s+=`<line x1="${bx}" y1="${y}" x2="${tipx}" y2="${tipy}" stroke="${col}" stroke-width="2.2"/>`+T(tipx,tipy+(dir<0?-9:20),b.name,{fill:col,fs:11,fw:700});
+    (b.causes||[]).forEach((c,j)=>{const t=(j+1)/(b.causes.length+1),cxp=bx+(tipx-bx)*t,cyp=y+(tipy-y)*t;s+=`<line x1="${cxp}" y1="${cyp}" x2="${cxp+28}" y2="${cyp}" stroke="${col}" stroke-width="1.1" opacity=".7"/>`+T(cxp+32,cyp+3,c,{fill:C.ink,fs:9,anchor:'start'});});});};
+  place(ups,-1);place(downs,1);return SV(s,w,h);}
+function genVenn3(sets,regions={},title,{w=640,h=560}={}){const cx=w/2,cy=h/2-16,R=142,pos=[[cx,cy-72],[cx-82,cy+62],[cx+82,cy+62]];let s='';
+  sets.forEach((st,i)=>{s+=`<circle cx="${pos[i][0]}" cy="${pos[i][1]}" r="${R}" fill="${st.color||P[i]}" opacity=".28"/>`;});
+  const lp=[[cx,cy-198],[cx-208,cy+156],[cx+208,cy+156]];
+  sets.forEach((st,i)=>{s+=ML(lp[i][0],lp[i][1],st.label,{fill:st.color||P[i],fs:14,fw:700});});
+  const RT=(x,y,t)=>t?ML(x,y,t,{fill:C.ink,fs:10.5,fw:700,lh:11}):'';
+  s+=RT(cx,cy-96,regions.a)+RT(cx-118,cy+96,regions.b)+RT(cx+118,cy+96,regions.c);
+  s+=RT(cx-74,cy-2,regions.ab)+RT(cx+74,cy-2,regions.ca)+RT(cx,cy+98,regions.bc)+RT(cx,cy+18,regions.abc);
+  if(title)s+=ML(cx,h-22,title,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+function genMatrix(xLab,yLab,quads,{w=690,h=560}={}){const pad=76,gx=w-24,gy0=44,gy1=h-72,cw=(gx-pad)/2,ch=(gy1-gy0)/2,midX=pad+cw,midY=gy0+ch;let s='';
+  const cells=[['tl',pad,gy0,C.a4],['tr',midX,gy0,C.a3],['bl',pad,midY,C.a2],['br',midX,midY,C.a5]];
+  cells.forEach(([k,x,y,col])=>{const q=quads[k]||{};s+=`<rect x="${x}" y="${y}" width="${cw}" height="${ch}" fill="${col}" opacity=".12" stroke="#fff" stroke-width="2"/>`;
+    s+=ML(x+12,y+22,q.title||'',{fill:col,fs:12,fw:700,anchor:'start'});
+    (q.items||[]).forEach((it,i)=>{s+=T(x+12,y+44+i*15,'• '+it,{fill:C.ink,fs:10,anchor:'start'});});});
+  s+=`<line x1="${pad}" y1="${gy0}" x2="${pad}" y2="${gy1}" stroke="${C.ink}" stroke-width="1.6"/>`;
+  s+=`<line x1="${pad}" y1="${gy1}" x2="${gx}" y2="${gy1}" stroke="${C.ink}" stroke-width="1.6"/>`;
+  s+=`<line x1="${pad}" y1="${midY}" x2="${gx}" y2="${midY}" stroke="${C.line}" stroke-width="1.2"/>`;
+  s+=`<line x1="${midX}" y1="${gy0}" x2="${midX}" y2="${gy1}" stroke="${C.line}" stroke-width="1.2"/>`;
+  s+=T((pad+gx)/2,gy1+32,xLab,{fill:C.mut,fs:12,fw:700});
+  s+=T(pad-48,midY,yLab,{fill:C.mut,fs:12,fw:700,tr:`rotate(-90 ${pad-48} ${midY})`});
+  return SV(s,w,h);}
+function genRadar(axes,series,{w=620,h=560}={}){const cx=w/2,cy=h/2+6,R=Math.min(w,h)*0.30,n=axes.length;let s='';
+  [0.25,0.5,0.75,1].forEach(f=>{let p=[];for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;p.push(`${cx+Math.cos(a)*R*f},${cy+Math.sin(a)*R*f}`);}s+=`<polygon points="${p.join(' ')}" fill="none" stroke="${C.line}" stroke-width="1"/>`;});
+  for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${C.line}" stroke-width="1"/>`;
+    const lx=cx+Math.cos(a)*(R+30),ly=cy+Math.sin(a)*(R+22);s+=ML(lx,ly+4,axes[i],{fill:C.mut,fs:10,fw:600});}
+  series.forEach(se=>{let p=[];for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;p.push(`${cx+Math.cos(a)*R*se.vals[i]},${cy+Math.sin(a)*R*se.vals[i]}`);}s+=`<polygon points="${p.join(' ')}" fill="${se.color}" opacity=".22" stroke="${se.color}" stroke-width="2.5"/>`;});
+  series.forEach((se,k)=>{s+=`<rect x="26" y="${26+k*20}" width="12" height="12" rx="3" fill="${se.color}"/>`+T(44,36+k*20,se.name,{fill:C.ink,fs:11,anchor:'start'});});
+  return SV(s,w,h);}
+function genSpectrum(left,right,markers,{w=780,h=300,title=''}={}){const y=h/2,x0=64,x1=w-64;let s=`<defs><linearGradient id="spg" x1="0" x2="1"><stop offset="0" stop-color="${C.a2}"/><stop offset="1" stop-color="${C.a3}"/></linearGradient></defs>`;
+  s+=`<rect x="${x0}" y="${y-9}" width="${x1-x0}" height="18" rx="9" fill="url(#spg)"/>`;
+  s+=T(x0,y-26,left,{fill:C.ink,fs:13,fw:700,anchor:'start'})+T(x1,y-26,right,{fill:C.ink,fs:13,fw:700,anchor:'end'});
+  markers.forEach((m,i)=>{const x=x0+(x1-x0)*m.pos,dir=i%2===0?1:-1;s+=`<circle cx="${x}" cy="${y}" r="8" fill="#fff" stroke="${m.color||C.a1}" stroke-width="2.5"/>`;
+    s+=`<line x1="${x}" y1="${y+dir*10}" x2="${x}" y2="${y+dir*36}" stroke="${C.mut}" stroke-width="1"/>`+ML(x,y+dir*52,m.label,{fill:C.ink,fs:10,fw:600,lh:11});});
+  if(title)s+=T(w/2,h-16,title,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+function genTriad(corners,el={},center,{w=620,h=540}={}){const cx=w/2,top=74,bot=h-96,A=[cx,top],B=[w-96,bot],Cc=[96,bot],pts=[A,B,Cc];let s='';
+  s+=`<polygon points="${A[0]},${A[1]} ${B[0]},${B[1]} ${Cc[0]},${Cc[1]}" fill="none" stroke="${C.line}" stroke-width="1.8"/>`;
+  const mid=(p,q)=>[(p[0]+q[0])/2,(p[1]+q[1])/2];const eL=(p,q,t)=>{if(!t)return'';const m=mid(p,q);return `<rect x="${m[0]-t.length*3.3-5}" y="${m[1]-9}" width="${t.length*6.6+10}" height="17" rx="4" fill="#fff"/>`+T(m[0],m[1]+3,t,{fill:C.mut,fs:9.5});};
+  s+=eL(A,B,el.ab)+eL(B,Cc,el.bc)+eL(Cc,A,el.ca);
+  corners.forEach((c,i)=>{const p=pts[i];s+=`<circle cx="${p[0]}" cy="${p[1]}" r="48" fill="${c.color||P[i]}"/>`+ML(p[0],p[1]+4,c.label,{fill:'#fff',fs:12,fw:700});});
+  if(center)s+=ML(cx,(top+bot)/2+70,center,{fill:C.ink,fs:12,fw:700,lh:13});
+  return SV(s,w,h);}
+function genConcentric(rings,{w=600,h=560,caption=''}={}){const cx=w/2,cy=h/2-8,n=rings.length,Rmax=Math.min(w,h)*0.35;let s='';
+  rings.forEach((r,i)=>{const rad=Rmax*(n-i)/n,op=(0.2+0.62*(i/Math.max(1,n-1))).toFixed(2);s+=`<circle cx="${cx}" cy="${cy}" r="${rad}" fill="${r.color||C.a1}" opacity="${op}"/>`;});
+  rings.forEach((r,i)=>{const rad=Rmax*(n-i)/n,y=i===n-1?cy:cy-rad+(Rmax/n)/2+8;s+=ML(cx,y+4,r.label,{fill:i>=n-2?'#fff':C.ink,fs:12,fw:700});});
+  if(caption)s+=T(cx,h-22,caption,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+
+/* ============ DETAILED CROSS-DOMAIN EXAMPLES ============ */
+const examplesByName = {
+"Mind Map":[
+ {domain:"Psychology",title:"Cognitive biases",note:"A whole topic on one page: the central idea branches into four families, each with concrete named biases. Ideal for a fast revision sweep before you dive back into any source.",svg:genMindMap("Cognitive\nbiases",[{label:"Memory",children:["Hindsight","Misinformation"]},{label:"Social",children:["Halo effect","In-group bias"]},{label:"Decision",children:["Anchoring","Sunk cost","Loss aversion"]},{label:"Probability",children:["Availability","Gambler's"]}])},
+ {domain:"Business",title:"Go-to-market plan",note:"Every lever of a launch hangs off one hub. Notice it shows structure, not sequence — for the order of execution you'd switch to a flowchart or timeline.",svg:genMindMap("Go-to-\nmarket",[{label:"Product",children:["Value prop","MVP"]},{label:"Pricing",children:["Tiers","Free trial"]},{label:"Channels",children:["Content","Sales","Partners"]},{label:"Positioning",children:["ICP","Messaging"]},{label:"Metrics",children:["CAC","LTV"]}])},
+ {domain:"Self-help",title:"Atomic Habits (book map)",note:"An entire book compressed to its spine — the four stages of a habit plus its central identity idea. Redraw this from memory and you've retained the book.",svg:genMindMap("Atomic\nHabits",[{label:"Cue",children:["Make it obvious"]},{label:"Craving",children:["Make it attractive"]},{label:"Response",children:["Make it easy"]},{label:"Reward",children:["Satisfying"]},{label:"Identity",children:["Systems > goals"]}])},
+],
+"Tree / Hierarchy":[
+ {domain:"Biology",title:"Classification of life",note:"Every organism sits in exactly one place — the strength of a tree. It also shows its own weakness: it can't express relationships that cut across branches.",svg:genTree({label:"Life",children:[{label:"Bacteria"},{label:"Archaea"},{label:"Eukarya",children:[{label:"Plants"},{label:"Fungi"},{label:"Animals"}]}]})},
+ {domain:"Psychology",title:"Human memory systems",note:"Levels of abstraction made explicit: the general splits cleanly into the specific, three layers deep.",svg:genTree({label:"Memory",children:[{label:"Sensory",children:[{label:"Iconic"},{label:"Echoic"}]},{label:"Short-term",children:[{label:"Working"}]},{label:"Long-term",children:[{label:"Explicit"},{label:"Implicit"}]}]})},
+ {domain:"Organizations",title:"Company org chart",note:"The everyday tree — reporting lines. Clean because each person has exactly one manager; it breaks the moment someone reports to two.",svg:genTree({label:"CEO",children:[{label:"CTO",children:[{label:"Eng"},{label:"Data"}]},{label:"CFO",children:[{label:"Finance"}]},{label:"CMO",children:[{label:"Growth"},{label:"Brand"}]}]})},
+],
+"Pyramid (Layered)":[
+ {domain:"Psychology",title:"Maslow's hierarchy of needs",note:"The classic — lower needs are drawn as the foundation. Its very shape is also its critique: real people pursue several tiers at once.",svg:genPyramid([{label:"Self-actualization"},{label:"Esteem"},{label:"Love & belonging"},{label:"Safety"},{label:"Physiological"}])},
+ {domain:"Learning",title:"Bloom's taxonomy",note:"Six levels of thinking, foundations at the base. Useful for designing questions that climb from recall toward creation.",svg:genPyramid([{label:"Create"},{label:"Evaluate"},{label:"Analyze"},{label:"Apply"},{label:"Understand"},{label:"Remember"}])},
+ {domain:"Personal finance",title:"Financial priority stack",note:"A prerequisite order that genuinely holds: you build the base (emergency fund) before the top (wealth building).",svg:genPyramid([{label:"Wealth building"},{label:"Investing"},{label:"Insurance"},{label:"Debt payoff"},{label:"Emergency fund"}])},
+],
+"Treemap":[
+ {domain:"Economics",title:"US economy by sector",note:"Area = share of GDP. The dominance of services is impossible to miss — a treemap makes proportion visceral in a way a list never could.",svg:genTreemap([{label:"Services",weight:70,color:C.a1},{label:"Manufacturing",weight:11,color:C.a2},{label:"Government",weight:11,color:C.a4},{label:"Construction",weight:5,color:C.a5},{label:"Mining",weight:3,color:C.a6},{label:"Agriculture",weight:1,color:C.a3}])},
+ {domain:"Personal",title:"Where a workday goes",note:"An honest audit of an 8-hour day. Seeing 'meetings' and 'email' eat the biggest blocks is more persuasive than any complaint.",svg:genTreemap([{label:"Meetings",weight:30,color:C.a4},{label:"Deep work",weight:25,color:C.a1},{label:"Email / chat",weight:20,color:C.a3},{label:"Admin",weight:13,color:C.a2},{label:"Breaks",weight:12,color:C.a5}])},
+ {domain:"Business",title:"Revenue by product line",note:"Where the money actually comes from. Great for spotting over-reliance on one line at a glance.",svg:genTreemap([{label:"Core SaaS",weight:55,color:C.a1},{label:"Add-ons",weight:20,color:C.a2},{label:"Services",weight:15,color:C.a4},{label:"Hardware",weight:10,color:C.a5}])},
+],
+"Flowchart":[
+ {domain:"Philosophy",title:"Stoic dichotomy of control",note:"A branching decision that turns a mindset into a reflex: sort every worry into 'controllable' or not, then act accordingly.",svg:genGraph([{id:'s',x:.5,y:.08,shape:'round',w:160,h:40,label:'A problem arises',fill:C.a1},{id:'d1',x:.5,y:.34,shape:'diamond',w:160,h:78,label:'In my\ncontrol?',fill:C.a4,hollow:true},{id:'acc',x:.24,y:.72,shape:'rect',w:160,h:46,label:'Accept & let go',fill:C.a3},{id:'act',x:.76,y:.72,shape:'rect',w:160,h:46,label:'Take one action',fill:C.a5}],[{from:'s',to:'d1'},{from:'d1',to:'acc',label:'no'},{from:'d1',to:'act',label:'yes'}])},
+ {domain:"Medicine",title:"Headache triage",note:"Cascading decisions with clear exits — the natural shape for any 'should I worry about this symptom?' protocol.",svg:genGraph([{id:'s',x:.42,y:.07,shape:'round',w:150,h:38,label:'Headache',fill:C.a1},{id:'d1',x:.42,y:.28,shape:'diamond',w:170,h:76,label:'Sudden,\n"worst ever"?',fill:C.a3,hollow:true},{id:'er',x:.82,y:.28,shape:'rect',w:140,h:44,label:'ER now',fill:C.a3},{id:'d2',x:.42,y:.56,shape:'diamond',w:170,h:76,label:'Fever, stiff\nneck?',fill:C.a4,hollow:true},{id:'dr',x:.82,y:.56,shape:'rect',w:140,h:44,label:'Call a doctor',fill:C.a4},{id:'d3',x:.42,y:.84,shape:'diamond',w:170,h:74,label:'Lasts\n>3 days?',fill:C.a2,hollow:true},{id:'gp',x:.82,y:.84,shape:'rect',w:140,h:44,label:'Book GP',fill:C.a2},{id:'home',x:.1,y:.84,shape:'rect',w:130,h:44,label:'Rest & fluids',fill:C.a5}],[{from:'s',to:'d1'},{from:'d1',to:'er',label:'yes'},{from:'d1',to:'d2',label:'no'},{from:'d2',to:'dr',label:'yes'},{from:'d2',to:'d3',label:'no'},{from:'d3',to:'gp',label:'yes'},{from:'d3',to:'home',label:'no'}])},
+ {domain:"Engineering",title:"Debugging a failing test",note:"Encodes a real troubleshooting routine so it's repeatable under pressure instead of ad-hoc.",svg:genGraph([{id:'s',x:.5,y:.07,shape:'round',w:150,h:38,label:'Test fails',fill:C.a1},{id:'d1',x:.5,y:.3,shape:'diamond',w:170,h:76,label:'Reproducible?',fill:C.a4,hollow:true},{id:'flk',x:.84,y:.3,shape:'rect',w:140,h:44,label:'Fix flaky test',fill:C.a6},{id:'d2',x:.5,y:.58,shape:'diamond',w:180,h:78,label:'Recent change\nthe cause?',fill:C.a2,hollow:true},{id:'rev',x:.84,y:.58,shape:'rect',w:150,h:44,label:'Revert / bisect',fill:C.a2},{id:'log',x:.5,y:.85,shape:'rect',w:170,h:44,label:'Add logs, isolate',fill:C.a4},{id:'fix',x:.16,y:.85,shape:'rect',w:140,h:44,label:'Patch & retest',fill:C.a5}],[{from:'s',to:'d1'},{from:'d1',to:'flk',label:'no'},{from:'d1',to:'d2',label:'yes'},{from:'d2',to:'rev',label:'yes'},{from:'d2',to:'log',label:'no'},{from:'log',to:'fix'}])},
+],
+"Timeline":[
+ {domain:"Psychology",title:"Schools of psychology",note:"A century of the field as a conversation. Each entry reacts to the last — the timeline reveals the argument, not just the dates.",svg:genTimeline([{when:'1879',label:'Wundt: first lab'},{when:'1900s',label:'Freud: psychoanalysis'},{when:'1920s',label:'Behaviourism'},{when:'1950s',label:'Humanistic'},{when:'1960s',label:'Cognitive revolution'},{when:'2000s',label:'Positive psych'}])},
+ {domain:"Technology",title:"History of AI",note:"Milestones that show the long winters and sudden springs — context you lose if you only know the latest headline.",svg:genTimeline([{when:'1950',label:'Turing test'},{when:'1956',label:'Dartmouth workshop'},{when:'1980s',label:'Expert systems'},{when:'1997',label:'Deep Blue'},{when:'2012',label:'Deep learning'},{when:'2022',label:'LLMs mainstream'}])},
+ {domain:"Personal",title:"Career roadmap",note:"A timeline used forward, as a plan — stages of growth mapped onto years so the next move is obvious.",svg:genTimeline([{when:'Yr 1',label:'Learn fundamentals'},{when:'Yr 2-3',label:'Ship & specialize'},{when:'Yr 4-5',label:'Lead projects'},{when:'Yr 6-8',label:'Mentor / manage'},{when:'Yr 9+',label:'Set strategy'}])},
+],
+"Cycle / Loop":[
+ {domain:"Psychology",title:"The habit loop",note:"No start, no end — exactly why it's a circle. Each stage is a lever you can pull to build or break a habit.",svg:genCycle([{label:'Cue'},{label:'Craving'},{label:'Response'},{label:'Reward'}])},
+ {domain:"Product",title:"Build – Measure – Learn",note:"The Lean Startup engine. A three-stage loop keeps the emphasis on repeating fast, not finishing.",svg:genCycle([{label:'Build'},{label:'Measure'},{label:'Learn'}])},
+ {domain:"Design",title:"Design thinking",note:"Five modes you revisit rather than complete — drawing it as a loop resists the urge to treat it as a checklist.",svg:genCycle([{label:'Empathize'},{label:'Define'},{label:'Ideate'},{label:'Prototype'},{label:'Test'}])},
+],
+"Sankey / Flow":[
+ {domain:"Personal",title:"Weekly waking hours",note:"Band thickness = hours. A fat 'phone/scroll' stream lands harder than any number on a spreadsheet.",svg:genSankey("Waking\nweek",[{label:'Work',value:45,color:C.a1},{label:'Family',value:25,color:C.a5},{label:'Rest',value:15,color:C.a2},{label:'Phone/scroll',value:14,color:C.a3},{label:'Learning',value:7,color:C.a6},{label:'Exercise',value:6,color:C.a4}])},
+ {domain:"Energy",title:"National energy use",note:"Follow the resource: primary energy splitting into where it's actually consumed.",svg:genSankey("Primary\nenergy",[{label:'Electricity',value:40,color:C.a4},{label:'Transport',value:28,color:C.a1},{label:'Industry',value:22,color:C.a2},{label:'Heating',value:10,color:C.a3}])},
+ {domain:"Business",title:"Sales funnel flow",note:"Leads flowing (and leaking) to closed deals. The 'lost' band makes drop-off impossible to ignore.",svg:genSankey("1000\nleads",[{label:'Qualified',value:40,color:C.a1},{label:'Demo',value:18,color:C.a2},{label:'Proposal',value:9,color:C.a4},{label:'Won',value:5,color:C.a5},{label:'Lost',value:28,color:C.a3}])},
+],
+"Fishbone (Ishikawa)":[
+ {domain:"Productivity",title:"Why I procrastinate",note:"One vague failing becomes four categories of tractable causes — each a place you can actually intervene.",svg:genFishbone('Procrastination',[{name:'Fear',causes:['Perfectionism','Fear of failure']},{name:'Task',causes:['Too big','Unclear step']},{name:'Energy',causes:['Poor sleep','Low motivation']},{name:'Environment',causes:['Notifications','Clutter']}])},
+ {domain:"Manufacturing",title:"Product defect (6 Ms)",note:"The classic quality template — Machine, Method, Material, Manpower, Measurement, Milieu — so no cause category gets forgotten.",svg:genFishbone('Product defect',[{name:'Machine',causes:['Worn tool','Miscalibrated']},{name:'Method',causes:['No SOP']},{name:'Material',causes:['Wrong spec']},{name:'Manpower',causes:['Undertrained']},{name:'Measurement',causes:['Faulty gauge']},{name:'Milieu',causes:['Humidity']}])},
+ {domain:"Health",title:"Causes of poor sleep",note:"Sorts a fuzzy problem into behaviour, environment, mind and body — a hypothesis list to test, not a verdict.",svg:genFishbone('Poor sleep',[{name:'Behaviour',causes:['Late caffeine','Screens in bed']},{name:'Environment',causes:['Light','Noise']},{name:'Mind',causes:['Stress','Rumination']},{name:'Body',causes:['Late meals']}])},
+],
+"Concept Map (Novak)":[
+ {domain:"Power & society",title:"How power operates",note:"The labelled links are the understanding: 'fear forces compliance but erodes legitimacy' is a claim you can argue with — that's the point.",svg:genGraph([{id:'p',x:.5,y:.1,shape:'round',w:120,h:44,label:'Power',fill:C.a1},{id:'f',x:.15,y:.4,shape:'round',w:110,h:44,label:'Fear',fill:C.a3},{id:'r',x:.85,y:.4,shape:'round',w:120,h:44,label:'Respect',fill:C.a5},{id:'co',x:.15,y:.82,shape:'round',w:130,h:44,label:'Compliance',fill:C.a4},{id:'le',x:.85,y:.82,shape:'round',w:130,h:44,label:'Legitimacy',fill:C.a2},{id:'tr',x:.5,y:.6,shape:'round',w:110,h:44,label:'Trust',fill:C.a6}],[{from:'p',to:'f',label:'can use'},{from:'p',to:'r',label:'can earn'},{from:'f',to:'co',label:'forces'},{from:'r',to:'tr',label:'grows'},{from:'tr',to:'le',label:'builds'},{from:'f',to:'le',label:'erodes',color:C.a3,lc:C.a3,curve:44}])},
+ {domain:"Earth science",title:"The water cycle",note:"Reads as a set of propositions: 'sun drives evaporation', 'clouds become precipitation'. Note the return arrow closing the loop.",svg:genGraph([{id:'sun',x:.5,y:.1,shape:'round',w:100,h:42,label:'Sun',fill:C.a4},{id:'ev',x:.18,y:.42,shape:'round',w:130,h:42,label:'Evaporation',fill:C.a2},{id:'cl',x:.5,y:.42,shape:'round',w:110,h:42,label:'Clouds',fill:C.a1},{id:'pr',x:.82,y:.42,shape:'round',w:130,h:42,label:'Precipitation',fill:C.a6},{id:'oc',x:.3,y:.84,shape:'round',w:110,h:42,label:'Ocean',fill:C.a2},{id:'ri',x:.72,y:.84,shape:'round',w:120,h:42,label:'Rivers/soil',fill:C.a5}],[{from:'sun',to:'ev',label:'drives'},{from:'ev',to:'cl',label:'forms'},{from:'cl',to:'pr',label:'becomes'},{from:'pr',to:'ri',label:'lands'},{from:'ri',to:'oc',label:'flows to'},{from:'oc',to:'ev',label:'feeds',curve:70}])},
+ {domain:"Economics",title:"What drives inflation",note:"Shows the many-to-one pressures on prices — and the wage–price feedback that makes it stubborn.",svg:genGraph([{id:'ms',x:.18,y:.14,shape:'round',w:130,h:44,label:'Money supply',fill:C.a1},{id:'dd',x:.5,y:.14,shape:'round',w:110,h:44,label:'Demand',fill:C.a4},{id:'ss',x:.82,y:.14,shape:'round',w:110,h:44,label:'Supply',fill:C.a5},{id:'pr',x:.5,y:.5,shape:'round',w:110,h:44,label:'Prices',fill:C.a3},{id:'wg',x:.2,y:.84,shape:'round',w:110,h:44,label:'Wages',fill:C.a2},{id:'ex',x:.82,y:.84,shape:'round',w:140,h:44,label:'Expectations',fill:C.a6}],[{from:'ms',to:'dd',label:'raises'},{from:'dd',to:'pr',label:'push up'},{from:'ss',to:'pr',label:'limit'},{from:'pr',to:'wg',label:'trigger'},{from:'wg',to:'pr',label:'feed',curve:48},{from:'ex',to:'pr',label:'anchor'}])},
+],
+"Causal Loop (Systems)":[
+ {domain:"Health",title:"The burnout spiral",note:"Every link is a reinforcing '+': stress worsens sleep, worsens willpower, drives more caffeine, worsens sleep again. Protect sleep to break the loop.",svg:genGraph([{id:'st',x:.5,y:.12,shape:'circle',r:42,label:'Stress',fill:C.a3,hollow:true},{id:'sl',x:.85,y:.56,shape:'circle',r:42,label:'Poor\nsleep',fill:C.a4,hollow:true},{id:'wp',x:.6,y:.9,shape:'circle',r:42,label:'Low\nwillpower',fill:C.a1,hollow:true},{id:'cf',x:.15,y:.56,shape:'circle',r:42,label:'More\ncaffeine',fill:C.a6,hollow:true}],[{from:'st',to:'sl',label:'+',lc:C.a3,curve:34},{from:'sl',to:'wp',label:'+',lc:C.a3,curve:34},{from:'wp',to:'cf',label:'+',lc:C.a3,curve:34},{from:'cf',to:'sl',label:'+',lc:C.a3,curve:30},{from:'wp',to:'st',label:'+',lc:C.a3,curve:34}])},
+ {domain:"Economics",title:"A bank run",note:"Mixed polarities: withdrawals cut liquidity (−), which feeds fear (−), which drives more withdrawals (+). A vicious loop that feeds on itself.",svg:genGraph([{id:'ru',x:.5,y:.12,shape:'circle',r:46,label:'With-\ndrawals',fill:C.a3,hollow:true},{id:'fe',x:.84,y:.62,shape:'circle',r:44,label:'Fear',fill:C.a4,hollow:true},{id:'li',x:.16,y:.62,shape:'circle',r:46,label:'Bank\nliquidity',fill:C.a2,hollow:true}],[{from:'ru',to:'li',label:'−',lc:C.a1,curve:40},{from:'li',to:'fe',label:'−',lc:C.a1,curve:40},{from:'fe',to:'ru',label:'+',lc:C.a3,curve:40}])},
+ {domain:"Ecology",title:"Population & resources",note:"A balancing loop: more population lowers resources per capita, raising mortality, which curbs population. Systems like this seek equilibrium.",svg:genGraph([{id:'po',x:.5,y:.12,shape:'circle',r:46,label:'Population',fill:C.a1,hollow:true},{id:'re',x:.83,y:.64,shape:'circle',r:46,label:'Resource\nper cap.',fill:C.a5,hollow:true},{id:'mo',x:.17,y:.64,shape:'circle',r:46,label:'Mortality',fill:C.a3,hollow:true}],[{from:'po',to:'re',label:'−',lc:C.a1,curve:40},{from:'re',to:'mo',label:'−',lc:C.a1,curve:40},{from:'mo',to:'po',label:'−',lc:C.a1,curve:40}])},
+],
+"Network Graph":[
+ {domain:"Learning",title:"A latticework of mental models",note:"No hierarchy — just a hub ('incentives') and clusters. This is what a healthy knowledge base looks like: densely cross-linked.",svg:genGraph([{id:'in',x:.5,y:.5,shape:'circle',r:36,label:'Incentives',fill:C.a1},{id:'fb',x:.2,y:.24,shape:'circle',r:26,label:'Feedback',fill:C.a2},{id:'sc',x:.8,y:.24,shape:'circle',r:26,label:'Scarcity',fill:C.a3},{id:'fr',x:.18,y:.78,shape:'circle',r:26,label:'Framing',fill:C.a4},{id:'rc',x:.82,y:.78,shape:'circle',r:28,label:'Reciprocity',fill:C.a5},{id:'bi',x:.5,y:.86,shape:'circle',r:28,label:'Bias',fill:C.a6},{id:'ss',x:.5,y:.14,shape:'circle',r:26,label:'Social\nproof',fill:C.a2}],[{from:'in',to:'fb',arrow:false},{from:'in',to:'sc',arrow:false},{from:'in',to:'fr',arrow:false},{from:'in',to:'rc',arrow:false},{from:'in',to:'bi',arrow:false},{from:'in',to:'ss',arrow:false},{from:'fb',to:'bi',arrow:false},{from:'sc',to:'rc',arrow:false},{from:'ss',to:'sc',arrow:false}])},
+ {domain:"Ecology",title:"A food web",note:"Arrows mean 'eaten by'. Unlike a simple food chain, the web shows how removing one species ripples everywhere.",svg:genGraph([{id:'gr',x:.5,y:.9,shape:'circle',r:30,label:'Grass',fill:C.a5},{id:'rb',x:.25,y:.62,shape:'circle',r:26,label:'Rabbit',fill:C.a2},{id:'in',x:.52,y:.62,shape:'circle',r:24,label:'Insect',fill:C.a4},{id:'mo',x:.78,y:.62,shape:'circle',r:26,label:'Mouse',fill:C.a6},{id:'fx',x:.3,y:.3,shape:'circle',r:28,label:'Fox',fill:C.a3},{id:'ow',x:.72,y:.3,shape:'circle',r:28,label:'Owl',fill:C.a1},{id:'hk',x:.5,y:.1,shape:'circle',r:26,label:'Hawk',fill:C.a3}],[{from:'gr',to:'rb'},{from:'gr',to:'in'},{from:'gr',to:'mo'},{from:'in',to:'mo'},{from:'rb',to:'fx'},{from:'mo',to:'fx'},{from:'mo',to:'ow'},{from:'fx',to:'hk'},{from:'ow',to:'hk'}])},
+ {domain:"Social",title:"A personal social network",note:"Undirected ties among the circles of your life. Clusters (work, family) and bridges between them jump out.",svg:genGraph([{id:'a',x:.5,y:.5,shape:'circle',r:30,label:'You',fill:C.a1},{id:'b',x:.24,y:.28,shape:'circle',r:24,label:'Work',fill:C.a2},{id:'c',x:.76,y:.28,shape:'circle',r:24,label:'Family',fill:C.a5},{id:'d',x:.2,y:.74,shape:'circle',r:24,label:'Gym',fill:C.a4},{id:'e',x:.8,y:.74,shape:'circle',r:24,label:'Friends',fill:C.a6},{id:'f',x:.5,y:.87,shape:'circle',r:22,label:'Online',fill:C.a3}],[{from:'a',to:'b',arrow:false},{from:'a',to:'c',arrow:false},{from:'a',to:'d',arrow:false},{from:'a',to:'e',arrow:false},{from:'a',to:'f',arrow:false},{from:'b',to:'e',arrow:false},{from:'d',to:'e',arrow:false}])},
+],
+"Venn / Euler":[
+ {domain:"Rhetoric",title:"Aristotle's modes of persuasion",note:"Each appeal helps alone, but real persuasion lives in the centre where credibility, emotion and logic overlap.",svg:genVenn3([{label:'Ethos',color:C.a1},{label:'Pathos',color:C.a3},{label:'Logos',color:C.a5}],{abc:'Persuasion'},"Ethos · Pathos · Logos")},
+ {domain:"Psychology",title:"The trust equation",note:"Trust sits where credibility, reliability and closeness all meet — lose any one and trust drops.",svg:genVenn3([{label:'Credibility',color:C.a1},{label:'Reliability',color:C.a2},{label:'Intimacy',color:C.a5}],{abc:'Trust'},"What builds trust")},
+ {domain:"Career",title:"Finding fulfilling work",note:"The three-circle version of Ikigai. Each pairwise overlap has a name; the sweet spot in the middle is the goal.",svg:genVenn3([{label:'What you love',color:C.a3},{label:"What you're good at",color:C.a1},{label:'What pays',color:C.a5}],{abc:'Dream job',ab:'Passion',ca:'Vocation',bc:'Profession'},"Three-circle Ikigai")},
+],
+"2&times;2 Matrix / Quadrant":[
+ {domain:"Productivity",title:"Eisenhower matrix",note:"Two axes — urgency and importance — instantly sort any task list into do / schedule / delegate / delete.",svg:genMatrix('Urgent →','Important →',{tl:{title:'Important · Not urgent',items:['Planning','Exercise','Learning']},tr:{title:'Important · Urgent',items:['Crises','Deadlines']},bl:{title:'Neither',items:['Time-wasters']},br:{title:'Urgent · Not important',items:['Interruptions','Some email']}})},
+ {domain:"Business",title:"BCG growth-share matrix",note:"Classic portfolio tool: plot products by market growth and share to decide where to invest or divest.",svg:genMatrix('Market share →','Market growth →',{tl:{title:'Question marks',items:['High growth','Low share']},tr:{title:'Stars',items:['High growth','High share']},bl:{title:'Dogs',items:['Low growth','Low share']},br:{title:'Cash cows',items:['Low growth','High share']}})},
+ {domain:"Psychology",title:"Adult attachment styles",note:"Two dimensions — anxiety and avoidance — generate the four attachment styles. A gradient forced into four boxes, but a very useful one.",svg:genMatrix('Avoidance →','Anxiety →',{tl:{title:'Anxious-preoccupied',items:['High anxiety','Low avoidance']},tr:{title:'Fearful-avoidant',items:['High anxiety','High avoidance']},bl:{title:'Secure',items:['Low both']},br:{title:'Dismissive-avoidant',items:['Low anxiety','High avoidance']}})},
+],
+"Radar / Spider":[
+ {domain:"Psychology",title:"Big Five: now vs. goal",note:"Overlaying two profiles shows exactly where 'now' and 'ideal' diverge — the gap you'd work on.",svg:genRadar(['Openness','Conscientious','Extraversion','Agreeable','Neuroticism'],[{name:'You now',color:C.a1,vals:[.9,.6,.5,.8,.4]},{name:'Your goal',color:C.a5,vals:[.9,.85,.6,.8,.25]}])},
+ {domain:"Product",title:"Comparing two phones",note:"Two shapes across the same specs make trade-offs obvious: Phone A wins on camera, B on battery.",svg:genRadar(['Battery','Camera','Screen','Speed','Value'],[{name:'Phone A',color:C.a1,vals:[.7,.9,.85,.8,.5]},{name:'Phone B',color:C.a4,vals:[.9,.6,.7,.75,.85]}])},
+ {domain:"Skills",title:"Developer skill profile",note:"A single self-rating across dimensions — quick to spot the spikes and the gaps.",svg:genRadar(['Frontend','Backend','DevOps','Data','Design','Comms'],[{name:'Self-rating',color:C.a6,vals:[.8,.7,.4,.5,.6,.75]}])},
+],
+"Spectrum / Continuum":[
+ {domain:"Psychology",title:"Introversion–extraversion",note:"Reframes a supposed identity as a dial with a wide 'ambivert' middle — and you can sit anywhere on it.",svg:genSpectrum('Introvert','Extravert',[{label:'Deep\nfocus',pos:.15,color:C.a2},{label:'You',pos:.42,color:C.a1},{label:'Team\nlead',pos:.78,color:C.a3}],{title:'Personality is a dial, not a box'})},
+ {domain:"Economics",title:"Investor risk appetite",note:"Positions asset choices along one axis of risk tolerance — clarifies where a portfolio actually sits.",svg:genSpectrum('Risk-averse','Risk-seeking',[{label:'Bonds/\ncash',pos:.12,color:C.a2},{label:'Balanced',pos:.5,color:C.a1},{label:'Growth\nstocks',pos:.76,color:C.a4},{label:'Crypto/\nVC',pos:.93,color:C.a3}],{title:'Investor profiles'})},
+ {domain:"Politics",title:"Economic policy axis",note:"A single left–right economic dimension (illustrative). Shows why one axis is handy but also how it flattens nuance.",svg:genSpectrum('More market','More state',[{label:'Libertarian',pos:.12},{label:'Centrist',pos:.5},{label:'Social\ndemocratic',pos:.85}],{title:'One axis simplifies — reality needs more'})},
+],
+"Triad (Triangle)":[
+ {domain:"Psychology",title:"The CBT triangle",note:"Thoughts, feelings and behaviour each shape the other two — so changing any corner shifts the whole.",svg:genTriad([{label:'Thoughts',color:C.a1},{label:'Feelings',color:C.a3},{label:'Behaviour',color:C.a5}],{ab:'shape',bc:'drive',ca:'reinforce'},'Change one corner, shift them all')},
+ {domain:"Project mgmt",title:"The iron triangle",note:"Scope, time and cost are linked — stretch all three and quality (the centre) suffers. 'Pick two.'",svg:genTriad([{label:'Scope',color:C.a1},{label:'Time',color:C.a4},{label:'Cost',color:C.a5}],{},'Pick two — quality pays for the third')},
+ {domain:"Psychoanalysis",title:"Freud's model of the psyche",note:"Id, ego and superego in constant tension — a triad because the balance between the three is the whole idea.",svg:genTriad([{label:'Superego',color:C.a2},{label:'Ego',color:C.a1},{label:'Id',color:C.a3}],{},'The ego balances id and superego')},
+],
+"Concentric / Onion":[
+ {domain:"Leadership",title:"Start With Why (Golden Circle)",note:"Why at the core drives How, which drives What. Sinek's claim: people buy the why, not the what.",svg:genConcentric([{label:'What',color:C.a1},{label:'How',color:C.a1},{label:'Why',color:C.a1}],{caption:'Start from the core outward'})},
+ {domain:"Psychology",title:"Circles of control (Covey)",note:"Spend energy on what you control, influence what you can, and stop feeding the outer ring of concern.",svg:genConcentric([{label:'Concern',color:C.a3},{label:'Influence',color:C.a4},{label:'Control',color:C.a5}],{caption:'Focus inward, worry less outward'})},
+ {domain:"Marketing",title:"Three levels of a product",note:"Kotler's model: the core benefit wrapped by the actual product and then the augmented extras.",svg:genConcentric([{label:'Augmented',color:C.a2},{label:'Actual',color:C.a2},{label:'Core benefit',color:C.a2}],{caption:'Customers buy the core; the rest differentiates'})},
+],
+};
+viz.forEach(v=>{ v.examples = examplesByName[v.name] || []; });
+
+/* ============ TRIGGERS — what makes you reach for this diagram ============ */
+const catTrigger = {
+ all:"Not sure which family? Ask what the dominant relationship in your material is — the answer picks the group. Filter to see the trigger cues for each.",
+ hierarchy:"Reach for these when your material NESTS: a whole splitting into parts, general → specific, 'what contains what'. Cue words: types of, levels, made up of, breaks down into, components.",
+ sequence:"Reach for these when ORDER matters: steps in time, cause-then-effect, or a repeating process. Cue words: first / then / next, stages, leads to, over time, cycle, if… then.",
+ network:"Reach for these when things influence each other MANY-TO-MANY with no single parent, or feed back on themselves. Cue words: affects, depends on, interconnected, feedback, vicious / virtuous cycle.",
+ comparison:"Reach for these when you're contrasting SETS — what's shared vs. unique, overlaps, membership. Cue words: both, in common, versus, overlap, unique to.",
+ dimensional:"Reach for these when ideas vary by DEGREE along one or two axes, or you're positioning / prioritising. Cue words: high / low, more / less, spectrum, trade-off, on a scale of.",
+ frameworks:"Reach for these when a concept is a fixed SMALL NUMBER of interacting parts, or nested core → surface layers. Cue words: three pillars, balance of, at its core, the X model.",
+};
+const triggerByName = {
+ "Mind Map":"You have ONE central topic and want to pour everything under it quickly. Trigger in your notes: 'an overview of X', 'everything about…', a whole subject you want on one page.",
+ "Tree / Hierarchy":"Every item belongs under exactly one parent and you can say 'is a type of' or 'is part of'. Trigger: a clean classification with no overlaps.",
+ "Pyramid (Layered)":"The levels have a strict order — each rests on the one below or is ranked. Trigger: 'you need X before Y', 'foundations first', a ranking of a few tiers.",
+ "Treemap":"You're asking 'where does it all GO?' — a whole splitting into parts by SIZE and the proportions are the point. Trigger: percentages of a total, budget / time / attention split.",
+ "Flowchart":"There are decisions and branches — 'if this then that' — leading to different outcomes. Trigger: a procedure, a rule, a triage, any yes/no forks.",
+ "Timeline":"The material is fundamentally about WHEN — chronology or how something evolved. Trigger: dates, eras, 'first… then… later', a history.",
+ "Cycle / Loop":"A process REPEATS with no real start or end, each stage feeding the next and back round. Trigger: 'habit / routine / iterate / keeps going round'.",
+ "Sankey / Flow":"A finite quantity SPLITS and MOVES and you care how much goes where. Trigger: 'flows into', 'breaks down by volume', energy / money / time distributed (and lost).",
+ "Fishbone (Ishikawa)":"You're asking 'WHY does this keep happening?' and want to enumerate candidate causes by category. Trigger: a problem / effect plus brainstorming its many roots.",
+ "Concept Map (Novak)":"Ideas relate in varied, NAMEABLE ways and you want the relationships, not just the items. Trigger: you can write a verb on every link ('causes', 'requires', 'contradicts').",
+ "Causal Loop (Systems)":"Variables push on each other and FEED BACK — things spiral or self-correct. Trigger: 'the more X the more Y', vicious / virtuous cycles, 'why does this persist?'.",
+ "Network Graph":"Many things connect MANY-TO-MANY with no hierarchy and you want hubs and clusters. Trigger: 'everything is connected', a web of relationships, who-links-to-whom.",
+ "Venn / Euler":"Two or three SETS overlap and the intersection carries the meaning. Trigger: 'what do these have in common?', 'both… and…', shared vs. unique.",
+ "2&times;2 Matrix / Quadrant":"You can name TWO decisive variables and want to sort or prioritise by them. Trigger: 'urgent vs. important', a typology, 'high / low on two things'.",
+ "Radar / Spider":"You're PROFILING something across several fixed dimensions, or comparing a few options on the same criteria. Trigger: a scorecard, strengths across categories.",
+ "Spectrum / Continuum":"Something is a matter of DEGREE between two poles, not a category. Trigger: 'more X than Y', 'somewhere between', resisting a false either/or.",
+ "Triad (Triangle)":"Exactly THREE elements that interdepend and must stay in balance. Trigger: 'the three pillars', 'you can't change one without the others'.",
+ "Concentric / Onion":"Layers radiate from a CORE that drives the outer ones. Trigger: 'at its core', 'values → beliefs → behaviour', inner cause to outer surface.",
+};
+const exTrig = {
+ "Mind Map":{"Cognitive biases":"One umbrella topic fanning into tidy families — a hub-and-branches holds it all fastest.","Go-to-market plan":"A single launch splitting into parallel workstreams, each with sub-items — radial hierarchy captures the whole plan at a glance.","Atomic Habits (book map)":"A whole book built around one idea with clean chapters — a mind map compresses it to a one-page spine."},
+ "Tree / Hierarchy":{"Classification of life":"Strict 'is-a-kind-of' nesting where every organism has one parent — the textbook tree.","Human memory systems":"Clean general → specific levels with no overlap — a tree shows the layers unambiguously.","Company org chart":"One-manager-per-person reporting lines — the everyday tree."},
+ "Pyramid (Layered)":{"Maslow's hierarchy of needs":"Levels drawn as a foundation stack (lower enables higher) — the pyramid encodes that ordering.","Bloom's taxonomy":"Six ranked levels of thinking building on each other — tiers fit the ranking.","Financial priority stack":"A genuine prerequisite order (fund before invest) — the pyramid shows what rests on what."},
+ "Treemap":{"US economy by sector":"A whole (GDP) split into parts by SIZE where proportion is the message — area = share.","Where a workday goes":"You're asking 'where does my time actually go?' — parts of a whole by magnitude, so area beats a list.","Revenue by product line":"One total broken into contributions by size — treemap exposes over-reliance instantly."},
+ "Flowchart":{"Stoic dichotomy of control":"A yes/no decision routing to different actions — branching logic calls for a flowchart.","Headache triage":"Cascading if/then questions with exits — the shape of any triage.","Debugging a failing test":"A repeatable decision procedure with forks — a flowchart makes it followable under pressure."},
+ "Timeline":{"Schools of psychology":"The content is about WHEN and how ideas evolved — a time axis is the backbone.","History of AI":"Dated milestones with long gaps and bursts — chronology is the point.","Career roadmap":"Stages mapped onto years, used forward as a plan — a timeline sequences them."},
+ "Cycle / Loop":{"The habit loop":"Four stages with no start or end, each feeding the next and round — a cycle, not a line.","Build – Measure – Learn":"An iterate-forever engine — drawing it circular stresses repetition over completion.","Design thinking":"Modes you revisit rather than finish — a loop resists treating it as a checklist."},
+ "Sankey / Flow":{"Weekly waking hours":"A fixed budget (your hours) splitting by amount — thickness = magnitude tells the story.","National energy use":"A quantity flowing to competing uses — Sankey follows the resource and its size.","Sales funnel flow":"Volume moving stage-to-stage and leaking out — flow with magnitude, including the losses."},
+ "Fishbone (Ishikawa)":{"Why I procrastinate":"One effect plus 'why does this keep happening?' plus many candidate causes to sort — the fishbone's exact job.","Product defect (6 Ms)":"A defect analysed against standard cause categories — the classic Ishikawa template.","Causes of poor sleep":"A fuzzy problem needing its roots enumerated by category before testing — fishbone organises the hunt."},
+ "Concept Map (Novak)":{"How power operates":"The ideas relate in different, nameable ways ('forces', 'erodes') — labelled links are the whole point.","The water cycle":"Each step relates to the next by a specific verb, and it loops — propositions on links capture it.","What drives inflation":"Several pressures converge on one thing with a feedback — you need labelled, many-to-one links."},
+ "Causal Loop (Systems)":{"The burnout spiral":"Variables amplify each other in a loop ('the more stress, the worse sleep…') — signed feedback is essential.","A bank run":"Mixed +/− links that together spiral — only a causal loop shows why it self-destructs.","Population & resources":"A self-correcting balancing loop — the signs reveal it seeks equilibrium."},
+ "Network Graph":{"A latticework of mental models":"Many models cross-link with no hierarchy — a network shows the hub and the web.","A food web":"Many-to-many 'eaten by' links, not a single chain — a network reveals knock-on effects.","A personal social network":"Undirected ties among your circles with clusters and bridges — a network surfaces structure."},
+ "Venn / Euler":{"Aristotle's modes of persuasion":"Three overlapping appeals where the centre is the payoff — Venn puts meaning in the intersection.","The trust equation":"Trust = where three factors overlap — a Venn makes 'all three needed' visible.","Finding fulfilling work":"Three sets whose pairwise and triple overlaps each have names — Venn is built for this."},
+ "2&times;2 Matrix / Quadrant":{"Eisenhower matrix":"Two decisive axes (urgent, important) sorting tasks — a 2×2 gives instant prioritisation.","BCG growth-share matrix":"Two variables classifying a portfolio — quadrants name each combination.","Adult attachment styles":"Two dimensions (anxiety, avoidance) generating four types — a 2×2 is the natural map."},
+ "Radar / Spider":{"Big Five: now vs. goal":"A profile across fixed dimensions, overlaid to compare — radar shows the shape and the gap.","Comparing two phones":"Same criteria, two options — overlaid radar shapes make trade-offs pop.","Developer skill profile":"One entity rated across several axes — radar spots spikes and gaps."},
+ "Spectrum / Continuum":{"Introversion–extraversion":"A trait that's a matter of degree, not a box — a single axis with a marker fits.","Investor risk appetite":"Options ordered along one dimension of risk — a spectrum positions them.","Economic policy axis":"A single left–right degree (illustrative) — one axis, with its own oversimplification warning."},
+ "Triad (Triangle)":{"The CBT triangle":"Exactly three mutually-reinforcing elements — a triangle shows change-one-affects-all.","The iron triangle":"Three linked constraints where you 'pick two' — the triad encodes the trade-off.","Freud's model of the psyche":"Three interdependent forces in tension — a triad captures the balance."},
+ "Concentric / Onion":{"Start With Why (Golden Circle)":"A core that drives outer layers — concentric rings show inside-out causation.","Circles of control (Covey)":"Nested scopes from self outward — rings show where to focus energy.","Three levels of a product":"Core benefit wrapped by outer layers — concentric rings show the wrapping."},
+};
+viz.forEach(v=>{ v.trigger = triggerByName[v.name] || ''; (v.examples||[]).forEach(ex=>{ ex.trigger = (exTrig[v.name]||{})[ex.title] || ''; }); });
+
+/* ============ WORKED EXAMPLES (single integrated diagrams) ============ */
+/* composite helpers (absolute coordinates) */
+function zone(x,y,w,h,label){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="16" fill="none" stroke="${C.line}" stroke-width="1.5" stroke-dasharray="7 6"/>`+`<rect x="${x+14}" y="${y-11}" width="${label.length*7+18}" height="22" rx="11" fill="#fff"/>`+T(x+23,y+4,label,{fill:C.a1,fs:12,fw:700,anchor:'start'});}
+function arr(x1,y1,x2,y2,o={}){let X1=x1,Y1=y1,X2=x2,Y2=y2;if(o.trim){const dx=X2-X1,dy=Y2-Y1,d=Math.hypot(dx,dy)||1;X1+=dx/d*o.trim;Y1+=dy/d*o.trim;X2-=dx/d*o.trim;Y2-=dy/d*o.trim;}const col=o.color||C.mut,mk=o.arrow===false?'':`marker-end="url(#${o.mk||'mA'})"`;let path,lmx,lmy;if(o.curve){const dx=X2-X1,dy=Y2-Y1,d=Math.hypot(dx,dy)||1,mxp=(X1+X2)/2-dy/d*o.curve,myp=(Y1+Y2)/2+dx/d*o.curve;path=`<path d="M${X1},${Y1} Q${mxp},${myp} ${X2},${Y2}" fill="none" stroke="${col}" stroke-width="${o.w||2}" ${o.dash?`stroke-dasharray="${o.dash}"`:''} ${mk}/>`;lmx=(X1+2*mxp+X2)/4;lmy=(Y1+2*myp+Y2)/4;}else{path=`<line x1="${X1}" y1="${Y1}" x2="${X2}" y2="${Y2}" stroke="${col}" stroke-width="${o.w||2}" ${o.dash?`stroke-dasharray="${o.dash}"`:''} ${mk}/>`;lmx=(X1+X2)/2;lmy=(Y1+Y2)/2;}let s=path;if(o.label){const t=String(o.label),lw=t.length*6+10;s+=`<rect x="${lmx-lw/2}" y="${lmy-9}" width="${lw}" height="17" rx="4" fill="#fff" opacity=".95"/>`+T(lmx,lmy+3,t,{fill:o.lc||C.mut,fs:t.length<3?12:9.5,fw:t.length<3?800:600});}return s;}
+function cir(cx,cy,r,label,col,hollow){return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${hollow?'#fff':col}"${hollow?` stroke="${col}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,label,{fill:hollow?C.ink:'#fff',fs:11,fw:600});}
+function miniPyr(cx,yTop,yBot,levels){const n=levels.length,maxW=300,lh=(yBot-yTop)/n;let s='';levels.forEach((lv,i)=>{const y0=yTop+i*lh,y1=yTop+(i+1)*lh,wt=maxW*i/n,wb=maxW*(i+1)/n;s+=`<polygon points="${cx-wt/2},${y0} ${cx+wt/2},${y0} ${cx+wb/2},${y1} ${cx-wb/2},${y1}" fill="${P[i%P.length]}"/>`+ML(cx,(y0+y1)/2+4,lv,{fill:'#fff',fs:11,fw:700});});return s;}
+function miniMatrix(x,y,w,h,xl,yl,q){const mx=x+w/2,my=y+h/2;let s=`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="none" stroke="${C.ink}" stroke-width="1.4"/>`;s+=`<line x1="${mx}" y1="${y}" x2="${mx}" y2="${y+h}" stroke="${C.line}"/>`+`<line x1="${x}" y1="${my}" x2="${x+w}" y2="${my}" stroke="${C.line}"/>`;s+=ML(x+w/4,y+h/4,q[0],{fill:C.a4,fs:10,fw:700,lh:12})+ML(x+3*w/4,y+h/4,q[1],{fill:C.a3,fs:10,fw:700,lh:12})+ML(x+w/4,y+3*h/4,q[2],{fill:C.a2,fs:10,fw:700,lh:12})+ML(x+3*w/4,y+3*h/4,q[3],{fill:C.a5,fs:10,fw:700,lh:12});s+=T(mx,y+h+22,xl,{fill:C.mut,fs:11,fw:700})+T(x-16,my,yl,{fill:C.mut,fs:11,fw:700,tr:`rotate(-90 ${x-16} ${my})`});return s;}
+function hbar(labelX,y,label,val,col){const bx=150,w=val*8,h=30;return T(labelX,y+h/2+4,label,{anchor:'end',fs:10.5,fw:600,fill:C.ink})+`<rect x="${bx}" y="${y}" width="${w}" height="${h}" rx="4" fill="${col}"/>`+T(bx+8,y+h/2+4,val+'%',{anchor:'start',fs:10,fw:700,fill:'#fff'});}
+
+function C_STRESS(){const s=[],W=1060,H=830;
+ s.push(T(530,30,'CHRONIC STRESS & BURNOUT — four diagram types woven into one map',{fs:14.5,fw:700}));
+ s.push(zone(28,58,300,486,'① Acute cascade · FLOW'));
+ const ax=178;
+ s.push(arr(ax,134,ax,168,{label:'appraise'}));
+ s.push(arr(ax,210,ax,244,{label:'triggers'}));
+ s.push(arr(ax,286,ax,320,{label:'activates'}));
+ s.push(arr(ax,366,ax,402,{label:'releases'}));
+ s.push(arr(ax+66,424,ax+66,354,{dash:'5 4',color:C.a2,lc:C.a2,curve:32,label:'−'}));
+ s.push(boxN(ax-60,92,120,42,'Stressor',{fill:C.a1}));
+ s.push(boxN(ax-60,168,120,42,'Appraisal',{fill:C.a4}));
+ s.push(boxN(ax-60,244,120,42,'Amygdala',{fill:C.a3}));
+ s.push(boxN(ax-74,320,148,46,'Hypothalamus\n→ adrenals',{fill:C.a6,fs:10}));
+ s.push(boxN(ax-60,402,120,44,'Cortisol ↑',{fill:C.a2}));
+ s.push(zone(360,58,678,250,'② Body-wide effects · HIERARCHY'));
+ const hub=[524,154];
+ const kids=[['Sleep ↓',600,96,C.a5],['Immunity ↓',600,150,C.a5],['Prefrontal cortex ↓',770,96,C.a1],['Mood / energy ↓',770,150,C.a4],['Inflammation ↑',600,204,C.a3],['Memory ↓',770,204,C.a6]];
+ kids.forEach(([lab,x,y,col])=>{s.push(arr(hub[0],hub[1],x-2,y+20,{color:C.line,arrow:false}));});
+ s.push(boxN(392,126,132,56,'Sustained\ncortisol',{fill:C.a2,fs:11}));
+ kids.forEach(([lab,x,y,col])=>{s.push(boxN(x,y,150,40,lab,{fill:'#fff',tc:C.ink,stroke:col,sw:1.8,fs:10.5}));});
+ s.push(arr(240,414,392,154,{color:C.a2,w:2.6,lc:C.a2,label:'acts on the whole body',curve:-34}));
+ s.push(zone(300,336,486,470,'③ The chronic loop · CAUSAL LOOP (reinforcing R)'));
+ const cx=542,cy=578,R=150,pent=[];
+ for(let i=0;i<5;i++){const a=-Math.PI/2+i*2*Math.PI/5;pent.push([cx+Math.cos(a)*R,cy+Math.sin(a)*R]);}
+ for(let i=0;i<5;i++){const p=pent[i],q=pent[(i+1)%5];s.push(arr(p[0],p[1],q[0],q[1],{trim:52,curve:20,label:'+',lc:C.a3}));}
+ s.push(T(cx,cy+6,'R',{fs:20,fw:800,fill:C.a3}));
+ const Ln=[['Stress',C.a3],['Poor\nsleep',C.a4],['Cortisol\ndysreg.',C.a2],['Weaker\nPFC',C.a1],['Threat\nappraisal',C.a6]];
+ Ln.forEach((n,i)=>s.push(cir(pent[i][0],pent[i][1],48,n[0],n[1],true)));
+ s.push(arr(662,196,pent[1][0]+8,pent[1][1]-48,{dash:'5 4',color:C.a5,lc:C.a5,label:'effects become variables',curve:34}));
+ s.push(zone(812,336,226,470,'④ Over months · TIMELINE'));
+ const tx=860;
+ s.push(`<line x1="${tx}" y1="392" x2="${tx}" y2="770" stroke="${C.line}" stroke-width="3"/>`);
+ const ph=[['Acute','adaptive',C.a5,404],['Weeks','allostatic load',C.a2,478],['Months','early burnout',C.a4,552],['6-12mo','chronic burnout',C.a3,626],['Crisis','collapse / illness',C.a3,700]];
+ ph.forEach(([w1,w2,col,y])=>{s.push(`<circle cx="${tx}" cy="${y}" r="8" fill="${col}"/>`);s.push(T(tx+18,y-1,w1,{fs:11.5,fw:700,anchor:'start'}));s.push(T(tx+18,y+13,w2,{fs:9.5,anchor:'start',fill:C.mut}));});
+ s.push(arr(700,470,tx-42,432,{dash:'5 4',color:C.mut,label:'loops repeat & accumulate',curve:-28}));
+ return SV(s.join(''),W,H);
+}
+
+function C_POWER(){const s=[],W=1060,H=830;
+ s.push(T(530,30,'POWER & INFLUENCE — four diagram types stitched into one map',{fs:14.5,fw:700}));
+ s.push(zone(28,58,470,300,'① Forms of power · CONCEPT MAP'));
+ const bases=[['Legitimate',92,C.a1],['Reward',150,C.a2],['Coercive',208,C.a3],['Expert',266,C.a4],['Referent',316,C.a6]];
+ const outs=[['Compliance',112,C.a4],['Identification',194,C.a2],['Internalization',276,C.a5]];
+ s.push(arr(182,227,318,131,{label:'forces',color:C.a3,lc:C.a3}));
+ s.push(arr(182,169,318,131,{label:'buys'}));
+ s.push(arr(182,111,318,124,{label:'obliges'}));
+ s.push(arr(182,285,318,295,{label:'convinces'}));
+ s.push(arr(182,335,318,213,{label:'inspires'}));
+ bases.forEach(([l,y,c])=>s.push(boxN(62,y,120,38,l,{fill:c,fs:10.5})));
+ outs.forEach(([l,y,c])=>s.push(boxN(320,y,140,38,l,{fill:c,fs:10})));
+ s.push(zone(520,58,518,300,'② Ranked by durability · PYRAMID'));
+ s.push(miniPyr(782,92,340,['Inspiration','Expertise & trust','Persuasion','Reward / exchange','Coercion / force']));
+ s.push(arr(464,150,600,150,{label:'now rank them',color:C.a1,lc:C.a1,w:2.4}));
+ s.push(zone(300,384,470,422,'③ Rise & overreach · CAUSAL LOOP'));
+ const pw=[535,474],res=[672,566],al=[618,706],ov=[398,566],rst=[452,706];
+ s.push(arr(pw[0],pw[1],res[0],res[1],{trim:50,curve:22,label:'+',lc:C.a5}));
+ s.push(arr(res[0],res[1],al[0],al[1],{trim:50,curve:22,label:'+',lc:C.a5}));
+ s.push(arr(al[0],al[1],pw[0],pw[1],{trim:50,curve:22,label:'+',lc:C.a5}));
+ s.push(arr(pw[0],pw[1],ov[0],ov[1],{trim:50,curve:22,label:'+',lc:C.a3}));
+ s.push(arr(ov[0],ov[1],rst[0],rst[1],{trim:50,curve:22,label:'+',lc:C.a3}));
+ s.push(arr(rst[0],rst[1],pw[0],pw[1],{trim:50,curve:22,label:'−',lc:C.a3}));
+ s.push(cir(pw[0],pw[1],48,'Power',C.a1,true));
+ s.push(cir(res[0],res[1],42,'Resources',C.a5,true));
+ s.push(cir(al[0],al[1],42,'Allies',C.a5,true));
+ s.push(cir(ov[0],ov[1],42,'Overreach',C.a3,true));
+ s.push(cir(rst[0],rst[1],42,'Resistance',C.a3,true));
+ s.push(arr(782,344,pw[0],pw[1]-52,{label:'power in motion',color:C.a1,lc:C.a1,dash:'5 4',curve:44}));
+ s.push(zone(800,384,238,422,'④ Who to focus on · 2×2'));
+ s.push(miniMatrix(842,446,168,240,'Interest →','Power →',['Keep\nsatisfied','Manage\nclosely','Monitor','Keep\ninformed']));
+ s.push(arr(672,600,838,600,{label:'act on players',color:C.mut,lc:C.mut,dash:'5 4'}));
+ return SV(s.join(''),W,H);
+}
+
+function C_CLIMATE(){const s=[],W=1060,H=830;
+ s.push(T(530,30,'CLIMATE CHANGE — magnitude, cause, feedback & time in one view',{fs:14.5,fw:700}));
+ s.push(zone(28,58,360,384,'① Emission sources · MAGNITUDE'));
+ const src=[['Electricity',25,C.a4],['Manufacturing',20,C.a2],['Agriculture',18,C.a5],['Transport',16,C.a1],['Other industry',15,C.a3],['Buildings',6,C.a6]];
+ src.forEach((d,i)=>s.push(hbar(140,102+i*52,d[0],d[1],d[2])));
+ s.push(zone(410,58,628,300,'② Cause → effect · CONCEPT MAP'));
+ s.push(arr(556,140,600,112,{label:'raise'}));
+ s.push(arr(720,110,764,132,{label:'trap heat'}));
+ s.push(arr(792,162,660,224,{label:'melts'}));
+ s.push(arr(712,241,898,222,{label:'raises'}));
+ s.push(arr(800,162,822,274,{label:'intensifies'}));
+ s.push(arr(766,152,596,272,{label:'stresses'}));
+ s.push(boxN(440,124,116,40,'Emissions',{fill:C.a4}));
+ s.push(boxN(600,90,116,40,'GHG conc.',{fill:C.a3}));
+ s.push(boxN(764,124,108,40,'Warming',{fill:C.a1}));
+ s.push(boxN(602,224,108,38,'Ice melt',{fill:C.a2}));
+ s.push(boxN(898,204,130,38,'Sea-level rise',{fill:C.a2}));
+ s.push(boxN(766,274,140,38,'Extreme weather',{fill:C.a6}));
+ s.push(boxN(452,262,140,38,'Ecosystem loss',{fill:C.a5}));
+ s.push(arr(352,150,440,144,{label:'emit',color:C.a4,lc:C.a4,w:2.4}));
+ s.push(zone(300,384,430,422,'③ Feedback loops · CAUSAL LOOP'));
+ const wm=[515,598];
+ [[[515,478],'+','+',C.a3],[[652,700],'+','+',C.a3],[[380,700],'+','−',C.a5]].forEach(([p,s1,s2,col])=>{s.push(arr(wm[0],wm[1],p[0],p[1],{trim:54,curve:18,label:s1,lc:col}));s.push(arr(p[0],p[1],wm[0],wm[1],{trim:54,curve:18,label:s2,lc:col}));});
+ s.push(cir(wm[0],wm[1],54,'Warming',C.a3,true));
+ s.push(cir(515,478,44,'Ice loss\n(albedo)',C.a2,true));
+ s.push(cir(652,700,44,'Permafrost\nmethane',C.a4,true));
+ s.push(cir(380,700,44,'CO2 uptake',C.a5,true));
+ s.push(arr(766,164,wm[0],wm[1]-54,{label:'warming self-amplifies',color:C.a3,lc:C.a3,dash:'5 4',curve:-52}));
+ s.push(zone(760,384,278,422,'④ Trajectory · TIMELINE'));
+ const tx=806;
+ s.push(`<line x1="${tx}" y1="424" x2="${tx}" y2="774" stroke="${C.line}" stroke-width="3"/>`);
+ const ph=[['1850','pre-industrial ~280ppm',C.a5,436],['1958','Keeling curve starts',C.a2,504],['Today','~420ppm · +1.2°C',C.a4,572],['2050','net-zero pledges',C.a1,640],['2100','+1.5 to +4°C',C.a3,708]];
+ ph.forEach(([w1,w2,col,y])=>{s.push(`<circle cx="${tx}" cy="${y}" r="8" fill="${col}"/>`);s.push(T(tx+16,y-1,w1,{fs:11.5,fw:700,anchor:'start'}));s.push(T(tx+16,y+13,w2,{fs:9,anchor:'start',fill:C.mut}));});
+ s.push(arr(640,562,tx-40,474,{label:'over decades',color:C.mut,lc:C.mut,dash:'5 4',curve:-28}));
+ return SV(s.join(''),W,H);
+}
+
+const worked = [
+{title:"Chronic stress & burnout",field:"Psychology · physiology",
+ why:"Stress is hard to hold in your head because it spans brain, body and behaviour at once, runs on several timescales, and is driven by feedback rather than a straight line. So rather than one chart, this single map wires four diagram types together — a flow, a hierarchy, a causal loop and a timeline — and the arrows <b>between</b> them are where one type hands off to the next.",
+ svg:C_STRESS(),
+ walk:[
+  {tag:"① Flow",title:"Trace one episode",text:"The left column is a flowchart, because the acute response is a genuine one-way chain: stressor → appraisal → amygdala → HPA axis → cortisol. It deliberately ends at cortisol, the single node the rest of the map hangs off."},
+  {tag:"② Hierarchy",title:"Fan the effect out",text:"That thick arrow carries cortisol into a hierarchy (top-right): one sustained cause branching into sleep, immunity, the prefrontal cortex, mood, inflammation and memory. One cause, many parts — a part/whole tree is right, and the bridge arrow is the handoff from 'sequence' to 'hierarchy'."},
+  {tag:"③ Causal loop",title:"Close the feedback",text:"Some of those effects feed back. The dashed 'effects become variables' bridge pulls sleep, PFC and appraisal down into a reinforcing loop with stress and cortisol. This is the switch from 'what happens' to 'why it compounds' — why a bad week becomes a bad quarter."},
+  {tag:"④ Timeline",title:"Play it forward",text:"A loop running over and over needs a time axis, so the final bridge feeds it into the timeline on the right: the same physiology moving from adaptive stress to collapse, showing that intervention gets harder the later you are."},
+ ],
+ synthesis:"It's one canvas, not four charts: flow → hierarchy → loop → timeline, each linked by a labelled bridge arrow marking where one diagram type can no longer answer the next question and hands off to one that can. Read it top-left to bottom-right and you've traced the whole disorder from a single trigger to a chronic arc."},
+{title:"Power & influence",field:"Social dynamics · organisations",
+ why:"Power is slippery: it comes in several forms, converts between them, grows on itself yet undermines itself, and ultimately flows through people. This one map threads a concept map, a pyramid, a causal loop and a 2×2 together so you can see forms, ranking, dynamics and action in a single structure.",
+ svg:C_POWER(),
+ walk:[
+  {tag:"① Concept map",title:"Name the forms",text:"Top-left, a concept map links the five bases of power to the responses they produce, flagging the key asymmetry: coercion forces compliance, but expertise and referent power earn internalisation."},
+  {tag:"② Pyramid",title:"Rank them",text:"The 'now rank them' arrow carries those same forms into a pyramid ordered by durability — force at the cheap, brittle base; inspiration at the scarce, lasting top. The bridge is the handoff from 'what are they' to 'how do they compare'."},
+  {tag:"③ Causal loop",title:"Put power in motion",text:"Power isn't static, so the ranked forms feed a causal loop: a reinforcing engine (power → resources → allies → power) plus a balancing brake (power → overreach → resistance → power). Rise-and-fall in one shape."},
+  {tag:"④ 2×2 matrix",title:"Act on the players",text:"Finally the loop hands off to a stakeholder 2×2 — power against interest — turning all the theory into where to actually spend your attention."},
+ ],
+ synthesis:"Concept map → pyramid → causal loop → matrix, all on one canvas, each bridge marking a change of question: what are the forms, how do they rank, how do they move, and what do I do. That progression — and the arrows that carry it — is the combination itself."},
+{title:"Climate change",field:"Earth systems · economics · policy",
+ why:"Climate change couples physics, economics and politics, and is dominated by feedback and long lags. This single view sizes the problem, connects cause to effect, exposes the feedbacks, and places it in time — four diagram types, one structure.",
+ svg:C_CLIMATE(),
+ walk:[
+  {tag:"① Magnitude",title:"Size the sources",text:"Top-left, bars sized by share of emissions — the quantitative anchor. Energy and industry dominate, so cheap talk about minor sources falls away."},
+  {tag:"② Concept map",title:"Trace the consequences",text:"The 'emit' bridge feeds those emissions into a concept map: concentration → warming → ice melt, sea-level rise, extreme weather, ecosystem loss. It branches, so it's a network, not a chain."},
+  {tag:"③ Causal loop",title:"Expose the feedbacks",text:"The dangerous part is feedback, so the 'warming self-amplifies' bridge pulls the warming node down into a causal loop: ice-albedo and permafrost-methane reinforce warming, while plant CO₂ uptake weakly balances it. This is where tipping points live."},
+  {tag:"④ Timeline",title:"Place it in time",text:"Finally the loop is set on a timeline from pre-industrial baseline to 2100 scenarios, making the long lag between cause and effect — and the cost of delay — visible."},
+ ],
+ synthesis:"Magnitude → cause-map → feedback loop → timeline, stitched by bridges that each answer a new question: how big, how connected, why runaway, and over what horizon. No single diagram could hold a planet-sized system, but four, joined deliberately, can."},
+];
+
+/* fix the Pyramid intro thumbnail — render a proper pyramid (Bloom's taxonomy) */
+(function(){const pv=viz.find(v=>v.name==='Pyramid (Layered)'); if(pv) pv.svg=genPyramid([{label:'Create'},{label:'Evaluate'},{label:'Analyze'},{label:'Apply'},{label:'Understand'},{label:'Remember'}]);})();
+
+/* ============ RESOURCES (lots of links) ============ */
+const resources = [
+ ["Foundations &amp; theory","The core ideas behind concept maps and knowledge visualization.",[
+   ["Novak &amp; Cañas — Theory Underlying Concept Maps","The foundational paper. Nodes + labelled links + propositions.","https://cmap.ihmc.us/docs/theory-of-concept-maps"],
+   ["Concept map (Wikipedia)","Solid overview, history, and technique.","https://en.wikipedia.org/wiki/Concept_map"],
+   ["Mind map (Wikipedia)","Origins (Tony Buzan), rules, and criticism.","https://en.wikipedia.org/wiki/Mind_map"],
+   ["Information / knowledge visualization","How visuals encode meaning; the wider field.","https://en.wikipedia.org/wiki/Information_visualization"],
+   ["Diagram (Wikipedia)","A quick tour of diagram families.","https://en.wikipedia.org/wiki/Diagram"],
+   ["Dual-coding theory","Why visual + verbal together is remembered better.","https://en.wikipedia.org/wiki/Dual-coding_theory"],
+ ]],
+ ["Choosing the right diagram (galleries)","Browsable catalogues organised by the relationship you want to show.",[
+   ["The Data Visualisation Catalogue","Every chart type with 'what it's for' notes.","https://datavizcatalogue.com/"],
+   ["Data Viz Project","Large searchable gallery, filter by function/shape.","https://datavizproject.com/"],
+   ["From Data to Viz","A decision tree that points you to the right graphic.","https://www.data-to-viz.com/"],
+   ["FT Visual Vocabulary","A one-page map of chart types by purpose.","https://ft-interactive.github.io/visual-vocabulary/"],
+   ["Chart.xkcd / Xenographics","Unusual and novel chart types to widen your toolkit.","https://xeno.graphics/"],
+ ]],
+ ["Books &amp; thinkers","The canon &mdash; visual thinking and structured understanding.",[
+   ["Edward Tufte","The classics: Visual Display of Quantitative Information, Envisioning Information.","https://www.edwardtufte.com/tufte/"],
+   ["Dan Roam — The Back of the Napkin","A framework for picking the right simple picture.","https://www.danroam.com/"],
+   ["Tony Buzan — Mind Mapping","The originator's method and rules.","https://www.tonybuzan.com/"],
+   ["Donella Meadows — Thinking in Systems","The clearest on-ramp to causal-loop / systems diagrams.","https://donellameadows.org/systems-thinking-resources/"],
+   ["Farnam Street — Mental Models","A large, well-organised latticework of models.","https://fs.blog/mental-models/"],
+   ["The Systems Thinker","Deep articles on loops, archetypes, and leverage.","https://thesystemsthinker.com/"],
+ ]],
+ ["Per-type deep references","Go deep on any single diagram type.",[
+   ["Causal loop diagram","Polarity, reinforcing/balancing loops, archetypes.","https://en.wikipedia.org/wiki/Causal_loop_diagram"],
+   ["Ishikawa / fishbone diagram","Categories of cause and how to run one.","https://en.wikipedia.org/wiki/Ishikawa_diagram"],
+   ["Sankey diagram","Flow-and-magnitude, with examples.","https://en.wikipedia.org/wiki/Sankey_diagram"],
+   ["Venn diagram","Set logic and its limits.","https://en.wikipedia.org/wiki/Venn_diagram"],
+   ["Radar chart","Strengths and the well-known pitfalls.","https://en.wikipedia.org/wiki/Radar_chart"],
+   ["Treemapping","Area-based hierarchy visualisation.","https://en.wikipedia.org/wiki/Treemapping"],
+   ["Eisenhower matrix","The urgent/important 2&times;2 in practice.","https://en.wikipedia.org/wiki/Time_management#The_Eisenhower_Method"],
+   ["Argument map","Mapping claims, reasons, and objections.","https://en.wikipedia.org/wiki/Argument_map"],
+ ]],
+ ["Tools to build your own","Free and freemium tools for maps, networks, and diagrams.",[
+   ["Obsidian","Notes + a live knowledge graph of your links.","https://obsidian.md/"],
+   ["Obsidian Canvas","Freeform spatial concept maps over your notes.","https://obsidian.md/canvas"],
+   ["Excalidraw","Fast, hand-drawn-style diagramming in the browser.","https://excalidraw.com/"],
+   ["Mermaid","Text &rarr; diagram (flowcharts, mind maps, timelines).","https://mermaid.js.org/"],
+   ["Mermaid Live Editor","Try Mermaid instantly in the browser.","https://mermaid.live/"],
+   ["draw.io / diagrams.net","Full-featured free diagram editor.","https://www.drawio.com/"],
+   ["Miro","Infinite whiteboard for big messy maps.","https://miro.com/"],
+   ["Whimsical","Clean mind maps, flowcharts, and boards.","https://whimsical.com/"],
+   ["XMind","Dedicated mind-mapping app.","https://xmind.app/"],
+   ["Coggle","Simple collaborative mind maps.","https://coggle.it/"],
+   ["IHMC CmapTools","The reference concept-mapping software.","https://cmap.ihmc.us/"],
+   ["Kialo","Structured argument / debate mapping.","https://www.kialo.com/"],
+ ]],
+ ["Turning maps into memory (revision science)","So the maps actually stick &mdash; retention and active recall.",[
+   ["Anki — spaced repetition","Turn map nodes into cards you review on a schedule.","https://apps.ankiweb.net/"],
+   ["Learning How to Learn (Coursera)","The most popular course on how memory works.","https://www.coursera.org/learn/learning-how-to-learn"],
+   ["Feynman Technique","Explain it simply to expose gaps &mdash; pairs with drawing.","https://fs.blog/feynman-technique/"],
+   ["Zettelkasten","Atomic, linked notes &mdash; a network of ideas.","https://zettelkasten.de/"],
+   ["Andy Matuschak — Evergreen notes","How to write notes that build understanding over time.","https://notes.andymatuschak.org/"],
+   ["Bloom's taxonomy","The ladder from remembering to creating.","https://en.wikipedia.org/wiki/Bloom%27s_taxonomy"],
+ ]],
+];
+
+/* ============ RENDER ============ */
+const host = u => { try { return new URL(u).hostname.replace(/^www\./,''); } catch(e){ return ''; } };
+
+// why
+document.getElementById('why-grid').innerHTML = why.map(([i,h,p])=>`<div class="c"><div class="ic">${i}</div><h4>${h}</h4><p>${p}</p></div>`).join('');
+
+// building blocks (clickable)
+document.getElementById('blocks-grid').innerHTML = blocks.map((b,i)=>`
+  <div class="block" data-b="${i}">
+    <div class="ill">${b.svg}</div>
+    <div class="bb">
+      <h4>${b.name}<span class="chev">&#9656;</span></h4>
+      <p>${b.desc}</p>
+      <div class="more"><p>${b.more}</p></div>
+    </div>
+  </div>`).join('');
+document.getElementById('blocks-grid').addEventListener('click',e=>{
+  const el=e.target.closest('.block'); if(el) el.classList.toggle('open');
+});
+
+// resources + starring (persisted on this device via localStorage)
+const STAR_KEY='cve_starred_v1';
+let starred=(()=>{ try{return new Set(JSON.parse(localStorage.getItem(STAR_KEY)||'[]'));}catch(e){return new Set();} })();
+function saveStars(){ try{ localStorage.setItem(STAR_KEY,JSON.stringify([...starred])); }catch(e){} }
+const allLinks=[]; resources.forEach(([title,desc,links])=>links.forEach(([t,d,u])=>allLinks.push({t,d,u,group:title})));
+function linkCard(t,d,u){
+  const on=starred.has(u);
+  return `<a href="${u}" target="_blank" rel="noopener"><button class="star${on?' on':''}" data-star="${encodeURIComponent(u)}" title="${on?'Remove star':'Star this'}" aria-label="star">${on?'&#9733;':'&#9734;'}</button><b>${t}</b><span>${d}</span><span class="host">${host(u)} &#8599;</span></a>`;
+}
+function renderResources(){
+  document.getElementById('res-list').innerHTML = resources.map(([title,desc,links])=>`
+    <div class="resgroup"><h3>${title}</h3><p class="rd">${desc}</p>
+      <div class="links">${links.map(([t,d,u])=>linkCard(t,d,u)).join('')}</div>
+    </div>`).join('');
+}
+function renderStarred(){
+  const items=allLinks.filter(l=>starred.has(l.u));
+  const el=document.getElementById('starred-list');
+  if(!items.length){ el.innerHTML=`<div class="starred-empty">No starred resources yet. Click the <b>&#9734;</b> on any resource in the section below and it will be saved here.</div>`; return; }
+  el.innerHTML=`<div class="links">${items.map(l=>linkCard(l.t,l.d,l.u)).join('')}</div>`;
+}
+function setStarButtons(u,on){
+  document.querySelectorAll('.star[data-star="'+encodeURIComponent(u)+'"]').forEach(b=>{
+    b.classList.toggle('on',on); b.innerHTML= on?'&#9733;':'&#9734;'; b.title= on?'Remove star':'Star this';
+  });
+}
+function toggleStar(u){ const on=!starred.has(u); if(on) starred.add(u); else starred.delete(u); saveStars(); renderStarred(); setStarButtons(u,on); }
+document.addEventListener('click',e=>{
+  const btn=e.target.closest('.star'); if(!btn) return;
+  e.preventDefault(); e.stopPropagation();
+  toggleStar(decodeURIComponent(btn.dataset.star));
+});
+renderResources();
+renderStarred();
+
+// worked examples
+function renderWorked(){
+  document.getElementById('worked-list').innerHTML = worked.map((c,ci)=>`
+    <div class="wx">
+      <span class="wx-field">${c.field}</span>
+      <h3>${c.title}</h3>
+      <p class="wx-why">${c.why}</p>
+      <div class="wx-fig big" data-c="${ci}">${c.svg}<span class="enlarge">click to enlarge &#10530;</span></div>
+      <div class="wx-steps">
+        ${c.walk.map((s,si)=>`
+          <div class="wx-step">
+            <div class="wx-num">${String(si+1).padStart(2,'0')}</div>
+            <div class="wx-body"><span class="wx-tag">${s.tag}</span><h4>${s.title}</h4><p>${s.text}</p></div>
+          </div>`).join('')}
+      </div>
+      <div class="wx-syn"><b>How it fits together.</b> ${c.synthesis}</div>
+    </div>`).join('');
+}
+renderWorked();
+document.getElementById('worked-list').addEventListener('click',e=>{
+  const f=e.target.closest('.wx-fig'); if(!f) return;
+  const c=worked[+f.dataset.c];
+  openModal2({domain:c.field, title:c.title+' — combined map', note:c.synthesis, svg:c.svg});
+});
+
+// filters + cards
+const CATS = {all:'All',hierarchy:'Hierarchy &amp; Part-whole',sequence:'Sequence &amp; Process',network:'Network &amp; Systems',comparison:'Comparison &amp; Sets',dimensional:'Dimensional',frameworks:'N-part Frameworks'};
+const catLabel = {hierarchy:'Hierarchy',sequence:'Sequence',network:'Network',comparison:'Comparison',dimensional:'Dimensional',frameworks:'Framework'};
+let active='all';
+
+const filtersEl=document.getElementById('filters');
+filtersEl.innerHTML=Object.entries(CATS).map(([k,v])=>`<button data-cat="${k}"${k==='all'?' class="active"':''}>${v}</button>`).join('');
+
+const detailHTML = v => `
+  <div class="trigcallout"><b>&#127919; Reach for it when:</b> ${v.trigger}</div>
+  <div class="quick">
+    <div class="q"><b>Shows:</b> ${v.shows}</div>
+    <div class="q"><b>Best for:</b> ${v.best}</div>
+    <div class="q"><b>Watch out:</b> ${v.watch}</div>
+  </div>
+  <div class="pc">
+    <div class="box pro"><h5>Pros</h5><ul>${v.pros.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+    <div class="box con"><h5>Cons</h5><ul>${v.cons.map(x=>`<li>${x}</li>`).join('')}</ul></div>
+  </div>
+  <div class="ex"><h5>Big example</h5><p>${v.big}</p></div>
+  <div class="misuse"><h5>&#9888; Common misuse — what not to do</h5><p>${v.misuse}</p></div>
+  <div class="combos"><h5>Best combined with</h5>${v.combos.map(([t,w])=>`<div class="combo"><span class="tag">${t}</span><span>${w}</span></div>`).join('')}</div>
+  ${v.examples&&v.examples.length?`<div class="gallery-h">Detailed examples from different domains</div>
+  <p class="gallery-s">The diagram above keeps it simple to explain the idea. These show what the type can really do &mdash; click any one to open it full size.</p>
+  <div class="gallery">${v.examples.map((ex,i)=>`<div class="exemp" data-e="${i}"><span class="exdom">${ex.domain}</span><div class="exthumb">${ex.svg}</div><div class="extitle">${ex.title}</div></div>`).join('')}</div>`:''}`;
+
+let currentItems = viz;
+function render(){
+  currentItems = active==='all'?viz:viz.filter(v=>v.cat===active);
+  document.getElementById('count').textContent = `${currentItems.length} type${currentItems.length>1?'s':''} shown · click any card to open its playbook`;
+  document.getElementById('cat-trigger').innerHTML = `<b>${active==='all'?'How to choose:':'When to reach for this family:'}</b> ${catTrigger[active]}`;
+  document.getElementById('grid').innerHTML = currentItems.map((v,i)=>`
+    <div class="card" data-i="${i}">
+      <div class="fig">${v.svg}</div>
+      <div class="body">
+        <div class="cat">${catLabel[v.cat]}</div>
+        <h3>${v.name}</h3>
+        <p class="oneline">${v.shows}</p>
+        <p class="cardtrig"><b>Use when:</b> ${v.trigger}</p>
+        <span class="toggle"><span class="chev">&#9656;</span> <span>Open playbook</span></span>
+      </div>
+    </div>`).join('');
+}
+
+// level-1 popup (playbook)
+const overlay=document.getElementById('overlay');
+const modal=document.getElementById('modal');
+const overlay2=document.getElementById('overlay2');
+const modal2=document.getElementById('modal2');
+let modalV=null;
+function openModal(v){
+  modalV=v;
+  modal.innerHTML = `
+    <button class="mclose" aria-label="Close">&times;</button>
+    <div class="mfig">${v.svg}</div>
+    <div class="mbody">
+      <div class="cat">${catLabel[v.cat]}</div>
+      <h3 class="mtitle">${v.name}</h3>
+      ${detailHTML(v)}
+    </div>
+    <div class="mhint">click outside or &times; to close &middot; Esc</div>`;
+  overlay.classList.add('show');
+  document.body.classList.add('modal-open');
+  overlay.scrollTop = 0;
+}
+function closeModal(){ overlay.classList.remove('show'); if(!overlay2.classList.contains('show')) document.body.classList.remove('modal-open'); }
+// level-2 popup (enlarged example)
+function openModal2(ex){
+  modal2.innerHTML = `
+    <button class="mclose" aria-label="Close">&times;</button>
+    <div class="m2fig">${ex.svg}</div>
+    <div class="m2body">
+      <span class="exdom">${ex.domain}</span>
+      <h3>${ex.title}</h3>
+      ${ex.trigger?`<div class="trigcallout"><b>&#127919; Why this diagram fits:</b> ${ex.trigger}</div>`:''}
+      <p class="m2note">${ex.note||''}</p>
+      <div class="mhint">click outside or &times; to go back &middot; Esc</div>
+    </div>`;
+  overlay2.classList.add('show');
+  document.body.classList.add('modal-open');
+  overlay2.scrollTop = 0;
+}
+function closeModal2(){ overlay2.classList.remove('show'); if(!overlay.classList.contains('show')) document.body.classList.remove('modal-open'); }
+
+document.getElementById('grid').addEventListener('click',e=>{
+  const card=e.target.closest('.card'); if(!card) return;
+  openModal(currentItems[+card.dataset.i]);
+});
+overlay.addEventListener('click',e=>{
+  const ex=e.target.closest('.exemp');
+  if(ex && modalV && modalV.examples){ openModal2(modalV.examples[+ex.dataset.e]); return; }
+  if(e.target===overlay || e.target.closest('.mclose')) closeModal();
+});
+overlay2.addEventListener('click',e=>{ if(e.target===overlay2 || e.target.closest('.mclose')) closeModal2(); });
+document.addEventListener('keydown',e=>{ if(e.key==='Escape'){ if(overlay2.classList.contains('show')) closeModal2(); else if(overlay.classList.contains('show')) closeModal(); } });
+filtersEl.addEventListener('click',e=>{
+  const b=e.target.closest('button'); if(!b) return;
+  active=b.dataset.cat;
+  filtersEl.querySelectorAll('button').forEach(x=>x.classList.toggle('active',x===b));
+  render();
+});
+render();
+
+// sidebar scroll-spy: highlight the section currently in view
+const spyLinks=[...document.querySelectorAll('#sidenav a')];
+const spySecs=spyLinks.map(a=>document.querySelector(a.getAttribute('href')));
+// scroll via JS (fragment links don't work when this page runs inside a blob: iframe, e.g. the hub)
+spyLinks.forEach(a=>a.addEventListener('click',function(ev){
+  const id=a.getAttribute('href'); if(!id||id.charAt(0)!=='#') return;
+  const el=document.querySelector(id); if(!el) return;
+  ev.preventDefault();
+  if(el.scrollIntoView) el.scrollIntoView({behavior:'smooth',block:'start'});
+  spyLinks.forEach(x=>x.classList.toggle('active',x===a));
+}));
+function spy(){ let idx=0; spySecs.forEach((s,i)=>{ if(s && s.getBoundingClientRect().top<=150) idx=i; }); spyLinks.forEach((a,i)=>a.classList.toggle('active',i===idx)); }
+window.addEventListener('scroll',spy,{passive:true});
+window.addEventListener('resize',spy);
+spy();
+</script>
+</body>
+</html>

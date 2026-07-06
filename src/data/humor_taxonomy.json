@@ -1,0 +1,82 @@
+[
+  {"n":"Irony","ic":"🔄","desc":"A gap between what's expected and what's real. The engine underneath most other comedy.","subs":[
+    {"n":"Situational Irony","def":"Reality turns out the opposite of what's expected.","ex":"A fire station burns down."},
+    {"n":"Verbal Irony","def":"You say the opposite of what you mean.","ex":"You spill coffee on yourself: “Great, just what I needed.”"},
+    {"n":"Dramatic Irony","def":"The audience knows something the character doesn't.","ex":"In Friends, we know Monica & Chandler are together; everyone's obliviousness IS the joke."},
+    {"n":"Sarcasm","def":"Verbal irony with a sharp, mocking edge — the contempt is the point.","ex":"“Oh wow, another Monday. My absolute favourite.”"}
+  ]},
+  {"n":"Character","ic":"🎭","desc":"Archetypes — 2D personalities with 1–3 fixed traits. The joke fires when they act exactly as their archetype demands.","subs":[
+    {"n":"The Dummy","def":"Confidently wrong about everything.","ex":"Homer Simpson, Kevin from The Office."},
+    {"n":"The Snob","def":"Looks down on everyone, constantly.","ex":"Frasier Crane."},
+    {"n":"The Everyman","def":"A completely normal person surrounded by chaos — the relatable straight-man.","ex":"Jim Halpert."},
+    {"n":"The Know-It-All","def":"Always correcting everyone, usually right, always annoying.","ex":"Sheldon Cooper."},
+    {"n":"The Lothario","def":"Defined entirely by romantic pursuit.","ex":"Barney Stinson."},
+    {"n":"The Nerd","def":"Social awkwardness as personality.","ex":"Leonard Hofstadter."},
+    {"n":"The Robot","def":"No emotional understanding, hyper-logical.","ex":"Spock, Sheldon."},
+    {"n":"The Naif","def":"Innocent, childlike, no idea how the world works.","ex":"Buddy the Elf, Kimmy Schmidt."},
+    {"n":"The Bumbler","def":"Well-meaning but destroys everything they touch.","ex":"Michael Scott."}
+  ]},
+  {"n":"Shock","ic":"⚡","desc":"Humor from crossing a line — content that appears where you don't expect it.","subs":[
+    {"n":"Sexual / Crude","def":"Explicit or suggestive content where you don't expect it.","ex":"Most of Superbad."},
+    {"n":"Violence / Dark","def":"Casual mention of harm or death for comic effect.","ex":"“I hit a kid with my car. Thankfully no one saw it.” — Jeselnik"},
+    {"n":"Profanity / Swearing","def":"Unexpected swearing in a formal or serious context amplifies impact.","ex":"A professor calmly saying “this formula is absolute bullshit” mid-lecture."},
+    {"n":"Gross-Out","def":"Bodily functions, disgusting imagery, physical repulsion.","ex":"Most of Family Guy."},
+    {"n":"Taboo Social Topics","def":"Death, racism, religion, disability — treated lightly when convention says you shouldn't.","ex":"Most of Curb Your Enthusiasm's premises."}
+  ]},
+  {"n":"Hyperbole","ic":"📈","desc":"Comic exaggeration — push the scale until the size itself is the joke.","subs":[
+    {"n":"Extreme Scale / Size","def":"Make something comically enormous or tiny.","ex":"“I've told you a thousand million times.”"},
+    {"n":"Impossible Exaggeration","def":"Defies physics — the impossibility is the whole joke.","ex":"“My doctor tested my ear and it had an olive in it.” — Rodney Dangerfield"},
+    {"n":"Grandiose Titles / Language","def":"Inflated, royal-sounding language for mundane things.","ex":"“Magnanimous Boss, King of Kings, Allows Employees to Watch World Cup.”"},
+    {"n":"Absurd Statistics","def":"Made-up or wildly inflated numbers stated with total confidence.","ex":"“Miracle of Birth Occurs for 83 Billionth Time.”"}
+  ]},
+  {"n":"Wordplay","ic":"🔤","desc":"Humor from language itself — sound, structure, and double meanings, not association.","subs":[
+    {"n":"Puns","def":"Same sound, two meanings.","ex":"“I used to be a banker but I lost interest.”"},
+    {"n":"Double Entendres","def":"A phrase with one innocent meaning and one… not innocent. Intentionally ambiguous.","ex":"The engine of countless sitcom one-liners."},
+    {"n":"Oxymorons","def":"Two contradictory words together, played for absurdity.","ex":"“Deafening silence.” “Organised chaos.”"},
+    {"n":"Malapropisms","def":"Using the wrong word that sounds similar — character sounds like an idiot.","ex":"“For all intensive purposes.” (Michael Scott does this constantly.)"},
+    {"n":"Portmanteaus","def":"Smashing two words into one new word.","ex":"“Fritolaysia” (Frito-Lay + Malaysia). Brunch. Snark."},
+    {"n":"Spoonerisms","def":"Swapping the first sounds of two words accidentally.","ex":"“You have hissed all my mystery lectures.”"},
+    {"n":"Rhyme / Sound","def":"Humor from the sound itself, not just meaning.","ex":"“Boaty McBoatface.”"},
+    {"n":"Literal vs. Figurative","def":"Taking a figurative expression completely literally.","ex":"Someone says “break a leg” and the character genuinely tries to."},
+    {"n":"Unexpected Word Choice","def":"Dropping a wildly out-of-place word into an otherwise normal sentence.","ex":"“The senator, resplendent in his khakis, committed several war crimes.”"},
+    {"n":"Absurd Invented Words","def":"Making up completely fictional words with total confidence.","ex":"Monty Python does this constantly. So does 30 Rock."}
+  ]},
+  {"n":"Reference","ic":"📚","desc":"Humor that borrows recognition — pointing at something the audience already knows.","subs":[
+    {"n":"Pop Culture Callbacks","def":"Referencing a known film, song, meme, or moment.","ex":"HIMYM's entire structure is one long pop culture callback engine."},
+    {"n":"Historical References","def":"Using a known historical event in an unexpected context.","ex":"A grand historical framing applied to something trivial."},
+    {"n":"Genre Conventions","def":"Referencing the rules of a genre so the audience feels in on it.","ex":"A horror character saying “I'll be right back” — everyone knows what that means."},
+    {"n":"Niche / Insider References","def":"Only a specific group gets it. Makes that group feel special.","ex":"Big Bang Theory's actual physics jokes — funnier because you're not supposed to get them."},
+    {"n":"Universal Experiences","def":"Things everyone has lived through. Instant recognition = instant connection.","ex":"Alarm goes off. You hit snooze 9 times. You're now late. Everyone nods."}
+  ]},
+  {"n":"Madcap","ic":"🌀","desc":"Absurdist logic — reality is bent and nobody in the scene seems to notice.","subs":[
+    {"n":"Non-Sequiturs","def":"A response or statement with zero logical connection to what came before.","ex":"Someone asks “What time is it?” and the answer is “Purple.”"},
+    {"n":"Slapstick Logic","def":"Physical comedy where cause-and-effect is exaggerated beyond reality.","ex":"Tom and Jerry. Wile E. Coyote. The cartoon physics ARE the joke."},
+    {"n":"Surreal Scenarios","def":"The entire premise defies reality and no one acknowledges it.","ex":"The Mighty Boosh — a man turns into a living chair. Nobody mentions it."},
+    {"n":"Random Juxtaposition","def":"Two wildly unrelated things placed side by side.","ex":"“I enjoy long walks on the beach and spreadsheet auditing.”"}
+  ]},
+  {"n":"Parody","ic":"🎬","desc":"Mimicking a form, then exaggerating or collapsing it.","subs":[
+    {"n":"Genre Parody","def":"Mimicking an entire genre's conventions and exaggerating them.","ex":"Scary Movie (horror). Airplane! (disaster films)."},
+    {"n":"Style Imitation","def":"Copying the tone and aesthetic of a specific creator or format.","ex":"A nature documentary voice-over narrating someone making a sandwich."},
+    {"n":"Trope Subversion","def":"Setting up a familiar trope and then collapsing it.","ex":"The hero gives an inspiring speech. It changes nothing. Everyone goes home."},
+    {"n":"Format Mimicry","def":"Using the visual or structural format of something serious for something absurd.","ex":"The Onion's entire existence — newspaper format, utterly unhinged content."},
+    {"n":"Direct Spoof","def":"Targeting one specific film, show, or person.","ex":"“Al Gore Places Infant Son in Rocket” directly spoofs Superman's origin story."}
+  ]},
+  {"n":"Analogy","ic":"🔗","desc":"Comedy from comparison — yoking two things whose similarity you didn't see coming.","subs":[
+    {"n":"Simile-Based","def":"“X is like Y” where Y is totally unexpected.","ex":"“Marriage is like a software update — you don't want it, but eventually you have no choice.”"},
+    {"n":"Extended Metaphor","def":"Stretching a comparison across an entire bit.","ex":"Treating a corporate office as a medieval kingdom — boss is the king, HR is the church, the printer is the village idiot — and never breaking it."},
+    {"n":"Unlikely Comparison","def":"Finding a genuine similarity between two things with no business being similar.","ex":"“Raising a toddler is exactly like managing a drunk, hostile CEO.”"},
+    {"n":"False Equivalence","def":"Treating two wildly unequal things as identical (played for laughs).","ex":"“Losing your charger and losing a family member — both equally devastating.”"}
+  ]},
+  {"n":"Misplaced Focus","ic":"🎯","desc":"The comedy of attention pointed at exactly the wrong thing.","subs":[
+    {"n":"Ignoring the Obvious","def":"The elephant in the room is enormous. The character notices the carpet instead.","ex":"A building is on fire. A character is annoyed the fire alarm interrupted their podcast."},
+    {"n":"Trivialising the Serious","def":"A genuinely terrible situation is treated as a minor inconvenience.","ex":"“Yes the Titanic is sinking, but did anyone else notice the soup was cold at dinner?”"},
+    {"n":"Prioritising the Irrelevant","def":"In a crisis, the character focuses on something completely beside the point.","ex":"Jeselnik's car/kid joke — the tragedy is real; his concern is: witnesses."},
+    {"n":"False Concern","def":"Appearing to care about something, but the thing you care about reveals you're actually a monster.","ex":"“I'm not a bad person — I cried at the end of that commercial.” (The commercial was for car insurance.)"}
+  ]},
+  {"n":"Metahumor","ic":"🪞","desc":"Comedy that is aware of itself — the joke points back at the joke.","subs":[
+    {"n":"Breaking the Fourth Wall","def":"Character acknowledges they're in a story, show, or joke.","ex":"Ferris Bueller talking to camera. Deadpool referencing his own franchise."},
+    {"n":"Self-Referential Humor","def":"The joke is about itself or its own structure.","ex":"“That's what she said” — Michael Scott making a joke about making a joke."},
+    {"n":"Deconstructing Joke Structure","def":"Making the mechanics of the joke itself visible.","ex":"A comedian pausing to explain why a joke works, mid-joke, while still making it funny."},
+    {"n":"Humor About Humor","def":"Comedy that targets the idea of comedy.","ex":"“That joke is so old it voted against women's suffrage.”"}
+  ]}
+]

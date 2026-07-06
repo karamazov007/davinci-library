@@ -1,0 +1,278 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Cricket</title><style>
+:root{--bg:#f6f7f9;--surface:#fff;--ink:#1c2431;--dim:#5b6572;--line:#e7e9ee;--line2:#dcdfe6;--accent:#2f6d4f;--accent2:#1e2a44;--soft:#e9f2ec;--gold:#caa24a}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.happ{display:flex;flex-direction:column;height:100vh}
+.hbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;flex-wrap:wrap}
+.hbrand{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;white-space:nowrap;margin-right:6px}
+.htabs{display:flex;gap:3px;flex-wrap:wrap}
+.htabs button{border:0;background:none;color:var(--dim);font:inherit;font-size:13px;font-weight:650;padding:8px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.htabs button:hover{background:var(--soft);color:var(--ink)}
+.htabs button.active{background:var(--accent);color:#fff}
+.stage{flex:1;min-height:0;overflow:auto;position:relative}
+.stage.fill{overflow:hidden}
+.mlayout{display:flex;gap:30px;align-items:flex-start;max-width:1180px;margin:0 auto;padding:30px 34px 90px}
+.mmain{flex:1;min-width:0}
+.mtoc{flex:0 0 200px;position:sticky;top:16px;align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 8px;max-height:calc(100vh - 90px);overflow:auto;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.mtoc .tl{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);padding:7px 10px 9px}
+.mtoc a{display:block;padding:6px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.3}
+.mtoc a:hover{background:var(--soft);color:var(--accent)}
+.hero{margin:4px 0 10px}
+.hero .kick{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:32px;font-weight:850;letter-spacing:-.02em;margin:8px 0 6px;line-height:1.08}
+.hero p.sub{font-size:16px;color:var(--dim);line-height:1.6;max-width:740px;margin:0}
+.sec{scroll-margin-top:16px;margin-top:42px}
+.sec>.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px}
+.sec>.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+.sec h2{font-size:22px;font-weight:800;letter-spacing:-.01em;margin:12px 0 6px}
+.sec p{font-size:15px;line-height:1.72;color:#39424f;margin:10px 0;max-width:760px}
+.sec p b{color:var(--ink)}
+.callout{background:var(--soft);border:1px solid #cfe2d6;border-left:3px solid var(--accent);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:14.5px;line-height:1.66;color:#274; max-width:780px}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 16px 8px;margin:18px 0;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.fig svg{width:100%;height:auto;display:block}
+.fig figcaption{font-size:12.5px;color:var(--dim);text-align:center;padding:6px 8px 8px;line-height:1.5}
+.gtable{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gtable th,.gtable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+.gtable th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);background:var(--soft)}
+.gtable tr:last-child td{border-bottom:0}.gtable td b{color:var(--ink)}
+.cardrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:16px 0;max-width:900px}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:15px 17px;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.gcard b{display:block;font-size:14.5px;margin-bottom:4px}.gcard span{font-size:13.5px;color:var(--dim);line-height:1.5}
+/* checklist */
+.clwrap{display:flex;height:100%}
+.clnav{flex:0 0 250px;overflow-y:auto;border-right:1px solid var(--line);background:var(--surface);padding:12px 10px}
+.clnav .ph{font-size:10.5px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--accent);padding:14px 8px 6px}
+.clnav a{display:flex;justify-content:space-between;gap:8px;padding:8px 9px;border-radius:8px;font-size:12.8px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.3}
+.clnav a:hover{background:var(--soft);color:var(--accent)}
+.clnav a .cnt{color:var(--dim);font-weight:700;font-size:11.5px;flex:0 0 auto}
+.clmain{flex:1;overflow-y:auto;padding:0 0 80px}
+.phbanner{padding:22px 34px;color:#fff}
+.phbanner .pk{font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;opacity:.85}
+.phbanner h2{font-size:26px;font-weight:850;margin:6px 0 4px;letter-spacing:-.01em}
+.phbanner p{margin:0;font-size:14px;opacity:.9;line-height:1.5;max-width:720px}
+.clsec{scroll-margin-top:8px;padding:0 34px}
+.clsec h3{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent2);display:flex;align-items:center;gap:8px;margin:26px 0 8px}
+.clsec h3 .num{background:var(--accent2);color:#fff;border-radius:7px;min-width:24px;height:22px;display:inline-flex;align-items:center;justify-content:center;font-size:12px;padding:0 6px}
+.citem{display:flex;gap:12px;align-items:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px 15px;margin-bottom:8px}
+.citem .cbox{flex:0 0 auto;width:20px;height:20px;margin-top:2px;accent-color:var(--accent);cursor:pointer}
+.cbody{flex:1;min-width:0}
+.ctop{display:flex;gap:10px;align-items:flex-start}
+.cq{flex:1;font-size:14.5px;font-weight:700;line-height:1.4}
+.citem.done .cq{color:var(--dim);text-decoration:line-through}
+.cd{font-size:13px;color:var(--dim);line-height:1.55;margin-top:5px}
+.tag{flex:0 0 auto;font-size:10px;font-weight:800;letter-spacing:.04em;color:#fff;border-radius:6px;padding:3px 8px;text-transform:uppercase}
+.t-KEY,.t-BEFORE{background:#16a34a}.t-STAT,.t-DURING{background:#2563eb}.t-WATCH,.t-AFTER{background:#7c3aed}.t-CTX{background:#db2777}.t-ALWAYS{background:#ca8a04}
+.claside{flex:0 0 210px;border-left:1px solid var(--line);background:var(--surface);padding:16px 14px;overflow-y:auto}
+.claside .pl{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);margin-bottom:8px}
+.progwrap{margin-bottom:18px}
+.progbar{height:9px;background:var(--soft);border-radius:999px;overflow:hidden;margin:8px 0 6px}
+.progbar i{display:block;height:100%;background:var(--accent);border-radius:999px;transition:width .25s}
+.progtxt{font-size:13px;color:var(--dim);font-weight:600}
+.progbig{font-size:30px;font-weight:850;color:var(--ink);line-height:1}
+.legend{display:flex;flex-direction:column;gap:6px;margin:6px 0 16px}
+.legend .li{display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim)}
+.resetb{border:1px solid var(--line2);background:var(--bg);color:var(--dim);font:inherit;font-size:12px;font-weight:700;padding:7px 12px;border-radius:9px;cursor:pointer;width:100%}
+.resetb:hover{border-color:#db2777;color:#db2777}
+/* venues */
+.vtier{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:15px 18px;margin-bottom:11px;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.vtier .vh{display:flex;align-items:center;gap:12px}
+.vrank{flex:0 0 auto;width:34px;height:34px;border-radius:9px;background:var(--accent2);color:#fff;font-weight:850;font-size:15px;display:flex;align-items:center;justify-content:center}
+.vtier.top .vrank{background:var(--gold)}
+.vname{flex:1;font-size:16px;font-weight:800}
+.vscore{flex:0 0 auto;font-size:18px;font-weight:850;color:var(--accent)}
+.vex{font-size:13px;color:var(--dim);margin:8px 0 10px;line-height:1.5}
+.vbars{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:8px 16px}
+.vbar{font-size:11.5px;color:var(--dim)}
+.vbar .vl{display:flex;justify-content:space-between;margin-bottom:3px}
+.vbar .vt{height:6px;background:var(--soft);border-radius:999px;overflow:hidden}
+.vbar .vt i{display:block;height:100%;background:var(--accent);border-radius:999px}
+/* archive */
+.acat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;margin-bottom:12px;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.acat h3{margin:0 0 2px;font-size:17px;font-weight:800;display:flex;align-items:center;gap:9px}
+.acat .pp{font-size:13px;color:var(--dim);margin:2px 0 10px}
+.plist{display:flex;flex-direction:column;gap:8px}
+.prow{display:flex;gap:12px;padding:9px 0;border-top:1px solid var(--line);font-size:13.5px;align-items:flex-start}
+.prow:first-child{border-top:0}
+.prow .pc{flex:1;font-weight:650;color:var(--ink)}
+.prow .pw{flex:0 0 150px;color:var(--accent);font-weight:700;font-size:12.5px}
+.prow .pn{flex:0 0 40%;color:var(--dim);font-size:12.5px;line-height:1.45}
+.board{padding:18px;text-align:center}
+.board p{font-size:13.5px;color:var(--dim);max-width:700px;margin:0 auto 14px;line-height:1.6}
+.board img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 14px rgba(20,25,40,.1)}
+@media(max-width:900px){.mlayout{flex-direction:column;padding:22px 18px 80px}.mtoc{display:none}.clwrap{flex-direction:column;height:auto}.clnav,.claside{flex:0 0 auto;border:0;border-bottom:1px solid var(--line)}.prow{flex-direction:column;gap:3px}.prow .pw,.prow .pn{flex:0 0 auto}}
+</style></head><body>
+<div class="happ">
+ <header class="hbar"><div class="hbrand">🏏 Cricket</div><nav class="htabs" id="htabs"></nav></header>
+ <div class="stage" id="stage"></div>
+</div>
+<script>
+__VIZLIB__
+var LIVE=__LIVE__, HIST=__HIST__, VEN=__VENUES__, ARC=__ARCHIVE__, BOARD="__BOARD__";
+(function(){
+ var TABS=[["basics","🏏 Basics"],["live","📺 Watch Live"],["hist","🎞️ Historical"],["venues","📍 Where to Watch"],["archive","📚 Archive Guide"],["board","🗺️ Source Board"]];
+ var TK="cricket.tab.v1"; var tab="basics"; try{tab=localStorage.getItem(TK)||"basics";}catch(e){}
+ if(!TABS.some(function(t){return t[0]===tab;}))tab="basics";
+ var stage=document.getElementById("stage");
+ var CK={live:{},hist:{}};
+ try{CK.live=JSON.parse(localStorage.getItem("cricket.ck.live")||"{}");}catch(e){}
+ try{CK.hist=JSON.parse(localStorage.getItem("cricket.ck.hist")||"{}");}catch(e){}
+ function esc(t){return (t||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+ function fig(svg,cap){return '<figure class="fig">'+svg+(cap?'<figcaption>'+esc(cap)+'</figcaption>':'')+'</figure>';}
+ function sec(id,title,eyebrow,body){return '<section class="sec" id="'+id+'"><div class="eyebrow">'+esc(eyebrow)+'</div><h2>'+esc(title)+'</h2>'+body+'</section>';}
+ function renderTabs(){var el=document.getElementById("htabs");el.innerHTML="";TABS.forEach(function(t){var b=document.createElement("button");b.textContent=t[1];if(t[0]===tab)b.className="active";b.onclick=function(){show(t[0]);};el.appendChild(b);});}
+
+ /* -------- BASICS -------- */
+ function basicsHTML(){
+  var fmt=genSpectrum("Test — 5-day attrition","T20 — 3-hour chaos",[{label:"Test",pos:.08,color:C.a2},{label:"ODI",pos:.5,color:C.a1},{label:"T20",pos:.92,color:C.a3}],{title:"Same game, three tempos",w:800,h:270});
+  var innings=genTimeline([{when:"Ov 1–6",label:"Powerplay"},{when:"Ov 7–15",label:"Middle overs"},{when:"Ov 16–20",label:"Death overs"}],{w:800,h:240});
+  var batphase=genPyramid([{label:"100+ balls — accumulate freely"},{label:"30–100 — consolidate, rotate strike"},{label:"0–30 — survive, get your eye in"}],{w:720,h:420});
+  var bowl=genTree({label:"Bowling",children:[
+    {label:"Pace",children:[{label:"Swing"},{label:"Seam"},{label:"Yorker"},{label:"Bouncer"}]},
+    {label:"Spin",children:[{label:"Off-spin"},{label:"Leg-spin"},{label:"Googly"},{label:"Doosra"}]}
+  ]},{w:820,h:430,boxW:92,boxH:32});
+  var field=genConcentric([{label:"Close catchers",color:C.a3},{label:"Inner ring (save 1)",color:C.a1},{label:"Outfield (save 4)",color:C.a5}],{caption:"Field zones — the captain dials attack vs defence",w:560,h:520});
+  var pitch=genGraph([
+    {id:"p",x:.5,y:.08,shape:"round",w:160,h:36,label:"Read the pitch",fill:C.a1},
+    {id:"g",x:.18,y:.6,shape:"rect",w:150,h:48,label:"Green / seaming\n→ 3–4 pace",fill:C.a2},
+    {id:"d",x:.5,y:.75,shape:"rect",w:150,h:48,label:"Dusty turner\n→ 2–3 spin",fill:C.a4},
+    {id:"f",x:.82,y:.6,shape:"rect",w:150,h:48,label:"Flat / hard\n→ most accurate",fill:C.a5}
+  ],[{from:"p",to:"g"},{from:"p",to:"d"},{from:"p",to:"f"}],{w:700,h:470});
+  var fmtTable='<table class="gtable"><tr><th>Format</th><th>Length</th><th>Innings</th><th>The essence</th></tr>'
+   +'<tr><td><b>Test</b></td><td>5 days</td><td>2 per side</td><td>Patience, sessions, attrition. The purest examination.</td></tr>'
+   +'<tr><td><b>ODI</b></td><td>50 overs/side</td><td>1 per side</td><td>Powerplay → build → slog. Balance of attack and control.</td></tr>'
+   +'<tr><td><b>T20</b></td><td>20 overs/side</td><td>1 per side</td><td>Chess at 100km/h. Every over an event; one over can decide it.</td></tr></table>';
+  var roles='<div class="cardrow">'
+   +'<div class="gcard"><b>Openers</b><span>Aggressor or anchor — set the powerplay tone.</span></div>'
+   +'<div class="gcard"><b>Anchor (No.3)</b><span>Bats through the innings; the spine of the score.</span></div>'
+   +'<div class="gcard"><b>Finisher (6–7)</b><span>Strike rate 150+ in the death; wins the last 4 overs.</span></div>'
+   +'<div class="gcard"><b>Powerplay bowler</b><span>New ball, swing, early wickets = momentum.</span></div>'
+   +'<div class="gcard"><b>Middle-over spinner</b><span>Wicket-taker or stopper — builds dot-ball pressure.</span></div>'
+   +'<div class="gcard"><b>Death specialist</b><span>Yorkers under pressure; the biggest T20 differentiator.</span></div></div>';
+  var toc=[["formats","The three formats"],["innings","Phases of an innings"],["batting","How an innings is built"],["bowling","Types of bowling"],["field","Reading the field"],["pitch","Pitch → team selection"],["roles","The key roles"]]
+    .map(function(t){return '<a data-to="'+t[0]+'">'+esc(t[1])+'</a>';}).join("");
+  return '<div class="mlayout"><div class="mmain">'
+   +'<div class="hero"><div class="kick">Basics</div><h1>How cricket actually works</h1>'
+   +'<p class="sub">The mental model behind everything else in this section — formats, phases, roles, and how to read a pitch. Get these and the live-match checklists will feel obvious.</p></div>'
+   +sec("formats","The three formats","Same game, three tempos",'<p>The format changes <b>what you watch for</b>. A Test is five days of patience and sessions; a T20 is three hours where a single over can decide everything.</p>'+fmtTable+fig(fmt))
+   +sec("innings","Phases of an innings","The structure",'<p>Every limited-overs innings splits into three battles. Who wins each phase usually wins the match.</p>'+fig(innings,"T20 innings — powerplay, middle, death")+'<div class="callout"><b>Powerplay</b> (fielding restricted, attack) → <b>middle overs</b> (build or squeeze) → <b>death</b> (all-out hitting vs yorkers).</div>')
+   +sec("batting","How an innings is built","Batting phases",'<p>A batter earns the right to attack. From the board: survive first, consolidate second, then cash in.</p>'+fig(batphase,"Get your eye in → rotate → accumulate"))
+   +sec("bowling","Types of bowling","The two families",'<p>Two families, many weapons. Knowing the delivery lets you read the contest ball by ball.</p>'+fig(bowl))
+   +sec("field","Reading the field","Zones",'<p>The field is the captain\'s sentence. Slips and close catchers = hunting wickets; a spread ring = protecting the boundary.</p>'+fig(field))
+   +sec("pitch","Pitch → team selection","Conditions decide the XI",'<p>The single most predictive read. The surface dictates how many pacers vs spinners a smart captain picks.</p>'+fig(pitch))
+   +sec("roles","The key roles","Who does what",'<p>Learn the roles and every lineup tells a story before a ball is bowled.</p>'+roles)
+   +'</div><aside class="mtoc"><div class="tl">On this page</div>'+toc+'</aside></div>';
+ }
+
+ /* -------- CHECKLIST (live / hist) -------- */
+ function total(data){var n=0;data.phases.forEach(function(p){p.sections.forEach(function(s){n+=s.items.length;});});return n;}
+ function doneCount(data,store){var n=0;data.phases.forEach(function(p,pi){p.sections.forEach(function(s,si){s.items.forEach(function(it,ii){if(store[pi+"."+si+"."+ii])n++;});});});return n;}
+ var secCounter=0;
+ function checklistHTML(data,listId){
+  var store=CK[listId];
+  secCounter=0;
+  var nav="",main="";
+  data.phases.forEach(function(p,pi){
+   nav+='<div class="ph">'+esc(p.name)+'</div>';
+   main+='<div class="phbanner" style="background:'+p.accent+'"><div class="pk">'+esc(p.name)+'</div><h2>'+esc(p.title)+'</h2><p>'+esc(p.sub)+'</p></div>';
+   p.sections.forEach(function(s,si){
+    secCounter++; var sid=listId+"-s"+pi+"-"+si; var num=secCounter;
+    var done=0; s.items.forEach(function(it,ii){if(store[pi+"."+si+"."+ii])done++;});
+    nav+='<a data-to="'+sid+'"><span>'+esc(s.title)+'</span><span class="cnt" id="cnt-'+sid+'">'+done+'/'+s.items.length+'</span></a>';
+    main+='<div class="clsec" id="'+sid+'"><h3><span class="num">'+num+'</span>'+esc(s.title)+'</h3>';
+    s.items.forEach(function(it,ii){
+     var k=pi+"."+si+"."+ii; var ch=store[k]?true:false;
+     main+='<div class="citem'+(ch?" done":"")+'" data-sid="'+sid+'"><input type="checkbox" class="cbox" data-list="'+listId+'" data-k="'+k+'" data-sid="'+sid+'"'+(ch?" checked":"")+'>'
+       +'<div class="cbody"><div class="ctop"><span class="cq">'+esc(it.q)+'</span><span class="tag t-'+esc(it.t)+'">'+esc(it.t)+'</span></div><div class="cd">'+esc(it.d)+'</div></div></div>';
+    });
+    main+='</div>';
+   });
+  });
+  var tot=total(data), dn=doneCount(data,store), pct=tot?Math.round(dn/tot*100):0;
+  // legend from tags present
+  var tags={}; data.phases.forEach(function(p){p.sections.forEach(function(s){s.items.forEach(function(it){tags[it.t]=1;});});});
+  var legend=Object.keys(tags).map(function(t){return '<div class="li"><span class="tag t-'+t+'">'+t+'</span> '+tagName(t)+'</div>';}).join("");
+  var aside='<div class="progwrap"><div class="pl">Progress</div><div class="progbig" id="pbig-'+listId+'">'+pct+'%</div><div class="progbar"><i id="pbar-'+listId+'" style="width:'+pct+'%"></i></div><div class="progtxt" id="ptxt-'+listId+'">'+dn+' / '+tot+' done</div></div>'
+    +'<div class="pl">Tags</div><div class="legend">'+legend+'</div>'
+    +'<button class="resetb" data-reset="'+listId+'">Reset checklist</button>';
+  return '<div class="clwrap"><nav class="clnav" id="clnav">'+nav+'</nav><main class="clmain" id="clmain">'+main+'</main><aside class="claside">'+aside+'</aside></div>';
+ }
+ function tagName(t){return {KEY:"Key insight",STAT:"Stat to check",WATCH:"Watch live",CTX:"Context",BEFORE:"Before you watch",DURING:"During the match",AFTER:"After the match",ALWAYS:"Mindset"}[t]||t;}
+ function updateProg(listId,data){
+  var store=CK[listId], tot=total(data), dn=doneCount(data,store), pct=tot?Math.round(dn/tot*100):0;
+  var b=document.getElementById("pbig-"+listId),bar=document.getElementById("pbar-"+listId),tx=document.getElementById("ptxt-"+listId);
+  if(b)b.textContent=pct+"%"; if(bar)bar.style.width=pct+"%"; if(tx)tx.textContent=dn+" / "+tot+" done";
+  // per-section counts
+  data.phases.forEach(function(p,pi){p.sections.forEach(function(s,si){var sid=listId+"-s"+pi+"-"+si;var d=0;s.items.forEach(function(it,ii){if(store[pi+"."+si+"."+ii])d++;});var el=document.getElementById("cnt-"+sid);if(el)el.textContent=d+"/"+s.items.length;});});
+ }
+
+ /* -------- VENUES -------- */
+ function venuesHTML(){
+  var trade=genSpectrum("Cinema — best visuals","Sports bar — best memories",[{label:"Cinema",pos:.12,color:C.a2},{label:"Rooftop",pos:.42,color:C.a4},{label:"Sports bar",pos:.8,color:C.a1},{label:"Screening event",pos:.94,color:C.a3}],{title:"The core trade-off you discovered",w:800,h:270});
+  var ladder=genPyramid([{label:"Stadium (if you can)"},{label:"Screening event"},{label:"Sports bar"},{label:"Open-air fan park"},{label:"Cinema"},{label:"Home"}],{w:700,h:460});
+  function bar(lbl,v){return '<div class="vbar"><div class="vl"><span>'+lbl+'</span><span>'+v+'/10</span></div><div class="vt"><i style="width:'+(v*10)+'%"></i></div></div>';}
+  var tiers=VEN.tiers.map(function(t){return '<div class="vtier'+(t.rank<=2?" top":"")+'"><div class="vh"><div class="vrank">'+t.rank+'</div><div class="vname">'+esc(t.type)+'</div><div class="vscore">'+t.overall+'</div></div>'
+    +'<div class="vex">'+esc(t.examples)+'</div>'
+    +'<div class="vbars">'+bar("Crowd",t.crowd)+bar("Screen",t.screen)+bar("Comfort",t.comfort)+bar("Food",t.food)+bar("Social",t.social)+'</div></div>';}).join("");
+  var venues='<table class="gtable"><tr><th>Venue</th><th>Category</th><th>Why</th><th>Score</th></tr>'
+    +VEN.venues.map(function(v){return '<tr><td><b>'+esc(v.venue)+'</b></td><td>'+esc(v.category)+'</td><td style="color:#5b6572">'+esc(v.why)+'</td><td><b>'+v.score+'</b></td></tr>';}).join("")+'</table>';
+  var recs='<div class="cardrow">'+VEN.recs.map(function(r){return '<div class="gcard"><b>'+esc(r.who)+'</b><span>'+r.order.map(function(o,i){return (i+1)+". "+esc(o);}).join("<br>")+'</span></div>';}).join("")+'</div>';
+  var ideal=VEN.idealOrder.map(function(x){return esc(x);}).join(" &nbsp;›&nbsp; ");
+  var toc=[["trade","The trade-off"],["tiers","Venue tiers (NCR)"],["venues","Specific venues"],["ladder","Max-excitement ladder"],["recs","By scenario"]].map(function(t){return '<a data-to="'+t[0]+'">'+esc(t[1])+'</a>';}).join("");
+  return '<div class="mlayout"><div class="mmain">'
+   +'<div class="hero"><div class="kick">Where to Watch · NCR</div><h1>Big-match viewing, ranked</h1><p class="sub">'+esc(VEN.intro)+'</p></div>'
+   +sec("trade","The trade-off","Visuals vs memories",fig(trade)+'<div class="callout">Your ideal order: '+ideal+'.</div>')
+   +sec("tiers","Venue tiers","Ranked by overall experience",tiers)
+   +sec("venues","Specific NCR venues","Scored",venues)
+   +sec("ladder","Maximum-excitement ladder","If you want the loudest room",fig(ladder))
+   +sec("recs","By scenario","Pick for the occasion",recs)
+   +'</div><aside class="mtoc"><div class="tl">On this page</div>'+toc+'</aside></div>';
+ }
+
+ /* -------- ARCHIVE -------- */
+ function archiveHTML(){
+  var plan=genTimeline(ARC.plan.map(function(p){var m=p.phase.match(/\(([^)]+)\)/);return {when:(m?m[1]:p.phase.split("·")[0]).replace("Weeks","Wk").trim(),label:p.phase.split("·")[1]?p.phase.split("·")[1].split("(")[0].trim():p.phase};}),{w:820,h:250});
+  var cats=ARC.categories.map(function(c){
+    var rows=c.rows.map(function(r){return '<div class="prow"><div class="pc">'+esc(r.c)+'</div><div class="pw">'+esc(r.w)+'</div><div class="pn">'+esc(r.note)+'</div></div>';}).join("");
+    return '<div class="acat"><h3><span>'+c.ic+'</span>'+esc(c.n)+'</h3><div class="pp">'+esc(c.purpose)+'</div><div class="plist">'+rows+'</div></div>';
+  }).join("");
+  var plats='<div class="cardrow">'+ARC.platforms.map(function(p){return '<div class="gcard"><b>'+esc(p.n)+' <span style="color:#2f6d4f;font-size:12px">'+esc(p.cost)+'</span></b><span><b style="color:#1c2431">'+esc(p.best)+'</b><br>'+esc(p.note)+'</span></div>';}).join("")+'</div>';
+  var planCards=ARC.plan.map(function(p){return '<div class="acat"><h3>'+esc(p.phase)+'</h3><div class="plist">'+p.steps.map(function(s){return '<div class="prow"><div class="pc">'+esc(s)+'</div></div>';}).join("")+'</div></div>';}).join("");
+  var qs='<div class="cardrow">'+ARC.quickstart.map(function(s,i){return '<div class="gcard"><b>Step '+(i+1)+'</b><span>'+esc(s)+'</span></div>';}).join("")+'</div>';
+  var toc=[["cats","Categories"],["platforms","Platforms"],["plan","12-week plan"],["quick","Quick start"]].map(function(t){return '<a data-to="'+t[0]+'">'+esc(t[1])+'</a>';}).join("");
+  return '<div class="mlayout"><div class="mmain">'
+   +'<div class="hero"><div class="kick">Archive Guide</div><h1>Build a cricket archive</h1><p class="sub">'+esc(ARC.intro)+'</p></div>'
+   +sec("cats","What to watch & where","Purpose-based categories",cats)
+   +sec("platforms","Platform reference","Where it lives",plats)
+   +sec("plan","A systematic plan","12 weeks + ongoing",fig(plan,"Foundation → deep dive → documentaries → ongoing")+planCards)
+   +sec("quick","Quick start today","Three sources, in order",qs)
+   +'</div><aside class="mtoc"><div class="tl">On this page</div>'+toc+'</aside></div>';
+ }
+
+ function boardHTML(){return '<div class="board"><p>Your original Cricket Basics board — the hand-drawn map this section was built from. Everything here has been structured and expanded across the tabs.</p>'+(BOARD?'<img src="data:image/jpeg;base64,'+BOARD+'" alt="Cricket basics board">':'<p>Board unavailable.</p>')+'</div>';}
+
+ /* -------- render / tabs -------- */
+ function show(key){
+  tab=key; try{localStorage.setItem(TK,key);}catch(e){}
+  renderTabs();
+  if(key==="live"||key==="hist"){ stage.className="stage fill"; stage.innerHTML=checklistHTML(key==="live"?LIVE:HIST,key); }
+  else { stage.className="stage"; stage.scrollTop=0;
+   if(key==="venues")stage.innerHTML=venuesHTML();
+   else if(key==="archive")stage.innerHTML=archiveHTML();
+   else if(key==="board")stage.innerHTML=boardHTML();
+   else stage.innerHTML=basicsHTML();
+  }
+ }
+ stage.addEventListener("click",function(e){var t=e.target;
+   var toc=t.closest?t.closest("[data-to]"):null; if(toc){var el=document.getElementById(toc.getAttribute("data-to"));if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return;}
+   var rs=t.closest?t.closest("[data-reset]"):null; if(rs){var lid=rs.getAttribute("data-reset");CK[lid]={};try{localStorage.setItem("cricket.ck."+lid,"{}");}catch(_){}show(lid);return;}
+ });
+ stage.addEventListener("change",function(e){var t=e.target; if(!t.classList||!t.classList.contains("cbox"))return;
+   var lid=t.getAttribute("data-list"),k=t.getAttribute("data-k");
+   if(t.checked)CK[lid][k]=1; else delete CK[lid][k];
+   try{localStorage.setItem("cricket.ck."+lid,JSON.stringify(CK[lid]));}catch(_){}
+   var item=t.closest(".citem"); if(item)item.classList.toggle("done",t.checked);
+   updateProg(lid, lid==="live"?LIVE:HIST);
+ });
+ renderTabs(); show(tab);
+})();
+</script></body></html>

@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performance Anxiety — The Structural Answer</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--blue:#3a6b8c;--plum:#6d4467;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 8% 3%,rgba(193,80,46,.08),transparent 34%),
+      radial-gradient(circle at 94% 98%,rgba(47,107,99,.08),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:48px 24px 90px;}
+
+  header{text-align:center;margin-bottom:36px;}
+  .crumb{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.04em;margin-bottom:16px;}
+  .crumb b{color:var(--teal);}
+  .kicker{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:700;color:var(--rust-deep);border:1.5px solid var(--rust);padding:8px 18px;border-radius:8px;margin-bottom:22px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.1rem,5.6vw,4.2rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:18px auto 0;font-size:clamp(1.04rem,2vw,1.26rem);color:var(--muted);}
+  .sub b{color:var(--rust-deep);}
+
+  /* CHAIN REACTION */
+  .chain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:6px;max-width:900px;margin:26px auto 0;}
+  .ch{background:var(--card);border:2.5px solid var(--ink);border-radius:10px;padding:8px 13px;font-family:'Fraunces',serif;font-weight:600;font-size:.88rem;box-shadow:3px 3px 0 var(--ink);text-align:center;}
+  .ch.t1{background:var(--rust);color:#fff;border-color:var(--rust);}
+  .ch.t2{background:rgba(193,80,46,.15);border-color:var(--rust);}
+  .ch.t3{background:rgba(193,80,46,.25);border-color:var(--rust);}
+  .ch.t4{background:rgba(193,80,46,.4);border-color:var(--rust-deep);color:var(--rust-deep);}
+  .ch.t5{background:var(--rust-deep);color:#fff;border-color:var(--rust-deep);}
+  .ch.t6{background:var(--ink);color:#fff;}
+  .cha{color:var(--rust);font-weight:700;font-size:1rem;}
+
+  section{margin-bottom:48px;max-width:980px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.55rem,4vw,2.3rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:700px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* WHAT'S HAPPENING INSIDE */
+  .brain-split{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px;}
+  @media(max-width:600px){.brain-split{grid-template-columns:1fr;}}
+  .bs{border-radius:16px;padding:20px 24px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .bs.threat{background:rgba(193,80,46,.08);border-color:var(--rust);}
+  .bs.think{background:rgba(47,107,99,.08);border-color:var(--teal);box-shadow:5px 5px 0 var(--teal);}
+  .bs .bsl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .bs.threat .bsl{color:var(--rust-deep);}.bs.think .bsl{color:var(--teal);}
+  .bs h4{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;margin-bottom:6px;}
+  .bs.threat h4{color:var(--rust-deep);}.bs.think h4{color:var(--teal);}
+  .bs p{font-size:.88rem;color:var(--muted);margin-bottom:8px;}
+  .bs .items{display:flex;flex-direction:column;gap:4px;}
+  .bs .bitem{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:var(--card);border-radius:7px;padding:5px 11px;}
+  .brain-note{margin-top:0;background:rgba(193,80,46,.1);border:2px dashed var(--rust);border-radius:14px;padding:14px 22px;text-align:center;font-size:.98rem;color:var(--rust-deep);}
+  .brain-note b{font-family:'Fraunces',serif;font-style:italic;}
+
+  /* CONFIDENCE TYPES */
+  .conf{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:600px){.conf{grid-template-columns:1fr;}}
+  .cv{border-radius:16px;padding:20px 24px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .cv.fragile{background:rgba(193,80,46,.08);border-color:var(--rust);}
+  .cv.solid{background:rgba(47,107,99,.08);border-color:var(--teal);box-shadow:5px 5px 0 var(--teal);}
+  .cv .cvl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .cv.fragile .cvl{color:var(--rust-deep);}.cv.solid .cvl{color:var(--teal);}
+  .cv h4{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;margin-bottom:6px;}
+  .cv.fragile h4{color:var(--rust-deep);}.cv.solid h4{color:var(--teal);}
+  .cv p{font-size:.88rem;color:var(--muted);margin-bottom:8px;}
+  .cv .foundation{font-family:'JetBrains Mono',monospace;font-size:.78rem;border-radius:7px;padding:6px 12px;font-weight:700;}
+  .cv.fragile .foundation{background:rgba(193,80,46,.14);color:var(--rust-deep);}
+  .cv.solid .foundation{background:rgba(47,107,99,.14);color:var(--teal);}
+  .conf-note{margin-top:14px;text-align:center;font-family:'Fraunces',serif;font-size:1.1rem;}
+  .conf-note b{color:var(--rust-deep);}.conf-note em{color:var(--teal);font-style:italic;}
+
+  /* THREE ERRORS */
+  .errors{display:flex;flex-direction:column;gap:10px;}
+  .err{display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:start;border-radius:14px;padding:15px 20px;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);background:var(--card);}
+  .err .ebadge{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:5px 10px;border-radius:6px;white-space:nowrap;background:var(--rust);color:#fff;}
+  .err .ebody h4{font-family:'Fraunces',serif;font-size:1.05rem;font-weight:600;margin-bottom:4px;color:var(--rust-deep);}
+  .err .ebody p{font-size:.88rem;color:var(--muted);}
+  .err .ebody .efix{margin-top:8px;font-family:'JetBrains Mono',monospace;font-size:.76rem;background:rgba(47,107,99,.1);border-radius:7px;padding:6px 12px;color:var(--teal);font-weight:600;}
+
+  /* THREE TIMESCALES */
+  .timescales{display:flex;flex-direction:column;gap:14px;}
+  .ts-block{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .ts-block .tstop{padding:13px 24px;color:#fff;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .ts-block .tsn{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:6px;white-space:nowrap;}
+  .ts-block .tsname{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;}
+  .ts-block .tstag{font-family:'JetBrains Mono',monospace;font-size:.6rem;opacity:.9;margin-left:auto;}
+  .ts-block .tsbody{padding:16px 24px;background:var(--card);}
+  .ts-block .tsdesc{font-size:.92rem;color:var(--muted);margin-bottom:10px;}
+  .ts-block .tsdesc b{color:var(--rust-deep);}
+  .ts-block .tstools{display:flex;flex-direction:column;gap:6px;}
+  .ts-block .tstool{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;}
+  .ts-block .tslabel{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:5px;white-space:nowrap;margin-top:2px;}
+  .ts-block .tslabel.do{background:rgba(47,107,99,.15);color:var(--teal);}
+  .ts-block .tslabel.why{background:rgba(217,164,65,.2);color:#8a6512;}
+  .ts-block .tstext{font-size:.88rem;color:var(--muted);}
+  .ts1 .tstop{background:var(--rust-deep);}
+  .ts2 .tstop{background:var(--blue);}
+  .ts3 .tstop{background:var(--plum);}
+
+  /* IDENTITY SHIFT */
+  .shift{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;}
+  @media(max-width:600px){.shift{grid-template-columns:1fr;}}
+  .sh{border-radius:16px;padding:20px 24px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .sh.from{background:rgba(193,80,46,.08);border-color:var(--rust);}
+  .sh.to{background:rgba(47,107,99,.08);border-color:var(--teal);box-shadow:5px 5px 0 var(--teal);}
+  .sh .shl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .sh.from .shl{color:var(--rust-deep);}.sh.to .shl{color:var(--teal);}
+  .sh h4{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;margin-bottom:6px;}
+  .sh.from h4{color:var(--rust-deep);}.sh.to h4{color:var(--teal);}
+  .sh p{font-size:.88rem;color:var(--muted);}
+  .sh-arrow{font-family:'Fraunces',serif;font-weight:900;color:var(--rust);font-size:1.8rem;text-align:center;}
+  @media(max-width:600px){.sh-arrow{transform:rotate(90deg);}}
+  .shift-note{margin-top:14px;background:var(--ink);color:var(--paper);border-radius:14px;padding:16px 24px;text-align:center;}
+  .shift-note p{font-size:.98rem;color:#e8dcc8;}
+  .shift-note b{color:var(--gold);}
+
+  /* REPS TRACKER */
+  .reps{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:22px 26px;box-shadow:5px 5px 0 var(--ink);}
+  .reps-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;margin-bottom:16px;text-align:center;}
+  .rep-row{display:grid;grid-template-columns:160px 1fr auto;gap:12px;align-items:center;margin-bottom:10px;}
+  @media(max-width:600px){.rep-row{grid-template-columns:1fr;gap:4px;}}
+  .rep-label{font-size:.86rem;color:var(--muted);font-style:italic;}
+  .rep-bar-wrap{background:var(--paper-2);border-radius:30px;height:22px;overflow:hidden;}
+  .rep-bar{height:100%;border-radius:30px;display:flex;align-items:center;padding:0 10px;font-family:'JetBrains Mono',monospace;font-size:.68rem;font-weight:700;color:#fff;}
+  .rep-bar.r0{background:rgba(193,80,46,.35);width:10%;}
+  .rep-bar.r1{background:rgba(193,80,46,.55);width:30%;}
+  .rep-bar.r2{background:rgba(193,80,46,.75);width:55%;}
+  .rep-bar.r3{background:var(--teal);width:80%;}
+  .rep-bar.r4{background:var(--teal);width:100%;opacity:.85;}
+  .rep-result{font-family:'JetBrains Mono',monospace;font-size:.72rem;color:var(--muted);white-space:nowrap;}
+  .rep-result.ok{color:var(--teal);font-weight:700;}
+  .reps-sub{font-size:.82rem;color:var(--muted);text-align:center;margin-top:14px;font-style:italic;}
+
+  /* CLOSING */
+  .closing{background:var(--ink);color:var(--paper);border-radius:18px;padding:28px 34px;text-align:center;}
+  .cl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;}
+  .cbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3.5vw,2.1rem);line-height:1.05;margin-bottom:16px;}
+  .cbig em{font-style:italic;color:var(--rust);}
+  .cchain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;}
+  .cc{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:7px 14px;font-family:'Fraunces',serif;font-weight:600;font-size:.9rem;}
+  .cca{color:var(--gold);font-weight:700;}
+  .cbottom{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px;}
+  .cb{font-family:'JetBrains Mono',monospace;font-size:.78rem;border-radius:6px;padding:6px 12px;}
+  .cb.hard{background:rgba(193,80,46,.2);color:#e8a070;}
+  .cb.real{background:rgba(47,107,99,.2);color:#7fd4b8;}
+  .cb.gold{background:rgba(217,164,65,.2);color:var(--gold);}
+
+  footer{text-align:center;margin-top:40px;font-family:'Fraunces',serif;font-style:italic;font-size:1.1rem;color:var(--muted);padding-top:24px;border-top:1px solid var(--line);}
+  footer p{font-family:'Spline Sans',sans-serif;font-style:normal;font-size:.9rem;margin-top:10px;}
+</style>
+<div class="wrap">
+
+<header>
+  <div class="crumb">mental model · <b>psychology</b> · performance</div>
+  <div class="kicker">Performance Anxiety</div>
+  <h1>Why your brain<br><em>misfires</em> under pressure.</h1>
+  <p class="sub">This is not a character flaw. It's a specific psychological mechanism — <b>performance anxiety triggered by social evaluation</b> — and it has a structural answer.</p>
+  <div class="chain">
+    <span class="ch t1">comparison threat</span>
+    <span class="cha">→</span>
+    <span class="ch t2">social danger signal</span>
+    <span class="cha">→</span>
+    <span class="ch t3">amygdala fires</span>
+    <span class="cha">→</span>
+    <span class="ch t4">adrenaline floods</span>
+    <span class="cha">→</span>
+    <span class="ch t5">prefrontal shuts down</span>
+    <span class="cha">→</span>
+    <span class="ch t6">shame loop</span>
+  </div>
+</header>
+
+<!-- WHAT'S HAPPENING INSIDE -->
+<section>
+  <h2 class="blocktitle">The Neurological Hijack</h2>
+  <div class="blocksub">Two brain systems. One kills the other. Understanding this is the first move.</div>
+  <div class="blockrule"></div>
+  <div class="brain-split">
+    <div class="bs threat">
+      <div class="bsl">amygdala · threat detector</div>
+      <h4>Fires the moment it sees danger</h4>
+      <p>A skilled friend walks in. A bad streak begins. Someone is watching. The amygdala reads this as <em>social danger</em> — same system that would save you from a lion. It cannot tell the difference.</p>
+      <div class="items">
+        <div class="bitem">heart pounds</div>
+        <div class="bitem">hands shake</div>
+        <div class="bitem">thoughts scatter</div>
+        <div class="bitem">prefrontal cortex: offline</div>
+      </div>
+    </div>
+    <div class="bs think">
+      <div class="bsl">prefrontal cortex · the thinking brain</div>
+      <h4>Where your strategy lives</h4>
+      <p>Technique. Focus. Your carefully built approach. All of it lives here. This is the brain region that fear shuts down first — which is why the better your strategy, the more you lose when fear arrives.</p>
+      <div class="items">
+        <div class="bitem">technique ← lives here</div>
+        <div class="bitem">focus ← lives here</div>
+        <div class="bitem">strategy ← lives here</div>
+        <div class="bitem">all of it ← cut off under threat</div>
+      </div>
+    </div>
+  </div>
+  <div class="brain-note">You're not facing a lion. You're bowling. <b>The system is misfiring.</b> This is not weakness — it's evolutionary machinery deployed in the wrong context.</div>
+</section>
+
+<!-- CONFIDENCE TYPES -->
+<section>
+  <h2 class="blocktitle">Two Kinds of Confidence</h2>
+  <div class="blocksub">Yours is knowledge-dependent. That's not a weakness — it's just a more fragile foundation than you need.</div>
+  <div class="blockrule"></div>
+  <div class="conf">
+    <div class="cv fragile">
+      <div class="cvl">performance-based · yours right now</div>
+      <h4>Conditional confidence</h4>
+      <p>You're confident when things are going well. When strategy is working, when the score is good, when you're ahead. The moment the condition breaks — a bad streak, a skilled observer — the confidence collapses.</p>
+      <div class="foundation">foundation: "I am good when I perform well"</div>
+    </div>
+    <div class="cv solid">
+      <div class="cvl">identity-based · what you're building toward</div>
+      <h4>Unconditional confidence</h4>
+      <p>You see yourself as a player — someone who competes and grows — regardless of the current score. Bad streaks are data, not identity. Skilled friends are benchmarks, not threats.</p>
+      <div class="foundation">foundation: "I am someone who shows up and learns"</div>
+    </div>
+  </div>
+  <div class="conf-note">The same mind that made you <b>research strategy and actually improve</b> is the mind creating the anxiety. <em>Same engine. Different gear.</em></div>
+</section>
+
+<!-- THREE ERRORS -->
+<section>
+  <h2 class="blocktitle">The Three Specific Errors You're Making</h2>
+  <div class="blocksub">Named, fixable. Not character — mechanics.</div>
+  <div class="blockrule"></div>
+  <div class="errors">
+    <div class="err">
+      <span class="ebadge">ERROR 1</span>
+      <div class="ebody">
+        <h4>Internal focus — monitoring yourself instead of playing</h4>
+        <p>"My pant is too tight, my body is stiff, what happened today" — this is called internal focus. High performers focus externally: on the target, the pin, the track. The moment you shift inward, execution collapses. This is established in sports science, not opinion.</p>
+        <div class="efix">fix → one external anchor: the target, the mark on the lane, the pin. that's your whole world for those 10 seconds.</div>
+      </div>
+    </div>
+    <div class="err">
+      <span class="ebadge">ERROR 2</span>
+      <div class="ebody">
+        <h4>Treating a bad streak as evidence, not noise</h4>
+        <p>Three bad balls becomes "I can't perform today." That's your brain pattern-matching too aggressively on too little data. Three bad shots is data. It is not your identity. It is not a trend. It is noise.</p>
+        <div class="efix">fix → "that was three data points, not a verdict." reset to the next ball. not the next game — the next ball.</div>
+      </div>
+    </div>
+    <div class="err">
+      <span class="ebadge">ERROR 3</span>
+      <div class="ebody">
+        <h4>Ego in the game — stakes shifted from play to proof</h4>
+        <p>The skilled friend arrived and suddenly it wasn't bowling anymore — it was a test of your worth. That's when fear becomes paralyzing. The activity didn't change. What it meant changed. And the ego under threat shuts down the prefrontal cortex faster than anything.</p>
+        <div class="efix">fix → notice when the question shifts from "how do I play" to "what does this say about me" — that's the hijack happening. name it.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- THREE TIMESCALES -->
+<section>
+  <h2 class="blocktitle">How You Actually Build the Heart</h2>
+  <div class="blocksub">Three timescales. Each one addresses a different layer of the problem.</div>
+  <div class="blockrule"></div>
+  <div class="timescales">
+
+    <div class="ts-block ts1">
+      <div class="tstop">
+        <span class="tsn">TIMESCALE 1</span>
+        <span class="tsname">In the Moment</span>
+        <span class="tstag">seconds · physiological</span>
+      </div>
+      <div class="tsbody">
+        <div class="tsdesc">Fear has arrived. The amygdala fired. You have <b>15–20 seconds</b> to buy yourself back some prefrontal function.</div>
+        <div class="tstools">
+          <div class="tstool">
+            <span class="tslabel do">do</span>
+            <div class="tstext"><b>One slow exhale</b> — long out-breath activates your parasympathetic system, the brake on adrenaline. Not a deep breath in. A slow breath out. Physiologically validated.</div>
+          </div>
+          <div class="tstool">
+            <span class="tslabel do">do</span>
+            <div class="tstext"><b>Shrink the task ruthlessly</b> — not "bowl well today." Just this one swing, this one release. Nothing else exists. Not the score, not the friend watching, not the last three balls.</div>
+          </div>
+          <div class="tstool">
+            <span class="tslabel do">do</span>
+            <div class="tstext"><b>Accept the fear, don't fight it</b> — "yes I'm nervous, that's fine, let's go" is measurably more effective than trying not to be nervous. Resistance amplifies. Acceptance deflates.</div>
+          </div>
+          <div class="tstool">
+            <span class="tslabel why">why</span>
+            <div class="tstext">Fighting fear uses the same prefrontal bandwidth you need to play. Accepting it frees that bandwidth for execution.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ts-block ts2">
+      <div class="tstop">
+        <span class="tsn">TIMESCALE 2</span>
+        <span class="tsname">Between Sessions</span>
+        <span class="tstag">weeks · amygdala retraining</span>
+      </div>
+      <div class="tsbody">
+        <div class="tsdesc">The amygdala treats social evaluation as danger because it has learned to. You need to <b>retrain it through deliberate exposure</b> — not avoidance.</div>
+        <div class="tstools">
+          <div class="tstool">
+            <span class="tslabel do">do</span>
+            <div class="tstext"><b>Deliberate exposure, by choice</b> — put yourself in evaluation situations on purpose, with low actual stakes. Go kart again, knowing you'll be scared. Volunteer to go first. Each time you survive, you add an entry to the library of "this didn't kill me."</div>
+          </div>
+          <div class="tstool">
+            <span class="tslabel do">do</span>
+            <div class="tstext"><b>Play with better people regularly</b> — not occasionally. The shock of skill difference needs to become background noise, not a trigger. Frequency is the mechanism, not intensity.</div>
+          </div>
+          <div class="tstool">
+            <span class="tslabel why">why</span>
+            <div class="tstext">The amygdala updates its threat models through repeated safe exposure. It's not insight that changes it — it's reps. You cannot think your way out of a fear that was trained in by experience. You have to experience your way out.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="ts-block ts3">
+      <div class="tstop">
+        <span class="tsn">TIMESCALE 3</span>
+        <span class="tsname">Long Term</span>
+        <span class="tstag">months to years · identity shift</span>
+      </div>
+      <div class="tsbody">
+        <div class="tsdesc">The real work. Moving from <b>performance-based</b> to <b>identity-based</b> confidence. This cannot be read into existence. It only happens one way.</div>
+        <div class="tstools">
+          <div class="tstool">
+            <span class="tslabel do">do</span>
+            <div class="tstext"><b>Accumulate reps of showing up scared and surviving</b> — even badly. Each time you perform under fear and don't die, you add to the evidence base that you are someone who can do this. The identity shifts from the evidence, not the decision.</div>
+          </div>
+          <div class="tstool">
+            <span class="tslabel why">why</span>
+            <div class="tstext">Identity doesn't change from reading about it, deciding to change it, or understanding the mechanism. It changes from doing the thing scared, badly, repeatedly — and watching yourself survive. The "I" that sees itself differently is built from accumulated experience, not insight.</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- IDENTITY SHIFT -->
+<section>
+  <h2 class="blocktitle">The Identity Shift, Stated Clearly</h2>
+  <div class="blocksub">This is the real work. Everything else is preparation for this.</div>
+  <div class="blockrule"></div>
+  <div class="shift">
+    <div class="sh from">
+      <div class="shl">where you are now</div>
+      <h4>"I perform well therefore I am good"</h4>
+      <p>Confidence is downstream of execution. Bad streak → confidence collapses. Skilled observer → threat. Everything depends on the current result.</p>
+    </div>
+    <div class="sh-arrow">→</div>
+    <div class="sh to">
+      <div class="shl">where you're going</div>
+      <h4>"I am someone who competes and grows"</h4>
+      <p>Confidence is upstream of execution. Bad streak → data, reset. Skilled observer → benchmark. Identity holds regardless of the current result.</p>
+    </div>
+  </div>
+  <div class="shift-note">
+    <p>The shift doesn't happen from deciding to make it. It happens from <b>accumulating reps of showing up scared and surviving</b> — even performing badly — until the evidence base for the new identity becomes undeniable.</p>
+  </div>
+</section>
+
+<!-- REPS TRACKER -->
+<section>
+  <h2 class="blocktitle">Building the "I Survived" Library</h2>
+  <div class="blocksub">The people going full throttle aren't braver. They've just added more entries to this library.</div>
+  <div class="blockrule"></div>
+  <div class="reps">
+    <div class="reps-title">How the amygdala updates its threat model — through reps, not insight</div>
+    <div class="rep-row">
+      <div class="rep-label">0 reps of scary thing</div>
+      <div class="rep-bar-wrap"><div class="rep-bar r0">threat: maximum</div></div>
+      <div class="rep-result">paralysis</div>
+    </div>
+    <div class="rep-row">
+      <div class="rep-label">5 reps, survived each</div>
+      <div class="rep-bar-wrap"><div class="rep-bar r1">threat: high</div></div>
+      <div class="rep-result">still scary, functioning</div>
+    </div>
+    <div class="rep-row">
+      <div class="rep-label">20 reps, survived each</div>
+      <div class="rep-bar-wrap"><div class="rep-bar r2">threat: moderate</div></div>
+      <div class="rep-result">nervous, not hijacked</div>
+    </div>
+    <div class="rep-row">
+      <div class="rep-label">50 reps, survived each</div>
+      <div class="rep-bar-wrap"><div class="rep-bar r3">threat: low</div></div>
+      <div class="rep-result">manageable, present</div>
+    </div>
+    <div class="rep-row">
+      <div class="rep-label">100+ reps, survived each</div>
+      <div class="rep-bar-wrap"><div class="rep-bar r4">threat: background noise</div></div>
+      <div class="rep-result ok">this is what "brave" looks like</div>
+    </div>
+    <div class="reps-sub">Bravery is not the absence of fear. It's a large enough library of "I survived" that the fear no longer hijacks the prefrontal cortex.</div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section style="margin-bottom:0;">
+  <div class="closing">
+    <div class="cl">// what's actually true about you</div>
+    <div class="cbig">Nothing is wrong with you.<br>The engine just needs <em>redirecting.</em></div>
+    <div class="cchain">
+      <span class="cc">name the hijack</span><span class="cca">→</span>
+      <span class="cc">one exhale</span><span class="cca">→</span>
+      <span class="cc">shrink the task</span><span class="cca">→</span>
+      <span class="cc">add a rep</span><span class="cca">→</span>
+      <span class="cc">survive</span><span class="cca">→</span>
+      <span class="cc">update the library</span>
+    </div>
+    <div class="cbottom">
+      <span class="cb hard">✗ you cannot think your way out of an experientially trained fear</span>
+      <span class="cb hard">✗ bravery is not a trait you have or don't have</span>
+      <span class="cb real">✓ the same engine driving anxiety drove your strategic improvement</span>
+      <span class="cb real">✓ each rep of surviving changes the amygdala's threat model</span>
+      <span class="cb gold">✦ the people going full throttle just have a bigger library</span>
+      <span class="cb gold">✦ you can build the same library — you just need to start adding entries</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <em>The threat system misfired. The system itself is not broken.</em>
+  <p>You built strategy and improved dramatically — that's the same mind, same drive, same engine. The anxiety and the growth come from identical roots. You don't need a different mind. You need more reps of discovering that the scary thing doesn't actually kill you. Start adding entries. The library builds itself from there.</p>
+</footer>
+
+</div>
+</html>

@@ -1,0 +1,354 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Comedian's Irony Lens — Mental Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--plum:#6d4467;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 10% 3%,rgba(217,164,65,.10),transparent 36%),
+      radial-gradient(circle at 92% 98%,rgba(109,68,103,.10),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:38px;}
+  .kicker{display:inline-block;font-size:.82rem;letter-spacing:.3em;text-transform:uppercase;
+    font-weight:600;color:var(--rust-deep);border:1.5px solid var(--rust);padding:9px 20px;border-radius:40px;margin-bottom:24px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.3rem,6vw,4.5rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:20px auto 0;font-size:clamp(1.05rem,2vw,1.28rem);color:var(--muted);}
+  .premise{max-width:720px;margin:24px auto 0;background:var(--card);border:2px dashed var(--rust);border-radius:14px;padding:16px 24px;font-size:1.05rem;}
+  .premise strong{color:var(--rust-deep);}
+
+  /* SECTION */
+  section{margin-bottom:54px;max-width:1020px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.6rem,4vw,2.4rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:680px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* THE GAP (hero) */
+  .gaps{display:flex;flex-direction:column;gap:14px;}
+  .gaprow{display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;}
+  @media(max-width:680px){.gaprow{grid-template-columns:1fr;}}
+  .gside{border-radius:16px;padding:20px 24px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center;}
+  .gside .gl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .gside h4{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;}
+  .gside.expect{background:rgba(47,107,99,.08);border-color:var(--teal);}
+  .gside.expect .gl{color:var(--teal);}
+  .gside.real{background:rgba(193,80,46,.08);border-color:var(--rust);}
+  .gside.real .gl{color:var(--rust);}
+  .gapmid{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;}
+  .gapmid .gword{font-family:'Fraunces',serif;font-weight:900;font-style:italic;color:var(--gold);font-size:1.3rem;}
+  .gapmid .gsign{font-family:'JetBrains Mono',monospace;color:var(--rust);font-size:1.4rem;font-weight:700;}
+  @media(max-width:680px){.gapmid{flex-direction:row;gap:10px;}}
+  .gap-verdict{text-align:center;margin-top:18px;background:var(--ink);color:var(--paper);border-radius:14px;padding:18px 26px;box-shadow:6px 6px 0 var(--gold);}
+  .gap-verdict .gv{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;}
+  .gap-verdict .gv em{color:var(--gold);font-style:italic;}
+  .gap-verdict p{color:#cdbfa9;font-size:1rem;margin-top:8px;}
+
+  /* IRONY DETECTOR */
+  .detector{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media(max-width:760px){.detector{grid-template-columns:1fr;}}
+  .dq{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:20px 22px;box-shadow:5px 5px 0 var(--ink);}
+  .dq .dqn{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#fff;background:var(--plum);width:30px;height:30px;border-radius:8px;display:flex;align-items:center;justify-content:center;margin-bottom:10px;}
+  .dq h4{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;margin-bottom:6px;}
+  .dq p{font-size:.94rem;color:var(--muted);}
+  .dq p b{color:var(--rust-deep);}
+  .worked{background:var(--ink);color:var(--paper);border-radius:16px;padding:24px 30px;margin-top:18px;box-shadow:6px 6px 0 var(--rust);}
+  .worked .wl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;}
+  .worked .wtitle{font-family:'Fraunces',serif;font-weight:900;font-size:1.5rem;margin-bottom:14px;}
+  .worked .wgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;}
+  @media(max-width:680px){.worked .wgrid{grid-template-columns:1fr;}}
+  .worked .wc{background:rgba(255,255,255,.07);border-radius:10px;padding:14px 16px;}
+  .worked .wc .wcl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;color:var(--gold);margin-bottom:5px;}
+  .worked .wc p{font-size:.96rem;color:#e8dcc8;}
+  .worked .wpunch{margin-top:14px;font-family:'Fraunces',serif;font-style:italic;font-size:1.15rem;color:#ffe3b0;text-align:center;}
+
+  /* FIVE SOURCES */
+  .source{background:var(--card);border:3px solid var(--ink);border-radius:18px;overflow:hidden;box-shadow:6px 6px 0 var(--ink);margin-bottom:16px;}
+  .source .stop{padding:16px 26px;color:#fff;display:flex;align-items:center;gap:16px;flex-wrap:wrap;}
+  .source .sn{font-family:'Fraunces',serif;font-weight:900;font-size:1.6rem;opacity:.9;}
+  .source .vs{display:flex;align-items:center;gap:10px;flex-wrap:wrap;}
+  .source .va,.source .vb{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;}
+  .source .vmid{font-family:'JetBrains Mono',monospace;font-size:.8rem;opacity:.8;font-weight:700;}
+  .source .stag{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:6px;margin-left:auto;}
+  .src1 .stop{background:var(--rust);}.src2 .stop{background:var(--teal);}.src3 .stop{background:var(--plum);}.src4 .stop{background:var(--olive);}.src5 .stop{background:var(--gold);color:var(--ink);}
+  .src5 .stop .stag{background:rgba(28,24,20,.16);}
+  .source .sbody{padding:18px 26px;}
+  .source .sbody > p{font-size:1.02rem;margin-bottom:12px;}
+  .source .examples{display:flex;flex-direction:column;gap:7px;margin-bottom:12px;}
+  .source .ex{background:var(--paper-2);border-radius:9px;padding:9px 14px;font-size:.98rem;display:flex;gap:10px;align-items:baseline;}
+  .source .ex::before{content:"▸";color:var(--rust);font-weight:700;flex-shrink:0;}
+  .source .ask{background:rgba(217,164,65,.16);border-left:4px solid var(--gold);border-radius:8px;padding:12px 16px;font-size:.98rem;}
+  .source .ask .askl{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;color:var(--rust-deep);font-weight:700;margin-bottom:5px;}
+  .source .ask .qa{font-family:'Fraunces',serif;font-style:italic;font-size:1.05rem;color:var(--ink);}
+
+  /* TRIGGERS */
+  .triggers{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:760px){.triggers{grid-template-columns:1fr;}}
+  .trig{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:20px 24px;box-shadow:5px 5px 0 var(--ink);}
+  .trig h4{font-family:'Fraunces',serif;font-size:1.25rem;font-weight:600;margin-bottom:6px;display:flex;align-items:center;gap:9px;}
+  .trig .ti{font-size:1.2rem;}
+  .trig .twhy{font-size:.94rem;color:var(--muted);margin-bottom:12px;}
+  .trig .twhy b{color:var(--rust-deep);}
+  .trig .tchips{display:flex;flex-wrap:wrap;gap:6px;margin-bottom:12px;}
+  .trig .tc{background:var(--paper-2);border:1.5px solid var(--line);border-radius:30px;padding:4px 12px;font-size:.85rem;font-weight:500;}
+  .trig .tex{background:rgba(193,80,46,.08);border-radius:9px;padding:10px 14px;font-size:.95rem;font-style:italic;color:var(--rust-deep);}
+  .trig .tex b{font-style:normal;}
+
+  /* HIGH STAKES LADDER */
+  .stakes{display:flex;flex-direction:column;gap:8px;margin-top:6px;}
+  .stake{display:grid;grid-template-columns:auto 1fr auto;gap:14px;align-items:center;border-radius:10px;padding:11px 16px;border:2px solid var(--ink);}
+  .stake .si{font-size:1.2rem;}
+  .stake .st{font-size:.98rem;font-weight:500;}
+  .stake .slvl{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:3px 9px;border-radius:5px;}
+  .stake.s1{background:rgba(217,164,65,.08);}.stake.s1 .slvl{background:var(--paper-2);color:var(--muted);}
+  .stake.s2{background:rgba(193,80,46,.08);}.stake.s2 .slvl{background:rgba(193,80,46,.2);color:var(--rust-deep);}
+  .stake.s3{background:var(--ink);color:var(--paper);}.stake.s3 .slvl{background:var(--rust);color:#fff;}
+
+  /* SCAN METHOD */
+  .scan{display:flex;flex-direction:column;gap:0;max-width:760px;margin:0 auto;}
+  .scanstep{background:var(--card);border:2.5px solid var(--ink);border-radius:14px;padding:14px 22px;box-shadow:4px 4px 0 var(--ink);display:grid;grid-template-columns:auto 1fr;gap:16px;align-items:center;}
+  .scanstep .ssn{font-family:'Fraunces',serif;font-weight:900;color:#fff;background:var(--plum);width:40px;height:40px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+  .scanstep h4{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;}
+  .scandown{text-align:center;color:var(--plum);font-size:1.2rem;font-weight:700;margin:5px 0;}
+  .scan-worked{background:var(--ink);color:var(--paper);border-radius:16px;padding:24px 30px;margin-top:20px;box-shadow:6px 6px 0 var(--plum);}
+  .scan-worked .swl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;}
+  .scan-worked .swsteps{display:flex;flex-direction:column;gap:8px;}
+  .scan-worked .sws{display:flex;gap:14px;align-items:baseline;font-size:.98rem;}
+  .scan-worked .sws .swk{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;color:var(--gold);min-width:62px;flex-shrink:0;text-transform:uppercase;}
+  .scan-worked .sws p{color:#e8dcc8;}
+  .scan-worked .swpunch{margin-top:16px;background:rgba(217,164,65,.14);border-radius:10px;padding:14px 18px;font-family:'Fraunces',serif;font-style:italic;font-size:1.1rem;color:#ffe3b0;text-align:center;}
+
+  /* ADVANCED CLOSE */
+  .advanced{background:var(--rust);color:#fff;border-radius:22px;padding:44px 40px;text-align:center;box-shadow:8px 8px 0 var(--ink);max-width:920px;margin:0 auto;}
+  .advanced .al{font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-bottom:18px;}
+  .advanced .abig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.5rem,4vw,2.3rem);line-height:1.18;}
+  .advanced .abig em{color:#ffe3b0;font-style:italic;}
+  .advanced p{margin-top:16px;font-size:1.08rem;opacity:.96;max-width:620px;margin-left:auto;margin-right:auto;}
+  .advanced .seinfeld{display:flex;gap:8px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+  .advanced .sf{background:rgba(255,255,255,.14);border-radius:30px;padding:6px 15px;font-size:.9rem;font-weight:500;}
+  .advanced .oneq{margin-top:26px;background:#fff;color:var(--rust-deep);border-radius:14px;padding:20px 26px;font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.1rem,2.6vw,1.45rem);}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:48px;border-top:2px solid var(--line);padding-top:28px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.22rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">The Comedian's Irony Lens</div>
+    <h1>Spot the <em>Gap</em><br>Before the Joke</h1>
+    <p class="sub">Most people learn irony by memorizing types — verbal, situational, dramatic, sarcasm. Comedians learn it differently: they learn to recognize an expectation–reality gap. Everything else is just a variation of that gap.</p>
+    <div class="premise">If there is <strong>no gap</strong>, there is usually <strong>no irony</strong>.</div>
+  </header>
+
+  <!-- THE CORE GAP -->
+  <section>
+    <h2 class="blocktitle">The Core Mental Model</h2>
+    <div class="blocksub">Irony appears when two things that should match are meaningfully different. It shows up in three flavours:</div>
+    <div class="blockrule"></div>
+    <div class="gaps">
+      <div class="gaprow">
+        <div class="gside expect"><div class="gl">should</div><h4>What should happen</h4></div>
+        <div class="gapmid"><span class="gword">gap</span><span class="gsign">≠</span></div>
+        <div class="gside real"><div class="gl">does</div><h4>What actually happens</h4></div>
+      </div>
+      <div class="gaprow">
+        <div class="gside expect"><div class="gl">believes</div><h4>What someone believes</h4></div>
+        <div class="gapmid"><span class="gword">gap</span><span class="gsign">≠</span></div>
+        <div class="gside real"><div class="gl">true</div><h4>What is true</h4></div>
+      </div>
+      <div class="gaprow">
+        <div class="gside expect"><div class="gl">intends</div><h4>What someone intends</h4></div>
+        <div class="gapmid"><span class="gword">gap</span><span class="gsign">≠</span></div>
+        <div class="gside real"><div class="gl">results</div><h4>What results</h4></div>
+      </div>
+    </div>
+    <div class="gap-verdict">
+      <div class="gv">The gap <em>is</em> the irony.</div>
+      <p>Bigger, more contradictory, more mismatched gap → stronger irony.</p>
+    </div>
+  </section>
+
+  <!-- IRONY DETECTOR -->
+  <section>
+    <h2 class="blocktitle">The Irony Detector</h2>
+    <div class="blocksub">Three questions to run on any situation.</div>
+    <div class="blockrule"></div>
+    <div class="detector">
+      <div class="dq"><div class="dqn">1</div><h4>What would a normal person expect here?</h4><p>This creates the <b>baseline</b>.</p></div>
+      <div class="dq"><div class="dqn">2</div><h4>What actually happened?</h4><p>This gives you <b>reality</b>.</p></div>
+      <div class="dq"><div class="dqn">3</div><h4>Are the two opposite, contradictory, or hilariously mismatched?</h4><p>If yes — <b>irony is probably present</b>.</p></div>
+    </div>
+    <div class="worked">
+      <div class="wl">// worked example</div>
+      <div class="wtitle">🔥 A fire station catches fire.</div>
+      <div class="wgrid">
+        <div class="wc"><div class="wcl">expectation</div><p>Fire station prevents fires.</p></div>
+        <div class="wc"><div class="wcl">reality</div><p>Fire station burns down.</p></div>
+        <div class="wc"><div class="wcl">the gap</div><p>The thing designed to stop X became a victim of X.</p></div>
+      </div>
+      <div class="wpunch">Huge irony.</div>
+    </div>
+  </section>
+
+  <!-- FIVE SOURCES -->
+  <section>
+    <h2 class="blocktitle">The Five Major Sources</h2>
+    <div class="blocksub">Skip the verbal/situational/dramatic categories. Almost all irony comes from one of five mismatches.</div>
+    <div class="blockrule"></div>
+
+    <div class="source src1">
+      <div class="stop"><span class="sn">1</span><div class="vs"><span class="va">Purpose</span><span class="vmid">VS</span><span class="vb">Result</span></div><span class="stag">most common</span></div>
+      <div class="sbody">
+        <p>Something achieves the <strong>opposite</strong> of its intended purpose.</p>
+        <div class="examples"><div class="ex">Anti-theft sign gets stolen.</div><div class="ex">Marriage counselor gets divorced.</div><div class="ex">Productivity app wastes three hours of your day.</div></div>
+        <div class="ask"><div class="askl">whenever you see "this exists to accomplish X"</div><div class="qa">Ask: "What if it causes not-X?"</div></div>
+      </div>
+    </div>
+
+    <div class="source src2">
+      <div class="stop"><span class="sn">2</span><div class="vs"><span class="va">Identity</span><span class="vmid">VS</span><span class="vb">Behavior</span></div><span class="stag">professions = gold</span></div>
+      <div class="sbody">
+        <p>People behave <strong>opposite</strong> to who they're supposed to be.</p>
+        <div class="examples"><div class="ex">Doctor smoking.</div><div class="ex">Fitness trainer taking the elevator one floor.</div><div class="ex">Relationship expert unable to maintain relationships.</div></div>
+        <div class="ask"><div class="askl">why professions are comedy gold</div><div class="qa">Because professions create expectations.</div></div>
+      </div>
+    </div>
+
+    <div class="source src3">
+      <div class="stop"><span class="sn">3</span><div class="vs"><span class="va">Belief</span><span class="vmid">VS</span><span class="vb">Reality</span></div><span class="stag">sitcom engine</span></div>
+      <div class="sbody">
+        <p>A character thinks one thing; reality says another.</p>
+        <div class="examples"><div class="ex">Guy believes he's a genius.</div><div class="ex">Everyone else knows he's an idiot.</div></div>
+        <div class="ask"><div class="askl">the classic sitcom split</div><div class="qa">Self-image: "I'm sophisticated." &nbsp;Reality: "You're a disaster." The irony never ends.</div></div>
+      </div>
+    </div>
+
+    <div class="source src4">
+      <div class="stop"><span class="sn">4</span><div class="vs"><span class="va">Effort</span><span class="vmid">VS</span><span class="vb">Outcome</span></div><span class="stag">felt instinctively</span></div>
+      <div class="sbody">
+        <p>Massive effort, tiny reward — or the opposite.</p>
+        <div class="examples"><div class="ex">Studied six months → exam cancelled.</div><div class="ex">Didn't study → accidentally topped the class.</div></div>
+        <div class="ask"><div class="askl">why it lands</div><div class="qa">Humans instinctively feel this mismatch.</div></div>
+      </div>
+    </div>
+
+    <div class="source src5">
+      <div class="stop"><span class="sn">5</span><div class="vs"><span class="va">Audience knows</span><span class="vmid">VS</span><span class="vb">Character doesn't</span></div><span class="stag">= dramatic irony</span></div>
+      <div class="sbody">
+        <p>The audience knows something the character doesn't — this creates <strong>dramatic irony</strong>.</p>
+        <div class="examples"><div class="ex">A character proudly introduces a "new investor"… the audience already knows he's a scammer.</div></div>
+        <div class="ask"><div class="askl">the effect</div><div class="qa">Every sentence the character says becomes funny.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- TRIGGERS -->
+  <section>
+    <h2 class="blocktitle">Situations That Scream For Irony</h2>
+    <div class="blocksub">Certain patterns almost automatically invite it — because each one manufactures expectations.</div>
+    <div class="blockrule"></div>
+    <div class="triggers">
+      <div class="trig">
+        <h4><span class="ti">👔</span>Authority Figures</h4>
+        <div class="twhy">Anyone claiming competence. <b>The bigger the authority, the bigger the irony potential.</b></div>
+        <div class="tchips"><span class="tc">Boss</span><span class="tc">Teacher</span><span class="tc">Doctor</span><span class="tc">Coach</span><span class="tc">Politician</span><span class="tc">Parent</span></div>
+        <div class="tex">A driving instructor gets lost. <b>→ Instant irony.</b></div>
+      </div>
+      <div class="trig">
+        <h4><span class="ti">🚫</span>Rules</h4>
+        <div class="twhy">Rules are irony magnets — <b>because rules create expectations.</b></div>
+        <div class="examples" style="gap:6px;margin-bottom:12px;">
+          <div class="ex" style="background:var(--paper-2);border-radius:9px;padding:9px 14px;font-size:.95rem;">"No littering" sign surrounded by trash.</div>
+          <div class="ex" style="background:var(--paper-2);border-radius:9px;padding:9px 14px;font-size:.95rem;">Safety conference causes injuries.</div>
+          <div class="ex" style="background:var(--paper-2);border-radius:9px;padding:9px 14px;font-size:.95rem;">Privacy seminar leaks everyone's emails.</div>
+        </div>
+        <div class="tex">Ask: <b>"What would be the funniest violation?"</b></div>
+      </div>
+      <div class="trig">
+        <h4><span class="ti">🎓</span>Expertise</h4>
+        <div class="twhy">Experts failing. <b>Classic irony.</b></div>
+        <div class="tchips"><span class="tc">Chef burns toast</span><span class="tc">Pilot afraid of flying</span><span class="tc">Tech support can't use the printer</span></div>
+      </div>
+      <div class="trig">
+        <h4><span class="ti">🪂</span>High Stakes</h4>
+        <div class="twhy"><b>The higher the stakes, the stronger the irony.</b> Same mistake, escalating intensity:</div>
+        <div class="stakes">
+          <div class="stake s1"><span class="si">🛒</span><span class="st">Forget wallet at grocery store</span><span class="slvl">mild</span></div>
+          <div class="stake s2"><span class="si">🛂</span><span class="st">Forget passport at airport</span><span class="slvl">strong</span></div>
+          <div class="stake s3"><span class="si">🪂</span><span class="st">Forget parachute while skydiving</span><span class="slvl">extreme</span></div>
+        </div>
+      </div>
+      <div class="trig" style="grid-column:1/-1;">
+        <h4><span class="ti">😎</span>Confidence</h4>
+        <div class="twhy">Overconfidence attracts irony. Whenever someone says <b>"Trust me,"</b> irony immediately asks: <b>"How badly can this go?"</b></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SCAN METHOD -->
+  <section>
+    <h2 class="blocktitle">A Practical Scan Method</h2>
+    <div class="blocksub">When observing any situation, mentally run this checklist.</div>
+    <div class="blockrule"></div>
+    <div class="scan">
+      <div class="scanstep"><div class="ssn">1</div><h4>Who is involved?</h4></div>
+      <div class="scandown">↓</div>
+      <div class="scanstep"><div class="ssn">2</div><h4>What expectations naturally exist?</h4></div>
+      <div class="scandown">↓</div>
+      <div class="scanstep"><div class="ssn">3</div><h4>What actually happened?</h4></div>
+      <div class="scandown">↓</div>
+      <div class="scanstep"><div class="ssn">4</div><h4>Where is the contradiction?</h4></div>
+      <div class="scandown">↓</div>
+      <div class="scanstep"><div class="ssn">5</div><h4>Can I exaggerate the contradiction?</h4></div>
+    </div>
+    <div class="scan-worked">
+      <div class="swl">// worked example — a gym employee is overweight</div>
+      <div class="swsteps">
+        <div class="sws"><span class="swk">step 1</span><p>Employee of a gym.</p></div>
+        <div class="sws"><span class="swk">step 2</span><p>Expected to be fit.</p></div>
+        <div class="sws"><span class="swk">step 3</span><p>Not fit.</p></div>
+        <div class="sws"><span class="swk">step 4</span><p>Identity vs. behavior mismatch.</p></div>
+        <div class="sws"><span class="swk">step 5</span><p>Exaggerate.</p></div>
+      </div>
+      <div class="swpunch">"He's the only guy who treats the gym like a museum — he works there but doesn't touch anything."</div>
+    </div>
+  </section>
+
+  <!-- ADVANCED CLOSE -->
+  <section style="margin-bottom:0;">
+    <div class="advanced">
+      <div class="al">// the advanced observation</div>
+      <div class="abig">Irony is not a joke.<br>It's a <em>structural property</em> of reality.</div>
+      <p>The joke comes later. The comedian's real skill is noticing: "Wait a minute… that's the opposite of what should be happening." Once you see it, you can write sarcasm, observations, punchlines, scenes, character jokes, sitcom plots — even whole episodes.</p>
+      <div class="seinfeld">
+        <span class="sf">Seinfeld</span><span class="sf">Curb Your Enthusiasm</span><span class="sf">The Office</span>
+      </div>
+      <p style="margin-top:14px;">A huge share of their scenes begin with one ironic seed: someone wanted one thing, reality delivered the opposite. Everything else grows from there.</p>
+      <div class="oneq">Don't ask "Is this verbal, situational, or dramatic?"<br>Ask: "What expectation exists here, and how is reality betraying it?"</div>
+    </div>
+  </section>
+
+  <footer>
+    <em>Find the gap first. The punchline is downstream.</em>
+    <p style="margin-top:10px;">Train the lens, not the joke — one question finds most irony-rich situations before you ever start writing.</p>
+  </footer>
+
+</div>
+</body>
+</html>

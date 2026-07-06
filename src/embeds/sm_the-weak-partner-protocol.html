@@ -1,0 +1,391 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Weak Partner Protocol — Playing 1v2 Without Losing Your Mind</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--blue:#3a6b8c;--plum:#6d4467;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 8% 3%,rgba(109,68,103,.09),transparent 34%),
+      radial-gradient(circle at 94% 98%,rgba(193,80,46,.09),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:36px;}
+  .crumb{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.04em;margin-bottom:16px;}
+  .crumb b{color:var(--teal);}
+  .kicker{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:700;color:var(--rust-deep);border:1.5px solid var(--rust);padding:8px 18px;border-radius:8px;margin-bottom:22px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.1rem,5.6vw,4.2rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:18px auto 0;font-size:clamp(1.04rem,2vw,1.26rem);color:var(--muted);}
+  .sub b{color:var(--rust-deep);}
+
+  /* REFRAME PANEL */
+  .reframe{max-width:820px;margin:28px auto 0;display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;}
+  @media(max-width:600px){.reframe{grid-template-columns:1fr;}}
+  .rf-card{border-radius:16px;padding:18px 22px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center;}
+  .rf-card.wrong{background:rgba(193,80,46,.08);border-color:var(--rust);}
+  .rf-card.right{background:rgba(47,107,99,.08);border-color:var(--teal);box-shadow:5px 5px 0 var(--teal);}
+  .rf-card .rfl{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:700;margin-bottom:8px;}
+  .rf-card.wrong .rfl{color:var(--rust-deep);}.rf-card.right .rfl{color:var(--teal);}
+  .rf-card h4{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;margin-bottom:5px;}
+  .rf-card p{font-size:.86rem;color:var(--muted);}
+  .rf-arr{display:flex;align-items:center;font-family:'Fraunces',serif;font-weight:900;color:var(--rust);font-size:1.3rem;justify-content:center;}
+  @media(max-width:600px){.rf-arr{transform:rotate(90deg);}}
+
+  /* SECTION */
+  section{margin-bottom:46px;max-width:980px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.55rem,4vw,2.3rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:700px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* CONSTRAINT BOX */
+  .constraint{background:var(--ink);color:var(--paper);border-radius:14px;padding:22px 28px;text-align:center;margin-bottom:18px;}
+  .constraint .cl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px;}
+  .constraint .cbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.2rem,3vw,1.7rem);line-height:1.2;}
+  .constraint .cbig em{color:var(--gold);font-style:italic;}
+  .constraint p{margin-top:12px;font-size:.95rem;color:#cdbfa9;max-width:580px;margin-left:auto;margin-right:auto;}
+
+  /* STEP LADDER */
+  .steps{display:flex;flex-direction:column;gap:0;}
+  .step{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .step .stop{padding:13px 22px;color:#fff;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .step .snum{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:6px;}
+  .step .sname{font-family:'Fraunces',serif;font-weight:600;font-size:1.22rem;line-height:1.1;}
+  .step .stag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.03em;text-transform:uppercase;opacity:.9;margin-left:auto;}
+  .step .sbody{padding:16px 22px;}
+  .step .sbody p{font-size:.94rem;margin-bottom:9px;}
+  .step .sbody p:last-child{margin-bottom:0;}
+  .step .sbody p b{color:var(--rust-deep);}
+  .step-up{text-align:center;color:var(--rust);font-size:1.2rem;font-weight:700;line-height:1.5;}
+  .S1 .stop{background:var(--muted);}
+  .S2 .stop{background:var(--olive);}
+  .S3 .stop{background:var(--teal);}
+  .S4 .stop{background:var(--blue);}
+  .S5 .stop{background:var(--plum);}
+
+  /* SERVE DIAGRAM */
+  .serve-diagram{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0;}
+  @media(max-width:560px){.serve-diagram{grid-template-columns:1fr;}}
+  .sd{border-radius:12px;padding:14px 16px;border:2.5px solid var(--ink);text-align:center;box-shadow:3px 3px 0 var(--ink);}
+  .sd.dont{background:rgba(193,80,46,.09);border-color:var(--rust);}
+  .sd.do{background:rgba(47,107,99,.09);border-color:var(--teal);box-shadow:3px 3px 0 var(--teal);}
+  .sd .sdl{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-bottom:7px;}
+  .sd.dont .sdl{color:var(--rust-deep);}.sd.do .sdl{color:var(--teal);}
+  .sd b{font-family:'Fraunces',serif;font-size:1rem;}
+  .sd p{font-size:.8rem;color:var(--muted);margin-top:5px;}
+
+  /* COURT VISUAL */
+  .court-wrap{margin:10px 0;}
+  .court-box{background:var(--card);border:2.5px dashed var(--ink);border-radius:12px;padding:16px 20px;}
+  .court-box .ct{font-family:'JetBrains Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:12px;}
+  .court-grid{display:grid;grid-template-columns:1fr 1fr;grid-template-rows:1fr 1fr;gap:6px;max-width:320px;margin:0 auto;aspect-ratio:1.4;}
+  .czone{border-radius:8px;padding:10px;display:flex;align-items:center;justify-content:center;text-align:center;font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;border:2px solid var(--line);}
+  .czone.yours{background:rgba(58,107,140,.15);border-color:var(--blue);color:var(--blue);}
+  .czone.partner{background:rgba(193,80,46,.1);border-color:var(--rust);color:var(--rust-deep);}
+  .czone.expanded{background:rgba(47,107,99,.15);border-color:var(--teal);color:var(--teal);}
+  .court-net{grid-column:1/-1;height:3px;background:var(--ink);border-radius:2px;margin:2px 0;}
+  .court-note{margin-top:10px;font-size:.84rem;color:var(--muted);text-align:center;font-style:italic;}
+
+  /* POACH ZONES */
+  .poach-grid{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:center;margin:8px 0;}
+  @media(max-width:560px){.poach-grid{grid-template-columns:1fr;}}
+  .poach-court{position:relative;width:140px;height:100px;background:var(--card);border:2.5px solid var(--ink);border-radius:8px;flex-shrink:0;}
+  .poach-court .pnet{position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--ink);}
+  .pzone{position:absolute;top:8%;bottom:8%;border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-family:'JetBrains Mono',monospace;font-weight:700;}
+  .pzone.you{left:4%;right:52%;background:rgba(58,107,140,.2);border:1.5px solid var(--blue);color:var(--blue);}
+  .pzone.partner{left:52%;right:4%;background:rgba(193,80,46,.12);border:1.5px solid var(--rust);color:var(--rust-deep);}
+  .pzone.expand{left:4%;right:28%;background:rgba(47,107,99,.2);border:2px dashed var(--teal);color:var(--teal);}
+  .poach-text{font-size:.9rem;}
+  .poach-text b{color:var(--rust-deep);}
+
+  /* RALLY FLOW */
+  .rally-flow{background:var(--card);border:2.5px dashed var(--ink);border-radius:12px;padding:14px 18px;margin:8px 0;}
+  .rally-flow .rft{font-family:'JetBrains Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:10px;}
+  .rally-chain{display:flex;flex-wrap:wrap;align-items:center;gap:7px;}
+  .rc{background:var(--paper-2);border:2px solid var(--ink);border-radius:8px;padding:8px 13px;font-size:.82rem;text-align:center;}
+  .rc.good{background:rgba(47,107,99,.12);border-color:var(--teal);font-weight:600;color:var(--teal);}
+  .rc.neutral{background:rgba(58,107,140,.1);border-color:var(--blue);color:var(--blue);}
+  .rc.avoid{background:rgba(193,80,46,.1);border-color:var(--rust);color:var(--rust-deep);}
+  .rca{color:var(--rust);font-weight:700;font-size:1.1rem;}
+
+  /* RESET CARD */
+  .reset-card{background:var(--ink);color:var(--paper);border-radius:12px;padding:16px 20px;margin:8px 0;display:flex;gap:14px;align-items:flex-start;}
+  .reset-card .ri{font-size:1.5rem;flex-shrink:0;}
+  .reset-card .rt{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:6px;}
+  .reset-card p{font-size:.9rem;color:#cdbfa9;}
+  .reset-card p b{color:#ffe3b0;}
+
+  /* SCORECARD */
+  .scorecard{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0;}
+  @media(max-width:560px){.scorecard{grid-template-columns:1fr;}}
+  .sc-card{border-radius:12px;padding:14px 18px;border:2.5px solid var(--ink);box-shadow:3px 3px 0 var(--ink);}
+  .sc-card.old{background:rgba(193,80,46,.08);border-color:var(--rust);}
+  .sc-card.new{background:rgba(47,107,99,.09);border-color:var(--teal);box-shadow:3px 3px 0 var(--teal);}
+  .sc-card .scl{font-family:'JetBrains Mono',monospace;font-size:.58rem;letter-spacing:.04em;text-transform:uppercase;font-weight:700;margin-bottom:8px;}
+  .sc-card.old .scl{color:var(--rust-deep);}.sc-card.new .scl{color:var(--teal);}
+  .sc-card h4{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;margin-bottom:8px;}
+  .sc-card ul{list-style:none;display:flex;flex-direction:column;gap:5px;}
+  .sc-card ul li{font-size:.84rem;color:var(--muted);display:flex;gap:8px;align-items:flex-start;}
+  .sc-card.old ul li::before{content:"✗";color:var(--rust);font-weight:700;flex-shrink:0;}
+  .sc-card.new ul li::before{content:"✓";color:var(--teal);font-weight:700;flex-shrink:0;}
+
+  /* MINDSET REFRAME — the big quote */
+  .mindset{background:var(--teal);color:#fff;border-radius:20px;padding:34px 38px;text-align:center;box-shadow:8px 8px 0 var(--ink);margin-bottom:18px;}
+  .mindset .ml{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85;font-weight:700;margin-bottom:14px;}
+  .mindset .mbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.3rem,3.6vw,2rem);line-height:1.2;margin-bottom:16px;}
+  .mindset .mbig em{color:#ffe3b0;font-style:italic;}
+  .mindset p{font-size:.97rem;opacity:.92;max-width:600px;margin:0 auto;}
+
+  /* CHAIN STACK */
+  .chain{background:var(--ink);color:var(--paper);border-radius:18px;padding:28px 32px;box-shadow:7px 7px 0 var(--plum);}
+  .chain .chl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center;margin-bottom:16px;}
+  .chain-steps{display:flex;flex-direction:column;gap:6px;max-width:580px;margin:0 auto 16px;}
+  .ch-item{background:rgba(255,255,255,.07);border-radius:10px;padding:12px 16px;font-size:.92rem;display:flex;align-items:center;gap:12px;}
+  .ch-item .chn{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;color:var(--gold);min-width:60px;}
+  .ch-item.highlight{background:rgba(217,164,65,.15);}
+  .ch-item.highlight .cht{color:#ffe3b0;font-family:'Fraunces',serif;font-style:italic;}
+  .chain-note{text-align:center;font-size:.9rem;color:#cdbfa9;max-width:560px;margin:0 auto;}
+
+  /* CAVEAT */
+  .caveat{background:var(--ink);color:var(--paper);border-radius:18px;padding:30px 34px;text-align:center;box-shadow:7px 7px 0 var(--rust);}
+  .caveat .cvl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;}
+  .caveat .cvbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3.6vw,2rem);line-height:1.2;}
+  .caveat .cvbig em{color:var(--gold);font-style:italic;}
+  .caveat p{margin-top:14px;font-size:1.02rem;color:#cdbfa9;max-width:620px;margin-left:auto;margin-right:auto;}
+  .caveat p b{color:var(--gold);}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:42px;border-top:2px solid var(--line);padding-top:26px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.2rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="crumb">companion to → <b>The Structured Experiment Session</b> · same floor, different constraint</div>
+    <div class="kicker">// playing 1v2 without losing your mind</div>
+    <h1>The <em>Weak Partner</em><br>Protocol</h1>
+    <p class="sub">Your partner's game is <b>not your department.</b> The moment you start monitoring his errors, you've split your attention — and split attention in a fast game is fatal to your own performance.</p>
+
+    <div class="reframe">
+      <div class="rf-card wrong">
+        <div class="rfl">// the default trap</div>
+        <h4>Monitor the partner</h4>
+        <p>Reacting to every error. Attention split between your game and his. You play worse <em>and</em> get frustrated.</p>
+      </div>
+      <div class="rf-arr">→</div>
+      <div class="rf-card right">
+        <div class="rfl">// the reframe</div>
+        <h4>Accept the constraint</h4>
+        <p>His game is outside your control. Your only job is maximising what happens on <em>your</em> side of the equation.</p>
+      </div>
+    </div>
+  </header>
+
+  <!-- THE CONSTRAINT -->
+  <section>
+    <h2 class="blocktitle">Accept the Real Constraint First</h2>
+    <div class="blocksub">You can't change it, so stop being surprised by it.</div>
+    <div class="blockrule"></div>
+    <div class="constraint">
+      <div class="cl">// honest reality check</div>
+      <div class="cbig">You are effectively playing <em>1v2</em><br>for significant stretches of this game.</div>
+      <p>Once you accept that — truly accept it, not just intellectually — you stop being surprised and frustrated every time it happens. You start <strong style="color:#ffe3b0;">planning around it</strong> instead. Surprise is what makes it draining. Acceptance is what makes it manageable.</p>
+    </div>
+    <div style="background:rgba(217,164,65,.14);border:2px dashed var(--gold);border-radius:14px;padding:16px 22px;text-align:center;font-size:1.04rem;">
+      This is not a morale speech. It is a <b>tactical reframe.</b> Your strategy changes the moment you stop hoping your partner will perform and start designing around the assumption that he won't.
+    </div>
+  </section>
+
+  <!-- FIVE STEPS -->
+  <section>
+    <h2 class="blocktitle">Five Steps — Applied Inside a Live Game</h2>
+    <div class="blocksub">Run these simultaneously, not sequentially.</div>
+    <div class="blockrule"></div>
+    <div class="steps">
+
+      <div class="step S1">
+        <div class="stop"><span class="snum">STEP 1</span><span class="sname">Accept the Real Constraint</span><span class="stag">before you even step on court</span></div>
+        <div class="sbody">
+          <p>Privately decide, before the session starts: <b>"I am playing 1v2 today. My partner's errors are not surprises — they are the baseline."</b> This kills the frustration loop at the root.</p>
+          <p>The frustration in these sessions almost always comes from a gap between expectation and reality. <b>Close the gap at the expectation end,</b> not the reality end. You can't change him. You can change what you expect.</p>
+        </div>
+      </div>
+      <div class="step-up">↑</div>
+
+      <div class="step S2">
+        <div class="stop"><span class="snum">STEP 2</span><span class="sname">Control the Serve Aggressively</span><span class="stag">the one moment you have full control</span></div>
+        <div class="sbody">
+          <p>In doubles, the serve is the one point of <b>complete control</b> in every rally. Use it deliberately — don't just serve and hope.</p>
+          <div class="serve-diagram">
+            <div class="sd dont">
+              <div class="sdl">✗ automatic serve</div>
+              <b>Serve to whoever</b>
+              <p>Return lands wherever. Partner gets targeted. You scramble.</p>
+            </div>
+            <div class="sd do">
+              <div class="sdl">✓ intentional serve</div>
+              <b>Serve to the weaker opponent</b>
+              <p>Or serve so the return angle naturally comes back toward your zone, not his.</p>
+            </div>
+          </div>
+          <p>This requires <b>one deliberate thought per serve</b> — not complicated, just intentional. The opponents will start targeting your partner anyway; engineer the serve so returns come back to you first.</p>
+        </div>
+      </div>
+      <div class="step-up">↑</div>
+
+      <div class="step S3">
+        <div class="stop"><span class="snum">STEP 3</span><span class="sname">Expand Your Territory — Quietly</span><span class="stag">poach more than you normally would</span></div>
+        <div class="sbody">
+          <p>In a functional doubles team, you respect positional boundaries. With a weak partner, <b>quietly expand your coverage zone.</b> Cover the middle aggressively. Take every shot that's remotely reachable.</p>
+          <div class="poach-grid">
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--muted);text-transform:uppercase;letter-spacing:.03em;">normal doubles</div>
+              <div style="position:relative;width:160px;height:100px;background:var(--card);border:2.5px solid var(--ink);border-radius:8px;">
+                <div style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--line);"></div>
+                <div style="position:absolute;top:8%;bottom:8%;left:4%;right:52%;background:rgba(58,107,140,.18);border:1.5px solid var(--blue);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-family:'JetBrains Mono',monospace;color:var(--blue);font-weight:700;">YOU</div>
+                <div style="position:absolute;top:8%;bottom:8%;left:52%;right:4%;background:rgba(193,80,46,.12);border:1.5px solid var(--rust);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-family:'JetBrains Mono',monospace;color:var(--rust-deep);font-weight:700;">PARTNER</div>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;gap:8px;">
+              <div style="font-family:'JetBrains Mono',monospace;font-size:.62rem;color:var(--teal);text-transform:uppercase;letter-spacing:.03em;">weak partner mode</div>
+              <div style="position:relative;width:160px;height:100px;background:var(--card);border:2.5px solid var(--teal);border-radius:8px;">
+                <div style="position:absolute;top:0;bottom:0;left:50%;width:2px;background:var(--line);"></div>
+                <div style="position:absolute;top:8%;bottom:8%;left:4%;right:28%;background:rgba(47,107,99,.18);border:2px dashed var(--teal);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.58rem;font-family:'JetBrains Mono',monospace;color:var(--teal);font-weight:700;">YOU ← expanded</div>
+                <div style="position:absolute;top:8%;bottom:8%;left:72%;right:4%;background:rgba(193,80,46,.08);border:1.5px dashed var(--rust);border-radius:4px;display:flex;align-items:center;justify-content:center;font-size:.52rem;font-family:'JetBrains Mono',monospace;color:var(--rust-deep);font-weight:700;">P</div>
+              </div>
+            </div>
+          </div>
+          <p>Don't announce this shift — <b>just do it.</b> Your partner won't notice, and the opponents will naturally start targeting him, so you need to intercept what you can before it reaches him.</p>
+        </div>
+      </div>
+      <div class="step-up">↑</div>
+
+      <div class="step S4">
+        <div class="stop"><span class="snum">STEP 4</span><span class="sname">Engineer the Rally — Stay In It</span><span class="stag">shot selection when you have the ball</span></div>
+        <div class="sbody">
+          <p>When you do get the shuttle or ball, <b>prioritise shots that either end the rally cleanly or return the ball toward your zone</b> — not your partner's. You're engineering the rally to keep yourself involved.</p>
+          <div class="rally-flow">
+            <div class="rft">// target selection logic</div>
+            <div class="rally-chain">
+              <div class="rc good">Shot that ends the rally</div>
+              <div class="rca">→ best</div>
+              <div class="rc neutral">Shot that pulls return toward your side</div>
+              <div class="rca">→ good</div>
+              <div class="rc avoid">Shot that puts return toward partner's zone</div>
+              <div class="rca">→ avoid</div>
+            </div>
+          </div>
+          <p>Specifically: <b>target the opponent who tends to return toward your zone.</b> Watch where each opponent naturally places their returns in the first 5 minutes, then exploit that pattern to keep the shuttle coming back to you.</p>
+        </div>
+      </div>
+      <div class="step-up">↑</div>
+
+      <div class="step S5">
+        <div class="stop"><span class="snum">STEP 5</span><span class="sname">Let Points Go — Cleanly</span><span class="stag">the counterintuitive one</span></div>
+        <div class="sbody">
+          <p>When your partner makes an error that loses a point, reset <b>immediately.</b> No body language. No glance. No pause. Treat it exactly like a net cord that went against you — just bad luck, nothing more.</p>
+          <div class="reset-card">
+            <div class="ri">🧠</div>
+            <div>
+              <div class="rt">// why this actually matters — two reasons</div>
+              <p><b>For you:</b> every second you spend internally reacting is a second you are not resetting, reading the opponents, or preparing your next serve. Your emotional state is a performance resource — don't spend it on what you can't change.<br><br><b>For him:</b> a weak player who starts feeling the pressure of a frustrated partner <em>gets worse</em>, not better. Your visible composure keeps him functional instead of frozen.</p>
+            </div>
+          </div>
+          <p>This is not about being a good person. It is the purely <b>selfish, performance-based reason</b> to let it go.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- INTERNAL SCORECARD -->
+  <section>
+    <h2 class="blocktitle">The Internal Scorecard Shift</h2>
+    <div class="blocksub">Stop measuring your session against the wrong number.</div>
+    <div class="blockrule"></div>
+    <div class="scorecard">
+      <div class="sc-card old">
+        <div class="scl">✗ old scorecard</div>
+        <h4>The actual score</h4>
+        <ul>
+          <li>Lagging indicator — tells you what happened, not why</li>
+          <li>Half determined by partner you can't control</li>
+          <li>Produces frustration with no actionable output</li>
+          <li>Makes losing sessions feel worthless</li>
+        </ul>
+      </div>
+      <div class="sc-card new">
+        <div class="scl">✓ new scorecard</div>
+        <h4>Your process metrics</h4>
+        <ul>
+          <li>Did I handle every shot that came to me cleanly?</li>
+          <li>Did I serve with intention each time?</li>
+          <li>Did I stay calm after his errors?</li>
+          <li>Did I expand my territory and intercept what I could?</li>
+        </ul>
+      </div>
+    </div>
+    <div style="background:var(--ink);color:var(--paper);border-radius:12px;padding:18px 22px;text-align:center;margin-top:14px;">
+      <p style="font-family:'Fraunces',serif;font-style:italic;font-size:1.12rem;color:#ffe3b0;">If you go 0–21 but executed your own game well and stayed composed throughout — that is genuinely a better session than winning scrappily while being mentally scattered.</p>
+    </div>
+  </section>
+
+  <!-- THE MINDSET REFRAME -->
+  <section>
+    <div class="mindset">
+      <div class="ml">// the reframe that converts frustration into training</div>
+      <div class="mbig">Privately decide before the session:<br><em>"This is a session in playing well under pressure and distraction."</em></div>
+      <p>That converts a frustrating constraint into a deliberate training condition. Playing well despite a weak partner and an uphill scoreline is a <strong style="color:#ffe3b0;">harder mental test</strong> than a clean game with an equal partner. If you can hold your composure and structure through that, you are building something real.</p>
+    </div>
+  </section>
+
+  <!-- HOW IT CONNECTS -->
+  <section>
+    <h2 class="blocktitle">Where This Fits in the Stack</h2>
+    <div class="blocksub">The weak partner constraint doesn't change the framework — it stress-tests it.</div>
+    <div class="blockrule"></div>
+    <div class="chain">
+      <div class="chl">// the full dependency chain</div>
+      <div class="chain-steps">
+        <div class="ch-item"><span class="chn">TOP</span><span class="cht">You are improving — session by session, extracting data even from bad conditions</span></div>
+        <div class="ch-item"><span class="chn">needs ↑</span><span class="cht">Composure is maintained — emotional state doesn't degrade execution</span></div>
+        <div class="ch-item"><span class="chn">needs ↑</span><span class="cht">Process metrics replace score as feedback signal</span></div>
+        <div class="ch-item"><span class="chn">needs ↑</span><span class="cht">You've accepted the 1v2 constraint — no more surprise, no expectation gap</span></div>
+        <div class="ch-item highlight"><span class="chn">FLOOR</span><span class="cht">The reframe: your partner's game is not your department ← this piece</span></div>
+      </div>
+      <div class="chain-note">Without the floor — without genuinely accepting the constraint — every other step collapses. Composure can't survive an unresolved expectation gap. Process metrics feel meaningless when you're still angry about his last error. It starts here.</div>
+    </div>
+  </section>
+
+  <!-- CAVEAT -->
+  <section style="margin-bottom:0;">
+    <div class="caveat">
+      <div class="cvl">// the honest caveat</div>
+      <div class="cvbig">This doesn't make him a better partner.<br>It makes you a <em>harder opponent to break.</em></div>
+      <p>All of this is in service of one thing: <b>staying useful for the duration of the session.</b> You will still lose points because of him. You will still lose matches you might have won with a better partner. The protocol doesn't fix that. What it does is ensure that his weakness doesn't also degrade <b>your</b> game — which is the only thing actually in your control.</p>
+    </div>
+  </section>
+
+  <footer>
+    <em>His game is not your department. Your game always is.</em>
+    <p style="margin-top:10px;">Accept the 1v2 — control the serve — expand your territory — engineer the rally — reset cleanly — then score yourself on the only metrics that belong to you.</p>
+  </footer>
+
+</div>
+</body>
+</html>

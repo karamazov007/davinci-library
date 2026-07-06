@@ -1,0 +1,58 @@
+{
+ "intro":"A purpose-based system for building an archive of great cricket — what to watch, where to find it, and a phased plan to work through it. (Based on current Indian broadcasting rights, updated June 2026.)",
+ "categories":[
+  {"n":"Famous Test Matches & Classics","ic":"🎽","purpose":"Build archival memory of the greatest Test cricket moments.","rows":[
+   {"c":"Historic Test series (Ashes 2005, BGT 2001, India–Pakistan Tests)","w":"BCCI.tv, YouTube","note":"Highlights (30 min) + full matches. BCCI.tv organises by year & series."},
+   {"c":"Iconic Test moments (specific innings, spells)","w":"ESPNcricinfo + YouTube","note":"5–20 min curated famous-innings compilations."},
+   {"c":"Full Test matches (to study deeply)","w":"Cricket board channels + BCCI.tv","note":"Look for 'full match' or 'match day' videos; 4–5 day or condensed."},
+   {"c":"Recent Test series","w":"BCCI.tv + Sony Live","note":"Highlights next day; Sony Live has documentary-style coverage."}
+  ]},
+  {"n":"Famous ODI Innings & Highlights","ic":"⚪","purpose":"Study the greatest ODI performances and one-day classics.","rows":[
+   {"c":"Famous ODI centuries & innings","w":"YouTube (BCCI, ESPNcricinfo)","note":"15–30 min, on-demand."},
+   {"c":"ODI series highlights (World Cup classics, Ind–Pak)","w":"BCCI.tv + ESPNcricinfo","note":"20–25 min per match, uploaded daily during series."},
+   {"c":"Complete ODI records (1999/2003/2011 World Cups)","w":"Cricket board YouTube channels","note":"Full match or 30–45 min condensed."},
+   {"c":"ODI compilations (greatest chases, performances)","w":"ESPNcricinfo + fan channels","note":"10–45 min, curated regularly."}
+  ]},
+  {"n":"T20 & IPL Highlights","ic":"🟡","purpose":"Build an IPL memory archive; study T20 evolution and famous finals.","rows":[
+   {"c":"IPL all-time highlights","w":"IPLT20.com + YouTube IPL","note":"Complete highlight library by season, team, match."},
+   {"c":"IPL finals & iconic matches","w":"JioHotstar","note":"Documentary-style coverage; highlights on-demand."},
+   {"c":"All IPL seasons archive","w":"IPLT20.com/videos + JioHotstar","note":"Filter by year/season/team for systematic viewing."},
+   {"c":"Best IPL innings compilations","w":"YouTube (search 'best IPL innings' + player)","note":"Fan-curated and official channels."},
+   {"c":"T20 Internationals","w":"BCCI.tv + Sony Live + JioHotstar","note":"Free highlights on BCCI.tv, premium on Sony Live."}
+  ]},
+  {"n":"Cricket Documentaries","ic":"🎬","purpose":"Understand cricket culture, psychology, rivalries and team dynamics.","rows":[
+   {"c":"The Greatest Rivalry: India vs Pakistan (3-part)","w":"Netflix","note":"India–Pakistan history; 1983 & 1992 World Cups. Highly recommended."},
+   {"c":"Bandon Mein Tha Dum (2020–21 BGT)","w":"YouTube / streaming","note":"India's stunning victory at the Gabba."},
+   {"c":"Sachin: A Billion Dreams","w":"YouTube + Disney+Hotstar","note":"Tendulkar's life, technique, dominance."},
+   {"c":"The Greatest Series (2005 Ashes)","w":"YouTube","note":"England's first Ashes win in 18 years, match-by-match."},
+   {"c":"Crossing the Line (2018 Sandpapergate)","w":"Streaming + YouTube","note":"South Africa–Australia ball-tampering scandal."},
+   {"c":"The Test / The Australian Rebuild","w":"Amazon Prime","note":"Australia's reputation rebuild post-2018, behind-the-scenes."}
+  ]},
+  {"n":"Live Cricket & Broadcasts","ic":"📡","purpose":"Watch upcoming matches and stay current with international cricket.","rows":[
+   {"c":"Live IPL matches (Apr–May)","w":"JioHotstar (Sony Live selective)","note":"Peak viewing during tournament season."},
+   {"c":"Live India internationals","w":"JioHotstar / rights-holder","note":"Depends on bilateral series broadcasting rights."},
+   {"c":"Live scores & updates","w":"ESPNcricinfo","note":"Real-time scores, live blogs, ball-by-ball."}
+  ]}
+ ],
+ "platforms":[
+  {"n":"BCCI.tv","cost":"Free","best":"India team highlights, domestic cricket","note":"Test/ODI/T20I highlights indexed by year & format; uploads within 24h."},
+  {"n":"IPLT20.com","cost":"Free","best":"Complete IPL archive","note":"Every season, all matches, magic moments; excellent search."},
+  {"n":"YouTube (official channels)","cost":"Free","best":"Highlights & compilations","note":"BCCI TV, IPL, ESPNcricinfo, and national board channels."},
+  {"n":"JioHotstar / Disney+Hotstar","cost":"₹149–599/mo","best":"Live IPL + India internationals","note":"Live with pause/rewind; documentary content. Good for mobile."},
+  {"n":"Sony Live","cost":"Free / ₹299 premium","best":"Live international + documentaries","note":"High-quality streaming; documentary-style match breakdowns."},
+  {"n":"ESPNcricinfo","cost":"Free","best":"Highlights + stats/context","note":"Curated famous innings, analysis; website has full stats & history."},
+  {"n":"Netflix","cost":"₹199–649/mo","best":"Cinematic documentaries","note":"'The Greatest Rivalry: India vs Pakistan' and more."}
+ ],
+ "plan":[
+  {"phase":"Phase 1 · Build Foundation (Weeks 1–4)","steps":["Watch 2–3 famous Test series highlights (BGT 2001, Ashes 2005, Ind–Pak)","Netflix — 'The Greatest Rivalry: India vs Pakistan' for historical context","Compile 10–15 famous ODI innings in your notes"]},
+  {"phase":"Phase 2 · Deep Dive by Format (Weeks 5–8)","steps":["IPLT20.com — go through IPL finals decade-by-decade","YouTube — famous T20 innings & match-winning moments","Sony Live — available cricket documentaries"]},
+  {"phase":"Phase 3 · Build Context with Docs (Weeks 9–12)","steps":["Bandon Mein Tha Dum — India's greatest Test victory","Sachin: A Billion Dreams — technique + psychology","Crossing the Line — scandal & modern-cricket context"]},
+  {"phase":"Phase 4 · Ongoing Archive","steps":["Weekly: check BCCI.tv for new India highlights","Monthly: pick 1–2 documentaries from backlog","Seasonal: IPL & World Cup highlights when in season","Follow ESPNcricinfo YouTube 'top 10' compilations"]}
+ ],
+ "quickstart":[
+  "IPLT20.com → browse highlights, watch 2–3 finals from different years",
+  "YouTube BCCI TV → 'India vs Australia Test highlights' → watch one series",
+  "Netflix → 'The Greatest Rivalry: India vs Pakistan' → Episode 1 for context"
+ ],
+ "organise":["By format (Test, ODI, T20)","By team / rivalry (Ind–Aus, Ind–Pak)","By player (centuries, spells)","By era (1980s classics, 2000s golden age, modern)"]
+}

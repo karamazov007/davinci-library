@@ -1,0 +1,272 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Sports, Mindsets & Mastery — Project Blueprint</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 10% 5%,rgba(217,164,65,.10),transparent 38%),
+      radial-gradient(circle at 92% 96%,rgba(47,107,99,.10),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.52;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:42px;}
+  .kicker{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;
+    font-weight:700;color:var(--rust-deep);border:1.5px solid var(--rust);padding:8px 18px;border-radius:8px;margin-bottom:24px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.96;font-size:clamp(2.4rem,6.5vw,4.6rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:20px auto 0;font-size:clamp(1.05rem,2vw,1.28rem);color:var(--muted);}
+
+  /* SCOPE + CONTENT BASE */
+  .scope{background:var(--ink);color:var(--paper);border-radius:20px;padding:30px 36px;max-width:900px;margin:32px auto 0;box-shadow:8px 8px 0 var(--rust);}
+  .scope .slabel{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;}
+  .scope p{font-size:1.12rem;line-height:1.55;color:#f0e6d6;}
+  .scope p em{color:var(--gold);font-style:italic;}
+  .base{max-width:900px;margin:18px auto 0;background:var(--card);border:2px solid var(--ink);border-radius:16px;padding:22px 28px;box-shadow:5px 5px 0 var(--ink);}
+  .base .blabel{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:12px;}
+  .base .chips{display:flex;flex-wrap:wrap;gap:9px;}
+  .base .chip{background:var(--paper-2);border:1.5px solid var(--line);border-radius:30px;padding:6px 15px;font-weight:600;font-size:1rem;}
+
+  /* CONNECTOR */
+  .connector{width:4px;height:30px;background:var(--ink);margin:0 auto;border-radius:2px;}
+  .connector.lbl{height:auto;width:auto;background:none;text-align:center;}
+  .connector.lbl span{display:inline-block;background:var(--gold);color:var(--ink);font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.8rem;letter-spacing:.1em;padding:6px 16px;border-radius:8px;border:2px solid var(--ink);}
+
+  /* PHASE */
+  .phase{max-width:1080px;margin:0 auto;border:3px solid var(--ink);border-radius:20px;overflow:hidden;box-shadow:7px 7px 0 var(--ink);}
+  .phase .ptop{padding:18px 30px;color:#fff;display:flex;align-items:center;gap:18px;}
+  .phase .ptop .pbadge{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.85rem;background:rgba(255,255,255,.2);padding:5px 12px;border-radius:6px;letter-spacing:.05em;}
+  .phase .ptop h2{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.5rem,3.5vw,2.2rem);letter-spacing:-.01em;}
+  .p1 .ptop{background:var(--teal);}
+  .p2 .ptop{background:var(--gold);color:var(--ink);}
+  .p2 .ptop .pbadge{background:rgba(28,24,20,.18);}
+  .p3 .ptop{background:var(--rust);}
+  .phase .pbody{background:var(--card);padding:26px 30px;}
+  .phase .pintro{color:var(--muted);font-size:1.08rem;margin-bottom:22px;}
+
+  /* LAYER CARDS (phase 1 & 3) */
+  .layers{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;}
+  @media(max-width:720px){.layers{grid-template-columns:1fr;}}
+  .lcard{border-radius:16px;padding:22px 24px;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);background:var(--paper);}
+  .lcard .lhead{display:flex;align-items:center;gap:12px;margin-bottom:14px;}
+  .lcard .lnum{font-family:'Fraunces',serif;font-weight:900;font-size:1.7rem;line-height:1;width:42px;height:42px;border-radius:10px;display:flex;align-items:center;justify-content:center;color:#fff;flex-shrink:0;}
+  .lcard h3{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;line-height:1.1;}
+  .lcard ul{list-style:none;}
+  .lcard li{padding:5px 0 5px 22px;position:relative;font-size:1.02rem;color:var(--ink);}
+  .lcard li::before{content:"";position:absolute;left:3px;top:11px;width:7px;height:7px;border-radius:2px;transform:rotate(45deg);}
+  .ly1 .lnum{background:var(--teal);}.ly1 li::before{background:var(--teal);}
+  .ly2 .lnum{background:var(--rust);}.ly2 li::before{background:var(--rust);}
+  .ly3 .lnum{background:var(--olive);}.ly3 li::before{background:var(--olive);}
+  .ly4 .lnum{background:var(--gold);}.ly4 li::before{background:var(--gold);}
+
+  /* PHASE 2 — recognition questions */
+  .recog{display:grid;grid-template-columns:repeat(2,1fr);gap:16px;}
+  @media(max-width:640px){.recog{grid-template-columns:1fr;}}
+  .rq{background:var(--paper);border:2.5px solid var(--ink);border-radius:14px;padding:20px 22px;box-shadow:4px 4px 0 var(--ink);}
+  .rq .rqicon{font-family:'Fraunces',serif;font-weight:900;font-size:1.4rem;color:var(--rust);}
+  .rq h4{font-family:'Fraunces',serif;font-size:1.18rem;font-weight:600;margin:4px 0 6px;}
+  .rq p{font-size:.98rem;color:var(--muted);}
+
+  /* SECTION HEAD (for non-phase blocks) */
+  .block{max-width:1080px;margin:0 auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.7rem,4vw,2.6rem);text-align:center;margin:64px 0 6px;letter-spacing:-.01em;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:0 auto 28px;border-radius:2px;max-width:480px;}
+
+  /* DISCUSSION PROTOCOL */
+  .protocol{display:flex;flex-direction:column;gap:12px;max-width:920px;margin:0 auto;}
+  .prow{background:var(--card);border:2.5px solid var(--ink);border-radius:14px;padding:16px 22px;box-shadow:4px 4px 0 var(--ink);display:grid;grid-template-columns:auto 1fr;gap:18px;align-items:center;}
+  .prow .ptag{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.72rem;letter-spacing:.06em;text-transform:uppercase;background:var(--teal);color:#fff;padding:6px 12px;border-radius:6px;white-space:nowrap;align-self:start;margin-top:3px;}
+  .prow .pq{font-style:italic;font-family:'Fraunces',serif;font-size:1.12rem;color:var(--ink);}
+
+  /* DELIVERABLES */
+  .delivs{display:grid;grid-template-columns:repeat(2,1fr);gap:18px;max-width:1000px;margin:0 auto;}
+  @media(max-width:680px){.delivs{grid-template-columns:1fr;}}
+  .deliv{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:24px 26px;box-shadow:5px 5px 0 var(--rust);}
+  .deliv .dn{font-family:'Fraunces',serif;font-weight:900;font-size:2rem;color:var(--rust);line-height:1;}
+  .deliv h4{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:600;margin:4px 0 10px;}
+  .deliv p{color:var(--muted);font-size:1.02rem;}
+
+  /* GUIDING QUESTIONS */
+  .guide{max-width:920px;margin:0 auto;background:var(--ink);color:var(--paper);border-radius:20px;padding:34px 38px;box-shadow:8px 8px 0 var(--gold);}
+  .guide .glabel{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:18px;text-align:center;}
+  .guide ul{list-style:none;}
+  .guide li{padding:11px 0 11px 36px;position:relative;font-size:1.1rem;border-bottom:1px solid rgba(255,255,255,.12);}
+  .guide li:last-child{border-bottom:none;}
+  .guide li::before{content:"?";position:absolute;left:0;top:9px;font-family:'Fraunces',serif;font-weight:900;color:var(--gold);width:24px;height:24px;background:rgba(217,164,65,.18);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:.9rem;}
+
+  /* OUTCOMES */
+  .outcomes{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:16px;max-width:1000px;margin:0 auto;}
+  .oc{background:var(--card);border:2.5px solid var(--ink);border-radius:14px;padding:22px 24px;box-shadow:4px 4px 0 var(--ink);text-align:center;}
+  .oc .oicon{font-size:1.8rem;margin-bottom:8px;}
+  .oc p{font-weight:600;font-size:1.06rem;}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:54px;border-top:2px solid var(--line);padding-top:28px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.25rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">// project blueprint</div>
+    <h1>Sports, Mindsets<br>&amp; <em>Mastery</em></h1>
+    <p class="sub">Turn strategic anime-watching into a reusable mastery playbook — extracting the principles of excellence, then systematizing them into frameworks you can apply anywhere.</p>
+    <div class="scope">
+      <div class="slabel">Project Scope</div>
+      <p>Extract, analyze &amp; systematize principles of athletic excellence, mindset, and mastery progression through sports &amp; excellence-pursuit narratives — building a reusable framework connecting <em>technical mechanics, psychological resilience, training systems &amp; competitive philosophy.</em></p>
+    </div>
+    <div class="base">
+      <div class="blabel">Content Base</div>
+      <div class="chips">
+        <span class="chip">Baby Steps</span><span class="chip">Haikyu</span><span class="chip">Blue Box</span><span class="chip">Blue Lock</span><span class="chip">Ao Ashi</span><span class="chip">Hajime no Ippo</span><span class="chip">Bakuman</span><span class="chip">Slam Dunk</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="connector"></div>
+
+  <!-- PHASE 1 -->
+  <div class="phase p1">
+    <div class="ptop"><span class="pbadge">PHASE 1</span><h2>Pattern Extraction — per anime</h2></div>
+    <div class="pbody">
+      <p class="pintro">For each show, document four layers of what's happening:</p>
+      <div class="layers">
+        <div class="lcard ly1">
+          <div class="lhead"><div class="lnum">1</div><h3>Technical / Mechanical</h3></div>
+          <ul><li>Specific techniques demonstrated</li><li>Skill progression: beginner → advanced</li><li>How physical/mental systems are explained</li><li>Bottlenecks &amp; their solutions</li></ul>
+        </div>
+        <div class="lcard ly2">
+          <div class="lhead"><div class="lnum">2</div><h3>Mindset &amp; Psychology</h3></div>
+          <ul><li>Core limiting beliefs addressed</li><li>Mental models for breakthrough</li><li>How plateau / frustration is handled</li><li>Self-awareness vs. external feedback</li></ul>
+        </div>
+        <div class="lcard ly3">
+          <div class="lhead"><div class="lnum">3</div><h3>Systems &amp; Training</h3></div>
+          <ul><li>Training structures: periodization, rest</li><li>Coach / mentor philosophy</li><li>How feedback loops are created</li><li>Time-to-mastery expectations</li></ul>
+        </div>
+        <div class="lcard ly4">
+          <div class="lhead"><div class="lnum">4</div><h3>Social / Competitive</h3></div>
+          <ul><li>Role of rivalry &amp; peer comparison</li><li>Collaboration vs. individual excellence</li><li>Standards: internal vs. external</li><li>Community effect on performance</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector lbl"><span>then ↓</span></div>
+
+  <!-- PHASE 2 -->
+  <div class="phase p2">
+    <div class="ptop"><span class="pbadge">PHASE 2</span><h2>Cross-Anime Pattern Recognition</h2></div>
+    <div class="pbody">
+      <p class="pintro">Look across shows for the signal that repeats — and the contradictions worth resolving:</p>
+      <div class="recog">
+        <div class="rq"><div class="rqicon">3+</div><h4>Recurring themes</h4><p>What appears in 3+ shows? (the "plateau before breakthrough," deliberate practice)</p></div>
+        <div class="rq"><div class="rqicon">⚔</div><h4>Contradictions</h4><p>Talent vs. work ethic — when does each one actually apply?</p></div>
+        <div class="rq"><div class="rqicon">⇄</div><h4>Specific vs. universal</h4><p>Does "find your style" transfer to Bakuman too, or is it sport-bound?</p></div>
+        <div class="rq"><div class="rqicon">▲</div><h4>Hierarchy</h4><p>Which principles are foundational vs. advanced? What comes first?</p></div>
+      </div>
+    </div>
+  </div>
+
+  <div class="connector lbl"><span>then ↓</span></div>
+
+  <!-- PHASE 3 -->
+  <div class="phase p3">
+    <div class="ptop"><span class="pbadge">PHASE 3</span><h2>Framework Development</h2></div>
+    <div class="pbody">
+      <p class="pintro">Synthesize the patterns into four organized systems:</p>
+      <div class="layers">
+        <div class="lcard ly2">
+          <div class="lhead"><div class="lnum">1</div><h3>Mindset Framework</h3></div>
+          <ul><li>Beliefs necessary for mastery</li><li>Identifying &amp; reframing limiting beliefs</li><li>Psychological stages of acquisition</li></ul>
+        </div>
+        <div class="lcard ly1">
+          <div class="lhead"><div class="lnum">2</div><h3>Technical Framework</h3></div>
+          <ul><li>How complexity is structured</li><li>Progression: linear vs. non-linear</li><li>Diagnosing technical plateaus</li></ul>
+        </div>
+        <div class="lcard ly3">
+          <div class="lhead"><div class="lnum">3</div><h3>Systems Framework</h3></div>
+          <ul><li>Volume, intensity, variation, recovery</li><li>Feedback loop design</li><li>Measuring progress beyond outcomes</li></ul>
+        </div>
+        <div class="lcard ly4">
+          <div class="lhead"><div class="lnum">4</div><h3>Integration Framework</h3></div>
+          <ul><li>How the three layers interact</li><li>When to emphasize each</li><li>Debugging when performance stalls</li></ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCUSSION PROTOCOL -->
+  <div class="block">
+    <h2 class="blocktitle">Discussion Protocol</h2>
+    <div class="blockrule"></div>
+    <div class="protocol">
+      <div class="prow"><span class="ptag">Validate</span><p class="pq">"I noticed this theme in 4 shows — universal principle or domain-specific?"</p></div>
+      <div class="prow"><span class="ptag">Mechanism</span><p class="pq">"The shows show what happens — but why? What's the actual mechanism?"</p></div>
+      <div class="prow"><span class="ptag">Apply</span><p class="pq">"Does this principle transfer to a domain outside anime?"</p></div>
+      <div class="prow"><span class="ptag">Resolve</span><p class="pq">"These two shows seem to contradict — when does each apply?"</p></div>
+      <div class="prow"><span class="ptag">Refine</span><p class="pq">"How should I organize these 12 principles? What's the hierarchy?"</p></div>
+    </div>
+  </div>
+
+  <!-- DELIVERABLES -->
+  <div class="block">
+    <h2 class="blocktitle">Deliverables</h2>
+    <div class="blockrule"></div>
+    <div class="delivs">
+      <div class="deliv"><div class="dn">01</div><h4>Principle Document</h4><p>30–50 core principles, each with source anime, explanation &amp; application context.</p></div>
+      <div class="deliv"><div class="dn">02</div><h4>Visual Framework Maps</h4><p>Mind maps / SVGs showing interconnections, progression sequence, and the Mindset → Technical → Systems layers.</p></div>
+      <div class="deliv"><div class="dn">03</div><h4>Comparative Chart</h4><p>Side-by-side of how different anime approach the same challenge — e.g. "how each handles failure."</p></div>
+      <div class="deliv"><div class="dn">04</div><h4>Application Guide</h4><p>Concrete how-tos translating anime insights to real domains: gym, work, skill-building.</p></div>
+    </div>
+  </div>
+
+  <!-- GUIDING QUESTIONS -->
+  <div class="block">
+    <h2 class="blocktitle">Guiding Questions While Watching</h2>
+    <div class="blockrule"></div>
+    <div class="guide">
+      <div class="glabel">// ask these to guide note-taking</div>
+      <ul>
+        <li>What does the character NOT know at the start that limits them?</li>
+        <li>What's the exact moment their understanding shifts?</li>
+        <li>What external structure (coaching, schedule, format) enabled the breakthrough?</li>
+        <li>What would fail if they had mindset but no technical knowledge?</li>
+        <li>What's the role of failure / loss in their progression?</li>
+        <li>How do they know they're improving — besides winning?</li>
+      </ul>
+    </div>
+  </div>
+
+  <!-- OUTCOMES -->
+  <div class="block">
+    <h2 class="blocktitle">Expected Outcomes</h2>
+    <div class="blockrule"></div>
+    <div class="outcomes">
+      <div class="oc"><div class="oicon">📘</div><p>A reusable mastery playbook across domains</p></div>
+      <div class="oc"><div class="oicon">🔁</div><p>Anime-to-principle translations to reference &amp; teach</p></div>
+      <div class="oc"><div class="oicon">⚙️</div><p>A personal operating manual for skill development</p></div>
+      <div class="oc"><div class="oicon">🗺️</div><p>A visual knowledge base of interconnected maps in GoodNotes</p></div>
+    </div>
+  </div>
+
+  <footer>
+    <em>Watch what happens. Extract why. Systematize so it transfers.</em>
+    <p style="margin-top:10px;">Bring specific scenes, contradictions, or insights anytime — patterns get sharper the moment they're tested against another show.</p>
+  </footer>
+
+</div>
+</body>
+</html>

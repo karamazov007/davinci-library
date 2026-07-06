@@ -1,0 +1,339 @@
+{
+ "pal":{"a1":"#4f46e5","a2":"#0891b2","a3":"#db2777","a4":"#ea580c","a5":"#16a34a","a6":"#9333ea"},
+ "tabs":[
+  {"id":"overview","name":"Overview","icon":"🍎","intro":"How food becomes you — the single mental model under everything else.",
+   "topics":[
+    {"id":"picture","name":"The Big Picture","blurb":"Food → energy → build & repair.","blocks":[
+      {"t":"p","x":"Strip nutrition down to first principles and it is one loop: you eat food, your body dismantles it for <b>energy</b> and for <b>raw materials</b>, and it uses both to run and rebuild itself. Everything in this library — macros, micros, cholesterol, stress, metabolism — hangs off that loop."},
+      {"t":"fig","gen":"genGraph","cap":"Food is taken apart for fuel and building blocks.","args":[[
+        {"id":"f","x":0.5,"y":0.07,"shape":"round","w":150,"h":36,"label":"Food","fill":"#4f46e5"},
+        {"id":"d","x":0.5,"y":0.28,"shape":"rect","w":180,"h":34,"label":"Digestion breaks bonds","fill":"#0891b2"},
+        {"id":"g","x":0.22,"y":0.52,"shape":"rect","w":150,"h":40,"label":"Glucose / fatty acids\n/ amino acids","fill":"#0891b2"},
+        {"id":"atp","x":0.5,"y":0.74,"shape":"rect","w":150,"h":34,"label":"ATP (energy)","fill":"#16a34a"},
+        {"id":"bb","x":0.8,"y":0.52,"shape":"rect","w":150,"h":40,"label":"Building blocks","fill":"#9333ea"},
+        {"id":"w","x":0.5,"y":0.95,"shape":"round","w":190,"h":36,"label":"Run & rebuild the body","fill":"#16a34a"}
+      ],[{"from":"f","to":"d"},{"from":"d","to":"g"},{"from":"d","to":"bb"},{"from":"g","to":"atp"},{"from":"atp","to":"w"},{"from":"bb","to":"w"}],{"w":700,"h":560}]},
+      {"t":"h","x":"The one equation: food → ATP"},
+      {"t":"p","x":"Every single thing your body does — a heartbeat, a thought, a muscle twitch, an immune cell fighting infection — is paid for in <b>ATP</b>. Food is just stored chemical energy; ATP is the spendable cash your cells actually use."},
+      {"t":"fig","gen":"genConcentric","cap":"Three layers: raw food → the conversion → the spendable currency.","args":[[
+        {"label":"Food (calories)","color":"#4f46e5"},{"label":"Cellular respiration","color":"#0891b2"},{"label":"ATP (spendable)","color":"#16a34a"}
+      ],{"caption":"Glucose is the ore; ATP is the refined, spendable metal.","w":560,"h":520}]},
+      {"t":"call","x":"<b>Calories</b> = the total energy locked in food. <b>ATP</b> = the portion your cells actually capture. <b>Heat</b> = the rest, lost in conversion — and what keeps you at 37&deg;C."},
+      {"t":"h","x":"Two directions at once"},
+      {"t":"p","x":"Metabolism is two opposite processes running simultaneously — one tearing down for energy, one building up for repair."},
+      {"t":"cards","items":[
+        {"h":"Catabolism","x":"Break down → release energy. Digesting food, burning fat, breaking down muscle."},
+        {"h":"Anabolism","x":"Build up → consume energy. Building muscle, repairing tissue, making hormones."},
+        {"h":"Metabolism","x":"Catabolism + anabolism, happening together, every second you are alive."}
+      ]},
+      {"t":"h","x":"The fuel hierarchy"},
+      {"t":"p","x":"Your body is a hybrid engine — it runs on a mix of fuels, but in a preference order."},
+      {"t":"flow","steps":["Glucose — fastest, most immediate","Fat — largest store, slower to access (9 kcal/g vs 4)","Protein — last resort, pulled from muscle when desperate"]},
+      {"t":"h","x":"How this library is organised"},
+      {"t":"cards","items":[
+        {"h":"⚡ Energy & Metabolism","x":"Calories, ATP, BMR/TDEE and what actually moves your metabolic rate.","go":"energy"},
+        {"h":"🍞 Macronutrients","x":"Carbs, protein, fats and sugar — the fuel and the framework.","go":"macros"},
+        {"h":"💊 Micronutrients","x":"Vitamins, minerals and the way they help or block each other.","go":"micros"},
+        {"h":"🫀 Body Systems","x":"Cholesterol and the stress response — where it all connects.","go":"systems"},
+        {"h":"🩺 Medical Terms","x":"The common conditions, decoded from first principles.","go":"terms"}
+      ]}
+    ]}
+   ]},
+
+  {"id":"energy","name":"Energy & Metabolism","icon":"⚡","intro":"Where your energy comes from, and what sets how much you burn.",
+   "topics":[
+    {"id":"cal","name":"Calories → ATP","blurb":"How food energy becomes usable energy.","blocks":[
+      {"t":"p","x":"A calorie is just a unit of energy. The number on a food label is the total chemical energy stored in the bonds of its glucose, fat and protein. But your body can't spend calories directly — it has to convert them, inside your cells, into ATP."},
+      {"t":"fig","gen":"genGraph","cap":"Cellular respiration — the core energy reaction.","args":[[
+        {"id":"g","x":0.5,"y":0.1,"shape":"round","w":190,"h":36,"label":"Glucose + Oxygen","fill":"#4f46e5"},
+        {"id":"r","x":0.5,"y":0.42,"shape":"rect","w":200,"h":34,"label":"Cellular respiration","fill":"#0891b2"},
+        {"id":"atp","x":0.28,"y":0.78,"shape":"rect","w":150,"h":34,"label":"ATP → powers work","fill":"#16a34a"},
+        {"id":"h","x":0.72,"y":0.78,"shape":"rect","w":160,"h":34,"label":"Heat → keeps 37°C","fill":"#ea580c"},
+        {"id":"co","x":0.5,"y":0.95,"shape":"round","w":160,"h":32,"label":"+ CO₂ + water","fill":"#5b6572"}
+      ],[{"from":"g","to":"r"},{"from":"r","to":"atp"},{"from":"r","to":"h"},{"from":"r","to":"co"}],{"w":700,"h":520}]},
+      {"t":"p","x":"Carbs, fats and proteins all funnel into this same ATP-producing machinery, just at different entry points. Fat yields more ATP per gram (that's why it's 9 kcal/g vs 4 for carbs and protein), but glucose is the quickest to tap."},
+      {"t":"flow","steps":["Carbohydrates → glucose → ATP","Fats → fatty acids → ATP (more per gram, slower)","Proteins → amino acids → ATP only when needed"]}
+    ]},
+    {"id":"tdee","name":"Metabolism & TDEE","blurb":"The four things you burn calories on.","blocks":[
+      {"t":"p","x":"Your <b>Total Daily Energy Expenditure (TDEE)</b> is everything you burn in a day. Most people picture 'exercise' — but exercise is usually the smallest, most variable slice. Four components make up the whole."},
+      {"t":"table","head":["Component","Share of TDEE","What it is"],"rows":[
+        ["BMR — Basal Metabolic Rate","60–70%","Energy just to stay alive at rest — heart, lungs, kidneys, cells."],
+        ["NEAT — Non-Exercise Activity","15–30%","Walking around, fidgeting, standing, gesturing. The quiet giant."],
+        ["TEF — Thermic Effect of Food","~10%","The cost of digesting and processing food. Yes, eating burns calories."],
+        ["EAT — Exercise Activity","Variable","Deliberate training — gym, running, sport."]
+      ]},
+      {"t":"call","x":"The two biggest levers — BMR and NEAT — are the ones people ignore. An hour in the gym can be undone by sitting still for the other 23."}
+    ]},
+    {"id":"rate","name":"Move Your Metabolic Rate","blurb":"What raises it, what lowers it.","blocks":[
+      {"t":"p","x":"Metabolic rate isn't fixed. Modern life — sedentary, sleep-deprived, stressed, low-protein — systematically pushes it <b>down</b>. Almost everyone's goal is to nudge it back up."},
+      {"t":"fig","gen":"genFishbone","cap":"The levers that raise metabolic rate.","args":["Higher metabolic rate",[
+        {"name":"Muscle","causes":["more muscle mass","resistance training"]},
+        {"name":"Intake","causes":["high protein","adequate iodine/selenium"]},
+        {"name":"Recovery","causes":["good sleep","managed stress"]},
+        {"name":"Stimuli","causes":["cold exposure","caffeine","EPOC after training"]}
+      ],{"w":820,"h":430}]},
+      {"t":"cards","items":[
+        {"h":"↑ Raises it","x":"More muscle · resistance training · high protein · adequate thyroid (T3/T4) · good sleep · cold exposure · youth · caffeine · post-exercise EPOC."},
+        {"h":"↓ Lowers it","x":"Low muscle (sarcopenia) · chronic caloric restriction · hypothyroidism · chronic stress (cortisol) · poor sleep · aging · sedentary living."}
+      ]},
+      {"t":"call","x":"Muscle mass is the single most powerful lever you control. It's the 'idling speed' of the whole engine."}
+    ]},
+    {"id":"loop","name":"The Muscle–Metabolism Loop","blurb":"Why muscle is the master lever.","blocks":[
+      {"t":"p","x":"Muscle isn't just for looks or strength — it's metabolically active tissue that burns calories at rest and improves how you handle glucose. It sets off a self-reinforcing cycle in whichever direction you're heading."},
+      {"t":"fig","gen":"genCycle","cap":"The upward spiral — and it runs in reverse too.","args":[[
+        {"label":"More muscle"},{"label":"Higher resting burn"},{"label":"Leaner body"},{"label":"Better insulin sensitivity"},{"label":"Higher testosterone"}
+      ],{"w":600,"h":540,"center":"Build"}]},
+      {"t":"p","x":"Concretely: two people at 70 kg, one at 30% body fat and one at 15%, differ by ~10 kg of muscle — and the leaner one burns roughly <b>300 more calories a day just existing</b>. Over a year that's ~14 kg of fat's worth of energy, for doing nothing extra. This is why resistance training is the strongest long-term metabolic intervention there is."},
+      {"t":"h","x":"The three hormonal accelerators"},
+      {"t":"cards","items":[
+        {"h":"Thyroid (T3)","x":"Adequate T3 = every cell runs at full speed. Low T3 (hypothyroidism) can drop metabolic rate 30–40% — fatigue, cold, weight gain, brain fog. Needs iodine + selenium."},
+        {"h":"Cortisol (stress)","x":"Chronic cortisol breaks down muscle, stores visceral fat, suppresses thyroid and wrecks sleep — lowering BMR from several angles at once."},
+        {"h":"Sleep","x":"One bad night drops insulin sensitivity; several drop growth hormone, raise cortisol and cut muscle repair — measurably lowering metabolic rate."}
+      ]},
+      {"t":"call","x":"The reverse — the sarcopenia death spiral: less muscle → lower burn → more fat → worse insulin sensitivity → higher cortisol → even less muscle. The direction you feed wins."}
+    ]}
+   ]},
+
+  {"id":"macros","name":"Macronutrients","icon":"🍞","intro":"The three fuels and the framework — carbs, protein, fats, and sugar.",
+   "topics":[
+    {"id":"carbs","name":"Carbohydrates","blurb":"Glucose, insulin and blood sugar.","blocks":[
+      {"t":"p","x":"Carbohydrates are the body's quickest fuel. Nearly all of them end up as <b>glucose</b> in your blood — 'blood sugar' is literally the concentration of glucose, measured in mg/dL (a healthy fasting value is around 95)."},
+      {"t":"p","x":"When blood glucose rises, the pancreas releases <b>insulin</b> — the master storage hormone. It does three jobs at once, deciding where the glucose goes."},
+      {"t":"fig","gen":"genGraph","cap":"Eat carbs → glucose rises → insulin stores it three ways.","args":[[
+        {"id":"e","x":0.5,"y":0.06,"shape":"round","w":180,"h":34,"label":"Eat rice → glucose ↑","fill":"#4f46e5"},
+        {"id":"i","x":0.5,"y":0.26,"shape":"rect","w":150,"h":32,"label":"Insulin released","fill":"#0891b2"},
+        {"id":"m","x":0.2,"y":0.55,"shape":"rect","w":150,"h":44,"label":"Muscle → glycogen","fill":"#16a34a"},
+        {"id":"l","x":0.5,"y":0.62,"shape":"rect","w":150,"h":44,"label":"Liver → glycogen","fill":"#16a34a"},
+        {"id":"f","x":0.8,"y":0.55,"shape":"rect","w":150,"h":44,"label":"Fat → triglycerides","fill":"#ea580c"},
+        {"id":"b","x":0.5,"y":0.92,"shape":"round","w":210,"h":34,"label":"Glucose back to 70–100 in ~2h","fill":"#0891b2"}
+      ],[{"from":"e","to":"i"},{"from":"i","to":"m"},{"from":"i","to":"l"},{"from":"i","to":"f"},{"from":"m","to":"b"},{"from":"l","to":"b"},{"from":"f","to":"b"}],{"w":720,"h":520}]},
+      {"t":"h","x":"The blood-sugar response tells the story"},
+      {"t":"table","head":["Person","Spike","Return to baseline"],"rows":[
+        ["Healthy","~140 mg/dL","Within ~2 hours"],
+        ["Pre-diabetic","~180 mg/dL","3+ hours"],
+        ["Diabetic","Above 200 mg/dL","May not return"]
+      ]},
+      {"t":"p","x":"A longer-term marker is <b>HbA1c</b> — the fraction of your haemoglobin that has glucose stuck to it. Because red cells live ~3 months, it's a running average of your blood sugar, not a single snapshot."},
+      {"t":"call","x":"The problem is rarely carbs existing — it's <b>refined</b> carbs and sugar spiking glucose fast and often, forcing big insulin swings."}
+    ]},
+    {"id":"protein","name":"Protein","blurb":"Amino acids — the body's building material.","blocks":[
+      {"t":"p","x":"Protein is chains of <b>amino acids</b> — the alphabet the body builds nearly everything from: muscle, enzymes, hormones, skin, hair, antibodies, even neurotransmitters. There are 20 amino acids; 9 are <b>essential</b> (you must eat them) and 11 are non-essential (the body makes them)."},
+      {"t":"fig","gen":"genTree","cap":"20 amino acids — 9 you must eat, 11 you can make.","args":[{"label":"Amino acids (20)","children":[
+        {"label":"Essential (9)","children":[{"label":"Leucine"},{"label":"Lysine"},{"label":"Methionine"},{"label":"Tryptophan"}]},
+        {"label":"Non-essential (11)","children":[{"label":"Glutamine"},{"label":"Glycine"},{"label":"Alanine"}]}
+      ]},{"w":820,"h":420,"boxW":92,"boxH":32}]},
+      {"t":"h","x":"Complete vs incomplete"},
+      {"t":"cards","items":[
+        {"h":"Complete — all 9","x":"Eggs (gold standard), whey, milk & paneer, chicken, fish."},
+        {"h":"Incomplete — missing some","x":"Dal/lentils, rice/roti, peanut butter, chickpeas."},
+        {"h":"Combine to complete","x":"Dal + rice together cover each other's gaps — a complete protein."}
+      ]},
+      {"t":"h","x":"What protein does"},
+      {"t":"cards","items":[
+        {"h":"Muscle","x":"Build & repair; leucine triggers synthesis."},
+        {"h":"Enzymes","x":"Every chemical reaction in the body needs them."},
+        {"h":"Hormones","x":"Insulin, growth hormone — all proteins."},
+        {"h":"Structure","x":"Collagen (skin, tendons, bone), keratin (hair)."},
+        {"h":"Immunity","x":"Every antibody is a protein."},
+        {"h":"Transport & mood","x":"Haemoglobin carries O₂; serotonin & dopamine come from amino acids."}
+      ]},
+      {"t":"h","x":"If you run short"},
+      {"t":"flow","steps":["Short term: poor recovery, fatigue, slow healing, hair loss, brain fog","Medium term: muscle wasting, fluid retention, hormonal issues, skin loses elasticity","Long term: organ damage, collapsed immunity, kwashiorkor"]},
+      {"t":"call","x":"Master rule: get all 9 essential amino acids daily, prioritise complete sources, and aim for ~2 g per kg bodyweight if you train — eggs and whey first."}
+    ]},
+    {"id":"fats","name":"Fats","blurb":"Not the enemy — the type is what matters.","blocks":[
+      {"t":"p","x":"A fat is a glycerol backbone with three fatty-acid chains. Whether it's solid or liquid — and whether it helps or harms — comes down to its chemical shape. There are three broad kinds, and they are not equal."},
+      {"t":"fig","gen":"genTree","cap":"The fat family — from best to avoid.","args":[{"label":"Fats (lipids)","children":[
+        {"label":"Saturated","children":[{"label":"solid"}]},
+        {"label":"Unsaturated","children":[{"label":"Mono"},{"label":"Poly","children":[{"label":"Omega-3"},{"label":"Omega-6"}]}]},
+        {"label":"Trans","children":[{"label":"avoid"}]}
+      ]},{"w":820,"h":430,"boxW":84,"boxH":30}]},
+      {"t":"fig","gen":"genSpectrum","cap":"How to treat each type.","args":["Eat freely","Avoid entirely",[
+        {"label":"Mono","pos":0.1,"color":"#16a34a"},{"label":"Omega-3","pos":0.2,"color":"#16a34a"},{"label":"Saturated\n(moderate)","pos":0.5,"color":"#ea580c"},{"label":"Omega-6\n(reduce)","pos":0.68,"color":"#ea580c"},{"label":"Trans","pos":0.95,"color":"#db2777"}
+      ],{"title":"Prioritise mono & omega-3; moderate saturated; cut omega-6 excess; eliminate trans","w":820,"h":270}]},
+      {"t":"nutri","items":[
+        {"n":"Saturated","tag":"MODERATE","fn":["Hormone production (testosterone/estrogen)","Cell-membrane stability","Absorbs vitamins A/D/E/K"],"src":["Ghee, butter, eggs","Full-fat milk, coconut oil"],"def":["Low testosterone, hormonal disruption","Poor fat-soluble vitamin absorption"]},
+        {"n":"Monounsaturated","tag":"FREELY","fn":["Lowers LDL, raises HDL","Anti-inflammatory","Membrane flexibility"],"src":["Olive oil, avocado","Almonds, cashews, peanut butter"],"def":["Higher cardiovascular risk","Inflammation rises"]},
+        {"n":"Omega-3 (poly)","tag":"PRIORITISE","fn":["DHA builds the brain","EPA reduces inflammation","Heart, eyes, joints, mood"],"src":["Fatty fish (salmon, mackerel)","Fish oil, walnuts & flax (ALA)"],"def":["Brain fog, poor memory","Depression, chronic inflammation, dry skin"]},
+        {"n":"Omega-6 (poly)","tag":"REDUCE","fn":["Membrane structure","Controlled inflammation (in balance)"],"src":["Vegetable oils, sunflower seeds","Corn oil, most packaged snacks"],"def":["Excess → chronic inflammation","Blocks omega-3 from working"]},
+        {"n":"Trans","tag":"ELIMINATE","fn":["Zero beneficial function"],"src":["Vanaspati/dalda, fried street food","Anything 'partially hydrogenated'"],"def":["Raises LDL AND lowers HDL","Damages arteries — no safe level"]}
+      ]},
+      {"t":"call","x":"The critical number is the <b>Omega-6 : Omega-3 ratio</b>. Ideal is ~4:1; a modern diet runs 20:1 or worse — which is why cutting seed oils and adding fish/flax matters more than total fat."}
+    ]},
+    {"id":"sugar","name":"Sugar & Insulin","blurb":"The spike, the crash, and the spiral.","blocks":[
+      {"t":"p","x":"Sugar is the fastest carb of all — and its danger is behavioural as much as metabolic. Each hit sets up a short loop that, repeated for years, hardens into insulin resistance."},
+      {"t":"h","x":"The meal-to-meal loop"},
+      {"t":"flow","steps":["Eat sugary/high-carb food","Blood glucose spikes fast → dopamine hit (feels rewarding)","Large insulin response to clear it","Glucose crashes below baseline","Energy crash → brain screams for quick energy","Crave sugar again → repeat"]},
+      {"t":"h","x":"The years-long spiral"},
+      {"t":"fig","gen":"genCycle","cap":"Repeated spikes → insulin resistance.","args":[[
+        {"label":"Chronic spikes"},{"label":"Pancreas overworked"},{"label":"Receptors downregulate"},{"label":"Glucose can't enter cells"},{"label":"Stored as visceral fat"}
+      ],{"w":600,"h":540,"center":"Resistance"}]},
+      {"t":"p","x":"As receptors go numb, glucose can't get into cells efficiently — so cells are starved (chronic fatigue) while blood sugar stays high and gets stored as visceral fat, which worsens the resistance further. That's the road to Type 2 diabetes."},
+      {"t":"call","x":"The fix isn't heroics — it's blunting the spikes: whole carbs over refined, protein/fat/fibre alongside, and movement after meals to pull glucose into muscle."}
+    ]}
+   ]},
+
+  {"id":"micros","name":"Micronutrients","icon":"💊","intro":"Vitamins and minerals — tiny amounts, huge leverage, and they interact.",
+   "topics":[
+    {"id":"vitamins","name":"Vitamins","blurb":"Fat-soluble (stored) and water-soluble (daily).","blocks":[
+      {"t":"p","x":"Vitamins split by where they dissolve. <b>Fat-soluble</b> (A, D, E, K) need dietary fat to absorb, are stored in liver and fat, and can accumulate — so you don't need them daily. <b>Water-soluble</b> (B-complex, C) aren't stored, flush out in urine, and are needed regularly (overdose is almost impossible)."},
+      {"t":"h","x":"Fat-soluble — A · D · E · K"},
+      {"t":"nutri","items":[
+        {"n":"Vitamin A","tag":"A","fn":["Night vision","Skin cell renewal","Immune barrier"],"src":["Eggs, ghee, milk","Carrots, pumpkin, spinach"],"def":["Night blindness","Dry skin, infections"]},
+        {"n":"Vitamin D3","tag":"D","fn":["Calcium absorption","Testosterone & mood","Regulates 200+ genes"],"src":["Sunlight (primary)","Fatty fish, supplement"],"def":["Fatigue, low testosterone","Depression, weak bones"]},
+        {"n":"Vitamin E","tag":"E","fn":["Antioxidant — protects cell walls","Protects omega-3","Works with vitamin C"],"src":["Almonds, sunflower seeds","Peanut butter, spinach"],"def":["Cell damage","Nerve damage, weak immunity"]},
+        {"n":"Vitamin K2","tag":"K","fn":["Directs calcium INTO bones, OUT of arteries","Works with D3"],"src":["Natto (richest)","Aged cheese, ghee"],"def":["Calcium in arteries","Weak bones despite calcium intake"]}
+      ]},
+      {"t":"h","x":"Water-soluble — B-complex · C"},
+      {"t":"nutri","items":[
+        {"n":"B-complex (B1–B7)","tag":"B","fn":["Turn food into ATP (energy)","Nerve function, skin, hair","B6 → serotonin/dopamine"],"src":["Eggs, meat, dairy","Whole grains, legumes"],"def":["Fatigue, low energy","Nerve and skin problems"]},
+        {"n":"B9 + B12","tag":"B","fn":["DNA synthesis & red blood cells","B12 builds myelin (nerves)"],"src":["B9: leafy greens, dal","B12: eggs, meat, dairy (supplement if vegan)"],"def":["Anaemia, fatigue","Nerve damage, brain fog"]},
+        {"n":"Vitamin C","tag":"C","fn":["Collagen synthesis (skin, joints)","Antioxidant","Boosts iron absorption & immunity"],"src":["Amla, citrus","Tomato, peppers"],"def":["Gum problems, poor healing","Weak immunity (scurvy in extreme)"]}
+      ]},
+      {"t":"call","x":"For most people on a mixed diet the gaps are: <b>Vitamin D</b> (supplement with food), and <b>B12</b> (must supplement if plant-based). Get vitamin C from food and A from colourful vegetables daily."}
+    ]},
+    {"id":"minerals","name":"Minerals","blurb":"Macrominerals (grams) and trace minerals (milligrams).","blocks":[
+      {"t":"p","x":"Minerals are inorganic elements. <b>Macrominerals</b> you need in gram amounts — they run structure and fluid balance. <b>Trace minerals</b> you need in milligrams — but they act as catalysts, so a tiny shortfall causes outsized problems."},
+      {"t":"h","x":"Macrominerals"},
+      {"t":"nutri","items":[
+        {"n":"Calcium","tag":"Ca","fn":["Bone & teeth structure","Muscle contraction, nerve signals"],"src":["Milk, paneer","Dal, sesame"],"def":["Muscle cramps","Bone density loss, osteoporosis"]},
+        {"n":"Magnesium","tag":"Mg","fn":["300+ reactions — more than any other mineral","Activates vitamin D3","Muscle & nervous-system relaxation, sleep"],"src":["Pumpkin seeds, dark leafy greens","Dal, peanut butter"],"def":["Poor sleep, cramps, anxiety","D3 supplements barely work"]},
+        {"n":"Sodium","tag":"Na","fn":["Fluid balance outside cells","Nerve impulses, nutrient absorption"],"src":["Table salt","All cooked food"],"def":["Rare; excess is the real issue → high BP"]},
+        {"n":"Potassium","tag":"K","fn":["Fluid balance inside cells","Heart rhythm, counters sodium → lowers BP"],"src":["Potato, dal","Banana, tomato, milk"],"def":["Muscle weakness","Irregular heartbeat, high BP"]},
+        {"n":"Phosphorus","tag":"P","fn":["Bone structure with calcium","Part of ATP and DNA/RNA"],"src":["Eggs, milk","Dal, peanut butter"],"def":["Extremely rare — bone pain, low energy"]}
+      ]},
+      {"t":"h","x":"Trace minerals"},
+      {"t":"nutri","items":[
+        {"n":"Iron","tag":"Fe","fn":["Oxygen transport (haemoglobin)","Energy production"],"src":["Red meat (heme, best)","Dal, spinach (needs vitamin C)"],"def":["Fatigue, brain fog","Anaemia — world's #1 deficiency"]},
+        {"n":"Zinc","tag":"Zn","fn":["Immunity, wound healing","Testosterone, taste & smell"],"src":["Red meat, eggs","Pumpkin seeds"],"def":["Frequent illness","Low testosterone, hair loss"]},
+        {"n":"Iodine","tag":"I","fn":["Makes thyroid hormones T3/T4","Sets whole-body metabolism"],"src":["Iodised salt","Seafood, dairy"],"def":["Hypothyroidism","Fatigue, weight gain, brain fog"]},
+        {"n":"Selenium","tag":"Se","fn":["Master antioxidant (glutathione)","Activates thyroid T4 → T3"],"src":["Brazil nuts (2/day)","Eggs, seafood"],"def":["Thyroid dysfunction","Weak immunity"]},
+        {"n":"Manganese","tag":"Mn","fn":["Bone formation","Antioxidant enzymes, metabolism"],"src":["Rice, roti, dal","Tea, nuts"],"def":["Rare — bone fragility"]}
+      ]}
+    ]},
+    {"id":"pairs","name":"Synergies & Antagonisms","blurb":"Which nutrients help, block, or activate each other.","blocks":[
+      {"t":"p","x":"Micronutrients don't act alone. Some <b>amplify</b> each other, some <b>compete</b> for the same absorption pathway, and some form <b>chains</b> where one activates the next. Getting the pairings right often matters more than the dose."},
+      {"t":"h","x":"Synergistic pairs — take together"},
+      {"t":"cards","items":[
+        {"h":"D3 + K2","x":"The most critical pairing. D3 absorbs calcium; K2 sends it to bones, not arteries. Always together."},
+        {"h":"D3 + Magnesium","x":"Magnesium activates D3 — without it, a D3 supplement barely works."},
+        {"h":"Vitamin C + Iron","x":"Vitamin C converts plant (non-heme) iron into an absorbable form. Lemon on dal."},
+        {"h":"Vitamin C + Vitamin E","x":"C regenerates E after it neutralises a free radical — an antioxidant relay."},
+        {"h":"Ca + D3 + K2 + Mg","x":"The bone team. Miss one and the whole chain underperforms."},
+        {"h":"Iodine + Selenium","x":"Iodine makes T4; selenium converts it to active T3. Both needed for thyroid."}
+      ]},
+      {"t":"h","x":"Antagonistic pairs — separate them"},
+      {"t":"cards","items":[
+        {"h":"Iron ✗ Calcium","x":"Compete for absorption — don't take an iron and a calcium supplement together."},
+        {"h":"Iron ✗ Zinc","x":"Share a pathway; large doses of one blunt the other."},
+        {"h":"Omega-6 ✗ Omega-3","x":"Compete for the same enzymes — excess omega-6 crowds omega-3 out."}
+      ]},
+      {"t":"h","x":"Dependent chains — one activates the next"},
+      {"t":"fig","gen":"genGraph","cap":"Chains where each step enables the next.","args":[[
+        {"id":"se","x":0.25,"y":0.12,"shape":"round","w":130,"h":32,"label":"Selenium","fill":"#0891b2"},
+        {"id":"gl","x":0.25,"y":0.5,"shape":"rect","w":150,"h":32,"label":"Glutathione","fill":"#0891b2"},
+        {"id":"ax","x":0.25,"y":0.88,"shape":"round","w":140,"h":32,"label":"Antioxidant","fill":"#16a34a"},
+        {"id":"tr","x":0.75,"y":0.12,"shape":"round","w":150,"h":32,"label":"Tryptophan + B6","fill":"#9333ea"},
+        {"id":"sr","x":0.75,"y":0.5,"shape":"round","w":130,"h":32,"label":"Serotonin","fill":"#16a34a"},
+        {"id":"bb","x":0.5,"y":0.7,"shape":"round","w":150,"h":32,"label":"B9 + B12","fill":"#4f46e5"},
+        {"id":"dn","x":0.75,"y":0.88,"shape":"rect","w":170,"h":32,"label":"DNA + red cells","fill":"#16a34a"}
+      ],[{"from":"se","to":"gl"},{"from":"gl","to":"ax"},{"from":"tr","to":"sr"},{"from":"bb","to":"dn"}],{"w":720,"h":460}]}
+    ]}
+   ]},
+
+  {"id":"systems","name":"Body Systems","icon":"🫀","intro":"Where nutrition becomes physiology — cholesterol and the stress response.",
+   "topics":[
+    {"id":"chol","name":"Cholesterol & Lipids","blurb":"A building material, not a poison.","blocks":[
+      {"t":"p","x":"Cholesterol is not a disease — it's a fat-like molecule your body depends on. Your liver makes ~80% of it; your brain is ~25% cholesterol; and testosterone, estrogen, cortisol and vitamin D are all built from it. The problem is never that it exists — it's the transport going wrong."},
+      {"t":"h","x":"Six essential jobs"},
+      {"t":"fig","gen":"genMindMap","cap":"What cholesterol actually does.","args":["Cholesterol",[
+        {"label":"Membrane fluidity"},{"label":"Enables membrane proteins"},{"label":"Lipid rafts (signalling)"},{"label":"Myelin (nerve insulation)"},{"label":"Steroid hormones"},{"label":"Bile acids (fat digestion)"}
+      ],{"w":800,"h":560}]},
+      {"t":"h","x":"LDL and HDL are trucks, not cargo"},
+      {"t":"p","x":"Cholesterol can't travel in water-based blood alone, so it rides inside <b>lipoproteins</b>. LDL and HDL are the vehicles — not the cholesterol itself. 'LDL cholesterol' on a blood test means the cholesterol being carried inside LDL particles."},
+      {"t":"fig","gen":"genGraph","cap":"Delivery out, cleanup back.","args":[[
+        {"id":"li","x":0.5,"y":0.1,"shape":"round","w":130,"h":34,"label":"Liver","fill":"#4f46e5"},
+        {"id":"ldl","x":0.25,"y":0.45,"shape":"rect","w":170,"h":44,"label":"LDL → delivers to cells","fill":"#db2777"},
+        {"id":"cells","x":0.5,"y":0.75,"shape":"round","w":130,"h":34,"label":"Body cells","fill":"#5b6572"},
+        {"id":"hdl","x":0.75,"y":0.45,"shape":"rect","w":170,"h":44,"label":"HDL → returns for recycling","fill":"#16a34a"}
+      ],[{"from":"li","to":"ldl"},{"from":"ldl","to":"cells"},{"from":"cells","to":"hdl"},{"from":"hdl","to":"li"}],{"w":700,"h":460}]},
+      {"t":"p","x":"Trouble starts when there's too much LDL and it gets <b>oxidised</b> by free radicals — it deposits in artery walls, forming plaque (atherosclerosis). HDL is the cleanup crew pulling excess cholesterol back to the liver."},
+      {"t":"table","head":["Marker","Target"],"rows":[["LDL","below 100 mg/dL"],["HDL","above 60 mg/dL (protective)"],["Triglycerides","below 150 mg/dL"],["Total : HDL ratio","below 4"]]},
+      {"t":"call","x":"The reframe: the fix is to improve transport — more HDL, less oxidised LDL — not to crush cholesterol itself. Triglycerides, notably, rise from excess <b>sugar and refined carbs</b>, not dietary fat."}
+    ]},
+    {"id":"stress","name":"The Stress Response","blurb":"One hormone, six system-wide effects.","blocks":[
+      {"t":"p","x":"Acute stress is a brilliant survival system: adrenaline and cortisol prepare you to fight or flee — heart rate up, glucose dumped into blood, digestion and immunity paused. The design flaw is that it's meant to be <b>resolved by physical action</b>. When the threat is chronic and psychological, the hormones just circulate with nowhere to go."},
+      {"t":"fig","gen":"genFishbone","cap":"One trigger, one hormone, six simultaneous harms.","args":["Chronic disease",[
+        {"name":"Blood sugar","causes":["insulin resistance","Type 2 diabetes"]},
+        {"name":"Vessels","causes":["high blood pressure","artery damage"]},
+        {"name":"Muscle","causes":["breakdown","testosterone drops"]},
+        {"name":"Fat","causes":["visceral fat","inflammation"]},
+        {"name":"Immune","causes":["suppressed","frequent illness"]},
+        {"name":"Sleep","causes":["disrupted","self-perpetuating"]}
+      ],{"w":840,"h":460}]},
+      {"t":"p","x":"Sustained cortisol elevates blood sugar (→ insulin resistance), constricts vessels and retains sodium (→ high blood pressure), breaks down muscle (→ lower testosterone and metabolic rate), stores visceral fat (→ inflammation, worse cholesterol), suppresses immunity, and disrupts sleep — which loops back and worsens everything."},
+      {"t":"call","x":"This is why exercise is the most effective stress relief — not as motivation, but as mechanism. Physical activity <b>completes the fight-or-flight cycle</b>: it burns off the adrenaline and cortisol-driven glucose, releases endorphins, and raises testosterone to directly counter cortisol."}
+    ]}
+   ]},
+
+  {"id":"terms","name":"Medical Terms","icon":"🩺","intro":"Common conditions decoded — what they are, why they happen, and the nutrient links.",
+   "topics":[
+    {"id":"how","name":"How to think about them","blurb":"Categories that reveal mechanism.","blocks":[
+      {"t":"p","x":"Most everyday medical terms fall into a few families. Knowing which family something belongs to immediately tells you how it works and why it happens."},
+      {"t":"cards","items":[
+        {"h":"Measurable values","x":"Cholesterol, blood pressure, thyroid — numbers, usually silent until damage is done."},
+        {"h":"Digestive","x":"Acidity, constipation, diarrhoea, kidney & gall stones."},
+        {"h":"Inflammatory / respiratory","x":"Arthritis, asthma, sinusitis, migraine."},
+        {"h":"Infections","x":"Cold and other viral illness — mostly your immune response, not the virus itself."},
+        {"h":"Neurological / vestibular","x":"Migraine, vertigo — and nausea, which is a symptom, not a disease."}
+      ]},
+      {"t":"table","head":["Condition","Category","Root cause","Key symptom"],"rows":[
+        ["Cholesterol","Blood lipid","Excess LDL, trans fats, sugar","Silent"],
+        ["Blood pressure","Circulatory","Arterial resistance, sodium, stress","Silent"],
+        ["Thyroid","Hormonal","Iodine/selenium deficiency, autoimmune","Fatigue, weight change"],
+        ["Cold","Viral","Rhinovirus","Runny nose, sore throat"],
+        ["Sinusitis","Inflammatory","Blocked sinus drainage","Facial pressure, thick mucus"],
+        ["Migraine","Neurological","Cortical spreading depression","Severe one-sided headache"],
+        ["Acidity","Digestive","LES valve failure","Burning in chest"],
+        ["Constipation","Digestive","Low fibre/water/magnesium","Hard stools, straining"],
+        ["Diarrhoea","Digestive","Infection, intolerance","Loose watery stools"],
+        ["Asthma","Respiratory","Airway hypersensitivity","Wheezing, breathlessness"],
+        ["Arthritis","Inflammatory","Wear & tear or autoimmune","Joint pain, stiffness"],
+        ["Kidney stone","Mineral deposit","Concentrated urine","Severe flank pain"],
+        ["Gallstone","Mineral deposit","Excess cholesterol in bile","Upper-right abdominal pain"]
+      ]}
+    ]},
+    {"id":"measurable","name":"Measurable Values","blurb":"Cholesterol, blood pressure, thyroid.","blocks":[
+      {"t":"term","items":[
+        {"n":"Blood Pressure","what":"The force of blood against artery walls — systolic (heart contracts) over diastolic (heart relaxes). Normal ~120/80; hypertension is consistently above 130/80.","why":["Arteries narrow (plaque) or stiffen (age, trans fats, K2 deficiency)","Excess sodium retains water → more blood volume","Stress and stimulants make the heart pump harder","Kidneys are the master regulator via fluid balance"],"sym":["Usually none — the 'silent killer'","Severe: headache, vision changes, nosebleeds"],"fix":["Less sodium, more potassium (potato, dal)","Exercise, stress reduction, magnesium"]},
+        {"n":"Thyroid","what":"The thyroid sets whole-body metabolic speed via hormones T4 and T3. Low output (hypothyroidism) slows every cell.","why":["Iodine or selenium deficiency","Autoimmune (Hashimoto's)"],"sym":["Fatigue, weight gain, cold intolerance","Brain fog, dry skin, hair loss"],"fix":["Adequate iodine (iodised salt/seafood) + selenium (Brazil nuts)"]}
+      ]}
+    ]},
+    {"id":"digestive","name":"Digestive","blurb":"Acidity, constipation, diarrhoea, stones.","blocks":[
+      {"t":"term","items":[
+        {"n":"Acidity / Reflux (GERD)","what":"Stomach acid (HCl) splashes up past the lower esophageal sphincter (LES) into the unprotected esophagus — the burning called heartburn.","why":["Overeating or lying down after meals","Obesity, spicy/fatty/acidic foods","Coffee, alcohol, stress; H. pylori"],"sym":["Burning in chest/throat, sour taste","Regurgitation, chronic cough, worse lying down"],"fix":["Smaller meals, don't lie down after eating; treat — don't just mask (chronic reflux → Barrett's esophagus)"]},
+        {"n":"Constipation","what":"Transit is too slow, so the colon absorbs too much water and stool turns hard and dry (fewer than 3 movements/week).","why":["Too little fibre or water","Sedentary living, low magnesium","Hypothyroidism, stress, certain meds"],"sym":["Hard lumpy stools, straining","Bloating, incomplete emptying"],"fix":["The fibre–water–magnesium triangle solves most cases"]},
+        {"n":"Diarrhoea","what":"The opposite — transit too fast, or the gut actively secreting water to flush an irritant. Three+ loose stools a day.","why":["Viral (rota/noro) or bacterial infection","Food intolerance, IBS, antibiotics"],"sym":["Loose watery stools","Danger: dehydration + electrolyte loss"],"fix":["Oral rehydration — water WITH sodium and potassium, not water alone"]},
+        {"n":"Kidney Stones","what":"Hard mineral crystals that form when urine is too concentrated (80% are calcium-oxalate).","why":["Dehydration — urine too concentrated","High sodium, high-oxalate foods, vitamin D excess without K2"],"sym":["Severe cramping flank pain radiating to groin","Blood in urine, nausea"],"fix":["Drink 2.5–3 L water daily — the single best prevention"]},
+        {"n":"Gallstones","what":"Hard deposits in the gallbladder, usually when bile holds too much cholesterol relative to bile salts (80% are cholesterol stones).","why":["High cholesterol in bile, obesity","Rapid weight loss; estrogen; even very low-fat diets (bile stagnates)"],"sym":["Sudden upper-right pain after fatty meals","Radiates to right shoulder; jaundice if duct blocked"],"fix":["Steady weight, regular meals with some fat so the gallbladder empties"]}
+      ]}
+    ]},
+    {"id":"inflammatory","name":"Inflammatory & Respiratory","blurb":"Sinusitis, asthma, arthritis, migraine.","blocks":[
+      {"t":"term","items":[
+        {"n":"Sinusitis","what":"Inflammation of the sinuses; drainage blocks, mucus stagnates and can turn infected.","why":["Follows a cold or allergy","Deviated septum, dry air, low immunity"],"sym":["Facial pain/pressure, thick yellow-green mucus","Blocked nose, reduced smell, headache"],"fix":["Acute (<4 wks) usually post-cold; chronic (>12 wks) often allergic/structural"]},
+        {"n":"Asthma","what":"Chronically hypersensitive airways that narrow (bronchospasm), swell and fill with mucus in response to triggers.","why":["Allergens, cold air, exercise, infection, smoke","Genetic + early-environment (hygiene hypothesis)"],"sym":["Wheezing, shortness of breath","Chest tightness, night cough"],"fix":["Vitamin D and omega-3 lower severity; magnesium relaxes airways (IV Mg used in severe attacks)"]},
+        {"n":"Arthritis","what":"Joint inflammation — over 100 conditions, but two dominate: osteoarthritis (mechanical cartilage wear) and rheumatoid (autoimmune attack on the joint lining).","why":["OA: age, obesity, overuse, injury","RA: genetic predisposition + immune trigger"],"sym":["Joint pain, swelling, morning stiffness","RA is symmetric + systemic (fatigue, fever)"],"fix":["Omega-3 and vitamin D reduce inflammation; collagen (vitamin-C dependent) and Ca+K2 support joints"]},
+        {"n":"Migraine","what":"A neurological condition — a wave of electrical activity (cortical spreading depression) triggers inflammation and vessel changes, not just a bad headache.","why":["Hormonal shifts, sleep disruption, dehydration, stress","Trigger foods; magnesium deficiency is a top link"],"sym":["Phases: prodrome → aura → throbbing one-sided headache → postdrome","Nausea, light/sound sensitivity"],"fix":["Magnesium, B2 (riboflavin) and CoQ10 all address the mitochondrial/vessel mechanisms"]}
+      ]}
+    ]},
+    {"id":"infections","name":"Infections & Symptoms","blurb":"Cold, viral illness, nausea, vertigo.","blocks":[
+      {"t":"term","items":[
+        {"n":"Common Cold","what":"A viral infection of the nose and throat — 200+ viruses, mostly rhinovirus. The symptoms are your immune response expelling the virus, not the virus itself.","why":["Low vitamin D, zinc or vitamin C","Poor sleep, high stress (cortisol suppresses immunity)"],"sym":["Runny/blocked nose, sneezing","Sore throat, mild fever, fatigue"],"fix":["No cure — resolves in 7–10 days; vitamin C, zinc, rest, hydration support the response"]},
+        {"n":"Viral Infections (category)","what":"A virus is genetic material in a protein shell — not truly alive. It can't reproduce alone; it hijacks your cells' machinery.","why":["Enters, injects genes, forces cells to copy it","Spreads until the immune system mounts a response"],"sym":["Depends on the virus (cold, flu, COVID, etc.)","Symptoms are mostly the immune response"],"fix":["Antibiotics don't work — they target bacterial structures viruses lack. Immunity/vaccines build memory B cells"]},
+        {"n":"Nausea","what":"A symptom, not a disease — the urge to vomit, generated by the brainstem's vomiting centre. Vomiting is a protective reflex to expel a suspected toxin.","why":["Gut distress signals via the vagus nerve","Vestibular mismatch (motion sickness), migraine, chemicals, anxiety"],"sym":["Queasiness, urge to vomit"],"fix":["Treat the cause; address the underlying trigger"]},
+        {"n":"Vertigo","what":"A false sensation of spinning, distinct from dizziness. Balance comes from inner ear + eyes + joint sensors; when they conflict, you get vertigo.","why":["BPPV — dislodged inner-ear calcium crystals (most common)","Vestibular neuritis, Meniere's, migraine-associated"],"sym":["Spinning triggered by head movement","Nausea, balance trouble, nystagmus"],"fix":["BPPV responds excellently to the Epley maneuver — often 1–2 sessions"]}
+      ]}
+    ]}
+   ]}
+ ]
+}

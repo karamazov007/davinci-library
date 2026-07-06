@@ -1,0 +1,35 @@
+{
+  "researched": true,
+  "geo": {
+    "Cyber Hub (DLF Cyber City)": {"identity":"Corporate & nightlife hub","defines":"After-work cafes, bars and specialty coffee in the office district","bestFor":"Work meetups, evenings, groups, client catch-ups"},
+    "Galleria Market (DLF Phase 4)": {"identity":"Upscale neighbourhood market","defines":"Established cafe cluster with bakeries and roasters","bestFor":"Coffee, brunch, casual dates"},
+    "Sector 29 (Leisure Valley)": {"identity":"Food & nightlife strip","defines":"Restaurants, bars and a green park cafe","bestFor":"Nights out, large groups, celebrations"},
+    "Golf Course Road": {"identity":"Premium, calm corridor","defines":"Quiet, upscale cafes along the high-end stretch","bestFor":"Reading, laptop work, calm meets"},
+    "Sector 15 / 32nd Avenue": {"identity":"Boutique dining pocket","defines":"Aesthetic cafes and eateries in a walkable plaza","bestFor":"Dates, aesthetic hangouts, brunch"}
+  },
+  "cafes": [
+    ["Cyber Hub (DLF Cyber City)", [
+      ["Blue Tokai Coffee Roasters", "Single-origin specialty coffee", "India's third-wave pioneer; work-friendly, connect with like-minded people."],
+      ["Olly", "Open-terrace cafe, live music", "One of Cyber Hub's best open-terrace spots; European-style desserts."],
+      ["Cafe Amaretto", "Italian-inspired coffee, cozy", "Warm lighting, freshly brewed coffee, charming interiors."],
+      ["Greenr Cafe", "Vegan & vegetarian, work-friendly", "Plant-forward menu, natural light and charging points."]
+    ]],
+    ["Galleria Market (DLF Phase 4)", [
+      ["Paul", "French bakery-cafe, pastries", "Parisian ambience and artisanal coffee; a must for coffee lovers."],
+      ["Sakley's – The Mountain Cafe", "Bakes, rustic mountain vibe", "Warm lights and rustic decor; long-running favourite."],
+      ["Blue Tokai Coffee Roasters", "Specialty coffee", "Galleria outpost popular for getting work done."],
+      ["Di Ghent Cafe", "Belgian-style coffee, desserts", "Cozy European corner — rustic furniture, calm and elegant."]
+    ]],
+    ["Sector 29 (Leisure Valley)", [
+      ["Roots – Cafe in the Park", "Open-air, organic food", "Tucked in greenery opposite Kingdom of Dreams; eco-friendly, preservative-free."]
+    ]],
+    ["Golf Course Road", [
+      ["Another Fine Day", "Book cafe, all-day breakfast", "Peaceful setting for reading and working; specialty teas."]
+    ]],
+    ["Sector 15 / 32nd Avenue", [
+      ["Melt House", "Aesthetic cafe, frappes & food", "Aesthetic ambience at 32nd Avenue; caramel mocha frappe a favourite."],
+      ["Cafe Dori", "Industrial-chic, coffee & books", "Spacious industrial decor; great with a book, laptop-friendly."]
+    ]]
+  ],
+  "scen": []
+}

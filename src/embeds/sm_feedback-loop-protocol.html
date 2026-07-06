@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Feedback Loop Protocol — Mental Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 10% 5%,rgba(217,164,65,.10),transparent 38%),
+      radial-gradient(circle at 92% 96%,rgba(47,107,99,.10),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.52;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1160px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:42px;}
+  .kicker{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;
+    font-weight:700;color:var(--rust-deep);border:1.5px solid var(--rust);padding:8px 18px;border-radius:8px;margin-bottom:24px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.96;font-size:clamp(2.5rem,7vw,4.8rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:720px;margin:20px auto 0;font-size:clamp(1.05rem,2vw,1.3rem);color:var(--muted);}
+
+  /* 4-LAYER STACK OVERVIEW */
+  .stack{max-width:600px;margin:34px auto 0;}
+  .slayer{border:3px solid var(--ink);border-radius:14px;padding:18px 24px;text-align:center;color:#fff;box-shadow:5px 5px 0 var(--ink);}
+  .slayer .sl-n{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.14em;font-weight:700;opacity:.85;}
+  .slayer .sl-t{font-family:'Fraunces',serif;font-weight:600;font-size:1.5rem;margin-top:2px;}
+  .slayer .sl-d{font-size:.95rem;opacity:.9;margin-top:2px;}
+  .sl1{background:var(--teal);}.sl2{background:var(--olive);}.sl3{background:var(--gold);color:var(--ink);}.sl3 .sl-n{opacity:.7;}.sl4{background:var(--rust);}
+  .stack-arrow{text-align:center;color:var(--ink);font-size:1.5rem;line-height:1;margin:6px 0;font-weight:700;}
+
+  /* SECTION */
+  section{margin-bottom:56px;}
+  .layer-head{display:flex;align-items:center;gap:18px;max-width:1080px;margin:0 auto 22px;}
+  .lh-badge{font-family:'Fraunces',serif;font-weight:900;color:#fff;min-width:64px;height:64px;border-radius:14px;display:flex;flex-direction:column;align-items:center;justify-content:center;flex-shrink:0;line-height:1;}
+  .lh-badge .lhb-l{font-family:'JetBrains Mono',monospace;font-size:.5rem;letter-spacing:.1em;opacity:.8;font-weight:700;}
+  .lh-badge .lhb-n{font-size:1.7rem;}
+  .lh-title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.5rem,4vw,2.3rem);line-height:1.05;letter-spacing:-.01em;}
+  .lh-sub{color:var(--muted);font-size:1rem;margin-top:2px;}
+  .b-teal{background:var(--teal);}.b-olive{background:var(--olive);}.b-gold{background:var(--gold);color:var(--ink)!important;}.b-rust{background:var(--rust);}
+  .layer-rule{height:3px;background:linear-gradient(90deg,var(--rust),transparent);margin:0 auto 24px;border-radius:2px;max-width:1080px;}
+
+  /* PRINCIPLES — 3 domain columns */
+  .domains{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1080px;margin:0 auto;}
+  @media(max-width:820px){.domains{grid-template-columns:1fr;}}
+  .dom{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:24px 26px;box-shadow:6px 6px 0 var(--ink);}
+  .dom .dtop{display:flex;align-items:center;gap:10px;margin-bottom:14px;}
+  .dom .dicon{font-size:1.5rem;}
+  .dom h3{font-family:'Fraunces',serif;font-size:1.45rem;font-weight:600;}
+  .dom .dtag{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.08em;color:var(--muted);font-weight:700;text-transform:uppercase;}
+  .dom ol{list-style:none;counter-reset:p;}
+  .dom li{counter-increment:p;padding:7px 0 7px 30px;position:relative;font-size:1rem;border-bottom:1px solid var(--line);}
+  .dom li:last-child{border-bottom:none;}
+  .dom li::before{content:counter(p);position:absolute;left:0;top:7px;width:21px;height:21px;border-radius:6px;background:var(--paper-2);border:1.5px solid var(--ink);display:flex;align-items:center;justify-content:center;font-size:.72rem;font-weight:700;font-family:'JetBrains Mono',monospace;}
+  .dom li b{color:var(--rust-deep);}
+
+  /* PROTOCOL — 4-stage timeline */
+  .stages{display:grid;grid-template-columns:repeat(4,1fr);gap:0;max-width:1080px;margin:0 auto;border:3px solid var(--ink);border-radius:18px;overflow:hidden;box-shadow:7px 7px 0 var(--ink);}
+  @media(max-width:820px){.stages{grid-template-columns:1fr 1fr;}}
+  @media(max-width:520px){.stages{grid-template-columns:1fr;}}
+  .stage{background:var(--card);border-right:3px solid var(--ink);border-bottom:3px solid var(--ink);padding:20px 22px;}
+  .stage:nth-child(4n){border-right:none;}
+  .stage .stime{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.06em;color:var(--rust);font-weight:700;text-transform:uppercase;}
+  .stage h4{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:600;margin:2px 0 12px;}
+  .stage ul{list-style:none;}
+  .stage li{padding:5px 0 5px 18px;position:relative;font-size:.98rem;color:var(--muted);}
+  .stage li::before{content:"›";position:absolute;left:2px;color:var(--rust);font-weight:700;}
+  .stage.hl{background:var(--ink);}
+  .stage.hl .stime{color:var(--gold);}
+  .stage.hl h4{color:var(--paper);}
+  .stage.hl li{color:#d8ccba;}
+  .stage.hl .write{margin-top:10px;background:rgba(217,164,65,.2);border-radius:8px;padding:8px 12px;font-size:.9rem;color:var(--gold);font-weight:600;font-family:'JetBrains Mono',monospace;}
+  .proto-note{max-width:1080px;margin:18px auto 0;text-align:center;font-size:1.05rem;color:var(--muted);}
+  .proto-note strong{color:var(--rust-deep);}
+
+  /* DATA CAPTURE — terminal log */
+  .terminal{max-width:1000px;margin:0 auto;background:var(--ink);border-radius:16px;overflow:hidden;box-shadow:7px 7px 0 var(--rust);}
+  .term-bar{background:#2a241e;padding:12px 18px;display:flex;align-items:center;gap:8px;}
+  .term-bar .dot{width:12px;height:12px;border-radius:50%;}
+  .term-bar .r{background:#e06b53;}.term-bar .y{background:var(--gold);}.term-bar .g{background:#7fc99a;}
+  .term-bar .tname{font-family:'JetBrains Mono',monospace;color:#9c8f7d;font-size:.8rem;margin-left:10px;}
+  .term-body{padding:24px 28px;font-family:'JetBrains Mono',monospace;font-size:.95rem;line-height:1.7;color:#e8dcc8;}
+  .term-body .th{color:var(--gold);font-weight:700;}
+  .term-body .dim{color:#9c8f7d;}
+  .term-body .good{color:#7fc99a;}
+  .term-body .warn{color:#e8a87f;}
+  .term-body .ins{color:var(--paper);font-weight:700;}
+  .term-body .sep{color:#4a4138;}
+
+  /* FEEDBACK LOOPS — concentric timescales */
+  .loops{display:grid;grid-template-columns:repeat(4,1fr);gap:0;max-width:1080px;margin:0 auto;align-items:stretch;}
+  @media(max-width:820px){.loops{grid-template-columns:1fr 1fr;}}
+  @media(max-width:480px){.loops{grid-template-columns:1fr;}}
+  .loop{border:3px solid var(--ink);padding:22px 20px;text-align:center;box-shadow:inset 0 0 0 0;position:relative;}
+  .loop:not(:last-child){border-right:none;}
+  .loop .lp-scale{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.1em;font-weight:700;text-transform:uppercase;color:var(--muted);}
+  .loop .lp-name{font-family:'Fraunces',serif;font-weight:900;font-size:1.4rem;margin:4px 0 10px;}
+  .loop .lp-cycle{font-size:.95rem;color:var(--muted);}
+  .loop .lp-icon{font-size:1.6rem;margin-bottom:8px;}
+  .lp1{background:rgba(47,107,99,.1);}
+  .lp2{background:rgba(107,115,64,.12);}
+  .lp3{background:rgba(217,164,65,.16);}
+  .lp4{background:rgba(193,80,46,.12);}
+  .lp1 .lp-name{color:var(--teal);}.lp2 .lp-name{color:var(--olive);}.lp3 .lp-name{color:var(--rust-deep);}.lp4 .lp-name{color:var(--rust);}
+  .loops-wrap{border-radius:18px;overflow:hidden;box-shadow:7px 7px 0 var(--ink);max-width:1080px;margin:0 auto;}
+  .loops-title{text-align:center;font-family:'JetBrains Mono',monospace;font-size:.78rem;letter-spacing:.12em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:14px;}
+
+  /* IMPLEMENTATION */
+  .impl{max-width:920px;margin:0 auto;background:var(--card);border:3px solid var(--ink);border-radius:20px;padding:30px 34px;box-shadow:7px 7px 0 var(--teal);}
+  .impl h3{font-family:'Fraunces',serif;font-weight:600;font-size:1.7rem;text-align:center;margin-bottom:6px;}
+  .impl .isub{text-align:center;color:var(--muted);margin-bottom:24px;font-size:1.05rem;}
+  .pick{display:flex;justify-content:center;gap:14px;flex-wrap:wrap;margin-bottom:22px;}
+  .pick .pk{background:var(--paper-2);border:2px solid var(--ink);border-radius:12px;padding:14px 22px;text-align:center;min-width:150px;}
+  .pick .pk .pkl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;color:var(--muted);font-weight:700;text-transform:uppercase;}
+  .pick .pk .pkv{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;margin-top:3px;}
+  .pick .arrow{display:flex;align-items:center;color:var(--rust);font-size:1.5rem;}
+  .samplelog{background:var(--ink);color:#e8dcc8;border-radius:12px;padding:18px 22px;font-family:'JetBrains Mono',monospace;font-size:.92rem;line-height:1.7;}
+  .samplelog .good{color:#7fc99a;}.samplelog .ins{color:var(--gold);font-weight:700;}
+
+  /* THE REAL POINT */
+  .point{max-width:920px;margin:0 auto;background:var(--rust);color:#fff;border-radius:22px;padding:46px 40px;text-align:center;box-shadow:8px 8px 0 var(--ink);}
+  .point .ptag{font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.2em;text-transform:uppercase;opacity:.85;margin-bottom:18px;}
+  .point .pbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.7rem,4.5vw,2.8rem);line-height:1.15;}
+  .point .pbig em{color:#ffe3b0;font-style:italic;}
+  .point p{margin-top:22px;font-size:1.12rem;max-width:620px;margin-left:auto;margin-right:auto;opacity:.96;}
+  .point .proof{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+  .point .proof span{background:rgba(255,255,255,.15);border-radius:30px;padding:7px 16px;font-size:.95rem;font-family:'JetBrains Mono',monospace;}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:50px;border-top:2px solid var(--line);padding-top:28px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.25rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">// generalizable feedback system</div>
+    <h1>The Four-Layer<br><em>Feedback Protocol</em></h1>
+    <p class="sub">One systematic, minimal, actually-usable loop that works across workouts, swimming &amp; nutrition. Each layer feeds the next.</p>
+    <div class="stack">
+      <div class="slayer sl1"><div class="sl-n">LAYER 1</div><div class="sl-t">Principles</div><div class="sl-d">the invariants</div></div>
+      <div class="stack-arrow">↓</div>
+      <div class="slayer sl2"><div class="sl-n">LAYER 2</div><div class="sl-t">Protocol</div><div class="sl-d">the specific steps</div></div>
+      <div class="stack-arrow">↓</div>
+      <div class="slayer sl3"><div class="sl-n">LAYER 3</div><div class="sl-t">Data Capture</div><div class="sl-d">what to observe</div></div>
+      <div class="stack-arrow">↓</div>
+      <div class="slayer sl4"><div class="sl-n">LAYER 4</div><div class="sl-t">Feedback Loops</div><div class="sl-d">how to close them</div></div>
+    </div>
+  </header>
+
+  <!-- LAYER 1 -->
+  <section>
+    <div class="layer-head">
+      <div class="lh-badge b-teal"><span class="lhb-l">LAYER</span><span class="lhb-n">1</span></div>
+      <div><div class="lh-title">Principles — the invariants</div><div class="lh-sub">5–8 fundamentals per domain that don't change across variations.</div></div>
+    </div>
+    <div class="layer-rule"></div>
+    <div class="domains">
+      <div class="dom">
+        <div class="dtop"><span class="dicon">🏋️</span><div><h3>Workout</h3><div class="dtag">8 invariants</div></div></div>
+        <ol>
+          <li><b>Scapular</b> — shoulders back &amp; down</li>
+          <li><b>Spinal</b> — neutral, no over-curve</li>
+          <li><b>Load path</b> — weight in muscle, not joints</li>
+          <li><b>ROM</b> — full stretch to contraction</li>
+          <li><b>Breathing</b> — exhale on exertion</li>
+          <li><b>Mind-muscle</b> — feel the target</li>
+          <li><b>Progression</b> — small increments</li>
+          <li><b>Rest</b> — consistent between sets</li>
+        </ol>
+      </div>
+      <div class="dom">
+        <div class="dtop"><span class="dicon">🏊</span><div><h3>Swimming</h3><div class="dtag">7 invariants</div></div></div>
+        <ol>
+          <li><b>Head</b> — neutral, waterline at hairline</li>
+          <li><b>Rotation</b> — hip + shoulder as a unit</li>
+          <li><b>Recovery</b> — hand height/angle on entry</li>
+          <li><b>Breath</b> — part of rotation, not a stop</li>
+          <li><b>Kick sync</b> — timed to arm cycle</li>
+          <li><b>Core</b> — flat body, hips up</li>
+          <li><b>Catch</b> — engage water right after entry</li>
+        </ol>
+      </div>
+      <div class="dom">
+        <div class="dtop"><span class="dicon">🥗</span><div><h3>Nutrition</h3><div class="dtag">6 invariants</div></div></div>
+        <ol>
+          <li><b>Timing</b> — pre / intra / post differ</li>
+          <li><b>Digestive load</b> — stomach work vs. energy</li>
+          <li><b>Hydration</b> — affects all processing</li>
+          <li><b>Macros</b> — carb/protein/fat balance</li>
+          <li><b>Tolerance</b> — what your gut handles</li>
+          <li><b>Availability</b> — when fuel kicks in</li>
+        </ol>
+      </div>
+    </div>
+  </section>
+
+  <!-- LAYER 2 -->
+  <section>
+    <div class="layer-head">
+      <div class="lh-badge b-olive"><span class="lhb-l">LAYER</span><span class="lhb-n">2</span></div>
+      <div><div class="lh-title">Protocol — the four stages</div><div class="lh-sub">Every activity runs the same Pre → During → Between → Post structure.</div></div>
+    </div>
+    <div class="layer-rule"></div>
+    <div class="stages">
+      <div class="stage">
+        <div class="stime">~15 min before</div>
+        <h4>Pre</h4>
+        <ul><li>Fuel &amp; hydration — what, when, how it felt</li><li>Warm up</li><li>Set intention: one principle today</li><li>Write your single cue</li></ul>
+      </div>
+      <div class="stage">
+        <div class="stime">within set / repeat</div>
+        <h4>During</h4>
+        <ul><li>Which principle is being tested?</li><li>Target engaged or compensating?</li><li>First sign form breaks</li><li>One thing working / breaking</li></ul>
+      </div>
+      <div class="stage hl">
+        <div class="stime">60–90s rest</div>
+        <h4>Between</h4>
+        <ul><li>What changed from last set?</li><li>One variable to adjust next</li></ul>
+        <div class="write">✍ WRITE IT DOWN — 2–3 words</div>
+      </div>
+      <div class="stage">
+        <div class="stime">~5 min after</div>
+        <h4>Post</h4>
+        <ul><li>Stretch + plan nutrition</li><li>Rate energy &amp; form 1–10</li><li>One key insight</li><li>One hypothesis for next time</li></ul>
+      </div>
+    </div>
+    <p class="proto-note">The same skeleton flexes to workout, swim or nutrition — only the <strong>principle being tested</strong> changes.</p>
+  </section>
+
+  <!-- LAYER 3 -->
+  <section>
+    <div class="layer-head">
+      <div class="lh-badge b-gold"><span class="lhb-l">LAYER</span><span class="lhb-n">3</span></div>
+      <div><div class="lh-title">Data Capture — what gets written</div><div class="lh-sub">One simple doc per activity. Terse beats thorough.</div></div>
+    </div>
+    <div class="layer-rule"></div>
+    <div class="terminal">
+      <div class="term-bar"><span class="dot r"></span><span class="dot y"></span><span class="dot g"></span><span class="tname">chest-day.log</span></div>
+      <div class="term-body">
+<span class="th">WORKOUT — CHEST DAY</span> <span class="dim">// focus: scapular positioning</span><br>
+<span class="sep">─────────────────────────────</span><br>
+<span class="dim">PRE:</span> chicken + rice 2h before, energized<br>
+<span class="dim">SET 1:</span> shoulders stable, 12 reps <span class="good">✓</span><br>
+<span class="dim">SET 2:</span> reps 1–8 great · 9–10 shoulders creep <span class="warn">⚠</span><br>
+<span class="dim">SET 3:</span> +5lbs → form broke rep 9. <span class="warn">form &gt; weight</span><br>
+<span class="dim">CUE:</span> "retract before every rep" <span class="good">works</span><br>
+<span class="sep">─────────────────────────────</span><br>
+<span class="dim">POST:</span> energy 8/10 · form 8/10<br>
+<span class="ins">INSIGHT: shoulders fatigue before chest</span><br>
+<span class="dim">NEXT:</span> 2 min band pull-aparts first; test endurance
+      </div>
+    </div>
+  </section>
+
+  <!-- LAYER 4 -->
+  <section>
+    <div class="layer-head">
+      <div class="lh-badge b-rust"><span class="lhb-l">LAYER</span><span class="lhb-n">4</span></div>
+      <div><div class="lh-title">Feedback Loops — closing them</div><div class="lh-sub">Four nested timescales, each feeding the one above it.</div></div>
+    </div>
+    <div class="layer-rule"></div>
+    <div class="loops-title">// shortest loop → longest loop</div>
+    <div class="loops-wrap">
+      <div class="loops">
+        <div class="loop lp1">
+          <div class="lp-icon">⚡</div>
+          <div class="lp-scale">Immediate</div>
+          <div class="lp-name">Set ↔ Set</div>
+          <div class="lp-cycle">Observe → adjust → next rep → observe result</div>
+        </div>
+        <div class="loop lp2">
+          <div class="lp-icon">📋</div>
+          <div class="lp-scale">Session</div>
+          <div class="lp-name">End of Day</div>
+          <div class="lp-cycle">Today's pattern → hypothesis for next session</div>
+        </div>
+        <div class="loop lp3">
+          <div class="lp-icon">📅</div>
+          <div class="lp-scale">Weekly</div>
+          <div class="lp-name">End of Week</div>
+          <div class="lp-cycle">Review notes → spot repeat mistakes → update protocol</div>
+        </div>
+        <div class="loop lp4">
+          <div class="lp-icon">🗓️</div>
+          <div class="lp-scale">Monthly</div>
+          <div class="lp-name">End of Month</div>
+          <div class="lp-cycle">Which hypotheses paid off? Executing vs. ignoring?</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- IMPLEMENTATION -->
+  <section>
+    <div class="impl">
+      <h3>Implementation — Start Small</h3>
+      <p class="isub">Don't run all of this at once. Week 1: <strong>one domain, one principle, between-set notes only.</strong></p>
+      <div class="pick">
+        <div class="pk"><div class="pkl">Domain</div><div class="pkv">Leg Day</div></div>
+        <div class="arrow">→</div>
+        <div class="pk"><div class="pkl">Principle</div><div class="pkv">Glute engagement</div></div>
+        <div class="arrow">→</div>
+        <div class="pk"><div class="pkl">Frame</div><div class="pkv">Between-set notes</div></div>
+      </div>
+      <div class="samplelog">
+<span style="color:#9c8f7d;">SET 1:</span> knees hurt end of set · glutes not firing<br>
+<span style="color:#9c8f7d;">SET 2:</span> squeezed glutes first · <span class="good">knees fine, quads burned</span><br>
+<span style="color:#9c8f7d;">SET 3:</span> same + heavier · <span class="good">form held — winner</span><br>
+<span class="ins">INSIGHT: glute activation is the gate. Once they fire, knees are safe.</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE REAL POINT -->
+  <section style="margin-bottom:0;">
+    <div class="point">
+      <div class="ptag">// the real point</div>
+      <div class="pbig">Your framework isn't the problem.<br>Your <em>capture discipline</em> is.</div>
+      <p>You already know the principles — you proved it by rattling them off. The gap isn't understanding. It's the 2-minute investment between sets to write down what's <em>actually</em> happening vs. what <em>should</em> be.</p>
+      <div class="proof">
+        <span>"barbell on traps, not neck"</span>
+        <span>"shoulders back &amp; down"</span>
+        <span>"breath syncs with rotation"</span>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <em>Two weeks. One domain. One principle.</em>
+    <p style="margin-top:10px;">That's enough to see exactly where the leakage is happening — then the loop does the rest.</p>
+  </footer>
+
+</div>
+</body>
+</html>

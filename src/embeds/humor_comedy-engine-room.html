@@ -1,0 +1,306 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Engine Behind Every Comedy Lens</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--plum:#6d4467;--blue:#3a6b8c;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 10% 3%,rgba(217,164,65,.10),transparent 36%),
+      radial-gradient(circle at 92% 98%,rgba(109,68,103,.10),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:38px;}
+  .kicker{display:inline-block;font-size:.82rem;letter-spacing:.3em;text-transform:uppercase;
+    font-weight:600;color:var(--rust-deep);border:1.5px solid var(--rust);padding:9px 20px;border-radius:40px;margin-bottom:24px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.2rem,6vw,4.4rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:760px;margin:20px auto 0;font-size:clamp(1.05rem,2vw,1.28rem);color:var(--muted);}
+
+  /* REFINEMENT */
+  .refine{max-width:780px;margin:28px auto 0;display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:center;}
+  @media(max-width:680px){.refine{grid-template-columns:1fr;}}
+  .rf{border-radius:14px;padding:18px 22px;border:2.5px solid var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .rf .rfl{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .rf p{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;line-height:1.2;}
+  .rf.weak{background:var(--paper-2);border-style:dashed;}
+  .rf.weak .rfl{color:var(--muted);}
+  .rf.weak p{color:var(--muted);text-decoration:line-through;}
+  .rf.strong{background:rgba(109,68,103,.1);border-color:var(--plum);box-shadow:5px 5px 0 var(--plum);}
+  .rf.strong .rfl{color:var(--plum);}
+  .rfmid{display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;color:var(--rust);font-size:1.6rem;}
+  @media(max-width:680px){.rfmid{transform:rotate(90deg);}}
+
+  /* SECTION */
+  section{margin-bottom:54px;max-width:1020px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.6rem,4vw,2.4rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:700px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* LENSES STRIP */
+  .lenses{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;max-width:820px;margin:0 auto 8px;}
+  .lens{background:var(--card);border:2px solid var(--ink);border-radius:30px;padding:7px 16px;font-weight:600;font-size:.95rem;box-shadow:3px 3px 0 var(--ink);}
+  .lenses-note{text-align:center;color:var(--muted);font-size:1rem;font-style:italic;margin-top:14px;}
+
+  /* MINING ANALOGY (hero) */
+  .mine{background:var(--ink);color:var(--paper);border-radius:20px;padding:32px 36px;box-shadow:8px 8px 0 var(--gold);}
+  .mine .ml{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center;margin-bottom:18px;}
+  .drills{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-bottom:18px;}
+  .drill{background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.18);border-radius:10px;padding:9px 15px;font-size:.92rem;font-weight:500;display:flex;align-items:center;gap:7px;}
+  .drill::before{content:"🔩";font-size:.9rem;}
+  .mine .wire{text-align:center;color:var(--gold);font-size:1.4rem;margin:6px 0;}
+  .mine .power{background:var(--plum);border-radius:14px;padding:18px 24px;text-align:center;}
+  .mine .power .pn{font-family:'Fraunces',serif;font-weight:900;font-size:1.5rem;color:#fff;}
+  .mine .power .ps{color:#e9d5e4;font-size:.96rem;margin-top:4px;}
+  .mine .equation{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:20px;}
+  @media(max-width:600px){.mine .equation{grid-template-columns:1fr;}}
+  .mine .eq{background:rgba(255,255,255,.06);border-radius:12px;padding:16px 20px;text-align:center;}
+  .mine .eq .eqt{font-family:'JetBrains Mono',monospace;font-size:1rem;color:#e8dcc8;line-height:1.8;}
+  .mine .eq .eqt .x{color:#e8a87f;font-weight:700;}
+
+  /* UNDER THE HOOD — lens demos */
+  .demo{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;overflow:hidden;box-shadow:5px 5px 0 var(--ink);margin-bottom:14px;}
+  .demo .dtop{padding:13px 22px;background:var(--plum);color:#fff;display:flex;align-items:center;gap:12px;flex-wrap:wrap;}
+  .demo .dname{font-family:'Fraunces',serif;font-weight:600;font-size:1.25rem;}
+  .demo .dseed{font-size:.86rem;opacity:.92;margin-left:auto;font-style:italic;text-align:right;}
+  .demo .dbody{padding:18px 22px;display:grid;grid-template-columns:1fr 1.4fr;gap:16px;align-items:center;}
+  @media(max-width:640px){.demo .dbody{grid-template-columns:1fr;}}
+  .demo .without{background:var(--paper-2);border-radius:10px;padding:14px 16px;text-align:center;}
+  .demo .without .wl{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;color:var(--muted);font-weight:700;margin-bottom:6px;}
+  .demo .without p{font-size:.95rem;color:var(--muted);font-style:italic;}
+  .demo .without .dead{font-size:.78rem;color:var(--rust);margin-top:6px;font-weight:600;}
+  .demo .with{}
+  .demo .with .wl{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.05em;text-transform:uppercase;color:var(--plum);font-weight:700;margin-bottom:8px;}
+  .demo .chain{display:flex;flex-wrap:wrap;align-items:center;gap:5px;font-size:.9rem;}
+  .demo .chain .cn{background:rgba(109,68,103,.1);border-radius:6px;padding:3px 9px;}
+  .demo .chain .car{color:var(--plum);font-weight:700;}
+  .demo .out{background:var(--gold);color:var(--ink);border-radius:8px;padding:9px 13px;margin-top:10px;font-family:'Fraunces',serif;font-style:italic;font-weight:600;font-size:1rem;}
+
+  /* WORDPLAY EXCEPTION */
+  .exception{background:rgba(58,107,140,.1);border:3px solid var(--blue);border-radius:16px;padding:24px 28px;box-shadow:6px 6px 0 var(--blue);}
+  .exception h4{font-family:'Fraunces',serif;font-size:1.35rem;font-weight:600;color:var(--blue);margin-bottom:10px;display:flex;align-items:center;gap:10px;}
+  .exception p{font-size:1.02rem;margin-bottom:10px;}
+  .exception .chips{display:flex;flex-wrap:wrap;gap:7px;margin:10px 0;}
+  .exception .chip{background:var(--card);border:1.5px solid var(--blue);border-radius:30px;padding:4px 12px;font-size:.86rem;font-weight:500;}
+  .exception .quip{font-family:'Fraunces',serif;font-style:italic;font-size:1.1rem;color:var(--blue);border-left:4px solid var(--blue);padding-left:14px;margin:10px 0;}
+  .exception .still{background:var(--card);border-radius:10px;padding:13px 18px;font-size:.96rem;margin-top:8px;}
+  .exception .still b{color:var(--blue);}
+
+  /* TRIAD */
+  .triad{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;}
+  @media(max-width:680px){.triad{grid-template-columns:1fr;}}
+  .tri{border-radius:16px;padding:22px 24px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);text-align:center;}
+  .tri .tn{font-size:1.6rem;margin-bottom:8px;}
+  .tri h4{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;margin-bottom:6px;}
+  .tri p{font-size:.96rem;color:var(--muted);}
+  .tri.obs{background:rgba(47,107,99,.08);border-color:var(--teal);box-shadow:6px 6px 0 var(--teal);}
+  .tri.ass{background:rgba(109,68,103,.1);border-color:var(--plum);box-shadow:6px 6px 0 var(--plum);}
+  .tri.taste{background:rgba(217,164,65,.14);border-color:var(--gold);box-shadow:6px 6px 0 var(--gold);}
+  .triad-plus{display:flex;align-items:center;justify-content:center;}
+  .myth-truth{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:18px;}
+  @media(max-width:680px){.myth-truth{grid-template-columns:1fr;}}
+  .mt{border-radius:14px;padding:18px 22px;}
+  .mt.m{background:var(--paper-2);border:2px dashed var(--line);}
+  .mt.t{background:var(--ink);color:var(--paper);box-shadow:5px 5px 0 var(--plum);}
+  .mt .mtl{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.06em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .mt.m .mtl{color:var(--muted);}.mt.t .mtl{color:var(--gold);}
+  .mt p{font-size:1rem;}
+  .mt.m p{color:var(--muted);}
+  .mt.t p b{color:var(--gold);}
+
+  /* RANKING TABLE */
+  .ranking{background:var(--card);border:3px solid var(--ink);border-radius:18px;overflow:hidden;box-shadow:7px 7px 0 var(--ink);}
+  .rkrow{display:grid;grid-template-columns:1fr auto;gap:14px;align-items:center;padding:13px 24px;border-bottom:1.5px solid var(--line);}
+  .rkrow:last-child{border-bottom:none;}
+  .rkrow .rkn{font-family:'Fraunces',serif;font-weight:600;font-size:1.12rem;}
+  .rkrow .rkb{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;padding:5px 13px;border-radius:30px;white-space:nowrap;}
+  .rk-xh{background:rgba(193,80,46,.16);color:var(--rust-deep);}
+  .rk-h{background:rgba(217,164,65,.2);color:var(--rust-deep);}
+  .rk-m{background:var(--paper-2);color:var(--muted);}
+  .rkrow.highlight{background:rgba(109,68,103,.1);}
+  .rkrow.highlight .rkn{color:var(--plum);}
+  .rkrow.highlight .rkn::after{content:" ← the engine";font-family:'JetBrains Mono',monospace;font-size:.66rem;color:var(--plum);font-weight:700;}
+
+  /* CLOSE */
+  .close{background:var(--rust);color:#fff;border-radius:22px;padding:42px 40px;text-align:center;box-shadow:8px 8px 0 var(--ink);max-width:920px;margin:0 auto;}
+  .close .cl{font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-bottom:18px;}
+  .close .cbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.5rem,4vw,2.3rem);line-height:1.18;}
+  .close .cbig em{color:#ffe3b0;font-style:italic;}
+  .close p{margin-top:16px;font-size:1.08rem;opacity:.96;max-width:640px;margin-left:auto;margin-right:auto;}
+  .close .lever{display:inline-block;margin-top:22px;background:#fff;color:var(--rust-deep);border-radius:14px;padding:16px 28px;font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;}
+  .close .lever b{color:var(--rust);}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:48px;border-top:2px solid var(--line);padding-top:28px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.22rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">The Engine Room</div>
+    <h1>One Engine Behind<br>Every <em>Comedy Lens</em></h1>
+    <p class="sub">Associative expansion isn't a lens of its own — it's the thing that powers almost all of them. That's a stronger, more accurate claim than "expansion is comedy."</p>
+    <div class="refine">
+      <div class="rf weak"><div class="rfl">too simple</div><p>"Associative expansion is comedy."</p></div>
+      <div class="rfmid">→</div>
+      <div class="rf strong"><div class="rfl">more accurate</div><p>It's the engine that powers almost every comedy lens.</p></div>
+    </div>
+  </header>
+
+  <!-- LENSES -->
+  <section style="margin-bottom:38px;">
+    <h2 class="blocktitle">The Lenses Look Different…</h2>
+    <div class="blocksub">At a glance these seem like completely separate skills.</div>
+    <div class="blockrule"></div>
+    <div class="lenses">
+      <span class="lens">Irony</span><span class="lens">Character</span><span class="lens">Hyperbole</span><span class="lens">Wordplay</span><span class="lens">Reference</span><span class="lens">Meta-humor</span><span class="lens">Absurdism</span><span class="lens">SOG</span><span class="lens">Madcap</span><span class="lens">Misdirection</span>
+    </div>
+    <p class="lenses-note">…but look at what happens under the hood, and they all reach for the same thing.</p>
+  </section>
+
+  <!-- MINING ANALOGY -->
+  <section>
+    <h2 class="blocktitle">The Mining Analogy</h2>
+    <div class="blocksub">The lenses are the drills. Associative expansion is the electricity.</div>
+    <div class="blockrule"></div>
+    <div class="mine">
+      <div class="ml">// the equipment vs. the power</div>
+      <div class="drills">
+        <span class="drill">Irony</span><span class="drill">Character</span><span class="drill">Hyperbole</span><span class="drill">Absurdism</span><span class="drill">Misdirection</span>
+      </div>
+      <div class="wire">⚡ plugged into ⚡</div>
+      <div class="power"><div class="pn">Associative Expansion</div><div class="ps">the electricity running the entire mine</div></div>
+      <div class="equation">
+        <div class="eq"><div class="eqt">Best drill in the world<br><span class="x">×</span> no electricity<br>= useless</div></div>
+        <div class="eq"><div class="eqt">Best comedy lens in the world<br><span class="x">×</span> no associations<br>= mostly useless</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- UNDER THE HOOD -->
+  <section>
+    <h2 class="blocktitle">Under the Hood — Same Move Every Time</h2>
+    <div class="blocksub">Each lens finds something interesting, then asks: "now where can I go with it?" Without expansion, the joke dies on the table.</div>
+    <div class="blockrule"></div>
+
+    <div class="demo">
+      <div class="dtop"><span class="dname">Irony</span><span class="dseed">marriage counselor gets divorced</span></div>
+      <div class="dbody">
+        <div class="without"><div class="wl">without expansion</div><p>"Marriage counselor got divorced."</p><div class="dead">…end. nothing happens.</div></div>
+        <div class="with"><div class="wl">with expansion</div><div class="chain"><span class="cn">Marriage</span><span class="car">→</span><span class="cn">Advice</span><span class="car">→</span><span class="cn">Expertise</span><span class="car">→</span><span class="cn">Failure</span><span class="car">→</span><span class="cn">Teaching failure</span></div><div class="out">"Come learn what not to do."</div></div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="dtop"><span class="dname">Character Humor</span><span class="dseed">an extremely arrogant character</span></div>
+      <div class="dbody">
+        <div class="without"><div class="wl">without expansion</div><p>"He's arrogant."</p><div class="dead">…the character alone isn't the joke.</div></div>
+        <div class="with"><div class="wl">with expansion</div><div class="chain"><span class="cn">How he sees himself</span><span class="car">→</span><span class="cn">How reality sees him</span><span class="car">→</span><span class="cn">What situations reveal it</span><span class="car">→</span><span class="cn">What consequences follow</span></div></div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="dtop"><span class="dname">Hyperbole</span><span class="dseed">he's lazy</span></div>
+      <div class="dbody">
+        <div class="without"><div class="wl">without expansion</div><p>"He's lazy."</p><div class="dead">…flat.</div></div>
+        <div class="with"><div class="wl">with expansion (→ extreme)</div><div class="chain"><span class="cn">Lazy</span><span class="car">→</span><span class="cn">Avoids effort</span><span class="car">→</span><span class="cn">Avoids movement</span><span class="car">→</span><span class="cn">Avoids breathing if possible</span></div><div class="out">Hyperbole = observation → association → extreme version.</div></div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="dtop"><span class="dname">Absurdism</span><span class="dseed">dog</span></div>
+      <div class="dbody">
+        <div class="without"><div class="wl">normal association</div><p>Dog → Pet</p><div class="dead">…expected, so not funny.</div></div>
+        <div class="with"><div class="wl">absurdist association</div><div class="chain"><span class="cn">Dog → Employee</span><span class="cn">Dog → CEO</span><span class="cn">Dog → Tax collector</span><span class="cn">Dog → Government official</span></div><div class="out">Weird combinations emerge — absurdism leans on this hardest.</div></div>
+      </div>
+    </div>
+
+    <div class="demo">
+      <div class="dtop"><span class="dname">Sitcom Writing</span><span class="dseed">George lies about being an architect</span></div>
+      <div class="dbody">
+        <div class="without"><div class="wl">the premise alone</div><p>"He lied about his job."</p><div class="dead">…not funny yet.</div></div>
+        <div class="with"><div class="wl">writers expand it</div><div class="chain"><span class="cn">Architect</span><span class="car">→</span><span class="cn">People ask questions</span><span class="car">→</span><span class="cn">Doesn't know answers</span><span class="car">→</span><span class="cn">Must fake it</span><span class="car">→</span><span class="cn">Must build a model</span><span class="car">→</span><span class="cn">Model collapses</span></div><div class="out">…and the whole episode emerges.</div></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- WORDPLAY EXCEPTION -->
+  <section>
+    <h2 class="blocktitle">The One Exception</h2>
+    <div class="blockrule"></div>
+    <div class="exception">
+      <h4>🔤 Wordplay leans on language, not association</h4>
+      <p>Not every humor skill relies equally on expansion. Wordplay draws more on:</p>
+      <div class="chips"><span class="chip">vocabulary</span><span class="chip">phonetics</span><span class="chip">double meanings</span><span class="chip">language patterns</span></div>
+      <div class="quip">"Time flies like an arrow; fruit flies like a banana."</div>
+      <p style="color:var(--muted);">That's linguistic, not primarily associative.</p>
+      <div class="still">But even here — <b>after</b> you find the double meaning, you usually use associations to expand it into a full bit.</div>
+    </div>
+  </section>
+
+  <!-- THE TRIAD -->
+  <section>
+    <h2 class="blocktitle">What Comedians Actually Have</h2>
+    <div class="blocksub">"Funnyness" isn't a single trait. It's three skills stacked.</div>
+    <div class="blockrule"></div>
+    <div class="triad">
+      <div class="tri obs"><div class="tn">🔍</div><h4>Observation</h4><p>finds interesting things</p></div>
+      <div class="tri ass"><div class="tn">🌳</div><h4>Association</h4><p>generates possibilities</p></div>
+      <div class="tri taste"><div class="tn">🎯</div><h4>Taste</h4><p>selects the best one</p></div>
+    </div>
+    <div class="myth-truth">
+      <div class="mt m"><div class="mtl">what beginners think</div><p>"I'm failing at step 3 — I can't come up with <em>good</em> jokes."</p></div>
+      <div class="mt t"><div class="mtl">what's usually true</div><p>They're failing at <b>step 2</b> — not generating enough raw material to choose from.</p></div>
+    </div>
+  </section>
+
+  <!-- RANKING -->
+  <section>
+    <h2 class="blocktitle">Foundational Skills, Ranked</h2>
+    <div class="blocksub">Notice where associative expansion sits — not because it's comedy itself, but because nearly every lens eventually depends on it.</div>
+    <div class="blockrule"></div>
+    <div class="ranking">
+      <div class="rkrow"><span class="rkn">Observation</span><span class="rkb rk-xh">extremely high</span></div>
+      <div class="rkrow highlight"><span class="rkn">Associative Expansion</span><span class="rkb rk-xh">extremely high</span></div>
+      <div class="rkrow"><span class="rkn">Understanding Incongruity</span><span class="rkb rk-xh">extremely high</span></div>
+      <div class="rkrow"><span class="rkn">Character Psychology</span><span class="rkb rk-h">high</span></div>
+      <div class="rkrow"><span class="rkn">Timing</span><span class="rkb rk-h">high</span></div>
+      <div class="rkrow"><span class="rkn">Language / Word Choice</span><span class="rkb rk-h">high</span></div>
+      <div class="rkrow"><span class="rkn">Performance <span style="font-weight:400;color:var(--muted);font-family:'Spline Sans';font-size:.85rem;">(for stand-up)</span></span><span class="rkb rk-h">high</span></div>
+      <div class="rkrow"><span class="rkn">Vocabulary</span><span class="rkb rk-m">medium</span></div>
+      <div class="rkrow"><span class="rkn">Pop Culture Knowledge</span><span class="rkb rk-m">medium</span></div>
+    </div>
+  </section>
+
+  <!-- CLOSE -->
+  <section style="margin-bottom:0;">
+    <div class="close">
+      <div class="cl">// the highest-leverage move</div>
+      <div class="cbig">Before studying every lens —<br>spend a month on <em>expansion alone</em>.</div>
+      <p>Improvements there raise your game across irony, character, hyperbole, absurdism, sitcom writing, and observational comedy <em>simultaneously</em>. The gap between one or two directions and ten, twenty, fifty is the gap between an interesting observation and an actual joke.</p>
+      <div class="lever">interesting observation &nbsp;+&nbsp; <b>many directions</b> &nbsp;=&nbsp; actual joke</div>
+    </div>
+  </section>
+
+  <footer>
+    <em>Sharpen the drill all you want — without power it doesn't cut.</em>
+    <p style="margin-top:10px;">Observation finds it, association multiplies it, taste picks the winner. Train the middle one and everything downstream gets easier.</p>
+  </footer>
+
+</div>
+</body>
+</html>

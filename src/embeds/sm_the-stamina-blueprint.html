@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Stamina Blueprint — First Principles to Full Capacity</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--blue:#3a6b8c;--plum:#6d4467;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 8% 3%,rgba(47,107,99,.09),transparent 34%),
+      radial-gradient(circle at 94% 98%,rgba(58,107,140,.09),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:48px 24px 90px;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:36px;}
+  .crumb{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.04em;margin-bottom:16px;}
+  .crumb b{color:var(--teal);}
+  .kicker{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:700;color:var(--rust-deep);border:1.5px solid var(--rust);padding:8px 18px;border-radius:8px;margin-bottom:22px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.1rem,5.6vw,4.2rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:18px auto 0;font-size:clamp(1.04rem,2vw,1.26rem);color:var(--muted);}
+  .sub b{color:var(--rust-deep);}
+
+  /* OPENING REFRAME */
+  .reframe-top{max-width:820px;margin:28px auto 0;background:var(--ink);color:var(--paper);border-radius:16px;padding:24px 30px;text-align:center;}
+  .reframe-top .rl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;}
+  .reframe-top .rbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.1rem,3vw,1.55rem);line-height:1.3;}
+  .reframe-top .rbig em{color:var(--gold);font-style:italic;}
+  .reframe-top p{margin-top:12px;font-size:.94rem;color:#cdbfa9;max-width:620px;margin-left:auto;margin-right:auto;}
+
+  /* SECTION */
+  section{margin-bottom:46px;max-width:980px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.55rem,4vw,2.3rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:700px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* THREE SYSTEMS */
+  .systems{display:flex;flex-direction:column;gap:14px;}
+  .sys{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .sys .stop{padding:13px 22px;color:#fff;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .sys .snum{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:6px;}
+  .sys .sname{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;}
+  .sys .sdur{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.03em;text-transform:uppercase;opacity:.9;margin-left:auto;}
+  .sys .sbody{padding:16px 22px;}
+  .sys .sbody p{font-size:.94rem;margin-bottom:8px;}
+  .sys .sbody p:last-child{margin-bottom:0;}
+  .sys .sbody p b{color:var(--rust-deep);}
+  .S1 .stop{background:var(--rust);}
+  .S2 .stop{background:var(--gold);color:var(--ink);}
+  .S2 .stop .snum{background:rgba(28,24,20,.15);}
+  .S3 .stop{background:var(--teal);}
+  .sys-arrow{text-align:center;color:var(--rust);font-size:1.1rem;font-weight:700;line-height:1.4;}
+
+  /* DURATION TIMELINE */
+  .dur-bar{display:flex;align-items:stretch;border-radius:10px;overflow:hidden;border:2px solid var(--ink);margin:10px 0;}
+  .db-seg{padding:10px 12px;text-align:center;}
+  .db-seg .dbl{font-family:'JetBrains Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.03em;font-weight:700;margin-bottom:4px;}
+  .db-seg b{font-family:'Fraunces',serif;font-size:.88rem;display:block;}
+  .db-seg p{font-size:.72rem;color:var(--muted);margin-top:2px;}
+  .db-seg.d1{flex:1;background:rgba(193,80,46,.1);} .db-seg.d1 .dbl{color:var(--rust-deep);}
+  .db-seg.d2{flex:2;background:rgba(217,164,65,.12);} .db-seg.d2 .dbl{color:#9a7113;}
+  .db-seg.d3{flex:4;background:rgba(47,107,99,.1);} .db-seg.d3 .dbl{color:var(--teal);}
+  .db-div{width:2px;background:var(--ink);flex-shrink:0;}
+
+  /* REPLENISH TABLE */
+  .rep-table{background:var(--card);border:2.5px dashed var(--ink);border-radius:12px;padding:14px 18px;margin:10px 0;}
+  .rep-table .rtt{font-family:'JetBrains Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:10px;}
+  .rep-row{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-bottom:6px;}
+  .rep-row:last-child{margin-bottom:0;}
+  .rep-cell{border-radius:8px;padding:8px 10px;text-align:center;}
+  .rep-cell .rcl{font-family:'JetBrains Mono',monospace;font-size:.54rem;text-transform:uppercase;letter-spacing:.03em;font-weight:700;margin-bottom:3px;color:var(--muted);}
+  .rep-cell b{font-family:'Fraunces',serif;font-size:.88rem;}
+  .rep-cell.sys1{background:rgba(193,80,46,.08);}  .rep-cell.sys1 b{color:var(--rust-deep);}
+  .rep-cell.sys2{background:rgba(217,164,65,.1);}  .rep-cell.sys2 b{color:#9a7113;}
+  .rep-cell.sys3{background:rgba(47,107,99,.08);}  .rep-cell.sys3 b{color:var(--teal);}
+
+  /* FOUR PILLARS */
+  .pillars{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:600px){.pillars{grid-template-columns:1fr;}}
+  .pil{border-radius:16px;padding:20px 22px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .pil.P1{background:rgba(193,80,46,.07);border-color:var(--rust);}
+  .pil.P2{background:rgba(58,107,140,.07);border-color:var(--blue);}
+  .pil.P3{background:rgba(47,107,99,.07);border-color:var(--teal);}
+  .pil.P4{background:rgba(217,164,65,.1);border-color:var(--gold);}
+  .pil .pi{font-size:1.6rem;margin-bottom:8px;}
+  .pil h4{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;margin-bottom:6px;}
+  .pil.P1 h4{color:var(--rust-deep);} .pil.P2 h4{color:var(--blue);}
+  .pil.P3 h4{color:var(--teal);} .pil.P4 h4{color:#9a7113;}
+  .pil p{font-size:.86rem;color:var(--muted);}
+  .pil p b{color:var(--ink);}
+  .pil .ptag{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-top:10px;display:block;}
+  .pil.P1 .ptag{color:var(--rust-deep);} .pil.P2 .ptag{color:var(--blue);}
+  .pil.P3 .ptag{color:var(--teal);} .pil.P4 .ptag{color:#9a7113;}
+
+  /* ZONE DIAGRAM */
+  .zones{display:flex;flex-direction:column;gap:8px;margin:10px 0;}
+  .zone-row{display:grid;grid-template-columns:80px 1fr auto;gap:10px;align-items:center;}
+  .zone-label{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;}
+  .zone-bar-bg{background:var(--paper-2);border-radius:30px;height:22px;overflow:hidden;border:1.5px solid var(--line);}
+  .zone-bar{height:100%;border-radius:30px;display:flex;align-items:center;padding-left:10px;}
+  .zone-bar span{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;color:#fff;white-space:nowrap;}
+  .zone-desc{font-size:.78rem;color:var(--muted);max-width:200px;text-align:right;}
+  .z2-note{background:rgba(47,107,99,.12);border:2px dashed var(--teal);border-radius:12px;padding:13px 18px;margin-top:10px;text-align:center;}
+  .z2-note .z2l{font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;color:var(--teal);margin-bottom:6px;}
+  .z2-note p{font-size:.9rem;color:var(--muted);}
+  .z2-note p b{color:var(--ink);}
+
+  /* STRATEGY LADDER */
+  .strats{display:flex;flex-direction:column;gap:14px;}
+  .strat{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .strat .sttop{padding:13px 22px;color:#fff;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .strat .stnum{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:6px;}
+  .strat .stname{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;}
+  .strat .sttag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.03em;text-transform:uppercase;opacity:.9;margin-left:auto;}
+  .strat .stbody{padding:16px 22px;}
+  .strat .stbody p{font-size:.94rem;margin-bottom:9px;}
+  .strat .stbody p:last-child{margin-bottom:0;}
+  .strat .stbody p b{color:var(--rust-deep);}
+  .ST1 .sttop{background:var(--teal);}
+  .ST2 .sttop{background:var(--blue);}
+  .ST3 .sttop{background:var(--plum);}
+  .ST4 .sttop{background:var(--olive);}
+
+  /* COMMON MISTAKE */
+  .mistake{background:rgba(193,80,46,.08);border:2px solid var(--rust);border-radius:12px;padding:14px 18px;margin:10px 0;display:grid;grid-template-columns:auto 1fr;gap:12px;align-items:flex-start;}
+  .mistake .mi{font-size:1.3rem;flex-shrink:0;}
+  .mistake .ml{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;color:var(--rust-deep);margin-bottom:4px;}
+  .mistake p{font-size:.88rem;color:var(--muted);}
+  .mistake p b{color:var(--ink);}
+
+  /* WEEK BLOCKS */
+  .weeks{display:flex;flex-direction:column;gap:0;}
+  .week{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .week .wtop{padding:13px 22px;color:#fff;display:flex;align-items:center;gap:14px;flex-wrap:wrap;}
+  .week .wnum{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:6px;}
+  .week .wname{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;}
+  .week .wtag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.03em;text-transform:uppercase;opacity:.9;margin-left:auto;}
+  .week .wbody{padding:16px 22px;}
+  .week .wbody p{font-size:.94rem;margin-bottom:9px;}
+  .week .wbody p:last-child{margin-bottom:0;}
+  .week .wbody p b{color:var(--rust-deep);}
+  .week-up{text-align:center;color:var(--rust);font-size:1.2rem;font-weight:700;line-height:1.5;}
+  .W1 .wtop{background:var(--muted);}
+  .W2 .wtop{background:var(--olive);}
+  .W3 .wtop{background:var(--teal);}
+
+  /* SESSION BREAKDOWN */
+  .session-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin:10px 0;}
+  @media(max-width:560px){.session-grid{grid-template-columns:1fr;}}
+  .sg{border-radius:10px;padding:11px 14px;border:2px solid var(--ink);text-align:center;}
+  .sg .sgl{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-bottom:5px;color:var(--muted);}
+  .sg b{font-family:'Fraunces',serif;font-size:.95rem;display:block;margin-bottom:3px;}
+  .sg p{font-size:.76rem;color:var(--muted);}
+  .sg.zone2{background:rgba(47,107,99,.1);border-color:var(--teal);} .sg.zone2 .sgl{color:var(--teal);}
+  .sg.thresh{background:rgba(58,107,140,.1);border-color:var(--blue);} .sg.thresh .sgl{color:var(--blue);}
+  .sg.interv{background:rgba(109,68,103,.1);border-color:var(--plum);} .sg.interv .sgl{color:var(--plum);}
+
+  /* INTERVAL DIAGRAM */
+  .interval-vis{display:flex;gap:3px;align-items:flex-end;height:60px;margin:10px 0;background:var(--card);border:2px dashed var(--ink);border-radius:10px;padding:10px 14px;}
+  .iv-block{display:flex;flex-direction:column;gap:3px;align-items:center;flex:1;}
+  .iv-on{background:var(--plum);border-radius:4px 4px 0 0;width:100%;}
+  .iv-off{background:var(--paper-2);border:1px solid var(--line);border-radius:0 0 4px 4px;width:100%;}
+  .iv-label{font-family:'JetBrains Mono',monospace;font-size:.5rem;color:var(--muted);text-align:center;margin-top:4px;}
+
+  /* ACCELERATORS */
+  .accels{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-top:4px;}
+  @media(max-width:600px){.accels{grid-template-columns:1fr;}}
+  .acc{border-radius:14px;padding:18px 22px;border:3px solid var(--ink);box-shadow:4px 4px 0 var(--ink);}
+  .acc.A1{background:rgba(217,164,65,.1);border-color:var(--gold);}
+  .acc.A2{background:rgba(109,68,103,.08);border-color:var(--plum);}
+  .acc .aci{font-size:1.6rem;margin-bottom:8px;}
+  .acc h4{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;margin-bottom:6px;}
+  .acc.A1 h4{color:#9a7113;} .acc.A2 h4{color:var(--plum);}
+  .acc p{font-size:.88rem;color:var(--muted);}
+  .acc p b{color:var(--ink);}
+
+  /* TIMELINE CALLOUT */
+  .timeline-callout{display:flex;flex-direction:column;gap:6px;margin:12px 0;}
+  .tc-row{display:grid;grid-template-columns:110px 1fr;gap:10px;align-items:center;}
+  .tc-time{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;}
+  .tc-desc{font-size:.88rem;color:var(--muted);}
+  .tc-desc b{color:var(--ink);}
+
+  /* CLOSING */
+  .closing{background:var(--ink);color:var(--paper);border-radius:18px;padding:30px 34px;text-align:center;box-shadow:7px 7px 0 var(--teal);}
+  .closing .cl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;}
+  .closing .cbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.3rem,3.5vw,1.9rem);line-height:1.2;}
+  .closing .cbig em{color:var(--gold);font-style:italic;}
+  .closing p{margin-top:14px;font-size:.98rem;color:#cdbfa9;max-width:620px;margin-left:auto;margin-right:auto;}
+  .closing p b{color:var(--gold);}
+  .chain-row{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin-top:16px;}
+  .ch{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:7px 13px;font-size:.84rem;font-weight:600;}
+  .cha{color:var(--gold);font-weight:700;font-size:1rem;}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:42px;border-top:2px solid var(--line);padding-top:26px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.2rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="crumb">companion to → <b>The Fatigued Brain Protocol</b> · <b>The Sport Session Protocol</b> · the root cause</div>
+    <div class="kicker">// first principles to full capacity</div>
+    <h1>The <em>Stamina</em><br>Blueprint</h1>
+    <p class="sub">Stamina is not one thing. It is <b>three distinct energy systems</b> — and they have almost nothing to do with each other in terms of how you train them. Getting this wrong is why most people's stamina never meaningfully improves.</p>
+
+    <div class="reframe-top">
+      <div class="rl">// the reframe that changes the entire training approach</div>
+      <div class="rbig">You are not unfit. You have an <em>underdeveloped aerobic base</em> — and that is an entirely different problem with an entirely different fix.</div>
+      <p>The aerobic base is trainable, predictable, and responds reliably to the right stimulus. The timeline is weeks, not years. But only if you train the right system in the right way — which almost nobody does by default.</p>
+    </div>
+  </header>
+
+  <!-- THREE SYSTEMS -->
+  <section>
+    <h2 class="blocktitle">The Three Energy Systems</h2>
+    <div class="blocksub">Stamina is not one thing. These three systems are physiologically separate — each trained differently, each failing differently.</div>
+    <div class="blockrule"></div>
+
+    <div style="margin-bottom:14px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:8px;">// duration map — which system is powering you right now</div>
+      <div class="dur-bar">
+        <div class="db-seg d1"><div class="dbl">system 1</div><b>0–10 sec</b><p>ATP-PC</p></div>
+        <div class="db-div"></div>
+        <div class="db-seg d2"><div class="dbl">system 2</div><b>10 sec–2 min</b><p>Glycolytic</p></div>
+        <div class="db-div"></div>
+        <div class="db-seg d3"><div class="dbl">system 3</div><b>2 min → end of session</b><p>Aerobic — this is what you need to build</p></div>
+      </div>
+    </div>
+
+    <div class="systems">
+
+      <div class="sys S1">
+        <div class="stop"><span class="snum">SYSTEM 1</span><span class="sname">ATP-PC — Explosive Power</span><span class="sdur">0 to 10 seconds</span></div>
+        <div class="sbody">
+          <p>Uses stored phosphocreatine directly in the muscle. <b>No oxygen required.</b> Powers a smash, a sprint to the net, an explosive jump to retrieve. Fast, powerful, and gone in 8-10 seconds.</p>
+          <div class="rep-table">
+            <div class="rtt">// system 1 stats</div>
+            <div class="rep-row">
+              <div class="rep-cell sys1"><div class="rcl">duration</div><b>0–10 sec</b></div>
+              <div class="rep-cell sys1"><div class="rcl">replenish time</div><b>2–3 min</b></div>
+              <div class="rep-cell sys1"><div class="rcl">trained by</div><b>Explosive drills</b></div>
+            </div>
+          </div>
+          <p>Cannot be expanded through general cardio. Needs specific explosive training — short maximal efforts with full recovery in between. Not your priority right now.</p>
+        </div>
+      </div>
+      <div class="sys-arrow">↓ when system 1 depletes, system 2 takes over</div>
+
+      <div class="sys S2">
+        <div class="stop"><span class="snum">SYSTEM 2</span><span class="sname">Glycolytic — Anaerobic Burn</span><span class="sdur">10 sec to 2 min</span></div>
+        <div class="sbody">
+          <p>Burns glucose <b>without oxygen</b> — anaerobic. Powers a sustained rally, a long recovery sprint, any intense effort lasting up to 2 minutes. Produces lactate as a byproduct. <b>This is the system causing the burning and heaviness</b> you feel right now.</p>
+          <div class="rep-table">
+            <div class="rtt">// system 2 stats</div>
+            <div class="rep-row">
+              <div class="rep-cell sys2"><div class="rcl">duration</div><b>10 sec–2 min</b></div>
+              <div class="rep-cell sys2"><div class="rcl">byproduct</div><b>Lactate</b></div>
+              <div class="rep-cell sys2"><div class="rcl">trained by</div><b>Interval training</b></div>
+            </div>
+          </div>
+          <p>The reason you cross into this system so early is that your aerobic base is not yet developed enough to handle moderate effort aerobically. As your aerobic base grows, <b>the threshold at which you tip into System 2 rises.</b> The same effort that exhausts you now will feel easy.</p>
+        </div>
+      </div>
+      <div class="sys-arrow">↓ when system 2 hits its ceiling, system 3 must carry the load</div>
+
+      <div class="sys S3">
+        <div class="stop"><span class="snum">SYSTEM 3</span><span class="sname">Aerobic — The Endurance Engine</span><span class="sdur">2 minutes → full session</span></div>
+        <div class="sbody">
+          <p>Burns glucose and fat <b>using oxygen.</b> Powers everything lasting longer than 2 minutes — the ability to sustain a full hour of play without collapsing. Determined by your VO2 max: how much oxygen your heart and lungs deliver to working muscles per minute.</p>
+          <div class="rep-table">
+            <div class="rtt">// system 3 stats</div>
+            <div class="rep-row">
+              <div class="rep-cell sys3"><div class="rcl">duration</div><b>2 min → hours</b></div>
+              <div class="rep-cell sys3"><div class="rcl">key metric</div><b>VO2 max</b></div>
+              <div class="rep-cell sys3"><div class="rcl">trained by</div><b>Zone 2 cardio</b></div>
+            </div>
+          </div>
+          <p><b>This is what you need to build.</b> It takes the most time but responds very predictably to training. An underdeveloped System 3 means you tip into System 2 — and its burning, heaviness, and exhaustion — far too early in every session.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOUR PILLARS -->
+  <section>
+    <h2 class="blocktitle">The Four Pillars of Stamina</h2>
+    <div class="blocksub">Beyond the energy systems — what your body actually needs to sustain effort.</div>
+    <div class="blockrule"></div>
+    <div class="pillars">
+
+      <div class="pil P1">
+        <div class="pi">❤️</div>
+        <h4>Cardiac Output</h4>
+        <p>How much blood your heart pumps per beat. A trained heart's left ventricle is physically larger and pumps more per beat — so it doesn't need to beat as fast to deliver the same oxygen. <b>Untrained: 70-80 bpm resting. Trained: 45-55 bpm.</b> During exercise, the trained heart sustains output at lower rates, delaying exhaustion.</p>
+        <span class="ptag">built by → sustained aerobic training over months</span>
+      </div>
+
+      <div class="pil P2">
+        <div class="pi">🫁</div>
+        <h4>Lung Efficiency</h4>
+        <p>How effectively your lungs extract oxygen and expel CO₂. <b>Less trainable than the heart</b> but improves meaningfully with sustained aerobic work. Becomes a limiting factor less often than people assume — the heart and muscles are usually the bottleneck first.</p>
+        <span class="ptag">built by → aerobic training, breathing practice</span>
+      </div>
+
+      <div class="pil P3">
+        <div class="pi">⚡</div>
+        <h4>Mitochondrial Density</h4>
+        <p>Mitochondria are the engines inside each muscle cell that convert oxygen into usable energy. <b>More mitochondria = more aerobic capacity at the cellular level.</b> This is why Zone 2 training works — it directly stimulates mitochondrial growth inside the working muscles.</p>
+        <span class="ptag">built by → sustained moderate-intensity training over months</span>
+      </div>
+
+      <div class="pil P4">
+        <div class="pi">🔥</div>
+        <h4>Lactate Threshold</h4>
+        <p>The intensity level at which your body switches from primarily aerobic to primarily anaerobic. <b>The higher your threshold, the harder you can work before the burning and heaviness set in.</b> This is the most directly trainable stamina metric for sports performance.</p>
+        <span class="ptag">built by → threshold training — the uncomfortable-but-sustainable zone</span>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- FOUR STRATEGIES -->
+  <section>
+    <h2 class="blocktitle">The Four Strategies</h2>
+    <div class="blocksub">In order of priority. Each one depends on the one before it.</div>
+    <div class="blockrule"></div>
+    <div class="strats">
+
+      <div class="strat ST1">
+        <div class="sttop"><span class="stnum">STRATEGY 1</span><span class="stname">Build the Aerobic Base — Zone 2</span><span class="sttag">non-negotiable first step</span></div>
+        <div class="stbody">
+          <p>This is non-negotiable and everything else sits on top of it. <b>You cannot shortcut this.</b> Built through Zone 2 training — sustained effort at a moderate intensity where you can still hold a conversation but are breathing noticeably.</p>
+          <div class="zones">
+            <div class="zone-row">
+              <div class="zone-label" style="color:var(--muted);">Zone 1</div>
+              <div class="zone-bar-bg"><div class="zone-bar" style="width:20%;background:var(--line);"><span style="color:var(--ink);">very easy</span></div></div>
+              <div class="zone-desc">warm-up, cool-down</div>
+            </div>
+            <div class="zone-row">
+              <div class="zone-label" style="color:var(--teal);">Zone 2 ✓</div>
+              <div class="zone-bar-bg"><div class="zone-bar" style="width:45%;background:var(--teal);"><span>conversational</span></div></div>
+              <div class="zone-desc"><b>THIS IS THE TARGET</b></div>
+            </div>
+            <div class="zone-row">
+              <div class="zone-label" style="color:var(--gold);">Zone 3</div>
+              <div class="zone-bar-bg"><div class="zone-bar" style="width:62%;background:var(--gold);"><span style="color:var(--ink);">uncomfortable</span></div></div>
+              <div class="zone-desc">threshold — add later</div>
+            </div>
+            <div class="zone-row">
+              <div class="zone-label" style="color:var(--rust);">Zone 4-5</div>
+              <div class="zone-bar-bg"><div class="zone-bar" style="width:85%;background:var(--rust);"><span>hard → max</span></div></div>
+              <div class="zone-desc">intervals — add much later</div>
+            </div>
+          </div>
+          <div class="z2-note">
+            <div class="z2l">// the zone 2 test</div>
+            <p><b>Can you hold a conversation?</b> Yes but slightly breathless = Zone 2. Can talk easily = too easy (Zone 1). Can only say 2-3 words = too hard (Zone 3+). Heart rate roughly 120-140 bpm for most people.</p>
+          </div>
+          <div class="mistake">
+            <div class="mi">⚠️</div>
+            <div>
+              <div class="ml">// the most common mistake — kills progress</div>
+              <p><b>Always training too hard.</b> Most beginners push into exhaustion every session. This trains System 2 but neglects the aerobic base entirely. Elite endurance athletes spend 70-80% of their training time in Zone 2. It feels too easy. That is the point.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="strat ST2">
+        <div class="sttop"><span class="stnum">STRATEGY 2</span><span class="stname">Raise the Lactate Threshold</span><span class="sttag">add after 4-6 weeks of base</span></div>
+        <div class="stbody">
+          <p>Once you have 4-6 weeks of aerobic base, add threshold training. Sustained effort at the intensity <b>just below where the burning starts</b> — uncomfortable but sustainable for 10-20 minutes at a stretch.</p>
+          <p>This directly pushes your lactate threshold upward, meaning you can play at higher intensities before the heaviness sets in. The effort level: you can say a few words but cannot hold a conversation. <b>2-3 repetitions of 8 minutes</b> with 3 minutes easy walking between each.</p>
+        </div>
+      </div>
+
+      <div class="strat ST3">
+        <div class="sttop"><span class="stnum">STRATEGY 3</span><span class="stname">Train Sport-Specific Intervals</span><span class="sttag">add at week 9+ only</span></div>
+        <div class="stbody">
+          <p>Badminton, pickleball, tennis — all interval sports. <b>5-15 seconds of high intensity, brief recovery, repeat.</b> Your training should mirror this. But only once your aerobic base can support it — otherwise you just accumulate oxygen debt every rep.</p>
+          <div style="font-family:'JetBrains Mono',monospace;font-size:.66rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin:10px 0 6px;">// what sport-specific intervals look like</div>
+          <div class="interval-vis">
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+            <div class="iv-block"><div class="iv-on" style="height:36px;"></div><div class="iv-off" style="height:18px;"></div><div class="iv-label">20s on<br>40s off</div></div>
+          </div>
+          <p style="font-size:.84rem;color:var(--muted);margin-top:8px;">Shuttle runs, shadow footwork, jumping jacks — anything that mirrors real sport movement. <b>10-15 repetitions.</b> Trains System 2 capacity and trains your body to recover faster between explosive efforts.</p>
+        </div>
+      </div>
+
+      <div class="strat ST4">
+        <div class="sttop"><span class="stnum">STRATEGY 4</span><span class="stname">Reduce the Oxygen Cost of Movement</span><span class="sttag">the underrated one</span></div>
+        <div class="stbody">
+          <p>A significant part of why you exhaust quickly is <b>movement inefficiency.</b> You are spending more energy than necessary to cover the court because your footwork and positioning are not yet economical. As technique improves, the same distance costs less energy.</p>
+          <p>This is why experienced players can play for 2 hours looking relaxed while beginners are exhausted in 20 minutes. They have become <b>metabolically efficient</b> at the movements. Better technique is literally a stamina upgrade — no cardiovascular training required.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- WEEK BY WEEK -->
+  <section>
+    <h2 class="blocktitle">The Week-by-Week Plan</h2>
+    <div class="blocksub">Three phases. Do not skip ahead. Each phase unlocks the next.</div>
+    <div class="blockrule"></div>
+    <div class="weeks">
+
+      <div class="week W1">
+        <div class="wtop"><span class="wnum">WEEKS 1–4</span><span class="wname">Build the Base</span><span class="wtag">zone 2 only — 3× per week</span></div>
+        <div class="wbody">
+          <p>Three sessions per week of <b>pure Zone 2 cardio, completely separate from your sport sessions.</b> Running, cycling, brisk walking on an incline — anything that keeps you at a conversational pace for 30 minutes continuously.</p>
+          <div class="session-grid">
+            <div class="sg zone2"><div class="sgl">session type</div><b>Zone 2 cardio</b><p>Running, cycling, incline walk</p></div>
+            <div class="sg zone2"><div class="sgl">frequency</div><b>3× per week</b><p>Separate from sport sessions</p></div>
+            <div class="sg zone2"><div class="sgl">duration</div><b>30 min continuous</b><p>Start at 15 min if needed, +5 min/week</p></div>
+          </div>
+          <div class="mistake" style="margin-top:10px;">
+            <div class="mi">⚠️</div>
+            <div>
+              <div class="ml">// do not skip this phase</div>
+              <p>It feels too easy. That is correct. <b>The adaptation is happening at a cellular level</b> — mitochondrial growth, cardiac remodelling — and it requires sustained moderate effort, not intensity. This is the most skipped phase and the reason most people's stamina never improves.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="week-up">↑</div>
+
+      <div class="week W2">
+        <div class="wtop"><span class="wnum">WEEKS 5–8</span><span class="wname">Add Threshold Work</span><span class="wtag">zone 2 + threshold — 3× per week</span></div>
+        <div class="wbody">
+          <p>Keep two Zone 2 sessions per week. Add one threshold session — the uncomfortable-but-sustainable effort level.</p>
+          <div class="session-grid">
+            <div class="sg zone2"><div class="sgl">session 1 + 2</div><b>Zone 2</b><p>30 min, same as before</p></div>
+            <div class="sg thresh"><div class="sgl">session 3 — new</div><b>Threshold</b><p>2-3 × 8 min, 3 min walk rest</p></div>
+            <div class="sg thresh"><div class="sgl">progression</div><b>+1 min/rep/week</b><p>Extend gradually over 4 weeks</p></div>
+          </div>
+          <p style="margin-top:10px;">Threshold effort: <b>you can say a few words but cannot hold a conversation.</b> This pushes your lactate threshold upward directly. Over four weeks, extend the repetitions gradually.</p>
+        </div>
+      </div>
+      <div class="week-up">↑</div>
+
+      <div class="week W3">
+        <div class="wtop"><span class="wnum">WEEKS 9+</span><span class="wname">Add Sport-Specific Intervals</span><span class="wtag">zone 2 + threshold + intervals</span></div>
+        <div class="wbody">
+          <p>Keep one Zone 2 session. Keep one threshold session. Add one interval session that mirrors real sport demands.</p>
+          <div class="session-grid">
+            <div class="sg zone2"><div class="sgl">session 1</div><b>Zone 2</b><p>30 min — maintain the base</p></div>
+            <div class="sg thresh"><div class="sgl">session 2</div><b>Threshold</b><p>3 × 10 min with 3 min rest</p></div>
+            <div class="sg interv"><div class="sgl">session 3 — new</div><b>Intervals</b><p>20s on / 40s off × 10-15 reps</p></div>
+          </div>
+          <p style="margin-top:10px;">Your aerobic base can now support interval training properly. <b>Without the base, intervals just accumulate oxygen debt.</b> With the base, each rep clears faster and you get stronger from each one.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ACCELERATORS -->
+  <section>
+    <h2 class="blocktitle">The Two Accelerators</h2>
+    <div class="blocksub">Separate from training — but they determine how fast everything above works.</div>
+    <div class="blockrule"></div>
+    <div class="accels">
+
+      <div class="acc A1">
+        <div class="aci">⚖️</div>
+        <h4>Body Composition</h4>
+        <p>Carrying excess body weight directly increases the oxygen cost of every movement. Every kilogram of additional mass your heart has to oxygenate and your legs have to carry is a <b>direct tax on your stamina.</b> This is not about aesthetics — it is mechanics.</p>
+        <p style="margin-top:8px;">Your InBody scans already give you this data. The correlation between fat mass reduction and stamina improvement is direct and measurable. Same training, lower mass = meaningfully better stamina numbers.</p>
+      </div>
+
+      <div class="acc A2">
+        <div class="aci">😴</div>
+        <h4>Sleep</h4>
+        <p>Your aerobic adaptations — mitochondrial growth, cardiac remodelling — <b>happen during sleep, not during training.</b> Training is the stimulus. Sleep is when the body actually builds the thing you trained for.</p>
+        <p style="margin-top:8px;"><b>7-8 hours</b> accelerates stamina gains faster than almost any other variable. Consistently sleeping 6 hours or less cuts your adaptation rate roughly in half — the same sessions produce half the physiological improvement.</p>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HONEST TIMELINE -->
+  <section>
+    <h2 class="blocktitle">The Honest Timeline</h2>
+    <div class="blocksub">What to expect and when — with consistent Zone 2 training 3× per week.</div>
+    <div class="blockrule"></div>
+    <div style="background:var(--card);border:2.5px dashed var(--ink);border-radius:14px;padding:20px 24px;">
+      <div class="timeline-callout">
+        <div class="tc-row">
+          <div class="tc-time" style="color:var(--muted);">Week 1–2</div>
+          <div class="tc-desc">Feels too easy. Legs less sore after sessions. Nothing dramatic yet — adaptation is subcellular.</div>
+        </div>
+        <div class="tc-row">
+          <div class="tc-time" style="color:var(--olive);">Week 3–4</div>
+          <div class="tc-desc">Resting heart rate begins to drop slightly. Recovery between points in sport starts feeling fractionally faster.</div>
+        </div>
+        <div class="tc-row">
+          <div class="tc-time" style="color:var(--gold);">Week 6–8</div>
+          <div class="tc-desc"><b>Meaningful difference.</b> The burning sets in later. Complete exhaustion at minute 10 starts happening at minute 25 instead. Recovery between points noticeably faster.</div>
+        </div>
+        <div class="tc-row">
+          <div class="tc-time" style="color:var(--teal);">Month 3–4</div>
+          <div class="tc-desc"><b>Physiologically different person</b> in terms of aerobic capacity. The system responds very predictably — it just requires patience and the discipline not to always go hard when the protocol says go easy.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CLOSING -->
+  <section style="margin-bottom:0;">
+    <div class="closing">
+      <div class="cl">// the principle that holds it all together</div>
+      <div class="cbig">Train easy more than you think you should.<br>The base is what <em>everything else sits on.</em></div>
+      <p>The aerobic base is not glamorous. It does not feel like hard work. But it is the foundation that determines how high your lactate threshold sits, how fast you recover between points, and how long you last before the heaviness sets in. Build it first. Everything compounds on top of it.</p>
+      <div class="chain-row">
+        <div class="ch">zone 2 base</div><div class="cha">→</div>
+        <div class="ch">lactate threshold</div><div class="cha">→</div>
+        <div class="ch">sport intervals</div><div class="cha">→</div>
+        <div class="ch">movement efficiency</div><div class="cha">+</div>
+        <div class="ch">body composition</div><div class="cha">+</div>
+        <div class="ch">sleep</div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <em>Build the engine first. Then push it harder. In that order.</em>
+    <p style="margin-top:10px;">Three systems. Four pillars. Four strategies. Three phases. Two accelerators. One honest timeline. That is the complete picture — and every part of it responds predictably to the right training stimulus.</p>
+  </footer>
+
+</div>
+</body>
+</html>

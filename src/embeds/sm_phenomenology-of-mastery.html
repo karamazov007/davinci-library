@@ -1,0 +1,237 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Feel of Mastery — The Phenomenology of Being Good</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--blue:#3a6b8c;--plum:#6d4467;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 8% 3%,rgba(109,68,103,.09),transparent 34%),
+      radial-gradient(circle at 94% 98%,rgba(217,164,65,.10),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:34px;}
+  .crumb{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.04em;margin-bottom:16px;}
+  .crumb b{color:var(--teal);}
+  .kicker{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:700;color:var(--rust-deep);border:1.5px solid var(--rust);padding:8px 18px;border-radius:8px;margin-bottom:22px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.1rem,5.6vw,4.2rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:18px auto 0;font-size:clamp(1.04rem,2vw,1.26rem);color:var(--muted);}
+  .sub b{color:var(--rust-deep);}
+
+  /* FRAME */
+  .frame{max-width:780px;margin:24px auto 0;display:grid;grid-template-columns:1fr auto 1fr;gap:14px;align-items:stretch;}
+  @media(max-width:600px){.frame{grid-template-columns:1fr;}}
+  .fr{border-radius:16px;padding:18px 22px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);text-align:center;}
+  .fr.known{background:rgba(58,107,140,.08);border-color:var(--blue);}
+  .fr.chasing{background:rgba(109,68,103,.1);border-color:var(--plum);box-shadow:5px 5px 0 var(--plum);}
+  .fr .frl{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .fr.known .frl{color:var(--blue);}.fr.chasing .frl{color:var(--plum);}
+  .fr h4{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;margin-bottom:4px;}
+  .fr p{font-size:.86rem;color:var(--muted);}
+  .frvs{display:flex;align-items:center;justify-content:center;font-family:'Fraunces',serif;font-weight:900;color:var(--rust);font-size:1.3rem;}
+  @media(max-width:600px){.frvs{transform:rotate(90deg);}}
+
+  /* SECTION */
+  section{margin-bottom:46px;max-width:980px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.55rem,4vw,2.3rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:700px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* DIMENSIONS */
+  .dims{display:flex;flex-direction:column;gap:14px;}
+  .dim{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .dim .dtop{padding:13px 22px;color:#fff;display:flex;align-items:center;gap:14px;}
+  .dim .dnum{font-family:'Fraunces',serif;font-weight:900;font-size:1.6rem;opacity:.85;min-width:30px;}
+  .dim .dname{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;line-height:1.1;}
+  .dim .dbody{padding:16px 22px;}
+  .dim .dfeel{font-size:.96rem;margin-bottom:12px;}
+  .dim .dfeel b{color:var(--rust-deep);}
+  .dim .voice{background:var(--paper-2);border-left:4px solid var(--gold);border-radius:8px;padding:11px 16px;}
+  .dim .voice .vwho{font-family:'JetBrains Mono',monospace;font-size:.62rem;text-transform:uppercase;letter-spacing:.04em;color:var(--rust);font-weight:700;margin-bottom:4px;}
+  .dim .voice p{font-size:.9rem;font-style:italic;color:var(--ink);}
+  .d1 .dtop{background:var(--teal);}
+  .d2 .dtop{background:var(--gold);color:var(--ink);}.d2 .dnum{opacity:.65;}
+  .d3 .dtop{background:var(--rust);}
+  .d4 .dtop{background:var(--blue);}
+  .d5 .dtop{background:var(--olive);}
+  .d6 .dtop{background:var(--plum);}
+
+  /* CONTRAST FORK */
+  .fork{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:680px){.fork{grid-template-columns:1fr;}}
+  .fk{border-radius:16px;padding:22px 24px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .fk.cerebral{background:rgba(58,107,140,.08);border-color:var(--blue);box-shadow:6px 6px 0 var(--blue);}
+  .fk.embodied{background:rgba(109,68,103,.1);border-color:var(--plum);box-shadow:6px 6px 0 var(--plum);}
+  .fk .fkl{font-family:'JetBrains Mono',monospace;font-size:.64rem;letter-spacing:.04em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .fk.cerebral .fkl{color:var(--blue);}.fk.embodied .fkl{color:var(--plum);}
+  .fk h4{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:700;margin-bottom:10px;}
+  .fk.cerebral h4{color:var(--blue);}.fk.embodied h4{color:var(--plum);}
+  .fk ul{list-style:none;}
+  .fk li{font-size:.92rem;padding:4px 0 4px 20px;position:relative;color:var(--ink);}
+  .fk li::before{content:"▸";position:absolute;left:0;font-weight:700;}
+  .fk.cerebral li::before{color:var(--blue);}.fk.embodied li::before{color:var(--plum);}
+  .fk .fktell{margin-top:12px;font-family:'Fraunces',serif;font-style:italic;font-size:1rem;padding-top:10px;border-top:1px dotted var(--line);}
+  .fk.cerebral .fktell{color:var(--blue);}.fk.embodied .fktell{color:var(--plum);}
+  .humbling{margin-top:18px;background:var(--ink);color:var(--paper);border-radius:14px;padding:18px 24px;text-align:center;}
+  .humbling .hl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;}
+  .humbling p{font-size:1rem;color:#e8dcc8;}
+  .humbling p b{color:var(--gold);}
+
+  /* CLOSING PARADOX */
+  .paradox{background:var(--plum);color:#fff;border-radius:22px;padding:38px 40px;text-align:center;box-shadow:8px 8px 0 var(--ink);}
+  .paradox .pl{font-family:'JetBrains Mono',monospace;font-size:.74rem;letter-spacing:.14em;text-transform:uppercase;opacity:.9;font-weight:700;margin-bottom:16px;}
+  .paradox .pbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3.6vw,2.1rem);line-height:1.18;}
+  .paradox .pbig em{color:#f3d9ec;font-style:italic;}
+  .paradox .ppair{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:10px;margin:18px 0 4px;}
+  .paradox .pp{background:rgba(255,255,255,.14);border-radius:10px;padding:9px 16px;font-size:.95rem;font-weight:600;}
+  .paradox .ppa{color:#f3d9ec;font-weight:700;}
+  .paradox p.tax{margin-top:16px;font-size:1.05rem;opacity:.96;max-width:600px;margin-left:auto;margin-right:auto;}
+  .paradox p.tax b{color:#f3d9ec;}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:42px;border-top:2px solid var(--line);padding-top:26px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.2rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="crumb">sports-psychology cluster → the <b>felt experience</b> layer (the machinery's other half)</div>
+    <div class="kicker">// the phenomenology of mastery</div>
+    <h1>What Being<br><em>Good</em> Feels Like</h1>
+    <p class="sub">Not how to improve — what the competence itself <b>feels like</b> from the inside. The subjective texture of being genuinely skilled at an embodied, real-time domain.</p>
+    <div class="frame">
+      <div class="fr known"><div class="frl">you already know this one</div><h4>Cerebral mastery</h4><p>Studies, interviews — things you could systematize and analyze.</p></div>
+      <div class="frvs">→</div>
+      <div class="fr chasing"><div class="frl">the one you're chasing</div><h4>Embodied mastery</h4><p>Sports — real-time, strategic, felt in the body.</p></div>
+    </div>
+  </header>
+
+  <!-- DIMENSIONS -->
+  <section>
+    <h2 class="blocktitle">Six Dimensions of the Feeling</h2>
+    <div class="blocksub">Drawn from what elite athletes actually say about the experience.</div>
+    <div class="blockrule"></div>
+    <div class="dims">
+
+      <div class="dim d1">
+        <div class="dtop"><span class="dnum">1</span><span class="dname">The Paradox of Effortlessness</span></div>
+        <div class="dbody">
+          <p class="dfeel">Flow feels effortless, immersive, pleasurable. Self-consciousness dissolves, negative thoughts vanish, time and space warp. At your best you're <b>not consciously thinking</b> — sensing and intuiting, seeing the whole rather than the parts, choosing rightly with no felt experience of deciding. Thinking actually gets in the way.</p>
+          <div class="voice"><div class="vwho">Kobe Bryant, on the zone</div><p>Supreme confidence — not a question of <em>if</em> it goes in; the knowledge that it simply is.</p></div>
+        </div>
+      </div>
+
+      <div class="dim d2">
+        <div class="dtop"><span class="dnum">2</span><span class="dname">Confidence That Isn't Arrogance</span></div>
+        <div class="dbody">
+          <p class="dfeel">What looks like confidence is really <b>competence</b> — built by embracing pressure, outgrowing perfectionism, metabolizing disappointment, holding focus. The reframe: competition is just an ordinary performance on a special day. And it coexists with humility — you can feel genuinely good and feel you have an enormous amount left to learn.</p>
+          <div class="voice"><div class="vwho">on Rafael Nadal</div><p>So gracious and humble it sometimes held him back from just crushing the ball — and still, 22 Grand Slams.</p></div>
+        </div>
+      </div>
+
+      <div class="dim d3">
+        <div class="dtop"><span class="dnum">3</span><span class="dname">The "Never Satisfied" State</span></div>
+        <div class="dbody">
+          <p class="dfeel">Being truly good doesn't feel like <em>arrival</em>. It feels like standing perpetually on the edge of growth — <b>not anxious, but hungry</b>. You keep an edge only while you have something to prove to yourself.</p>
+          <div class="voice"><div class="vwho">Michael Jordan</div><p>Imagined every score 0–0, even up by 50 — because satisfaction is the exact moment you lose your edge.</p></div>
+        </div>
+      </div>
+
+      <div class="dim d4">
+        <div class="dtop"><span class="dnum">4</span><span class="dname">Presence, Not Pressure</span></div>
+        <div class="dbody">
+          <p class="dfeel">An optimal level of stress tips into flow: confident, fully in control. The feeling is <b>complete presence</b> — not the outcome, not the past or future, just anchored to the next moment.</p>
+          <div class="voice"><div class="vwho">a tennis player, in flow</div><p>Everything melts away; the unconscious takes in everything and executes — and mistakes roll off, because the ego never assigns them meaning.</p></div>
+        </div>
+      </div>
+
+      <div class="dim d5">
+        <div class="dtop"><span class="dnum">5</span><span class="dname">The Embodied Knowing</span></div>
+        <div class="dbody">
+          <p class="dfeel">There's a layer deeper than knowing <em>about</em> something — a <b>somatic knowing</b>. The body has internalized patterns so deeply it responds faster than the conscious mind can formulate a decision. When two players are technically matched, being fully locked in mentally is what separates them.</p>
+          <div class="voice"><div class="vwho">the research</div><p>Sport-confidence is built from preparation, accomplishment, and the people around you — then the body takes over.</p></div>
+        </div>
+      </div>
+
+      <div class="dim d6">
+        <div class="dtop"><span class="dnum">6</span><span class="dname">Transcendence (the hard-to-describe part)</span></div>
+        <div class="dbody">
+          <p class="dfeel">At the far end, athletes reach for metaphor. Climbers describe <b>floating and dancing with the rock</b> — an experience that's life-enhancing and hard to name, in the way love is hard to name. You feel intensely alive, every sense sharper than in ordinary life.</p>
+          <div class="voice"><div class="vwho">extreme climbers</div><p>Deep knowledge of self, activity, and environment — pursued for an experience that changes the person having it.</p></div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- CONTRAST -->
+  <section>
+    <h2 class="blocktitle">Why It Feels Different from Studies</h2>
+    <div class="blocksub">Your observation was sharp — the two masteries are opposites at the core.</div>
+    <div class="blockrule"></div>
+    <div class="fork">
+      <div class="fk cerebral">
+        <div class="fkl">studies · interviews</div>
+        <h4>Conscious mastery</h4>
+        <ul>
+          <li>You think your way through</li>
+          <li>Articulation, analysis, systematization</li>
+          <li>You know you're good because you can <em>explain the framework</em></li>
+        </ul>
+        <div class="fktell">Mastery you can put into words.</div>
+      </div>
+      <div class="fk embodied">
+        <div class="fkl">sports · real-time</div>
+        <h4>Disappearance of thought</h4>
+        <ul>
+          <li>You're good when thinking <em>stops</em></li>
+          <li>Distributed across nervous system &amp; muscle memory</li>
+          <li>The highest expression <em>bypasses language</em> — you can't fully explain it</li>
+        </ul>
+        <div class="fktell">Mastery that goes silent at its peak.</div>
+      </div>
+    </div>
+    <div class="humbling">
+      <div class="hl">// the humbling realization</div>
+      <p>"<b>Grip the racket?!</b>" — discovering that one tiny detail implies a million more. The depth of embodied knowledge is literally incomprehensible until you begin acquiring it.</p>
+    </div>
+  </section>
+
+  <!-- CLOSING PARADOX -->
+  <section style="margin-bottom:0;">
+    <div class="paradox">
+      <div class="pl">// what this means for you</div>
+      <div class="pbig">The feeling is real — and one of<br>the most satisfying there is.<br>But it carries a <em>peculiar tax.</em></div>
+      <div class="ppair">
+        <span class="pp">supreme confidence</span>
+        <span class="ppa">+</span>
+        <span class="pp">perpetual beginner's mind</span>
+      </div>
+      <p class="tax">Powerful without arrogance. Present without self-consciousness. Comfortable never fully understanding their own mastery. The tax: <b>the moment you feel you've "arrived," you've lost it.</b></p>
+    </div>
+  </section>
+
+  <footer>
+    <em>Cerebral mastery you can explain. Embodied mastery goes quiet at its peak.</em>
+    <p style="margin-top:10px;">Effortless, confident-not-arrogant, never satisfied, fully present, known in the body, occasionally transcendent — held together by the paradox of confidence and beginner's mind.</p>
+  </footer>
+
+</div>
+</body>
+</html>

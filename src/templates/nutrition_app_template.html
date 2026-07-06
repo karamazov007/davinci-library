@@ -1,0 +1,138 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Nutrition</title><style>
+:root{--bg:#f6f7f9;--surface:#fff;--ink:#1c2431;--dim:#5b6572;--line:#e7e9ee;--line2:#dcdfe6;--accent:#2f7d4f;--accent2:#1c2431;--soft:#e7f2ec;--gold:#caa24a}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.happ{display:flex;flex-direction:column;height:100vh}
+.hbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;flex-wrap:wrap}
+.hbrand{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;white-space:nowrap;margin-right:6px}
+.htabs{display:flex;gap:3px;flex-wrap:wrap}
+.htabs button{border:0;background:none;color:var(--dim);font:inherit;font-size:13px;font-weight:650;padding:8px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.htabs button:hover{background:var(--soft);color:var(--ink)}
+.htabs button.active{background:var(--accent);color:#fff}
+.stage{flex:1;min-height:0;overflow:hidden;position:relative}
+.nlayout{display:flex;height:100%}
+.nnav{flex:0 0 236px;overflow-y:auto;border-right:1px solid var(--line);background:var(--surface);padding:12px 10px}
+.nnav .nl{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:8px 10px 6px}
+.tbtn{display:block;width:100%;text-align:left;border:1px solid transparent;background:none;font:inherit;padding:10px 11px;border-radius:10px;cursor:pointer;color:var(--dim);margin-bottom:3px;line-height:1.3}
+.tbtn:hover{background:var(--soft);color:var(--ink)}
+.tbtn.active{background:var(--soft);color:var(--ink);border-color:var(--accent)}
+.tbtn b{display:block;font-size:14px;font-weight:750;color:inherit}
+.tbtn span{font-size:12px;color:var(--dim)}
+.nmain{flex:1;min-width:0;overflow-y:auto;padding:28px 34px 90px}
+.nmain-in{max-width:820px}
+.ntoc{flex:0 0 192px;border-left:1px solid var(--line);background:var(--surface);padding:14px 10px;overflow-y:auto}
+.ntoc .tl{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);padding:4px 10px 8px}
+.ntoc a{display:block;padding:6px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.3}
+.ntoc a:hover{background:var(--soft);color:var(--accent)}
+.thead{margin-bottom:6px}
+.thead h1{font-size:27px;font-weight:850;letter-spacing:-.01em;margin:0 0 4px}
+.thead p{font-size:15px;color:var(--dim);margin:0;line-height:1.5}
+.bh{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px;margin:34px 0 8px;scroll-margin-top:12px}
+.bh::after{content:"";flex:1;height:1px;background:var(--line)}
+p.bp{font-size:15px;line-height:1.72;color:#39424f;margin:12px 0;max-width:760px}
+p.bp b{color:var(--ink)}
+.call{background:var(--soft);border:1px solid #cfe6d9;border-left:3px solid var(--accent);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:14.5px;line-height:1.66;color:#274b39;max-width:770px}
+.pull{font-size:19px;font-weight:800;line-height:1.4;color:var(--ink);border-left:4px solid var(--gold);padding:6px 0 6px 18px;margin:18px 0;max-width:740px}
+.cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:12px;margin:14px 0;max-width:840px}
+.card{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:14px 16px;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.card.link{cursor:pointer;transition:border-color .15s,transform .15s}
+.card.link:hover{border-color:var(--accent);transform:translateY(-3px)}
+.card b{display:block;font-size:14.5px;margin-bottom:4px}
+.card span{font-size:13px;color:var(--dim);line-height:1.5}
+.ngrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:13px;margin:14px 0}
+.ncard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:15px 17px;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.ncard .nt{display:flex;align-items:center;gap:9px;margin-bottom:9px}
+.ncard .nn{font-size:16px;font-weight:800}
+.ncard .tag{font-size:10px;font-weight:800;letter-spacing:.04em;color:#fff;background:var(--accent);border-radius:6px;padding:3px 8px}
+.ncard .nrow{font-size:13px;line-height:1.5;margin:5px 0}
+.ncard .nrow .k{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);display:block;margin-bottom:1px}
+.ncard .nrow.def .k{color:#c0453a}
+.gtable{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden;max-width:820px}
+.gtable th,.gtable td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line);vertical-align:top}
+.gtable th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim);background:var(--soft)}
+.gtable tr:last-child td{border-bottom:0}.gtable td b{color:var(--ink)}
+.blist{margin:12px 0;padding-left:20px;max-width:760px}.blist li{font-size:14.5px;line-height:1.6;color:#39424f;margin:5px 0}
+.flow{margin:16px 0;max-width:620px}
+.flow .step{background:var(--surface);border:1px solid var(--line);border-radius:11px;padding:11px 15px;font-size:14px;color:#39424f;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.flow .step b{color:var(--ink)}
+.flow .arr{text-align:center;color:var(--accent);font-size:15px;line-height:1;margin:4px 0}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 16px 8px;margin:18px 0;box-shadow:0 1px 2px rgba(20,25,40,.04);max-width:820px}
+.fig svg{width:100%;height:auto;display:block}
+.fig figcaption{font-size:12.5px;color:var(--dim);text-align:center;padding:6px 8px 8px;line-height:1.5}
+.term{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 19px;margin:12px 0;box-shadow:0 1px 2px rgba(20,25,40,.04);max-width:820px}
+.term h4{margin:0 0 5px;font-size:17px;font-weight:800}
+.term .what{font-size:14px;color:#39424f;line-height:1.6;margin:0 0 10px}
+.term .trow{margin:8px 0}
+.term .trow .k{font-size:10.5px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent);margin-bottom:2px}
+.term .trow.sym .k{color:#0891b2}.term .trow.fix .k{color:#16a34a}
+.term .trow ul{margin:2px 0;padding-left:18px}.term .trow li{font-size:13.5px;line-height:1.5;color:#39424f}
+@media(max-width:900px){.nlayout{flex-direction:column;height:auto}.nnav,.ntoc{flex:0 0 auto;border:0;border-bottom:1px solid var(--line)}.ntoc{display:none}.nmain{padding:22px 18px 70px}}
+</style></head><body>
+<div class="happ">
+ <header class="hbar"><div class="hbrand">🥗 Nutrition</div><nav class="htabs" id="htabs"></nav></header>
+ <div class="stage" id="stage"></div>
+</div>
+<script>
+__VIZLIB__
+var DATA=__DATA__;
+(function(){
+ var TABS=DATA.tabs;
+ var TK="nut.tab.v1"; var tab=TABS[0].id; try{tab=localStorage.getItem(TK)||tab;}catch(e){}
+ if(!TABS.some(function(t){return t.id===tab;}))tab=TABS[0].id;
+ var SEL={}; try{SEL=JSON.parse(localStorage.getItem("nut.sel")||"{}");}catch(e){}
+ var stage=document.getElementById("stage");
+ function esc(t){return (t||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+ function tabById(id){for(var i=0;i<TABS.length;i++)if(TABS[i].id===id)return TABS[i];return TABS[0];}
+ function renderTabs(){var el=document.getElementById("htabs");el.innerHTML="";TABS.forEach(function(t){var b=document.createElement("button");b.textContent=t.icon+" "+t.name;if(t.id===tab)b.className="active";b.onclick=function(){show(t.id);};el.appendChild(b);});}
+ function gen(name,args){ try{ var f=window[name]; if(typeof f==="function") return f.apply(null,args); }catch(e){} return '<div style="padding:20px;color:#c0453a">diagram error</div>'; }
+
+ function block(b,ctx){
+  switch(b.t){
+   case "p": return '<p class="bp">'+b.x+'</p>';
+   case "call": return '<div class="call">'+b.x+'</div>';
+   case "pull": return '<div class="pull">'+b.x+'</div>';
+   case "h": var id="h"+(ctx.h++); ctx.toc.push([id,b.x]); return '<h3 class="bh" id="'+id+'">'+esc(b.x)+'</h3>';
+   case "cards": return '<div class="cards">'+b.items.map(function(it){return '<div class="card'+(it.go?" link":"")+'"'+(it.go?' data-goto="'+esc(it.go)+'"':'')+'><b>'+esc(it.h)+'</b><span>'+it.x+'</span></div>';}).join("")+'</div>';
+   case "nutri": return '<div class="ngrid">'+b.items.map(function(it){
+       function lst(arr){return (arr||[]).map(function(x){return esc(x);}).join(" · ");}
+       return '<div class="ncard"><div class="nt"><span class="nn">'+esc(it.n)+'</span>'+(it.tag?'<span class="tag">'+esc(it.tag)+'</span>':'')+'</div>'
+         +'<div class="nrow"><span class="k">Function</span>'+lst(it.fn)+'</div>'
+         +'<div class="nrow"><span class="k">Sources</span>'+lst(it.src)+'</div>'
+         +'<div class="nrow def"><span class="k">If short</span>'+lst(it.def)+'</div></div>';
+     }).join("")+'</div>';
+   case "table": return '<table class="gtable"><tr>'+b.head.map(function(h){return '<th>'+esc(h)+'</th>';}).join("")+'</tr>'+b.rows.map(function(r){return '<tr>'+r.map(function(c,i){return '<td>'+(i===0?'<b>'+esc(c)+'</b>':esc(c))+'</td>';}).join("")+'</tr>';}).join("")+'</table>';
+   case "list": return '<ul class="blist">'+b.items.map(function(x){return '<li>'+x+'</li>';}).join("")+'</ul>';
+   case "flow": var s="";b.steps.forEach(function(st,i){if(i)s+='<div class="arr">↓</div>';s+='<div class="step">'+st+'</div>';});return '<div class="flow">'+s+'</div>';
+   case "fig": return '<figure class="fig">'+gen(b.gen,b.args)+(b.cap?'<figcaption>'+esc(b.cap)+'</figcaption>':'')+'</figure>';
+   case "term": return b.items.map(function(it){
+       function ul(arr){return '<ul>'+(arr||[]).map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';}
+       return '<div class="term"><h4>'+esc(it.n)+'</h4><p class="what">'+esc(it.what)+'</p>'
+         +(it.why?'<div class="trow"><div class="k">Why it happens</div>'+ul(it.why)+'</div>':'')
+         +(it.sym?'<div class="trow sym"><div class="k">Symptoms</div>'+ul(it.sym)+'</div>':'')
+         +(it.fix?'<div class="trow fix"><div class="k">What helps</div>'+ul(it.fix)+'</div>':'')+'</div>';
+     }).join("");
+  }
+  return "";
+ }
+
+ function renderTab(t){
+  var cur=SEL[t.id]||t.topics[0].id;
+  if(!t.topics.some(function(tp){return tp.id===cur;}))cur=t.topics[0].id;
+  var topic=t.topics.filter(function(tp){return tp.id===cur;})[0];
+  var nav='<div class="nl">'+esc(t.name)+'</div>'+t.topics.map(function(tp){return '<button class="tbtn'+(tp.id===cur?" active":"")+'" data-topic="'+esc(tp.id)+'"><b>'+esc(tp.name)+'</b>'+(tp.blurb?'<span>'+esc(tp.blurb)+'</span>':'')+'</button>';}).join("");
+  var ctx={h:0,toc:[]};
+  var body=topic.blocks.map(function(b){return block(b,ctx);}).join("");
+  var toc=ctx.toc.length?('<div class="tl">On this page</div>'+ctx.toc.map(function(x){return '<a data-to="'+x[0]+'">'+esc(x[1])+'</a>';}).join("")):'';
+  var main='<div class="nmain-in"><div class="thead"><h1>'+esc(topic.name)+'</h1>'+(topic.blurb?'<p>'+esc(topic.blurb)+'</p>':'')+'</div>'+body+'</div>';
+  return '<div class="nlayout"><nav class="nnav" id="nnav">'+nav+'</nav><main class="nmain" id="nmain">'+main+'</main><aside class="ntoc" id="ntoc">'+toc+'</aside></div>';
+ }
+
+ function show(id){ tab=id; try{localStorage.setItem(TK,id);}catch(e){} renderTabs(); stage.innerHTML=renderTab(tabById(id)); }
+ stage.addEventListener("click",function(e){var t=e.target;
+   var toc=t.closest?t.closest("[data-to]"):null; if(toc){var el=document.getElementById(toc.getAttribute("data-to"));if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return;}
+   var go=t.closest?t.closest("[data-goto]"):null; if(go){show(go.getAttribute("data-goto"));return;}
+   var tp=t.closest?t.closest("[data-topic]"):null; if(tp){var T=tabById(tab);SEL[T.id]=tp.getAttribute("data-topic");try{localStorage.setItem("nut.sel",JSON.stringify(SEL));}catch(_){}stage.innerHTML=renderTab(T);return;}
+ });
+ renderTabs(); show(tab);
+})();
+</script></body></html>

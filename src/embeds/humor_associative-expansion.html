@@ -1,0 +1,310 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Associative Expansion — The Hidden Comedy Skill</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--plum:#6d4467;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 10% 3%,rgba(217,164,65,.10),transparent 36%),
+      radial-gradient(circle at 92% 98%,rgba(109,68,103,.10),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1080px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:38px;}
+  .kicker{display:inline-block;font-size:.82rem;letter-spacing:.3em;text-transform:uppercase;
+    font-weight:600;color:var(--rust-deep);border:1.5px solid var(--rust);padding:9px 20px;border-radius:40px;margin-bottom:24px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.2rem,6vw,4.4rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:20px auto 0;font-size:clamp(1.05rem,2vw,1.28rem);color:var(--muted);}
+
+  /* MISSING LAYER */
+  .missing{max-width:420px;margin:30px auto 0;}
+  .mrow{border-radius:12px;padding:15px 22px;text-align:center;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;}
+  .mrow.known{background:var(--card);}
+  .mrow.gap{background:var(--plum);color:#fff;border-style:dashed;position:relative;}
+  .mrow.gap .qq{font-family:'JetBrains Mono',monospace;font-size:1.6rem;letter-spacing:.1em;}
+  .mrow.gap .gtag{display:block;font-family:'Spline Sans',sans-serif;font-weight:500;font-size:.82rem;opacity:.9;margin-top:4px;font-style:italic;}
+  .mdown{text-align:center;color:var(--rust);font-size:1.2rem;font-weight:700;margin:5px 0;}
+  .missing-note{max-width:680px;margin:22px auto 0;text-align:center;font-size:1.08rem;}
+  .missing-note strong{color:var(--rust-deep);}
+
+  /* SECTION */
+  section{margin-bottom:54px;max-width:1020px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.6rem,4vw,2.4rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:680px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* SHORT VS LONG CHAIN */
+  .chains{display:grid;grid-template-columns:1fr 1fr;gap:18px;align-items:start;}
+  @media(max-width:680px){.chains{grid-template-columns:1fr;}}
+  .chaincard{border-radius:18px;padding:24px 26px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .chaincard.myth{background:var(--paper-2);border-style:dashed;}
+  .chaincard.real{background:rgba(109,68,103,.1);border-color:var(--plum);box-shadow:6px 6px 0 var(--plum);}
+  .chaincard .ccl{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;font-weight:700;margin-bottom:14px;}
+  .chaincard.myth .ccl{color:var(--muted);}.chaincard.real .ccl{color:var(--plum);}
+  .chainflow{display:flex;flex-direction:column;gap:6px;}
+  .cf{border-radius:9px;padding:9px 14px;font-size:.98rem;font-weight:500;text-align:center;}
+  .cf.start{background:var(--ink);color:var(--paper);}
+  .cf.mid{background:var(--card);border:1.5px solid var(--line);}
+  .cf.end{background:var(--gold);color:var(--ink);font-weight:700;}
+  .cfarr{text-align:center;color:var(--plum);font-size:.9rem;line-height:.8;}
+
+  /* THE SECRET CALLOUT */
+  .secret{background:var(--ink);color:var(--paper);border-radius:18px;padding:26px 32px;text-align:center;box-shadow:7px 7px 0 var(--gold);margin-top:20px;}
+  .secret .sl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:10px;}
+  .secret p{font-family:'Fraunces',serif;font-size:1.25rem;line-height:1.4;}
+  .secret p b{color:var(--gold);}
+
+  /* SIX ASSOCIATION QUESTIONS */
+  .assoc{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:760px){.assoc{grid-template-columns:1fr;}}
+  .aq{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;overflow:hidden;box-shadow:5px 5px 0 var(--ink);}
+  .aq .aqtop{padding:14px 20px;background:var(--plum);color:#fff;display:flex;align-items:center;gap:12px;}
+  .aq .aqn{font-family:'Fraunces',serif;font-weight:900;font-size:1.4rem;opacity:.85;}
+  .aq .aqname{font-family:'Fraunces',serif;font-weight:600;font-size:1.2rem;}
+  .aq .aqq{font-size:.82rem;opacity:.92;margin-left:auto;text-align:right;font-style:italic;}
+  .aq .aqbody{padding:16px 20px;}
+  .aq .ex{margin-bottom:10px;}
+  .aq .ex:last-child{margin-bottom:0;}
+  .aq .exl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.04em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:5px;}
+  .aq .chips{display:flex;flex-wrap:wrap;gap:5px;}
+  .aq .chip{background:var(--paper-2);border:1.5px solid var(--line);border-radius:30px;padding:3px 11px;font-size:.85rem;}
+  .aq .chainline{display:flex;flex-wrap:wrap;gap:5px;align-items:center;font-size:.9rem;}
+  .aq .chainline .ci{background:rgba(109,68,103,.1);border-radius:6px;padding:3px 9px;}
+  .aq .chainline .car{color:var(--plum);font-weight:700;}
+  .aq .out{background:rgba(217,164,65,.18);border-radius:8px;padding:9px 13px;font-style:italic;font-size:.96rem;color:var(--rust-deep);margin-top:8px;}
+  .aq .out::before{content:"\201C";}.aq .out::after{content:"\201D";}
+  .aq.gold .aqtop{background:var(--gold);color:var(--ink);}
+  .aq.gold .aqq{color:var(--ink);}
+
+  /* HIDDEN SEARCH TREE */
+  .tree{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:30px 34px;box-shadow:7px 7px 0 var(--plum);max-width:680px;margin:0 auto;}
+  .tree .tl{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);font-weight:700;text-align:center;margin-bottom:18px;}
+  .tnode{text-align:center;border-radius:9px;padding:10px 16px;font-size:1rem;font-weight:500;}
+  .tnode.seed{background:var(--ink);color:var(--paper);}
+  .tnode.step{background:var(--paper-2);border:1.5px solid var(--line);}
+  .tnode.final{background:var(--gold);color:var(--ink);font-weight:700;font-family:'Fraunces',serif;font-size:1.1rem;}
+  .tdown{text-align:center;color:var(--plum);font-size:1rem;margin:4px 0;}
+  .tree-foot{text-align:center;margin-top:18px;font-family:'Fraunces',serif;font-style:italic;font-size:1.15rem;color:var(--plum);}
+
+  /* TWO SKILLS */
+  .skills{display:grid;grid-template-columns:1fr 1fr;gap:18px;}
+  @media(max-width:680px){.skills{grid-template-columns:1fr;}}
+  .skill{border-radius:18px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);background:var(--card);}
+  .skill .sktop{padding:18px 24px;color:#fff;}
+  .skill .skn{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.08em;text-transform:uppercase;opacity:.9;font-weight:700;}
+  .skill .skt{font-family:'Fraunces',serif;font-weight:600;font-size:1.5rem;margin-top:2px;}
+  .skill.detect .sktop{background:var(--teal);}
+  .skill.expand .sktop{background:var(--plum);}
+  .skill .skbody{padding:18px 24px;}
+  .skill .skbody > p{font-size:.98rem;color:var(--muted);margin-bottom:12px;}
+  .skill .skq{display:flex;flex-wrap:wrap;gap:6px;}
+  .skill .skc{background:var(--paper-2);border:1.5px solid var(--line);border-radius:30px;padding:5px 13px;font-size:.88rem;font-weight:500;}
+  .skill.expand .skc{background:rgba(109,68,103,.1);border-color:var(--plum);}
+  .skill .vs-gap{text-align:center;font-family:'Fraunces',serif;font-weight:600;font-size:1.05rem;color:var(--rust-deep);margin-top:14px;}
+  .skills-verdict{text-align:center;margin-top:18px;font-size:1.08rem;}
+  .skills-verdict strong{color:var(--rust-deep);}
+
+  /* PRACTICE CLOSE */
+  .practice{background:var(--rust);color:#fff;border-radius:22px;padding:42px 40px;text-align:center;box-shadow:8px 8px 0 var(--ink);max-width:920px;margin:0 auto;}
+  .practice .pl{font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-bottom:18px;}
+  .practice .pbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.5rem,4vw,2.3rem);line-height:1.18;}
+  .practice .pbig em{color:#ffe3b0;font-style:italic;}
+  .practice p{margin-top:16px;font-size:1.08rem;opacity:.96;max-width:640px;margin-left:auto;margin-right:auto;}
+  .practice .drill{display:inline-block;margin-top:22px;background:#fff;color:var(--rust-deep);border-radius:14px;padding:16px 28px;font-family:'Fraunces',serif;font-weight:600;font-size:1.25rem;}
+  .practice .drill b{color:var(--rust);}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:48px;border-top:2px solid var(--line);padding-top:28px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.22rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">The Hidden Comedy Skill</div>
+    <h1>The Missing Layer<br>Between <em>Gap &amp; Joke</em></h1>
+    <p class="sub">You understand the irony. You understand the joke-generation methods. Yet you still feel: "even if I know the method, how would I ever come up with that specific line?" There's a hidden skill sitting in between.</p>
+    <div class="missing">
+      <div class="mrow known">Detect Irony</div>
+      <div class="mdown">↓</div>
+      <div class="mrow gap"><span class="qq">? ? ?</span><span class="gtag">Associative Expansion</span></div>
+      <div class="mdown">↓</div>
+      <div class="mrow known">Write Joke</div>
+    </div>
+    <p class="missing-note">The joke doesn't come from the irony. <strong>It comes from the connections your mind makes around the irony.</strong> The irony only gives direction — the association produces the wording.</p>
+  </header>
+
+  <!-- SHORT VS LONG CHAIN -->
+  <section>
+    <h2 class="blocktitle">Why Comedians Look Magical</h2>
+    <div class="blocksub">People think the chain is short. It isn't.</div>
+    <div class="blockrule"></div>
+    <div class="chains">
+      <div class="chaincard myth">
+        <div class="ccl">what people think happens</div>
+        <div class="chainflow">
+          <div class="cf start">Situation</div>
+          <div class="cfarr">↓</div>
+          <div class="cf end">Joke</div>
+        </div>
+      </div>
+      <div class="chaincard real">
+        <div class="ccl">what actually happens</div>
+        <div class="chainflow">
+          <div class="cf start">Situation</div>
+          <div class="cfarr">↓</div>
+          <div class="cf mid">Interesting property</div>
+          <div class="cfarr">↓</div>
+          <div class="cf mid">Related idea</div>
+          <div class="cfarr">↓</div>
+          <div class="cf mid">Related idea</div>
+          <div class="cfarr">↓</div>
+          <div class="cf mid">Related idea</div>
+          <div class="cfarr">↓</div>
+          <div class="cf end">Joke</div>
+        </div>
+      </div>
+    </div>
+    <div class="secret">
+      <div class="sl">// the real secret</div>
+      <p>"They really believe in leaving a lasting impression" didn't come from the irony. It came from: <b>food poisoning → memorable → lasting impression.</b> The irony merely pointed; the association wrote the line.</p>
+    </div>
+  </section>
+
+  <!-- SIX ASSOCIATION QUESTIONS -->
+  <section>
+    <h2 class="blocktitle">The Six Association Questions</h2>
+    <div class="blocksub">Once you've found an irony, don't reach for a joke — run these searches first.</div>
+    <div class="blockrule"></div>
+    <div class="assoc">
+
+      <div class="aq">
+        <div class="aqtop"><span class="aqn">1</span><span class="aqname">Property Search</span><span class="aqq">what qualities does it have?</span></div>
+        <div class="aqbody">
+          <div class="ex"><div class="exl">food poisoning</div><div class="chips"><span class="chip">painful</span><span class="chip">memorable</span><span class="chip">regrettable</span><span class="chip">long-lasting</span></div></div>
+          <div class="ex"><div class="exl">marriage counselor</div><div class="chips"><span class="chip">advice</span><span class="chip">expertise</span><span class="chip">guidance</span></div></div>
+          <div class="ex"><div class="exl">security guard</div><div class="chips"><span class="chip">protection</span><span class="chip">vigilance</span><span class="chip">awareness</span></div></div>
+        </div>
+      </div>
+
+      <div class="aq">
+        <div class="aqtop"><span class="aqn">2</span><span class="aqname">Opposite Search</span><span class="aqq">what's the opposite?</span></div>
+        <div class="aqbody">
+          <div class="ex"><div class="exl">marriage counselor</div><div class="chainline"><span class="ci">expected: successful marriage</span><span class="car">↔</span><span class="ci">actual: failed marriage</span></div></div>
+          <div class="out" style="font-style:italic;color:var(--rust-deep);background:rgba(109,68,103,.1);">now explore "failure" as the new thread</div>
+        </div>
+      </div>
+
+      <div class="aq gold">
+        <div class="aqtop"><span class="aqn">3</span><span class="aqname">Spin Search</span><span class="aqq">how would a PR team defend it?</span></div>
+        <div class="aqbody">
+          <div class="ex"><div class="exl">restaurant food poisoning</div><div class="out">We create unforgettable experiences.</div></div>
+          <div class="ex"><div class="exl">security guard sleeping</div><div class="out">We prioritize a calm atmosphere.</div></div>
+          <p style="font-size:.88rem;color:var(--muted);margin-top:4px;font-style:italic;">This single question generates absurdly many jokes.</p>
+        </div>
+      </div>
+
+      <div class="aq">
+        <div class="aqtop"><span class="aqn">4</span><span class="aqname">Analogy Search</span><span class="aqq">what shares the contradiction?</span></div>
+        <div class="aqbody">
+          <div class="ex"><div class="exl">structure: assigned to prevent a problem → doing nothing</div><div class="chips"><span class="chip">lifeguard drowning</span><span class="chip">referee watching Netflix</span><span class="chip">alarm clock oversleeping</span></div></div>
+        </div>
+      </div>
+
+      <div class="aq">
+        <div class="aqtop"><span class="aqn">5</span><span class="aqname">Consequence Search</span><span class="aqq">if accepted as normal, then what?</span></div>
+        <div class="aqbody">
+          <div class="ex"><div class="exl">marriage counselor divorced →</div><div class="chips"><span class="chip">writes books</span><span class="chip">gives seminars</span><span class="chip">trains counselors</span><span class="chip">becomes relationship influencer</span></div></div>
+          <p style="font-size:.88rem;color:var(--muted);margin-top:4px;font-style:italic;">Sitcom gold — each step worsens the irony.</p>
+        </div>
+      </div>
+
+      <div class="aq">
+        <div class="aqtop"><span class="aqn">6</span><span class="aqname">Category Search</span><span class="aqq">what else is in the same bucket?</span></div>
+        <div class="aqbody">
+          <div class="ex"><div class="exl">food poisoning → "bad customer experiences"</div><div class="chips"><span class="chip">airline delays</span><span class="chip">lost luggage</span><span class="chip">root canals</span><span class="chip">tax audits</span></div></div>
+          <p style="font-size:.88rem;color:var(--muted);margin-top:4px;font-style:italic;">Now cross-pollination starts.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- HIDDEN SEARCH TREE -->
+  <section>
+    <h2 class="blocktitle">The Hidden Search Tree</h2>
+    <div class="blocksub">You only see the final line — not the chain that produced it. So it looks like magic.</div>
+    <div class="blockrule"></div>
+    <div class="tree">
+      <div class="tl">// "the food was unforgettable"</div>
+      <div class="tnode seed">Food poisoning</div>
+      <div class="tdown">↓</div>
+      <div class="tnode step">People remember it</div>
+      <div class="tdown">↓</div>
+      <div class="tnode step">Memorable</div>
+      <div class="tdown">↓</div>
+      <div class="tnode step">Unforgettable</div>
+      <div class="tdown">↓</div>
+      <div class="tnode step">Restaurants advertise "experiences"</div>
+      <div class="tdown">↓</div>
+      <div class="tnode final">"The food was unforgettable."</div>
+      <div class="tree-foot">Not magic. A chain.</div>
+    </div>
+  </section>
+
+  <!-- TWO SKILLS -->
+  <section>
+    <h2 class="blocktitle">Split Irony Into Two Skills</h2>
+    <div class="blocksub">Most "witty" lines come from the second one — and it can be trained on its own.</div>
+    <div class="blockrule"></div>
+    <div class="skills">
+      <div class="skill detect">
+        <div class="sktop"><div class="skn">skill 1</div><div class="skt">Irony Detection</div></div>
+        <div class="skbody">
+          <p>Find the contradiction.</p>
+          <div class="vs-gap">Expectation &nbsp;vs&nbsp; Reality</div>
+        </div>
+      </div>
+      <div class="skill expand">
+        <div class="sktop"><div class="skn">skill 2 — the missing one</div><div class="skt">Associative Expansion</div></div>
+        <div class="skbody">
+          <p>For the contradiction, ask:</p>
+          <div class="skq"><span class="skc">Properties?</span><span class="skc">Opposites?</span><span class="skc">Analogies?</span><span class="skc">Consequences?</span><span class="skc">PR spin?</span><span class="skc">Exaggerations?</span><span class="skc">Future implications?</span><span class="skc">Related categories?</span></div>
+        </div>
+      </div>
+    </div>
+    <p class="skills-verdict">The comedians you admire often aren't seeing <em>more irony</em> than you — they're generating <strong>more associations, comparisons, implications, and reinterpretations</strong> than you are.</p>
+  </section>
+
+  <!-- PRACTICE -->
+  <section style="margin-bottom:0;">
+    <div class="practice">
+      <div class="pl">// how to train it</div>
+      <div class="pbig">Don't wait for the clever line.<br><em>Generate the tree first.</em></div>
+      <p>This fits the same structured-learning approach you've used for music and history — train associative expansion as its own lens. It's much closer to what a comedy writers' room actually does than sitting around waiting for wit to appear.</p>
+      <div class="drill">Practice: <b>20–30 associations</b> from one observation — <i>before</i> writing a single joke.</div>
+    </div>
+  </section>
+
+  <footer>
+    <em>The irony points. The association writes.</em>
+    <p style="margin-top:10px;">Detection finds the gap, exploitation picks the method — but expansion is the engine in the middle that actually produces the words.</p>
+  </footer>
+
+</div>
+</body>
+</html>

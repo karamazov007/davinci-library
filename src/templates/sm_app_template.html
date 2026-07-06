@@ -1,0 +1,158 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Sports Mindset</title><style>
+:root{--bg:#f6f7f9;--surface:#fff;--ink:#1c2431;--dim:#5b6572;--line:#e7e9ee;--line2:#dcdfe6;--accent:#4f46e5;--soft:#eef0fb;--gold:#caa24a}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.happ{display:flex;flex-direction:column;height:100vh}
+.hbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;flex-wrap:wrap}
+.hbrand{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;white-space:nowrap;margin-right:6px}
+.htabs{display:flex;gap:3px;flex-wrap:wrap}
+.htabs button{border:0;background:none;color:var(--dim);font:inherit;font-size:13px;font-weight:650;padding:8px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.htabs button:hover{background:var(--soft);color:var(--ink)}
+.htabs button.active{background:var(--accent);color:#fff}
+.stage{flex:1;min-height:0;overflow:auto;position:relative}
+.stage.fill{overflow:hidden}
+.frame{width:100%;height:100%;border:0;display:block;background:#fff}
+.mlayout{display:flex;gap:30px;align-items:flex-start;max-width:1180px;margin:0 auto;padding:30px 34px 90px}
+.mmain{flex:1;min-width:0}
+.mtoc{flex:0 0 200px;position:sticky;top:16px;align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 8px;max-height:calc(100vh - 90px);overflow:auto;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.mtoc .tl{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);padding:7px 10px 9px}
+.mtoc a{display:block;padding:6px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.3}
+.mtoc a:hover{background:var(--soft);color:var(--accent)}
+.hero{margin:4px 0 10px}
+.hero .kick{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:33px;font-weight:850;letter-spacing:-.02em;margin:8px 0 6px;line-height:1.07}
+.hero p.sub{font-size:16px;color:var(--dim);line-height:1.6;max-width:740px;margin:0}
+.sec{scroll-margin-top:16px;margin-top:44px}
+.sec>.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px}
+.sec>.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+.sec h2{font-size:22px;font-weight:800;letter-spacing:-.01em;margin:12px 0 6px}
+.sec p{font-size:15px;line-height:1.72;color:#39424f;margin:10px 0;max-width:750px}
+.sec p b{color:var(--ink)}
+.callout{background:var(--soft);border:1px solid #e0e3f5;border-left:3px solid var(--accent);border-radius:12px;padding:15px 19px;margin:16px 0;font-size:15px;line-height:1.66;color:#33405c;max-width:770px}
+.pull{font-size:20px;font-weight:800;line-height:1.4;color:var(--ink);border-left:4px solid var(--gold);padding:6px 0 6px 18px;margin:20px 0;max-width:740px;letter-spacing:-.01em}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 16px 8px;margin:18px 0;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.fig svg{width:100%;height:auto;display:block}
+.fig figcaption{font-size:12.5px;color:var(--dim);text-align:center;padding:6px 8px 8px;line-height:1.5}
+.gtable{width:100%;border-collapse:collapse;margin:14px 0;font-size:13.5px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gtable th,.gtable td{text-align:left;padding:9px 12px;border-bottom:1px solid var(--line)}
+.gtable th{font-size:11px;letter-spacing:.05em;text-transform:uppercase;color:var(--dim);background:var(--soft)}
+.gtable tr:last-child td{border-bottom:0}.gtable td b{color:var(--ink)}
+.mapgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:13px;margin:16px 0}
+.mapcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px;box-shadow:0 1px 2px rgba(20,25,40,.04);cursor:pointer;transition:border-color .15s,transform .15s}
+.mapcard:hover{border-color:var(--accent);transform:translateY(-3px)}
+.mapcard .mi{font-size:22px}.mapcard b{display:block;font-size:15.5px;margin:8px 0 4px}
+.mapcard .mm{font-size:13px;color:var(--dim);line-height:1.5}
+.mapcard .mt{margin-top:9px;font-size:12px;color:var(--accent);font-weight:700}
+/* group tab */
+.grp{display:flex;height:100%}
+.grpnav{flex:0 0 262px;overflow-y:auto;border-right:1px solid var(--line);background:var(--surface);padding:12px 10px}
+.grpnav .gl{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:10px 10px 8px}
+.gbtn{display:block;width:100%;text-align:left;border:1px solid transparent;background:none;font:inherit;padding:11px 12px;border-radius:11px;cursor:pointer;color:var(--dim);margin-bottom:4px;line-height:1.3}
+.gbtn:hover{background:var(--soft);color:var(--ink)}
+.gbtn.active{background:var(--soft);color:var(--ink);border-color:var(--accent)}
+.gbtn b{display:block;font-size:14px;font-weight:750;color:inherit}
+.gbtn span{font-size:12px;color:var(--dim)}
+.gbtn.active b{color:var(--ink)}
+.grpmain{flex:1;min-width:0;position:relative}
+@media(max-width:900px){.mlayout{flex-direction:column;padding:22px 18px 80px}.mtoc{display:none}.grp{flex-direction:column;height:auto}.grpnav{flex:0 0 auto;border-right:0;border-bottom:1px solid var(--line)}.grpmain{height:78vh}}
+</style></head><body>
+<div class="happ">
+ <header class="hbar"><div class="hbrand">🧠 Sports Mindset</div><nav class="htabs" id="htabs"></nav></header>
+ <div class="stage" id="stage"></div>
+</div>
+<script>
+__VIZLIB__
+var EMBEDS=__EMBEDS__;
+(function(){
+ var GROUPS=[
+  {id:"mastery",ic:"🏔️",name:"Mastery & Flow",blurb:"What being good actually feels like, and how flow works.",items:[["phenomenology-of-mastery","The Feel of Mastery","The phenomenology of being good"],["flow-state-skill-layers","Flow & Skill Layers","Flow isn't reserved for the elite"]]},
+  {id:"pressure",ic:"🔥",name:"Pressure & Fear",blurb:"Why the brain misfires under pressure — and how to execute anyway.",items:[["performance-under-pressure","Executing Under Pressure","The mental model"],["performance-anxiety-framework","Performance Anxiety","The structural answer"],["fear-to-execution-system","Fear → Execution","The complete five-layer system"]]},
+  {id:"energy",ic:"🔋",name:"Body & Energy",blurb:"Fatigue, stamina and the physiology of staying sharp.",items:[["the-fatigued-brain-protocol","The Fatigued Brain","Why you can't think at minute 45"],["the-sport-session-protocol","Sport Session Protocol","Before, during & after"],["the-stamina-blueprint","The Stamina Blueprint","First principles to full capacity"]]},
+  {id:"system",ic:"⚙️",name:"Growth System",blurb:"The engine that turns insight into internalised skill.",items:[["feedback-loop-protocol","The Feedback Loop","The four-layer protocol"],["internalization-engine","Internalization Engine","Why the framework works"],["sports-mindsets-mastery-blueprint","Project Blueprint","Sports, mindsets & mastery"]]},
+  {id:"people",ic:"🤝",name:"People & Play",blurb:"Playing with others — weak partners, and reading character.",items:[["the-weak-partner-protocol","The Weak Partner Protocol","Playing 1v2 without losing your mind"],["character-analysis-framework","Character Analysis","The Maruo template"]]}
+ ];
+ var TABS=[["home","◎ Home"]].concat(GROUPS.map(function(g){return [g.id,g.ic+" "+g.name];}));
+ var TK="sm.tab.v1"; var tab="home"; try{tab=localStorage.getItem(TK)||"home";}catch(e){}
+ if(!TABS.some(function(t){return t[0]===tab;}))tab="home";
+ var SEL={}; try{SEL=JSON.parse(localStorage.getItem("sm.sel")||"{}");}catch(e){}
+ var stage=document.getElementById("stage"), blobCache={};
+ function esc(t){return (t||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+ function fig(svg,cap){return '<figure class="fig">'+svg+(cap?'<figcaption>'+esc(cap)+'</figcaption>':'')+'</figure>';}
+ function sec(id,title,eyebrow,body){return '<section class="sec" id="'+id+'"><div class="eyebrow">'+esc(eyebrow)+'</div><h2>'+esc(title)+'</h2>'+body+'</section>';}
+ function blobFor(id){ if(blobCache[id])return blobCache[id]; var b64=EMBEDS[id]; if(!b64)return null; try{var bin=atob(b64),arr=new Uint8Array(bin.length);for(var i=0;i<bin.length;i++)arr[i]=bin.charCodeAt(i);var u=URL.createObjectURL(new Blob([arr],{type:"text/html"}));blobCache[id]=u;return u;}catch(e){return null;} }
+ function grpById(id){for(var i=0;i<GROUPS.length;i++)if(GROUPS[i].id===id)return GROUPS[i];return null;}
+ function renderTabs(){var el=document.getElementById("htabs");el.innerHTML="";TABS.forEach(function(t){var b=document.createElement("button");b.textContent=t[1];if(t[0]===tab)b.className="active";b.onclick=function(){show(t[0]);};el.appendChild(b);});}
+
+ function homeHTML(){
+  var journey=genTimeline([{when:"Stage 1",label:"Unconscious Incompetence"},{when:"Stage 2",label:"Conscious Incompetence"},{when:"Stage 3",label:"Conscious Competence"},{when:"Stage 4",label:"Unconscious Competence"}],{w:840,h:250});
+  var feel=genMindMap("Flow State\nMastery",[{label:"Effortlessness Paradox"},{label:"Never-Satisfied Edge"},{label:"Presence & Flow"},{label:"Confidence w/o Arrogance"},{label:"Embodied Knowing"},{label:"Transcendence"}],{w:820,h:560});
+  var inner=genMindMap("FLOW STATE\nPeak Performance",[{label:"Mental State"},{label:"Emotional State"},{label:"Motivation"},{label:"Perceptual Acuity"},{label:"Body Awareness"},{label:"Time & Space"}],{w:820,h:560});
+  var cerebral=genSpectrum("Cerebral — you can explain it","Embodied — you can't fully explain it",[{label:"Studies",pos:.14,color:C.a2},{label:"Sports",pos:.86,color:C.a3}],{title:"Two kinds of knowing",w:820,h:270});
+  var layers=genGraph([
+    {id:"a",x:.5,y:.1,shape:"round",w:170,h:38,label:"Control",fill:C.a4},
+    {id:"b",x:.5,y:.5,shape:"round",w:170,h:38,label:"Cooperate",fill:C.a1},
+    {id:"c",x:.5,y:.9,shape:"round",w:170,h:38,label:"Trust",fill:C.a5}
+  ],[{from:"a",to:"b",label:"skill grows"},{from:"b",to:"c",label:"let go"}],{w:520,h:460});
+  var arousal=genSpectrum("Under-aroused (flat)","Over-aroused (panic)",[{label:"the zone",pos:.5,color:C.a1}],{title:"Arousal ↔ performance — the inverted-U",w:820,h:250});
+  var venn=genVenn3([{label:"Supreme\nConfidence",color:C.a1},{label:"Beginner's\nMind",color:C.a3},{label:"Flow",color:C.a5}],{abc:"Mastery"},"The central paradox — hold all three",{w:640,h:520});
+  var jt='<table class="gtable"><tr><th>Aspect</th><th>Stage 1</th><th>Stage 2</th><th>Stage 3</th><th>Stage 4</th></tr>'
+   +'<tr><td><b>Confidence</b></td><td>High (false)</td><td>Low</td><td>Medium</td><td>High (earned)</td></tr>'
+   +'<tr><td><b>Thinking</b></td><td>Minimal</td><td>Intense</td><td>Required</td><td>Absent</td></tr>'
+   +'<tr><td><b>Flow?</b></td><td>No</td><td>No</td><td>Sometimes</td><td>Yes</td></tr>'
+   +'<tr><td><b>Can explain</b></td><td>Thinks yes</td><td>Overwhelmed</td><td>Mostly yes</td><td>Not fully</td></tr>'
+   +'<tr><td><b>Humility</b></td><td>None</td><td>Maximum</td><td>Growing</td><td>Deep</td></tr></table>';
+  var mapcards='<div class="mapgrid">'+GROUPS.map(function(g){return '<div class="mapcard" data-goto="'+g.id+'"><div class="mi">'+g.ic+'</div><b>'+esc(g.name)+'</b><div class="mm">'+esc(g.blurb)+'</div><div class="mt">'+g.items.length+' frameworks →</div></div>';}).join("")+'</div>';
+  var toc=[["insight","The essential insight"],["journey","The journey to mastery"],["feel","What mastery feels like"],["paradox","The central paradox"],["inner","The flow state"],["knowing","Two kinds of knowing"],["layers","Control → Cooperate → Trust"],["arousal","Pressure & arousal"],["map","The frameworks"]]
+    .map(function(t){return '<a data-to="'+t[0]+'">'+esc(t[1])+'</a>';}).join("");
+  return '<div class="mlayout"><div class="mmain">'
+   +'<div class="hero"><div class="kick">Sports Mindset</div><h1>The inner game of being good</h1>'
+   +'<p class="sub">What it actually feels like to be excellent — and the frameworks for getting there: pressure, fear, fatigue, flow, and the people you play with. Derived from elite athletes across tennis, badminton, extreme sports and rugby.</p></div>'
+   +sec("insight","The essential insight","Start here",
+       '<div class="callout">Being good means your competence is so deeply <b>embodied</b> that conscious thought becomes an obstacle. You perform optimally when you <b>surrender control to your trained instincts.</b></div>'
+       +'<div class="pull">"It\'s not who\'s thinking the hardest. It\'s who can get themselves <span style="color:var(--accent)">out of the way</span>."</div>')
+   +sec("journey","The journey to mastery","Four stages",
+       '<p>Skill moves through four stages — and confidence makes a full loop: you start falsely confident, get humbled, grind through effort, and return to confidence — but now <b>with humility</b>.</p>'
+       +fig(journey,"Unconscious incompetence → … → unconscious competence")+jt)
+   +sec("feel","What mastery feels like","Six dimensions",
+       '<p>Mastery has a distinct phenomenology — six felt dimensions that recur across sports.</p>'+fig(feel))
+   +sec("paradox","The central paradox","Confidence + humility",
+       '<p>The strange truth at the top: you feel powerful <b>and</b> humble. You know you\'re good <b>and</b> you\'re always learning. <b>Satisfaction kills the edge.</b></p>'+fig(venn))
+   +sec("inner","The flow state","Peak performance",
+       '<p>In flow, six systems align at once — mind quiet, body autonomous, senses heightened, time distorted.</p>'+fig(inner))
+   +sec("knowing","Two kinds of knowing","Cerebral vs embodied",
+       '<p>Studies reward being able to explain. Sport rewards the opposite — a knowing in the body you <b>can\'t</b> fully put into words. Thinking is a tool in one and an obstacle in the other.</p>'+fig(cerebral))
+   +sec("layers","Control → Cooperate → Trust","How flow deepens",
+       '<p>As skill grows, your relationship to control changes: first you <b>control</b> the movement, then you <b>cooperate</b> with it, finally you <b>trust</b> it entirely and get out of the way.</p>'+fig(layers))
+   +sec("arousal","Pressure & arousal","The inverted-U",
+       '<p>Performance isn\'t maximised by calm or by panic — but by the right <b>arousal zone</b>. Too little and you\'re flat; too much and the brain hijacks. The frameworks under <b>Pressure & Fear</b> are about finding and holding that zone.</p>'+fig(arousal))
+   +sec("map","The frameworks","Explore the stack",
+       '<p>Everything above is unpacked in the framework library. Jump in:</p>'+mapcards)
+   +'</div><aside class="mtoc"><div class="tl">On this page</div>'+toc+'</aside></div>';
+ }
+
+ function groupHTML(g){
+  var cur=SEL[g.id]||g.items[0][0];
+  if(!g.items.some(function(it){return it[0]===cur;}))cur=g.items[0][0];
+  var nav='<div class="gl">'+esc(g.name)+'</div>'+g.items.map(function(it){return '<button class="gbtn'+(it[0]===cur?" active":"")+'" data-fw="'+it[0]+'"><b>'+esc(it[1])+'</b><span>'+esc(it[2])+'</span></button>';}).join("");
+  var u=blobFor(cur);
+  var main=u?'<iframe class="frame" id="grpframe" title="'+esc(cur)+'" src="'+u+'"></iframe>':'<div style="padding:40px;color:#5b6472">Unavailable.</div>';
+  return '<div class="grp"><nav class="grpnav" id="grpnav">'+nav+'</nav><main class="grpmain" id="grpmain">'+main+'</main></div>';
+ }
+
+ function show(key){
+  tab=key; try{localStorage.setItem(TK,key);}catch(e){}
+  renderTabs();
+  var g=grpById(key);
+  if(g){ stage.className="stage fill"; stage.innerHTML=groupHTML(g); }
+  else { stage.className="stage"; stage.scrollTop=0; stage.innerHTML=homeHTML(); }
+ }
+ stage.addEventListener("click",function(e){var t=e.target;
+   var toc=t.closest?t.closest("[data-to]"):null; if(toc){var el=document.getElementById(toc.getAttribute("data-to"));if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return;}
+   var go=t.closest?t.closest("[data-goto]"):null; if(go){show(go.getAttribute("data-goto"));return;}
+   var fw=t.closest?t.closest("[data-fw]"):null; if(fw){var g=grpById(tab);if(!g)return;var id=fw.getAttribute("data-fw");SEL[g.id]=id;try{localStorage.setItem("sm.sel",JSON.stringify(SEL));}catch(_){}
+     document.getElementById("grpnav").querySelectorAll(".gbtn").forEach(function(b){b.classList.toggle("active",b.getAttribute("data-fw")===id);});
+     var u=blobFor(id); var m=document.getElementById("grpmain"); if(m)m.innerHTML=u?'<iframe class="frame" title="'+esc(id)+'" src="'+u+'"></iframe>':'<div style="padding:40px;color:#5b6472">Unavailable.</div>';return;}
+ });
+ renderTabs(); show(tab);
+})();
+</script></body></html>

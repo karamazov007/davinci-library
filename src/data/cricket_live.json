@@ -1,0 +1,125 @@
+{
+ "phases":[
+  {"name":"Phase 1 · Pre-Match Ritual","title":"Pre-Match Research","sub":"Complete 30–60 min before first ball. Know both teams, the pitch & conditions cold.","accent":"#2f5d3a",
+   "sections":[
+    {"title":"Team A — Batting Lineup","items":[
+     {"q":"Who are the openers? Aggressive or anchor types?","t":"KEY","d":"Aggressive = attack from ball 1. Anchor = stabilise then accelerate. Sets the powerplay tone entirely."},
+     {"q":"Middle order (3–5) — consolidators or attackers?","t":"STAT","d":"Do they rebuild after early wickets or are they floaters who attack in overs 8–15? Note preferred shots."},
+     {"q":"Finishers (6–7) — strike rate above 150 in death overs?","t":"KEY","d":"A strong finisher vs a weak one can be a 20–30 run difference in the last 4 overs. Compare both teams."},
+     {"q":"Form of top 3 batters — last 5 innings scores","t":"STAT","d":"Cold batters under pressure push too hard and gift wickets early. In-form batters are match-winners."},
+     {"q":"Known weaknesses — short ball, left-arm spin, googly?","t":"WATCH","d":"Great bowlers exploit these relentlessly. Know the weakness so you can predict the bowling matchup."},
+     {"q":"Confirmed playing XI — any surprise absences?","t":"CTX","d":"A missing key batter fundamentally changes depth. Verify 30 min before toss."}
+    ]},
+    {"title":"Team A — Bowling Attack","items":[
+     {"q":"Fast bowlers vs spinners — how many of each and why?","t":"KEY","d":"Spinning pitch = 2–3 spinners. Seaming pitch = 3–4 fast bowlers. A mismatch signals a gamble."},
+     {"q":"Powerplay bowlers (Overs 1–6) — who takes the new ball?","t":"KEY","d":"Your most attacking bowler. Can they swing it early? Early wickets = momentum. Note economy too."},
+     {"q":"Middle-over spinners — wicket-taker or stopper?","t":"WATCH","d":"A genuine wicket-taking spinner (googly, doosra) vs a stopper (flat, economical). Very different threats."},
+     {"q":"Death bowling specialist — do they have one? (Overs 16–20)","t":"KEY","d":"A reliable death bowler restricts by 15–20 runs vs a weak unit. Single biggest T20 differentiator."},
+     {"q":"Economy rate and wicket profile for each main bowler","t":"STAT","d":"Economy 6 + 0 wickets = stopper. Economy 9 + 3 wickets = expensive but dangerous. Know the type."},
+     {"q":"All-rounders — who can bowl part-time overs if needed?","t":"CTX","d":"All-rounders give captains enormous flexibility. Identify them so bowling changes make sense to you."}
+    ]},
+    {"title":"Team B — Batting Lineup","items":[
+     {"q":"Openers — aggressive or anchor types?","t":"KEY","d":"Repeat Team A analysis. Compare the two opening pairs — which powerplay battle do you expect to dominate?"},
+     {"q":"Middle order (3–5) — can they handle pressure situations?","t":"STAT","d":"Batting at 3 wickets down in over 8 needs different skills than coming in at 30/0. Who fits each role?"},
+     {"q":"Finishers — compare directly to Team A's finishers","t":"KEY","d":"This is often the decisive edge. A team with Hardik Pandya at 6 vs a team with a part-timer at 6 is huge."},
+     {"q":"Form of top 3 in last 5 innings","t":"STAT","d":"Same check as Team A. Cross-reference: is an in-form Team B batter facing an out-of-form Team A bowler?"},
+     {"q":"Weaknesses vs specific bowling types","t":"WATCH","d":"Does anyone struggle vs left-arm pace? Short pitch? If Team A has that bowler — expect them to target it."},
+     {"q":"Confirmed playing XI — any surprise inclusions?","t":"CTX","d":"A young debutant or unexpected inclusion changes the team dynamic entirely. Know before the toss."}
+    ]},
+    {"title":"Team B — Bowling Attack","items":[
+     {"q":"Fast vs spin composition — compare to Team A","t":"KEY","d":"Which team's bowling attack is better suited to today's conditions? That team has a structural advantage."},
+     {"q":"Powerplay bowling options — wicket-takers or restrictors?","t":"KEY","d":"Wickets in powerplay = massive pressure. A team that contains but doesn't take wickets loses powerplay battles."},
+     {"q":"Middle-over spinners — quality of variation","t":"WATCH","d":"Googly, carrom ball, arm ball — these are match-winning deliveries in the right conditions. Know who has them."},
+     {"q":"Death bowling — specialist or improvised?","t":"KEY","d":"Is the captain using a designated death bowler or cobbling together overs 18–20 with part-timers?"},
+     {"q":"Economy and wickets for each main bowler (last 5 games)","t":"STAT","d":"A bowler with economy 8+ is being hit. A bowler with economy 6 but no wickets is a stopper. Know both."},
+     {"q":"Part-time bowling cover — who bails out the captain?","t":"CTX","d":"When a regular bowler is expensive, the captain has to get overs somewhere. Know who the backup is."}
+    ]},
+    {"title":"The Pitch","items":[
+     {"q":"Pitch type — flat/batting, spin-friendly, or seaming/green?","t":"KEY","d":"Flat + dry = batting paradise. Green tinge = pace swing/seam. Dusty/worn = spinners grip more."},
+     {"q":"Average first innings score at this venue (last 10 matches)","t":"STAT","d":"This is your calibration number. 155 when average is 170 = underperformance. 185 = excellent total."},
+     {"q":"Batting first vs chasing record at this ground","t":"STAT","d":"Some grounds heavily favour chasing (dew, flat). Others reward batting first (early swing, deteriorating surface)."},
+     {"q":"Does it historically suit spinners or pacers more?","t":"CTX","d":"Wankhede = pace, quick and bouncy. Chepauk = spin, slow and gripping. Knowing this tells you who has the edge."},
+     {"q":"How does pitch play differently in 2nd innings?","t":"WATCH","d":"Most pitches get flatter as match progresses. But spin pitches get harder — rough develops outside off stump."}
+    ]},
+    {"title":"Weather & Conditions","items":[
+     {"q":"Day match or Day-Night (D/N)?","t":"KEY","d":"D/N almost always = dew in 2nd innings. Wet ball doesn't swing, grip or spin. Strongly favours chasing team."},
+     {"q":"Overcast or bright sunshine?","t":"CTX","d":"Overcast = swing bowling. Pacers get more air movement. Sunshine = dry conditions = better for spin later."},
+     {"q":"Hot & dry (40°C+) or cool and humid?","t":"CTX","d":"Extreme heat dries pitch faster, benefits spinners later. Cool damp preserves pitch and assists swing longer."},
+     {"q":"Rain risk? (DLS method awareness)","t":"WATCH","d":"Rain mid-match = DLS revised target. Batting first team often disadvantaged under DLS. Know if it's in play."}
+    ]},
+    {"title":"The Toss & Gameplan Prediction","items":[
+     {"q":"Does the toss decision make sense given your research?","t":"KEY","d":"If you've done sections 1–6, the toss should feel logical or surprising. A surprise = something to figure out."},
+     {"q":"What is each team's likely gameplan today?","t":"WATCH","d":"Form your own prediction. 'Team A will exploit spin.' 'Team B openers will attack.' Then verify during match."},
+     {"q":"What is today's par score for this pitch?","t":"STAT","d":"Combine venue average with conditions. Overcast + seaming? Adjust par down 10–15. This is your live benchmark."}
+    ]}
+   ]},
+  {"name":"Phase 2 · During the Match","title":"Live Match Intelligence","sub":"Three phases within each innings. These are observation checkpoints — watch and verify in real time.","accent":"#1e2a44",
+   "sections":[
+    {"title":"1st Innings — Powerplay (Overs 1–6)","items":[
+     {"q":"Powerplay score — Strong (50+), Average (35–50), Weak (<35)?","t":"KEY","d":"50+ = batting dominated. Below 35 with 2+ wickets = bowling won powerplay. Sets tone for everything after."},
+     {"q":"Did the opening bowler swing or seam the ball early?","t":"WATCH","d":"Beating the bat consistently = winning the battle even without wickets. Edges and misses are pressure, not luck."},
+     {"q":"Wickets in powerplay — how many and whose?","t":"STAT","d":"0 wickets = batters won. 1 = roughly even. 2+ = bowling won. Each early wicket is worth more than one later."},
+     {"q":"Field placement — attacking or defensive? When did it switch?","t":"WATCH","d":"Slips + gully = hunting wickets. Spread ring = restricting. Spot every switch — it reveals the captain's reading."},
+     {"q":"Are pre-match plans being followed? Any early surprises?","t":"CTX","d":"A spinner in over 2, unusual field, unexpected bowling change — the captain is reacting. Figure out why."}
+    ]},
+    {"title":"1st Innings — Middle Overs (7–15)","items":[
+     {"q":"Are spinners building pressure? Count dot balls per over.","t":"WATCH","d":"3+ dot balls per over = pressure building. Batters under dot ball pressure make rash mistakes soon after."},
+     {"q":"Are batters rotating strike or getting bogged down?","t":"KEY","d":"1s and 2s + occasional boundary = good batting. Someone on 10 off 15 in over 11 is in serious trouble."},
+     {"q":"Watch THE key battle: spinner vs set batter in the middle.","t":"WATCH","d":"Is the spinner varying pace, flight, trajectory? Is the batter sweeping, stepping out, or staying back? This is chess."},
+     {"q":"Which partnership is building — and when does the captain act?","t":"STAT","d":"A 50+ partnership at run-a-ball in middle overs is a momentum shift. The bowling captain will try to break it."},
+     {"q":"At over 15 — is total tracking above or below your par score?","t":"KEY","d":"If par is 160 and they're 95/3 after 15, they need 65 off 5 = 13/over. Can their remaining batting manage that?"}
+    ]},
+    {"title":"1st Innings — Death Overs (16–20)","items":[
+     {"q":"Is the death bowler executing yorkers or leaking wide full tosses?","t":"WATCH","d":"A perfect yorker = hardest ball to hit. Wide full toss = free boundary. This battle determines final 20–30 runs."},
+     {"q":"Is the finisher still in? How many balls do they have?","t":"KEY","d":"Finisher arriving over 18 with 12 balls can score 30–40. Dismissed in over 16 = lower order must bat. Track this."},
+     {"q":"Final total — compare against your par score prediction.","t":"STAT","d":"Was your par accurate? If not, what did you miss? Every inaccuracy is a calibration lesson for next match."},
+     {"q":"Set the chase benchmark — what RRR does the chasing team face?","t":"KEY","d":"Target ÷ 20 = runs/over needed. Under 8 = comfortable. 8–10 = competitive. Above 10 = real pressure. Set expectation."}
+    ]},
+    {"title":"2nd Innings — The Chase","items":[
+     {"q":"CRR vs RRR — is chasing team ahead of or behind required rate?","t":"KEY","d":"Current Run Rate above Required Run Rate = chasing team in control. Check this after every 5 overs minimum."},
+     {"q":"Watch for dew — is the ball skidding more than in 1st innings?","t":"WATCH","d":"Bowlers wiping ball constantly, spinners going for more runs, deliveries not gripping = dew is a factor."},
+     {"q":"When does RRR cross 12? That is the crisis threshold.","t":"STAT","d":"RRR above 12 = serious danger. Above 15 = mathematically possible but practically nearly impossible."},
+     {"q":"Key wickets — who was dismissed, in which over, and how?","t":"KEY","d":"Each wicket in a chase simultaneously reduces batting quality AND increases required run rate. Note every one."},
+     {"q":"Who is the chase anchor — is one batter going the distance?","t":"WATCH","d":"Successful chases almost always have one batter who bats from over 1–18+. Their wicket = match shifts dramatically."},
+     {"q":"Final over equation — runs needed vs wickets in hand.","t":"KEY","d":"15 off last over with 2 wickets = very hard. 15 off last over with 6 wickets = very achievable. Both numbers matter."}
+    ]}
+   ]},
+  {"name":"Phase 3 · Post-Match Debrief","title":"Post-Match Debrief","sub":"15 minutes after the match. This is where casual viewers stop — and where real understanding begins.","accent":"#3a2230",
+   "sections":[
+    {"title":"Match Analysis — Turning Points","items":[
+     {"q":"What was THE single turning point of the match?","t":"KEY","d":"One over, one wicket, one dropped catch that changed momentum. Pundits always find this. Can you?"},
+     {"q":"Which individual battle was most decisive?","t":"WATCH","d":"Spinner vs set batter? Death bowler vs finisher? Opener vs new ball? Which matchup decided the outcome?"},
+     {"q":"Was the toss decision correct? Was it decisive?","t":"CTX","d":"Did quality difference between teams outweigh conditions advantage? Or did the toss winner cruise?"},
+     {"q":"How accurate were your pre-match predictions?","t":"STAT","d":"What did you get right? What surprised you? Every wrong prediction = something new to understand."},
+     {"q":"Were there captaincy errors by either side?","t":"WATCH","d":"Wrong bowling change, batter promoted too late, poor field placement. Errors separate good teams from champions."}
+    ]},
+    {"title":"Player Performance Review","items":[
+     {"q":"Player of the Match — do you agree? Who would you pick?","t":"CTX","d":"The formal award isn't always the most impactful player. A bowler's 2 wickets in over 14 may have decided it."},
+     {"q":"Who underperformed relative to their pre-match reputation?","t":"STAT","d":"Was a 'key bowler' taken apart? Did a star batter fall cheaply? What caused it — plan, conditions, form?"},
+     {"q":"Did any lower-ranked or unexpected player have an outsized impact?","t":"WATCH","d":"No. 8 scoring 25 off 10. Part-time spinner taking 2 key wickets. These are cricket's hidden stories."},
+     {"q":"Which bowler-batter matchups went as you predicted?","t":"KEY","d":"E.g. did the spinner exploit the weakness you identified pre-match? Confirming predictions builds real knowledge."},
+     {"q":"Update your mental model: one thing learned about each team.","t":"KEY","d":"'Team A's death bowling is weaker than I thought.' 'Their No.3 is the real anchor, not the opener.' Write it."}
+    ]},
+    {"title":"Pitch & Conditions — Post-Match Review","items":[
+     {"q":"Did the pitch play as you expected — batting, spin, or seam?","t":"CTX","d":"If spinners got less turn than expected, or the pitch stayed flatter longer — why? What did you miss?"},
+     {"q":"Did dew factor in as predicted? How much did it affect bowling?","t":"STAT","d":"Compare 1st vs 2nd innings economy rates for spinners and pacers. The gap reveals how much dew mattered."},
+     {"q":"Was the par score your estimate was accurate?","t":"STAT","d":"If average is 170 and you predicted 158 due to conditions, but 182 was scored — recalibrate your model."},
+     {"q":"Which team's bowling attack was better suited to today's conditions?","t":"CTX","d":"In hindsight, did the pitch suit one attack more? Did the captain who won the toss make the right call?"}
+    ]},
+    {"title":"Scorecard Deep Dive (5 min)","items":[
+     {"q":"Check dismissal types — caught, bowled, LBW, run out. Any pattern?","t":"STAT","d":"Multiple caught-behinds = swing/seam working. Multiple LBWs = spinner beating batters through the gate."},
+     {"q":"Economy rates by bowling phase — powerplay, middle, death","t":"STAT","d":"A bowler with economy 6 overall but 11 in death overs is excellent in overs 1–15 but dangerous at the end."},
+     {"q":"Dot ball % for each batter — who was truly in control?","t":"STAT","d":"A batter with 60% dot balls is under pressure even if they scored 40. A batter on 30% is dominating."},
+     {"q":"Run rate progression over-by-over — where did the scoring surge or stall?","t":"WATCH","d":"Overlay both innings' over-by-over rates in your mind. Where were the spells of dominance for each side?"}
+    ]},
+    {"title":"The Pundit Test & Learning Loop","items":[
+     {"q":"Watch 5 min of post-match analysis — do the pundits make sense now?","t":"KEY","d":"After this framework, 'middle-over collapse' and 'death bowling fell apart' should be completely obvious to you."},
+     {"q":"Can you explain why the winning team won in 2–3 sentences?","t":"KEY","d":"Not 'they scored more' — the real reason. 'Spinners took 4 wickets in overs 8–15 which strangled the chase.'"},
+     {"q":"Identify one tactical decision that was genuinely clever.","t":"WATCH","d":"E.g. bowling a part-timer before the main spinner to set up a matchup. Recognising smart tactics = advanced watching."},
+     {"q":"Identify one tactical decision that was a clear mistake.","t":"WATCH","d":"Everyone makes mistakes — the key is knowing WHY it was wrong, not just that it failed. Outcome ≠ decision quality."},
+     {"q":"Write down one specific thing to research before the next match.","t":"KEY","d":"E.g. 'Understand reverse swing.' 'What is the rough and why do spinners target it?' Carry the learning forward."},
+     {"q":"Share one observation in a cricket discussion. Can you hold the conversation?","t":"KEY","d":"The true test of understanding is articulating it to others. One technical insight per match = rapid improvement."}
+    ]}
+   ]}
+ ]
+}

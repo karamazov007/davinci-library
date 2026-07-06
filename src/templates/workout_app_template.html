@@ -1,0 +1,232 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Workout</title><style>
+:root{--bg:#f6f7f9;--surface:#fff;--ink:#1c2431;--dim:#5b6572;--line:#e7e9ee;--line2:#dcdfe6;--accent:#4f46e5;--soft:#eef0fb;--gold:#caa24a;
+ --tS:#16a34a;--tA:#65a30d;--tB:#0891b2;--tC:#ea580c;--tD:#dc2626;--tF:#6b7280}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.happ{display:flex;flex-direction:column;height:100vh}
+.hbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;flex-wrap:wrap}
+.hbrand{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;white-space:nowrap;margin-right:6px}
+.htabs{display:flex;gap:3px;flex-wrap:wrap}
+.htabs button{border:0;background:none;color:var(--dim);font:inherit;font-size:13px;font-weight:650;padding:8px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.htabs button:hover{background:var(--soft);color:var(--ink)}
+.htabs button.active{background:var(--accent);color:#fff}
+.stage{flex:1;min-height:0;overflow:auto;position:relative}
+.stage.fill{overflow:hidden}
+/* prose + figures */
+.mlayout{display:flex;gap:30px;align-items:flex-start;max-width:1180px;margin:0 auto;padding:30px 34px 90px}
+.mmain{flex:1;min-width:0}
+.mtoc{flex:0 0 200px;position:sticky;top:16px;align-self:flex-start;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:10px 8px;max-height:calc(100vh - 90px);overflow:auto;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.mtoc .tl{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);padding:7px 10px 9px}
+.mtoc a{display:block;padding:6px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.3}
+.mtoc a:hover{background:var(--soft);color:var(--accent)}
+.hero{margin:4px 0 10px}
+.hero .kick{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:32px;font-weight:850;letter-spacing:-.02em;margin:8px 0 6px;line-height:1.08}
+.hero p.sub{font-size:16px;color:var(--dim);line-height:1.6;max-width:720px;margin:0}
+.sec{scroll-margin-top:16px;margin-top:42px}
+.sec>.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px}
+.sec>.eyebrow::after{content:"";flex:1;height:1px;background:var(--line)}
+.sec h2{font-size:22px;font-weight:800;letter-spacing:-.01em;margin:12px 0 6px}
+.sec p{font-size:15px;line-height:1.72;color:#39424f;margin:10px 0;max-width:760px}
+.sec p b{color:var(--ink)}
+.callout{background:var(--soft);border:1px solid #e0e3f5;border-left:3px solid var(--accent);border-radius:12px;padding:14px 18px;margin:16px 0;font-size:14.5px;line-height:1.66;color:#33405c;max-width:780px}
+.fig{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 16px 8px;margin:18px 0;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.fig svg{width:100%;height:auto;display:block}
+.fig figcaption{font-size:12.5px;color:var(--dim);text-align:center;padding:6px 8px 8px;line-height:1.5}
+.gtable{width:100%;border-collapse:collapse;margin:14px 0;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.gtable th,.gtable td{text-align:left;padding:11px 14px;border-bottom:1px solid var(--line)}
+.gtable th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);background:var(--soft)}
+.gtable tr:last-child td{border-bottom:0}
+.gtable td b{color:var(--ink)}
+.cardrow{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:12px;margin:16px 0;max-width:820px}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:13px;padding:15px 17px;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.gcard b{display:block;font-size:15px;margin-bottom:4px}
+.gcard span{font-size:13.5px;color:var(--dim);line-height:1.5}
+/* muscle atlas */
+.atlas{display:flex;height:100%}
+.anav{flex:0 0 244px;overflow-y:auto;border-right:1px solid var(--line);background:var(--surface);padding:10px}
+.modetog{display:flex;gap:4px;background:var(--soft);border-radius:10px;padding:4px;margin-bottom:10px}
+.modetog button{flex:1;border:0;background:none;font:inherit;font-size:12.5px;font-weight:700;color:var(--dim);padding:7px 6px;border-radius:8px;cursor:pointer}
+.modetog button.active{background:var(--accent);color:#fff}
+.gnav-h{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);padding:12px 10px 5px}
+.mbtn{display:flex;gap:10px;align-items:center;width:100%;text-align:left;border:1px solid transparent;background:none;font:inherit;padding:9px 10px;border-radius:10px;cursor:pointer;color:var(--dim);margin-bottom:2px}
+.mbtn:hover{background:var(--soft);color:var(--ink)}
+.mbtn.active{background:var(--soft);color:var(--ink);border-color:var(--accent);font-weight:700}
+.mbtn .mic{font-size:16px;flex:0 0 auto}
+.mbtn .mnm{flex:1;font-size:13.5px;line-height:1.2}
+.mbtn .mgp{font-size:10px;color:var(--dim);font-weight:700}
+.amain{flex:1;overflow-y:auto}
+.mhead .grp{font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase;color:var(--accent)}
+.mhead h2.mt{font-size:29px;font-weight:850;letter-spacing:-.01em;margin:6px 0 2px;display:flex;align-items:center;gap:12px}
+.mhead p.mr{font-size:14px;color:var(--dim);margin:2px 0 0}
+.flist{margin:10px 0;padding:0;list-style:none;max-width:760px}
+.flist li{position:relative;padding:8px 0 8px 22px;font-size:14.5px;line-height:1.55;color:#39424f;border-top:1px solid var(--line)}
+.flist li:first-child{border-top:0}
+.flist li::before{content:"";position:absolute;left:4px;top:15px;width:7px;height:7px;border-radius:2px;background:var(--accent)}
+.extable{width:100%;border-collapse:collapse;margin:12px 0;font-size:14px;background:var(--surface);border:1px solid var(--line);border-radius:12px;overflow:hidden}
+.extable th,.extable td{text-align:left;padding:10px 13px;border-bottom:1px solid var(--line);vertical-align:top}
+.extable th{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--dim);background:var(--soft)}
+.extable tr:last-child td{border-bottom:0}
+.extable td.exn{font-weight:700;color:var(--ink);white-space:nowrap}
+.extable td.exh{color:var(--dim);line-height:1.5}
+.tchip{display:inline-flex;align-items:center;justify-content:center;min-width:26px;height:24px;padding:0 7px;border-radius:7px;font-size:12.5px;font-weight:800;color:#fff}
+.t-S{background:var(--tS)}.t-A{background:var(--tA)}.t-B{background:var(--tB)}.t-C{background:var(--tC)}.t-D{background:var(--tD)}.t-F{background:var(--tF)}
+.tierlegend{display:flex;flex-wrap:wrap;gap:8px;margin:6px 0 4px}
+.tierlegend .li{display:flex;align-items:center;gap:6px;font-size:12px;color:var(--dim)}
+.vbadge{display:inline-flex;align-items:center;gap:5px;font-size:11px;font-weight:700;border-radius:999px;padding:3px 9px;margin-left:6px;vertical-align:middle}
+.vbadge.ok{color:#166534;background:#dcfce7}
+.vbadge.est{color:#9a5b00;background:#fde3c2}
+.srcnote{font-size:12.5px;color:var(--dim);background:var(--soft);border:1px solid var(--line);border-radius:10px;padding:10px 14px;margin:6px 0 16px;line-height:1.55;max-width:820px}
+/* tier lists tab */
+.tierwrap{max-width:1120px;margin:0 auto;padding:26px 30px 80px}
+.mblock{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px 18px;margin-bottom:14px;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.mblock h3{margin:0 0 4px;font-size:17px;font-weight:800;display:flex;align-items:center;gap:9px}
+.mblock .grp{font-size:11px;color:var(--dim);font-weight:700}
+.trow{display:flex;gap:10px;align-items:flex-start;padding:8px 0;border-top:1px solid var(--line)}
+.trow:first-of-type{border-top:0}
+.trow .tl{flex:0 0 30px}
+.trow .tx{flex:1;display:flex;flex-wrap:wrap;gap:6px}
+.exchip{font-size:12.5px;font-weight:600;color:var(--ink);background:var(--bg);border:1px solid var(--line2);border-radius:999px;padding:4px 11px}
+/* source board */
+.boardwrap{padding:18px;text-align:center}
+.boardwrap p{font-size:13.5px;color:var(--dim);max-width:700px;margin:0 auto 14px;line-height:1.6}
+.boardwrap img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 14px rgba(20,25,40,.1)}
+@media(max-width:900px){.mlayout{flex-direction:column;padding:22px 18px 80px}.mtoc{display:none}.atlas{flex-direction:column;height:auto}.anav{flex:0 0 auto;border-right:0;border-bottom:1px solid var(--line)}}
+</style></head><body>
+<div class="happ">
+ <header class="hbar"><div class="hbrand">🏋️ Workout</div><nav class="htabs" id="htabs"></nav></header>
+ <div class="stage" id="stage"></div>
+</div>
+<script>
+__VIZLIB__
+var TAXO=__TAXO__;
+var BOARD="__BOARD__";
+(function(){
+ var TABS=[["principles","◎ Principles"],["atlas","💪 Muscle Atlas"],["tiers","🏆 Tier Lists"],["board","🗺️ Source Board"]];
+ var TK="workout.tab.v1"; var tab="principles"; try{tab=localStorage.getItem(TK)||"principles";}catch(e){}
+ if(!TABS.some(function(t){return t[0]===tab;}))tab="principles";
+ var GROUPS=["Push","Pull","Legs","Core"];
+ var atlasMode="all"; try{atlasMode=localStorage.getItem("workout.atlasmode")||"all";}catch(e){}
+ var sel=0; try{var s=parseInt(localStorage.getItem("workout.mus"),10);if(!isNaN(s)&&s>=0&&s<TAXO.length)sel=s;}catch(e){}
+ var stage=document.getElementById("stage");
+ function esc(t){return (t||"").replace(/[&<>"]/g,function(c){return{"&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;"}[c];});}
+ function fig(svg,cap){return '<figure class="fig">'+svg+(cap?'<figcaption>'+esc(cap)+'</figcaption>':'')+'</figure>';}
+ function sec(id,title,eyebrow,body){return '<section class="sec" id="'+id+'"><div class="eyebrow">'+esc(eyebrow)+'</div><h2>'+esc(title)+'</h2>'+body+'</section>';}
+ function renderTabs(){var el=document.getElementById("htabs");el.innerHTML="";TABS.forEach(function(t){var b=document.createElement("button");b.textContent=t[1];if(t[0]===tab)b.className="active";b.onclick=function(){show(t[0]);};el.appendChild(b);});}
+
+ /* ---------------- PRINCIPLES ---------------- */
+ function principlesHTML(){
+  var fishy=genFishbone("Muscle growth",[
+    {name:"Mechanical tension",causes:["heavy load","full ROM","high effort"]},
+    {name:"Volume",causes:["enough weekly sets"]},
+    {name:"Progression",causes:["add reps","add load"]},
+    {name:"Recovery",causes:["sleep","food","deloads"]}
+  ],{w:820,h:430});
+  var loop=genCycle([{label:"Pick 8–12"},{label:"Start ~2 RIR"},{label:"Hit top of range"},{label:"Add a rep / set"},{label:"+2.5 kg, drop back"}],{w:600,h:520,center:"Overload"});
+  var planes=genTriad([{label:"Sagittal\n(flex / extend)",color:C.a1},{label:"Frontal\n(abduct / adduct)",color:C.a3},{label:"Transverse\n(rotation)",color:C.a5}],{},"The 3 planes of motion",{w:600,h:520});
+  var timeline=genTimeline([{when:"Wk 1",label:"3×8 @ 60"},{when:"Wk 2",label:"3×9 @ 60"},{when:"Wk 3",label:"3×11 @ 60"},{when:"Wk 4",label:"3×12 @ 60"},{when:"Wk 5",label:"3×8 @ 62.5"}],{w:820,h:250});
+  var effort=genSpectrum("Too easy (5+ RIR)","Failure (0 RIR)",[{label:"junk\nvolume",pos:.12,color:C.a2},{label:"sweet spot\n0–3 RIR",pos:.78,color:C.a1}],{title:"Train close to failure — but bank most sets at 0–3 RIR",w:800,h:270});
+
+  var goalTable='<table class="gtable"><tr><th>Goal</th><th>Load (% 1RM)</th><th>Reps</th><th>Rest</th></tr>'
+   +'<tr><td><b>Strength</b></td><td>85%+</td><td>3–5</td><td>3–5 min</td></tr>'
+   +'<tr><td><b>Hypertrophy</b></td><td>65–75%</td><td>8–15</td><td>~2 min</td></tr>'
+   +'<tr><td><b>Endurance</b></td><td>50–60%</td><td>15–30+</td><td>45–60 s</td></tr></table>';
+  var volCards='<div class="cardrow">'
+   +'<div class="gcard"><b>Beginner</b><span>10–12 hard sets per muscle per week.</span></div>'
+   +'<div class="gcard"><b>Intermediate</b><span>14–16 sets per muscle per week.</span></div>'
+   +'<div class="gcard"><b>Spread it out</b><span>Split weekly volume over 2 sessions per muscle for quality reps.</span></div></div>';
+
+  var toc=[["tension","What drives growth"],["overload","Progressive overload"],["sample","A worked example"],["goals","Reps for the goal"],["volume","How much per week"],["effort","How hard — RIR"],["rom","Range of motion"],["planes","Planes of motion"]]
+    .map(function(t){return '<a data-to="'+t[0]+'">'+esc(t[1])+'</a>';}).join("");
+
+  return '<div class="mlayout"><div class="mmain">'
+   +'<div class="hero"><div class="kick">Principles</div><h1>Train on purpose</h1>'
+   +'<p class="sub">The rules that make a body grow — the same fundamentals behind every muscle page in this atlas. Get these right and the exercise choice is just details.</p></div>'
+   +sec("tension","What actually drives growth","The one driver",
+       '<p><b>Mechanical tension</b> is the primary signal for muscle growth — meaningful load, taken through a <b>full range of motion</b> (especially the stretched position), with <b>high effort</b>. Everything else — volume, progression, recovery — exists to let you apply more tension over time.</p>'
+       +fig(fishy,"Tension is the driver; volume, progression and recovery are the support"))
+   +sec("overload","Progressive overload","The engine",
+       '<p>Muscles adapt to a stimulus, then stop. So the stimulus has to keep climbing. Pick a rep range, start with a weight you can do for the bottom of the range at about <b>2 reps in reserve</b>, and chase more each session.</p>'
+       +fig(loop,"The overload loop — repeat it forever")
+       +'<div class="callout">Once you hit the <b>top</b> of the range on all sets, add reps until you can\'t; then add <b>2.5 kg</b>, drop back to the bottom of the range, and climb again.</div>')
+   +sec("sample","A worked example","In numbers",
+       '<p>The same loop on the bench press, straight from the board — small, relentless steps.</p>'
+       +fig(timeline,"Add a rep each week; when you top out, nudge the weight and reset"))
+   +sec("goals","Reps for the goal","Match the tool",
+       '<p>Rep range mostly sets the <b>emphasis</b>. For size, most work lives in the 8–15 zone — heavy enough to load, long enough to fatigue.</p>'+goalTable)
+   +sec("volume","How much per week","Dose it",
+       '<p>Volume is counted in <b>hard sets per muscle per week</b>. Start low, add sets as you recover well, and back off when progress stalls.</p>'+volCards)
+   +sec("effort","How hard — RIR","Effort",
+       '<p>Most sets should stop <b>0–3 reps short of failure</b>. Too easy and there\'s no signal; always to failure and fatigue outruns recovery.</p>'+fig(effort))
+   +sec("rom","Range of motion","Don\'t cheat it",
+       '<p>Full range — and especially loading the <b>stretched</b> position — drives more growth than short, bouncy reps. Control the lowering, feel the stretch, then drive.</p>')
+   +sec("planes","Planes of motion","Move in 3D",
+       '<p>Every movement lives in one of three planes. Training across all three builds a body that\'s strong in every direction.</p>'+fig(planes))
+   +'</div><aside class="mtoc"><div class="tl">On this page</div>'+toc+'</aside></div>';
+ }
+
+ /* ---------------- MUSCLE ATLAS ---------------- */
+ function navHTML(){
+  var h='<div class="modetog"><button data-mode="all" class="'+(atlasMode==="all"?"active":"")+'">All muscles</button><button data-mode="group" class="'+(atlasMode==="group"?"active":"")+'">By group</button></div>';
+  function btn(m,i){return '<button class="mbtn'+(i===sel?" active":"")+'" data-mus="'+i+'"><span class="mic">'+m.ic+'</span><span class="mnm">'+esc(m.n)+'</span><span class="mgp">'+esc(m.group)+'</span></button>';}
+  if(atlasMode==="all"){ h+='<div class="gnav-h">All muscles ('+TAXO.length+')</div>'; TAXO.forEach(function(m,i){h+=btn(m,i);}); }
+  else { GROUPS.forEach(function(g){var items=TAXO.map(function(m,i){return [m,i];}).filter(function(p){return p[0].group===g;}); if(!items.length)return; h+='<div class="gnav-h">'+esc(g)+'</div>'; items.forEach(function(p){h+=btn(p[0],p[1]);}); }); }
+  return h;
+ }
+ function muscleMain(){var m=TAXO[sel];
+  var fnl='<ul class="flist">'+m.function.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';
+  var usl='<ul class="flist">'+m.uses.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';
+  var mind=genMindMap(m.n,m.function.map(function(f){return {label:f.split(" — ")[0]};}),{w:720,h:440});
+  var rows=m.ex.map(function(e){return '<tr><td class="exn">'+esc(e.n)+'</td><td><span class="tchip t-'+esc(e.t)+'">'+esc(e.t)+'</span></td><td class="exh">'+esc(e.how)+'</td></tr>';}).join("");
+  var extable='<table class="extable"><tr><th>Exercise</th><th>Tier</th><th>How / why</th></tr>'+rows+'</table>';
+  var legend='<div class="tierlegend"><span class="li"><span class="tchip t-S">S</span> elite</span><span class="li"><span class="tchip t-A">A</span> great</span><span class="li"><span class="tchip t-B">B</span> solid</span><span class="li"><span class="tchip t-C">C</span> situational</span><span class="li"><span class="tchip t-F">F</span> skip</span></div>';
+  var toc='<div class="tl">On this page</div>'+[["anatomy","Anatomy"],["function","Function"],["uses","Where it helps"],["exercises","Best exercises"]].map(function(t){return '<a data-to="'+t[0]+'">'+esc(t[1])+'</a>';}).join("");
+  var badge=m.v?'<span class="vbadge ok">✓ Nippard-verified</span>':'<span class="vbadge est">≈ evidence-based estimate</span>';
+  return '<div class="mlayout"><div class="mmain">'
+   +'<div class="mhead"><div class="grp">'+esc(m.group)+' · '+esc(m.region)+badge+'</div><h2 class="mt"><span>'+m.ic+'</span>'+esc(m.n)+'</h2></div>'
+   +sec("anatomy","Anatomy","The muscle",'<p>'+esc(m.anatomy)+'</p>'+fig(mind,"What "+m.n+" does, at a glance"))
+   +sec("function","Function","What it does",fnl)
+   +sec("uses","Where it helps","In real life",usl)
+   +sec("exercises","Best exercises","Ranked S → F",legend+extable)
+   +'</div><aside class="mtoc">'+toc+'</aside></div>';
+ }
+ function atlasHTML(){ return '<div class="atlas"><nav class="anav" id="anav">'+navHTML()+'</nav><main class="amain" id="amain">'+muscleMain()+'</main></div>'; }
+
+ /* ---------------- TIER LISTS ---------------- */
+ var TIERORDER=["S","A","B","C","D","F"];
+ function tiersHTML(){
+  var blocks=TAXO.map(function(m){
+    var byTier={}; m.ex.forEach(function(e){(byTier[e.t]=byTier[e.t]||[]).push(e.n);});
+    var rows=TIERORDER.filter(function(t){return byTier[t];}).map(function(t){
+      return '<div class="trow"><div class="tl"><span class="tchip t-'+t+'">'+t+'</span></div><div class="tx">'+byTier[t].map(function(n){return '<span class="exchip">'+esc(n)+'</span>';}).join("")+'</div></div>';
+    }).join("");
+    var badge=m.v?'<span class="vbadge ok">✓ verified</span>':'<span class="vbadge est">≈ estimate</span>';
+    return '<div class="mblock"><h3><span>'+m.ic+'</span>'+esc(m.n)+' <span class="grp">· '+esc(m.group)+'</span>'+badge+'</h3>'+rows+'</div>';
+  }).join("");
+  return '<div class="tierwrap"><div class="hero"><div class="kick">Tier Lists</div><h1>Every exercise, ranked</h1><p class="sub">All 16 muscles, each exercise sorted S (elite) → F (skip). Your quick pick-a-lift reference — full how-to lives in the Muscle Atlas.</p></div>'
+   +'<div class="srcnote"><b>✓ Nippard-verified</b> = reconciled with Jeff Nippard\'s published tier-list videos (chest, back, shoulders, biceps, triceps, quads, glutes and more). <b>≈ estimate</b> = evidence-based ranking where he hasn\'t published a full tier list (traps, forearms, hamstrings, calves, abs, lower back).</div>'
+   +blocks+'</div>';
+ }
+
+ /* ---------------- BOARD ---------------- */
+ function boardHTML(){ return '<div class="boardwrap"><p>Your original source board — the hand-drawn map this section was built from. Everything here has been researched, structured and expanded across the other tabs.</p>'+(BOARD?'<img src="data:image/jpeg;base64,'+BOARD+'" alt="Workout source board">':'<p>Board image unavailable.</p>')+'</div>'; }
+
+ /* ---------------- render / tabs ---------------- */
+ function show(key){
+  tab=key; try{localStorage.setItem(TK,key);}catch(e){}
+  renderTabs();
+  if(key==="atlas"){ stage.className="stage fill"; stage.innerHTML=atlasHTML(); }
+  else { stage.className="stage"; stage.scrollTop=0;
+    if(key==="tiers")stage.innerHTML=tiersHTML();
+    else if(key==="board")stage.innerHTML=boardHTML();
+    else stage.innerHTML=principlesHTML();
+  }
+ }
+ stage.addEventListener("click",function(e){var t=e.target;
+   var toc=t.closest?t.closest("[data-to]"):null; if(toc){var el=document.getElementById(toc.getAttribute("data-to"));if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return;}
+   var mode=t.closest?t.closest("[data-mode]"):null; if(mode){atlasMode=mode.getAttribute("data-mode");try{localStorage.setItem("workout.atlasmode",atlasMode);}catch(_){}var an=document.getElementById("anav");if(an)an.innerHTML=navHTML();return;}
+   var mus=t.closest?t.closest("[data-mus]"):null; if(mus){sel=parseInt(mus.getAttribute("data-mus"),10);try{localStorage.setItem("workout.mus",sel);}catch(_){}var an2=document.getElementById("anav");if(an2)an2.innerHTML=navHTML();var am=document.getElementById("amain");if(am){am.innerHTML=muscleMain();am.scrollTop=0;}return;}
+ });
+ renderTabs(); show(tab);
+})();
+</script></body></html>

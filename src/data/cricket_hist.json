@@ -1,0 +1,92 @@
+{
+ "phases":[
+  {"name":"Part 1 of 3","title":"Before You Press Play","sub":"Research the context first. Knowing WHY this match is famous transforms watching into understanding.","accent":"#1e2a44",
+   "sections":[
+    {"title":"Identify the Match & Its Place in History","items":[
+     {"q":"What format is this? Test, ODI, or T20? Which series/tournament?","t":"BEFORE","d":"The format entirely changes what you're watching for. A Test is 5 days of attrition. A T20 is 3 hours of chess."},
+     {"q":"What year is this match from? What era of cricket does it represent?","t":"BEFORE","d":"1970s cricket = pace dominance, uncovered pitches. 1990s = golden age of batting. 2000s+ = T20 revolution begins."},
+     {"q":"Why is this match famous? What is it remembered for?","t":"KEY","d":"Famous for a collapse? A world record? A last-over finish? A single over? Know the headline before you watch."},
+     {"q":"What was at stake? Group stage, final, series decider, survival?","t":"BEFORE","d":"The context of what was on the line determines every decision you'll see. A dead rubber is played differently."},
+     {"q":"Who are the two teams and what was their rivalry like at this time?","t":"BEFORE","d":"India vs Pakistan carries entirely different weight than, say, a bilateral ODI series between two mid-table sides."}
+    ]},
+    {"title":"Know the Players Before You See Them Play","items":[
+     {"q":"Who are the star players on each side for this era?","t":"BEFORE","d":"Sachin Tendulkar in 2003 is different from Sachin in 1996. Know roughly where each player is in their career arc."},
+     {"q":"Is anyone playing their last match, debut, or milestone innings?","t":"KEY","d":"Watching Tendulkar's 100th international century knowing it's coming changes your entire focus. Check for milestones."},
+     {"q":"Who was considered the best bowler in the world at this time?","t":"BEFORE","d":"Context of bowling greatness changes how you read dismissals. Being dismissed by Warne in 1999 is not average."},
+     {"q":"Are any players in this match now legends whose careers you can trace?","t":"BEFORE","d":"Watching a 22-year-old Virat Kohli in 2011 knowing what he becomes — that is a uniquely historical pleasure."},
+     {"q":"What team balance did each side have — batting-heavy, bowling-heavy, balanced?","t":"BEFORE","d":"A team with 7 batters says something about how they planned to play. A 5-bowler team says the opposite."}
+    ]},
+    {"title":"Understand the Conditions of That Day","items":[
+     {"q":"What was the venue? What were its characteristics in that era?","t":"BEFORE","d":"Lord's in 1981 = green seaming pitch. Wankhede in 2011 = flat batting pitch with evening dew. Venue = half the story."},
+     {"q":"What were the pitch and weather conditions on that specific day?","t":"BEFORE","d":"Old match commentary and Wikipedia match summaries usually mention this. 10 minutes of reading, massive payoff."},
+     {"q":"What were the playing conditions and rules of that era?","t":"BEFORE","d":"Fielding restrictions changed over decades. Old white ball rules differ. Field placement rules evolved. Context matters."},
+     {"q":"Day match or under lights? What time of day did play begin?","t":"BEFORE","d":"Evening dew, morning swing, afternoon heat — these are as important in historical matches as in live ones."}
+    ]},
+    {"title":"Set Your Mindset — The Historical Watcher's Pledge","items":[
+     {"q":"You likely know the result. Commit to watching for HOW, not WHAT.","t":"ALWAYS","d":"Knowing India won the 2011 final doesn't spoil it — it lets you watch every Dhoni decision knowing its weight."},
+     {"q":"Resist skipping ahead. Every phase has meaning in hindsight.","t":"ALWAYS","d":"The boring passage of play before a wicket — that's the pressure build-up. The best watching is slow watching."},
+     {"q":"Form your own view before reading Wikipedia or commentary reviews.","t":"ALWAYS","d":"Watch first, read analysis second. If you read it first you are borrowing someone else's understanding, not building yours."},
+     {"q":"Pause and predict at key moments — then see what actually happened.","t":"ALWAYS","d":"Over 48 of a Test. A spinner brought on in over 7 of a T20 chase. Pause, predict, then unpause. This is active watching."}
+    ]}
+   ]},
+  {"name":"Part 2 of 3","title":"While You Watch","sub":"You know the result. So watch for decisions, patterns, and the why — not just the what.","accent":"#1e2a44",
+   "sections":[
+    {"title":"Format-Specific Things to Watch","items":[
+     {"q":"[TEST] Watch the session, not just the over. How are runs accumulated?","t":"DURING","d":"A session of 80/0 followed by a session of 50/5 is the story of Test cricket. Patience then collapse. Watch the arc."},
+     {"q":"[TEST] Who is building the innings — the anchors vs the stroke-makers?","t":"DURING","d":"Test cricket is about partnerships and patience. A 200-run partnership over 4 hours looks boring — it is actually dominance."},
+     {"q":"[TEST] Watch how spinners bowl in their own conditions over time.","t":"DURING","d":"A spinner in over 8 on day 1 vs over 8 on day 4 is bowling on a completely different pitch. Note how their figures change."},
+     {"q":"[ODI] Watch the powerplay, consolidation, and slog overs as three separate battles.","t":"DURING","d":"Classic ODI structure: aggressive PP → anchor build → slog overs explosion. Who won each phase?"},
+     {"q":"[T20] Every over is an event. Watch the captaincy — bowling changes, field settings.","t":"DURING","d":"T20 captaincy is chess at 100km/h. A misfield, a wrong bowling choice at the death — these are match-defining moments."},
+     {"q":"[T20] Identify the momentum-shift over. Almost every T20 has one over that decides it.","t":"KEY","d":"It's usually an over where 4+ wickets are taken, or 20+ runs are scored. Find it — that's the match in microcosm."}
+    ]},
+    {"title":"Watch the Battles — Batter vs Bowler","items":[
+     {"q":"Pick one key batter. Watch their footwork, head position, and shot selection.","t":"DURING","d":"Great batters keep their head still, move their feet to the pitch of the ball, and play late. You'll see this in legends."},
+     {"q":"Pick one key bowler. Watch their run-up, release point, and field placement.","t":"DURING","d":"A bowler who sets the field before delivering is thinking two balls ahead. This is what separates great from average."},
+     {"q":"Watch how the batter handles the bowler's best delivery — the one they're famous for.","t":"KEY","d":"Warne's flipper. McGrath's away-swinger. Muralitharan's doosra. When it's bowled, pause: did you see the grip? The release?"},
+     {"q":"Find the over where the match's best batter faces the match's best bowler.","t":"KEY","d":"This is cricket's gladiatorial moment. The battle of equals. Note who blinks first and exactly how it happens."},
+     {"q":"Watch for verbal/physical confrontations — how are they handled?","t":"DURING","d":"Sledging, staring-downs, send-offs. Historical context makes these more interesting — you can look up what was said after."}
+    ]},
+    {"title":"Watch Captaincy & Team Strategy","items":[
+     {"q":"When does the captain make a bowling change? What was the trigger?","t":"DURING","d":"A captain who changes after 1 expensive over is reactive. One who waits 3 overs for the plan to work is patient. Both can be right."},
+     {"q":"How is the field set for each batter? Does it change between batters?","t":"DURING","d":"A radically different field for two batters in the same over tells you the captain has very specific individual plans."},
+     {"q":"Is the batting captain sending in a nightwatchman? Why or why not? (Test)","t":"DURING","d":"A nightwatchman at 5:30pm on Day 2 = captain protecting a key batter for tomorrow. A small decision, huge implications."},
+     {"q":"Watch the captain under pressure — does decision-making deteriorate?","t":"DURING","d":"Captains who panic make bowling changes too quickly, move fielders reactively, lose the plot. It's visible."},
+     {"q":"Are there any obviously wrong decisions in hindsight? Note them.","t":"DURING","d":"A dropped catch at 23, player X should have bowled over 47 — these are things you can now see clearly. Write them."}
+    ]},
+    {"title":"Watch the Match's Emotional Arc","items":[
+     {"q":"When does momentum first shift — and what caused it?","t":"DURING","d":"Momentum shift = the moment the crowd changes, the fielding team's body language lifts, the batting team tenses."},
+     {"q":"Identify the passage of play that decided the match.","t":"KEY","d":"Not the final ball — the passage 30 minutes before where the match became un-loseable or unwinnable for one team."},
+     {"q":"Watch the players' body language during pressure moments.","t":"DURING","d":"A fielder dropping their head. A bowler celebrating too hard. A batter talking to themselves. Human detail, historical context."},
+     {"q":"If watching a famous finish — pause just before the last 10 minutes.","t":"ALWAYS","d":"Ask yourself: at this point, who do I think wins? Then unpause. Experiencing the uncertainty is what all historical viewing is about."}
+    ]}
+   ]},
+  {"name":"Part 3 of 3","title":"After You Watch","sub":"Read the history. Compare your view. Build permanent cricket knowledge from what you just witnessed.","accent":"#1e2a44",
+   "sections":[
+    {"title":"Compare Your Read Against the Historical Record","items":[
+     {"q":"Read the Wikipedia match summary — what did you miss?","t":"AFTER","d":"Wikipedia pages for famous matches are usually detailed. Read after watching to find what you didn't notice live."},
+     {"q":"Find post-match commentary or video analysis — what did experts say?","t":"AFTER","d":"YouTube has post-match analysis for famous matches going back decades. ESPNcricinfo has written analysis. Use them."},
+     {"q":"Did you correctly identify the turning point while watching?","t":"AFTER","d":"Compare your turning point with what experts named. If they differ, who was right — and why? This is productive disagreement."},
+     {"q":"Were your player assessments accurate vs their historical reputation?","t":"AFTER","d":"You saw a bowler get hit for 60 in 8 overs. But they're considered great. What context are you missing?"}
+    ]},
+    {"title":"Place the Match in Cricket History","items":[
+     {"q":"What did this match change — in the series, in careers, in cricket history?","t":"AFTER","d":"The 2001 Eden Gardens Test revived India's Test culture. The 1992 World Cup final legitimised Pakistan as world champions."},
+     {"q":"Did this match launch or end a career? Any turning-point player story?","t":"AFTER","d":"VVS Laxman's 281 in 2001 saved his career. Ponting's 140* in the 2003 World Cup final cemented his legacy. Look for these."},
+     {"q":"Was this match part of a series? What happened before and after?","t":"AFTER","d":"A single match in a 5-Test series has its own internal logic. Understanding what came before changes everything."},
+     {"q":"What records were set or broken in this match?","t":"AFTER","d":"Highest chase ever. Largest margin of defeat. Most wickets in a session. Records are data points for calibrating greatness."},
+     {"q":"How was this match covered at the time? What did people think then vs now?","t":"AFTER","d":"Sometimes matches dismissed as upsets are now seen as masterclasses. The gap between contemporary and historical view is interesting."}
+    ]},
+    {"title":"Build Your Personal Cricket Library","items":[
+     {"q":"Write 3 sentences describing what this match was and why it was special.","t":"AFTER","d":"Forcing yourself to articulate it in 3 sentences means you now permanently own this match's story in your memory."},
+     {"q":"Add this match to your mental map: format, era, teams, why famous.","t":"AFTER","d":"Build a simple running list. 10 famous matches studied = a working cricket library. 50 = encyclopaedic knowledge."},
+     {"q":"Identify one player from this match to read more about.","t":"AFTER","d":"Every great match has a player whose story is richer than a single innings. Follow one thread after each match."},
+     {"q":"What question did this match raise that you still don't fully understand?","t":"AFTER","d":"Did you see a dismissal and not understand the law? A field setting you couldn't explain? Carry this forward."}
+    ]},
+    {"title":"The Historical Watcher's Self-Test","items":[
+     {"q":"Can you explain this match to someone in 60 seconds?","t":"KEY","d":"Teams. Stakes. What happened. Turning point. Result. Why it matters. If you can do this fluently, you understood it."},
+     {"q":"Can you name the player of the match and explain specifically why?","t":"KEY","d":"Not just 'he scored 141' but 'he scored 141 on a pitch assisting pace in a high-pressure final against the world's best attack.'"},
+     {"q":"If you could ask one player one question about this match, what would it be?","t":"AFTER","d":"This question reveals where your understanding is deepest and where the real gaps are. It's a diagnostic."},
+     {"q":"Would you recommend this match to another cricket learner? How would you describe it?","t":"KEY","d":"Teaching consolidates learning faster than anything else. If you can recommend it with context, you've truly internalized it."}
+    ]}
+   ]}
+ ]
+}

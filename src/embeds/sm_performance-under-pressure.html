@@ -1,0 +1,369 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Performing Under Pressure — Mental Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 10% 5%,rgba(217,164,65,.10),transparent 38%),
+      radial-gradient(circle at 92% 96%,rgba(47,107,99,.10),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.52;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1140px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:48px;}
+  .kicker{display:inline-block;font-size:.82rem;letter-spacing:.3em;text-transform:uppercase;
+    font-weight:600;color:var(--rust-deep);border:1.5px solid var(--rust);padding:9px 20px;border-radius:40px;margin-bottom:24px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.96;font-size:clamp(2.6rem,7vw,5rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:700px;margin:22px auto 0;font-size:clamp(1.1rem,2vw,1.32rem);color:var(--muted);}
+
+  /* CORE PROBLEM */
+  .core{background:var(--ink);color:var(--paper);border-radius:20px;padding:34px 38px;text-align:center;box-shadow:8px 8px 0 var(--rust);max-width:840px;margin:34px auto 0;}
+  .core .ceq{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.5rem,4vw,2.4rem);line-height:1.15;}
+  .core .ceq .neq{color:var(--gold);font-style:italic;}
+  .core p{color:#cdbfa9;font-size:1.12rem;margin-top:16px;max-width:600px;margin-left:auto;margin-right:auto;}
+  .core .body-changes{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px;}
+  .core .bc{background:rgba(255,255,255,.12);border-radius:30px;padding:6px 16px;font-size:.95rem;font-weight:500;font-family:'JetBrains Mono',monospace;}
+
+  /* SECTION */
+  section{margin-bottom:56px;}
+  .sec-head{display:flex;align-items:baseline;gap:16px;margin-bottom:8px;justify-content:center;text-align:center;flex-wrap:wrap;}
+  .sec-num{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:clamp(1.1rem,3vw,1.5rem);color:var(--rust);}
+  .sec-title{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.6rem,4vw,2.5rem);line-height:1.05;letter-spacing:-.01em;}
+  .sec-rule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:14px auto 26px;border-radius:2px;max-width:520px;}
+  .lede{text-align:center;font-size:1.12rem;color:var(--muted);max-width:720px;margin:0 auto 26px;}
+
+  /* CONNECTOR */
+  .connector{width:4px;height:30px;background:var(--ink);margin:0 auto;border-radius:2px;}
+
+  /* THREE LAYERS (prep) */
+  .layers{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;max-width:1080px;margin:0 auto;}
+  @media(max-width:780px){.layers{grid-template-columns:1fr;}}
+  .layer{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:24px 26px;box-shadow:6px 6px 0 var(--ink);}
+  .layer .lnum{font-family:'Fraunces',serif;font-weight:900;font-size:2.2rem;color:var(--rust);line-height:1;}
+  .layer h3{font-family:'Fraunces',serif;font-size:1.45rem;font-weight:600;margin:4px 0 12px;line-height:1.1;}
+  .layer ul{list-style:none;}
+  .layer li{padding:6px 0 6px 24px;position:relative;font-size:1.05rem;color:var(--ink);}
+  .layer li::before{content:"";position:absolute;left:3px;top:12px;width:8px;height:8px;background:var(--teal);border-radius:2px;transform:rotate(45deg);}
+  .layer .why{margin-top:14px;padding-top:12px;border-top:2px dashed var(--line);font-size:1rem;color:var(--rust-deep);font-weight:500;font-style:italic;}
+
+  /* REFRAME FLIP */
+  .reframe{max-width:980px;margin:0 auto;}
+  .flip-row{display:grid;grid-template-columns:1fr auto 1fr;gap:18px;align-items:center;}
+  @media(max-width:680px){.flip-row{grid-template-columns:1fr;}}
+  .fcard{border-radius:18px;padding:28px 30px;text-align:center;}
+  .fcard.anx{background:var(--paper-2);border:3px dashed var(--muted);}
+  .fcard.exc{background:var(--card);border:3px solid var(--teal);box-shadow:6px 6px 0 var(--teal);}
+  .fcard .ftag{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;margin-bottom:10px;}
+  .fcard.anx .ftag{color:var(--muted);}.fcard.exc .ftag{color:var(--teal);}
+  .fcard .fbig{font-family:'Fraunces',serif;font-weight:600;font-size:1.5rem;margin-bottom:8px;}
+  .fcard.anx .fbig{color:var(--muted);}
+  .fcard .fquote{font-size:1.05rem;color:var(--muted);font-style:italic;}
+  .flip-mid{font-family:'Fraunces',serif;font-weight:900;font-size:2rem;color:var(--rust);text-align:center;}
+  @media(max-width:680px){.flip-mid{transform:rotate(90deg);}}
+  .same-phys{text-align:center;margin-top:18px;font-family:'JetBrains Mono',monospace;font-size:.95rem;color:var(--muted);}
+  .calm-note{max-width:840px;margin:24px auto 0;background:rgba(217,164,65,.16);border:2px solid var(--gold);border-radius:14px;padding:18px 24px;text-align:center;font-size:1.08rem;}
+  .calm-note strong{color:var(--rust-deep);}
+
+  /* EXTERNAL PRESSURE — 3 techniques */
+  .tech{display:flex;flex-direction:column;gap:18px;max-width:1000px;margin:0 auto;}
+  .tcard{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:24px 28px;box-shadow:6px 6px 0 var(--ink);display:grid;grid-template-columns:auto 1fr;gap:22px;align-items:start;}
+  .tcard .tnum{font-family:'Fraunces',serif;font-weight:900;font-size:2rem;color:var(--rust);line-height:1;}
+  .tcard h3{font-family:'Fraunces',serif;font-size:1.4rem;font-weight:600;margin-bottom:10px;}
+  .control-cols{display:flex;gap:14px;flex-wrap:wrap;}
+  .control-cols > div{flex:1;min-width:200px;border-radius:12px;padding:14px 18px;}
+  .control-cols .yes{background:rgba(47,107,99,.12);border-left:4px solid var(--teal);}
+  .control-cols .no{background:rgba(193,80,46,.1);border-left:4px solid var(--rust);}
+  .control-cols .clbl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.1em;font-weight:700;text-transform:uppercase;display:block;margin-bottom:6px;}
+  .control-cols .yes .clbl{color:var(--teal);}.control-cols .no .clbl{color:var(--rust);}
+  .control-cols ul{list-style:none;}
+  .control-cols li{font-size:1rem;padding:3px 0;}
+  .tcard p{font-size:1.06rem;color:var(--muted);}
+  .tcard p strong{color:var(--rust-deep);}
+
+  /* PACE LOOP */
+  .loop{display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;max-width:1000px;margin:0 auto;}
+  .lstep{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:18px 22px;text-align:center;min-width:150px;box-shadow:5px 5px 0 var(--ink);}
+  .lstep .lname{font-family:'Fraunces',serif;font-weight:900;font-size:1.4rem;}
+  .lstep .ldesc{font-size:.95rem;color:var(--muted);margin-top:4px;}
+  .l1 .lname{color:var(--teal);}.l2 .lname{color:var(--gold);}.l3 .lname{color:var(--olive);}.l4 .lname{color:var(--rust);}
+  .larr{color:var(--rust);font-size:1.8rem;padding:0 10px;font-weight:700;}
+  @media(max-width:680px){.larr{transform:rotate(90deg);width:100%;justify-content:center;display:flex;padding:6px 0;}}
+
+  /* TWO COLUMN (attention + neutral) */
+  .duo{display:grid;grid-template-columns:1fr 1fr;gap:20px;max-width:1000px;margin:24px auto 0;}
+  @media(max-width:680px){.duo{grid-template-columns:1fr;}}
+  .dcard{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:22px 26px;box-shadow:5px 5px 0 var(--ink);}
+  .dcard h4{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:10px;}
+  .dcard p{color:var(--muted);font-size:1.04rem;}
+  .dcard .ex{margin-top:10px;font-size:.98rem;font-weight:600;color:var(--teal);}
+
+  /* TEAM */
+  .team{display:grid;grid-template-columns:1fr 1fr;gap:24px;max-width:1000px;margin:0 auto;align-items:start;}
+  @media(max-width:680px){.team{grid-template-columns:1fr;}}
+  .tbox{background:var(--card);border:3px solid var(--ink);border-radius:16px;padding:24px 26px;box-shadow:5px 5px 0 var(--ink);}
+  .tbox h4{font-family:'Fraunces',serif;font-size:1.3rem;margin-bottom:14px;}
+  .tbox .trow{display:flex;align-items:center;gap:10px;padding:7px 0;font-size:1.05rem;border-bottom:1px solid var(--line);}
+  .tbox .trow:last-child{border-bottom:none;}
+  .tbox .trow .ic{font-weight:700;}
+
+  /* MASTER FLOWCHART */
+  .flowchart{max-width:1000px;margin:0 auto;}
+  .phase{border-radius:18px;overflow:hidden;border:3px solid var(--ink);box-shadow:7px 7px 0 var(--ink);margin-bottom:0;}
+  .phase .ptop{padding:16px 26px;color:#fff;font-family:'Fraunces',serif;font-weight:700;font-size:1.5rem;display:flex;align-items:center;gap:14px;}
+  .p-before .ptop{background:var(--teal);}
+  .p-during .ptop{background:var(--rust);}
+  .p-after .ptop{background:var(--ink);}
+  .phase .ptop .pmono{font-family:'JetBrains Mono',monospace;font-size:.8rem;opacity:.85;letter-spacing:.1em;margin-left:auto;font-weight:500;}
+  .phase .pbody{background:var(--card);padding:20px 26px;}
+  .phase .pbody .branch-line{display:flex;align-items:center;gap:14px;padding:9px 0;font-size:1.1rem;}
+  .phase .pbody .branch-line .tee{font-family:'JetBrains Mono',monospace;color:var(--rust);font-weight:700;}
+  .flow-conn{width:4px;height:24px;background:var(--ink);margin:0 auto;}
+
+  /* CARRYOVER */
+  .carry{max-width:1000px;margin:0 auto;}
+  .carry-intro{text-align:center;font-size:1.12rem;color:var(--muted);margin-bottom:24px;}
+  .arenas{display:flex;flex-wrap:wrap;gap:10px;justify-content:center;margin-bottom:30px;}
+  .arena{background:var(--ink);color:var(--paper);border-radius:30px;padding:9px 20px;font-weight:600;font-size:1.02rem;}
+  .arena.you{background:var(--rust);}
+  .steps5{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:16px;}
+  .s5{background:var(--card);border:3px solid var(--ink);border-radius:14px;padding:20px 22px;box-shadow:5px 5px 0 var(--ink);}
+  .s5 .sn{font-family:'JetBrains Mono',monospace;font-weight:700;color:var(--rust);font-size:.9rem;}
+  .s5 p{font-size:1.05rem;font-weight:500;margin-top:8px;}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:54px;border-top:2px solid var(--line);padding-top:28px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.25rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">Performance Psychology</div>
+    <h1>Executing Under<br><em>Pressure</em></h1>
+    <p class="sub">The gap where most performance falls apart isn't knowledge — it's execution when it counts. Here's how athletes actually close it.</p>
+    <div class="core">
+      <div class="ceq">Knowing what to do <span class="neq">≠</span> doing it under pressure</div>
+      <p>In high-stakes moments the brain literally functions differently:</p>
+      <div class="body-changes">
+        <span class="bc">adrenaline floods</span>
+        <span class="bc">tunnel vision</span>
+        <span class="bc">fine motor control degrades</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- 1 PREPARATION -->
+  <section>
+    <div class="sec-head"><div class="sec-num">01 /</div><div class="sec-title">Preparation — The 3 Layers</div></div>
+    <div class="sec-rule"></div>
+    <p class="lede">Champions often practice harder than they play — they're inoculating themselves against surprise.</p>
+    <div class="layers">
+      <div class="layer">
+        <div class="lnum">1</div>
+        <h3>Technical Mastery</h3>
+        <ul><li>Drill until automatic</li><li>Stored in procedural memory, not conscious thought</li><li>Thousands of reps of the same skill</li></ul>
+        <p class="why">When the conscious brain is hijacked by anxiety, the body still executes what's deeply encoded.</p>
+      </div>
+      <div class="layer">
+        <div class="lnum">2</div>
+        <h3>Scenario Rehearsal</h3>
+        <ul><li>Pressure training — points that "count"</li><li>Visualization of self &amp; opponent</li><li>Varied contexts: noise, crowds, fatigue</li></ul>
+        <p class="why">Simulate pressure before the real thing arrives.</p>
+      </div>
+      <div class="layer">
+        <div class="lnum">3</div>
+        <h3>Routine &amp; Anchoring</h3>
+        <ul><li>Breathing patterns</li><li>Physical rituals (ball bounce, free-throw routine)</li><li>Mental cues — "trust the process"</li></ul>
+        <p class="why">Attention anchors to reset focus when pressure builds.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 REFRAME -->
+  <section>
+    <div class="sec-head"><div class="sec-num">02 /</div><div class="sec-title">The Anxiety Reframe</div></div>
+    <div class="sec-rule"></div>
+    <p class="lede">Top performers don't eliminate pre-match nerves — that's normal and universal. They <strong>reinterpret</strong> them.</p>
+    <div class="reframe">
+      <div class="flip-row">
+        <div class="fcard anx">
+          <div class="ftag">Anxious reading</div>
+          <div class="fbig">"I'm scared,<br>I might fail"</div>
+          <div class="fquote">→ scattered, paralyzing</div>
+        </div>
+        <div class="flip-mid">→</div>
+        <div class="fcard exc">
+          <div class="ftag">Excited reading</div>
+          <div class="fbig">"My body is energized,<br>I'm ready"</div>
+          <div class="fquote">→ channeled, performance-boosting</div>
+        </div>
+      </div>
+      <p class="same-phys">// same heart-racing physiology — different interpretation</p>
+      <div class="calm-note">Elite performers aren't <strong>relaxed</strong> before matches — they're <strong>alert, focused &amp; energized.</strong> That energy is channeled through preparation, not scattered.</div>
+    </div>
+  </section>
+
+  <!-- 3 EXTERNAL PRESSURE -->
+  <section>
+    <div class="sec-head"><div class="sec-num">03 /</div><div class="sec-title">Handling External Pressure</div></div>
+    <div class="sec-rule"></div>
+    <p class="lede">Stronger opponent. Loud crowd. Bad luck. Three techniques keep these from hijacking focus.</p>
+    <div class="tech">
+      <div class="tcard">
+        <div class="tnum">1</div>
+        <div>
+          <h3>Locus of Control — process &gt; outcome</h3>
+          <div class="control-cols">
+            <div class="yes"><span class="clbl">✓ Control</span><ul><li>Your preparation</li><li>Your effort &amp; focus</li><li>Your in-the-moment decisions</li></ul></div>
+            <div class="no"><span class="clbl">✕ Don't control</span><ul><li>Opponent's skill</li><li>Crowd reactions</li><li>Luck</li></ul></div>
+          </div>
+          <p style="margin-top:12px;"><strong>Worrying whether you'll win is paralyzing. Executing your game plan is actionable.</strong></p>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="tnum">2</div>
+        <div>
+          <h3>Point-by-Point Partition</h3>
+          <p>Break the match into micro-units. Play one point at a time, reset after each, and <strong>don't look at the scoreboard mentally.</strong> "I'm down against a better team" becomes "What's the next thing I need to execute?"</p>
+        </div>
+      </div>
+      <div class="tcard">
+        <div class="tnum">3</div>
+        <div>
+          <h3>Prepared Contingencies</h3>
+          <p>Already thought through before the match: <em>"If I'm down 0–2, here's what I do… if they play an unexpected style, my adjustment is…"</em> So when pressure hits, you're not panicked — you're <strong>executing a rehearsed Plan B.</strong></p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 4 EXECUTION -->
+  <section>
+    <div class="sec-head"><div class="sec-num">04 /</div><div class="sec-title">Execution — The Per-Play Loop</div></div>
+    <div class="sec-rule"></div>
+    <p class="lede">Every single shot gets the same routine. Repeatability creates predictability for the nervous system.</p>
+    <div class="loop">
+      <div class="lstep l1"><div class="lname">Pause</div><div class="ldesc">break previous momentum</div></div>
+      <div class="larr">→</div>
+      <div class="lstep l2"><div class="lname">Assess</div><div class="ldesc">what does this need?</div></div>
+      <div class="larr">→</div>
+      <div class="lstep l3"><div class="lname">Commit</div><div class="ldesc">decide the action</div></div>
+      <div class="larr">→</div>
+      <div class="lstep l4"><div class="lname">Execute</div><div class="ldesc">trust prep, don't overthink</div></div>
+    </div>
+    <div class="duo">
+      <div class="dcard">
+        <h4>Attention Filtering</h4>
+        <p>Under pressure the brain is bombarded — crowd, doubts, opponent, score. Athletes practice <strong>selective attention</strong>, tuning everything out except the immediate task.</p>
+        <div class="ex">Ball + breath · target line + swing feel · stroke rhythm</div>
+      </div>
+      <div class="dcard">
+        <h4>Neutral State Between Plays</h4>
+        <p>No big celebration after a good shot (spikes emotion). No spiral after a bad one (destabilizes focus). A neutral, business-like demeanor — then reset.</p>
+        <div class="ex">Even keel = stable focus</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 5 TEAM -->
+  <section>
+    <div class="sec-head"><div class="sec-num">05 /</div><div class="sec-title">The Team Component</div></div>
+    <div class="sec-rule"></div>
+    <p class="lede">In team sports the pressure is distributed — but also more complicated.</p>
+    <div class="team">
+      <div class="tbox">
+        <h4>The trade-offs</h4>
+        <div class="trow"><span class="ic" style="color:var(--teal);">+</span>Accountable to others — motivation boost</div>
+        <div class="trow"><span class="ic" style="color:var(--rust);">–</span>Dependent on others — loss of control</div>
+        <div class="trow"><span class="ic" style="color:var(--gold);">~</span>Momentum is collective — can cascade</div>
+      </div>
+      <div class="tbox">
+        <h4>What teams use</h4>
+        <div class="trow"><span class="ic">▸</span>Collective routines — rituals, huddles</div>
+        <div class="trow"><span class="ic">▸</span>Role clarity — each player's responsibility</div>
+        <div class="trow"><span class="ic">▸</span>Communication — constant feedback</div>
+      </div>
+    </div>
+  </section>
+
+  <!-- MASTER FLOWCHART -->
+  <section>
+    <div class="sec-head"><div class="sec-title">The Execution Flowchart</div></div>
+    <div class="sec-rule"></div>
+    <div class="flowchart">
+      <div class="phase p-before">
+        <div class="ptop">Before Match <span class="pmono">// build the foundation</span></div>
+        <div class="pbody">
+          <div class="branch-line"><span class="tee">├──</span>Master the skill → automatic execution</div>
+          <div class="branch-line"><span class="tee">├──</span>Simulate pressure conditions</div>
+          <div class="branch-line"><span class="tee">├──</span>Build routines &amp; cues</div>
+          <div class="branch-line"><span class="tee">└──</span>Develop mental models — what to focus on</div>
+        </div>
+      </div>
+      <div class="flow-conn"></div>
+      <div class="phase p-during">
+        <div class="ptop">During Match <span class="pmono">// manage the moment</span></div>
+        <div class="pbody">
+          <div class="branch-line"><span class="tee">├──</span>Reframe anxiety as readiness</div>
+          <div class="branch-line"><span class="tee">├──</span>Focus on process, not outcome</div>
+          <div class="branch-line"><span class="tee">├──</span>Use micro-routines between plays</div>
+          <div class="branch-line"><span class="tee">├──</span>Filter attention to what matters</div>
+          <div class="branch-line"><span class="tee">└──</span>Execute contingencies if needed</div>
+        </div>
+      </div>
+      <div class="flow-conn"></div>
+      <div class="phase p-after">
+        <div class="ptop">After Pressure / Mistake <span class="pmono">// recover &amp; continue</span></div>
+        <div class="pbody">
+          <div class="branch-line"><span class="tee">├──</span>Reset using routine</div>
+          <div class="branch-line"><span class="tee">├──</span>Don't spiral into self-doubt</div>
+          <div class="branch-line"><span class="tee">└──</span>Refocus on the next immediate action</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARRYOVER -->
+  <section style="margin-bottom:0;">
+    <div class="sec-head"><div class="sec-title">Why It Applies to You — Even Without Sports</div></div>
+    <div class="sec-rule"></div>
+    <div class="carry">
+      <p class="carry-intro">Any high-stakes performance runs on the same framework:</p>
+      <div class="arenas">
+        <span class="arena">Presenting to execs</span>
+        <span class="arena">Coding under deadline</span>
+        <span class="arena">An important email</span>
+        <span class="arena you">Asking someone out</span>
+      </div>
+      <div class="steps5">
+        <div class="s5"><div class="sn">01</div><p>Prepare so execution is automatic</p></div>
+        <div class="s5"><div class="sn">02</div><p>Reframe pressure as energy, not threat</p></div>
+        <div class="s5"><div class="sn">03</div><p>Focus on process — what you control</p></div>
+        <div class="s5"><div class="sn">04</div><p>Use micro-routines to anchor attention</p></div>
+        <div class="s5"><div class="sn">05</div><p>Don't spiral — reset &amp; move to next action</p></div>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    <em>Technique → Repetition → Feedback.</em>
+    <p style="margin-top:10px;">You already have the mastery framework right — exactly how athletes prepare. The missing piece was always the psychological management <strong>during</strong> execution.</p>
+  </footer>
+
+</div>
+</body>
+</html>

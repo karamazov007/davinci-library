@@ -1,0 +1,37 @@
+{
+  "researched": true,
+  "geo": {
+    "Sector 18 (Atta / DLF Mall)": {"identity":"Central mall & market hub","defines":"Noida's busiest cafe & shopping district — malls, chains and specialty coffee together","bestFor":"After-shopping coffee, casual meetups, groups"},
+    "Gardens Galleria (Sector 38A)": {"identity":"Lakeside mall, lively","defines":"Mall cafes with a waterfront edge, next to the amusement park","bestFor":"Casual dates, family outings, groups"},
+    "Sector 104 / Hajipur": {"identity":"Emerging cafe stretch","defines":"Newer residential-side cafes and roasteries","bestFor":"Neighbourhood coffee, laptop work"},
+    "Residential belt (Sec 50 / 76 / 100)": {"identity":"Local neighbourhood cafes","defines":"Everyday and aesthetic cafes for nearby residents","bestFor":"Casual hangouts, study sessions, quick coffee"},
+    "Roasteries & Specialty": {"identity":"Third-wave coffee spots","defines":"Specialty roasters spread across sectors","bestFor":"Coffee focus, quiet deep work"}
+  },
+  "cafes": [
+    ["Sector 18 (Atta / DLF Mall)", [
+      ["Blue Tokai Coffee Roasters", "Single-origin specialty coffee", "Pioneer of India's third-wave coffee; minimalist, work-friendly."],
+      ["Cafe Delhi Heights", "Continental comfort food, burgers", "Popular all-rounder inside DLF Mall of India."],
+      ["Reader's Coffee House", "Book-themed cafe, coffee", "Cozy, reader-inspired aesthetic; good for couples and freelancers."],
+      ["Coco Cafe", "Continental, beverages", "Relaxed mall cafe for casual catch-ups."],
+      ["Starbucks", "Coffee, chains", "Reliable, familiar meeting spot."]
+    ]],
+    ["Gardens Galleria (Sector 38A)", [
+      ["Imperfecto", "Mediterranean, continental, cocktails", "Flamboyant, lively venue with signature cocktails."],
+      ["Chaayos", "Chai, snacks", "Customisable chai; easy casual hangout."],
+      ["Bohemia", "Premium dining, ambience", "Upscale, flamboyant space in the mall."]
+    ]],
+    ["Sector 104 / Hajipur", [
+      ["Cafe Delhi Heights", "Continental, all-day food", "Dependable neighbourhood outpost."],
+      ["Blue Tokai Coffee Roasters", "Specialty coffee", "Quiet third-wave coffee on the residential side."]
+    ]],
+    ["Residential belt (Sec 50 / 76 / 100)", [
+      ["Theo's", "Desserts, patisserie", "Elegant European-style interiors; dessert-forward."],
+      ["Fabcafe", "Aesthetic cafe, greenery", "Bright, plant-filled interiors; relaxed vibe."]
+    ]],
+    ["Roasteries & Specialty", [
+      ["The Roastery Coffee House", "Specialty coffee, aesthetics", "Instagram-worthy interiors with serious coffee; good for reading/laptop work."],
+      ["Blue Tokai (multiple sectors)", "Specialty coffee", "Outlets across Sec 5, 43 (RCube), 50, 120 and 142 (Advant)."]
+    ]]
+  ],
+  "scen": []
+}

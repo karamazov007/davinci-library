@@ -1,0 +1,675 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>From Fear to Execution — The Complete System</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--blue:#3a6b8c;--plum:#6d4467;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 8% 3%,rgba(193,80,46,.08),transparent 34%),
+      radial-gradient(circle at 94% 98%,rgba(47,107,99,.09),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:48px 24px 90px;}
+
+  header{text-align:center;margin-bottom:36px;}
+  .crumb{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.04em;margin-bottom:16px;}
+  .crumb b{color:var(--teal);}
+  .kicker{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:700;color:var(--rust-deep);border:1.5px solid var(--rust);padding:8px 18px;border-radius:8px;margin-bottom:22px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.1rem,5.6vw,4.2rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:18px auto 0;font-size:clamp(1.04rem,2vw,1.26rem);color:var(--muted);}
+  .sub b{color:var(--rust-deep);}
+
+  .layer-nav{display:flex;flex-wrap:wrap;justify-content:center;gap:7px;margin:26px auto 0;max-width:860px;}
+  .ln{font-family:'JetBrains Mono',monospace;font-size:.7rem;font-weight:700;padding:7px 14px;border-radius:8px;border:2px solid var(--ink);background:var(--card);box-shadow:2px 2px 0 var(--ink);}
+  .ln span{color:var(--rust);}
+
+  section{margin-bottom:52px;max-width:980px;margin-left:auto;margin-right:auto;}
+  .layer-label{font-family:'JetBrains Mono',monospace;font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;font-weight:700;color:var(--muted);text-align:center;margin-bottom:6px;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.55rem,4vw,2.3rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:700px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* SPIRAL */
+  .spiral{display:flex;flex-direction:column;gap:0;max-width:740px;margin:0 auto;}
+  .sp-step{display:grid;grid-template-columns:auto 1fr;gap:14px;align-items:start;}
+  .sp-num{font-family:'JetBrains Mono',monospace;font-size:.64rem;font-weight:700;padding:5px 9px;border-radius:6px;white-space:nowrap;margin-top:3px;}
+  .sp-body{padding-bottom:4px;}
+  .sp-body h4{font-family:'Fraunces',serif;font-size:1rem;font-weight:600;margin-bottom:2px;}
+  .sp-body p{font-size:.86rem;color:var(--muted);}
+  .sp-connector{width:2px;background:var(--rust);height:18px;margin-left:18px;opacity:.4;}
+  .sp1 .sp-num{background:rgba(193,80,46,.15);color:var(--rust-deep);}
+  .sp2 .sp-num{background:rgba(193,80,46,.25);color:var(--rust-deep);}
+  .sp3 .sp-num{background:rgba(193,80,46,.35);color:var(--rust-deep);}
+  .sp4 .sp-num{background:rgba(193,80,46,.5);color:#fff;}
+  .sp5 .sp-num{background:rgba(193,80,46,.65);color:#fff;}
+  .sp6 .sp-num{background:rgba(193,80,46,.8);color:#fff;}
+  .sp7 .sp-num{background:var(--rust-deep);color:#fff;}
+  .sp8 .sp-num{background:var(--ink);color:#fff;}
+  .sp9 .sp-num{background:var(--ink);color:var(--rust);}
+  .spiral-note{margin-top:18px;background:rgba(193,80,46,.1);border:2px dashed var(--rust);border-radius:14px;padding:14px 22px;text-align:center;font-size:.98rem;color:var(--rust-deep);}
+  .spiral-note b{font-family:'Fraunces',serif;font-style:italic;}
+
+  /* YERKES-DODSON */
+  .yd-wrap{background:var(--card);border:2.5px solid var(--ink);border-radius:16px;padding:22px 26px;box-shadow:5px 5px 0 var(--ink);}
+  .yd-title{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;margin-bottom:18px;text-align:center;}
+  .yd-curve{position:relative;height:180px;margin-bottom:16px;}
+  .yd-svg{width:100%;height:100%;}
+  .yd-zones{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:4px;}
+  .yd-zone{border-radius:10px;padding:12px 14px;text-align:center;border:2px solid var(--ink);box-shadow:3px 3px 0 var(--ink);}
+  .yd-zone.low{background:rgba(58,107,140,.1);border-color:var(--blue);}
+  .yd-zone.mid{background:rgba(47,107,99,.12);border-color:var(--teal);}
+  .yd-zone.high{background:rgba(193,80,46,.1);border-color:var(--rust);}
+  .yd-zone .yzl{font-family:'JetBrains Mono',monospace;font-size:.6rem;font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:4px;}
+  .yd-zone.low .yzl{color:var(--blue);}
+  .yd-zone.mid .yzl{color:var(--teal);}
+  .yd-zone.high .yzl{color:var(--rust-deep);}
+  .yd-zone h4{font-family:'Fraunces',serif;font-size:.98rem;font-weight:600;margin-bottom:3px;}
+  .yd-zone p{font-size:.78rem;color:var(--muted);}
+  .yd-key{margin-top:12px;text-align:center;font-size:.9rem;color:var(--muted);font-style:italic;}
+  .yd-key b{color:var(--rust-deep);font-style:normal;}
+
+  /* TWO SYSTEMS */
+  .systems{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+  @media(max-width:600px){.systems{grid-template-columns:1fr;}}
+  .sys{border-radius:16px;padding:20px 24px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .sys.limbic{background:rgba(193,80,46,.08);border-color:var(--rust);}
+  .sys.pfc{background:rgba(47,107,99,.08);border-color:var(--teal);box-shadow:5px 5px 0 var(--teal);}
+  .sys .sl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;font-weight:700;margin-bottom:6px;}
+  .sys.limbic .sl{color:var(--rust-deep);}.sys.pfc .sl{color:var(--teal);}
+  .sys h4{font-family:'Fraunces',serif;font-size:1.1rem;font-weight:600;margin-bottom:6px;}
+  .sys.limbic h4{color:var(--rust-deep);}.sys.pfc h4{color:var(--teal);}
+  .sys p{font-size:.86rem;color:var(--muted);margin-bottom:8px;}
+  .sys .sitems{display:flex;flex-direction:column;gap:4px;}
+  .sys .sitem{font-family:'JetBrains Mono',monospace;font-size:.78rem;background:var(--card);border-radius:7px;padding:5px 11px;}
+  .systems-note{margin-top:14px;background:var(--ink);color:var(--paper);border-radius:14px;padding:16px 24px;text-align:center;}
+  .systems-note p{font-size:.96rem;color:#e8dcc8;}
+  .systems-note b{color:var(--gold);}
+
+  /* TARGETS TABLE */
+  .targets{display:flex;flex-direction:column;gap:16px;}
+  .target-group{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .tg-head{padding:12px 22px;color:#fff;display:flex;align-items:center;gap:12px;}
+  .tg-head .tgh{font-family:'Fraunces',serif;font-weight:600;font-size:1.1rem;}
+  .tg-head .tgl{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;background:rgba(255,255,255,.2);padding:4px 10px;border-radius:5px;}
+  .tg-body{background:var(--card);}
+  .tg-row{display:grid;grid-template-columns:180px 1fr 1fr;gap:0;border-top:1.5px solid var(--paper-2);}
+  @media(max-width:640px){.tg-row{grid-template-columns:1fr;}}
+  .tg-row:first-child{border-top:none;}
+  .tg-cell{padding:12px 16px;font-size:.86rem;}
+  .tg-cell.name{font-family:'Fraunces',serif;font-weight:600;font-size:.92rem;border-right:1.5px solid var(--paper-2);}
+  .tg-cell.what{color:var(--muted);border-right:1.5px solid var(--paper-2);}
+  .tg-cell.why{color:var(--muted);font-style:italic;font-size:.82rem;}
+  .tg-head.phys{background:var(--olive);}
+  .tg-head.cog{background:var(--blue);}
+  .tg-head.beh{background:var(--plum);}
+
+  /* FIVE STRATEGIES */
+  .strats{display:flex;flex-direction:column;gap:16px;}
+  .strat{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .strat .stop{padding:14px 26px;color:#fff;display:grid;grid-template-columns:auto 1fr auto;gap:16px;align-items:center;flex-wrap:wrap;}
+  .strat .sn{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:6px;white-space:nowrap;}
+  .strat .sname{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;}
+  .strat .stag{font-family:'JetBrains Mono',monospace;font-size:.6rem;opacity:.9;text-align:right;}
+  .strat .sbody{padding:18px 26px;background:var(--card);}
+  .strat .sprinciple{background:rgba(217,164,65,.12);border:1.5px dashed var(--gold);border-radius:10px;padding:11px 16px;font-size:.9rem;color:var(--rust-deep);font-style:italic;margin-bottom:14px;}
+  .strat .sprinciple b{font-style:normal;color:var(--rust-deep);}
+  .strat .spractice{display:flex;flex-direction:column;gap:6px;}
+  .strat .sp{display:grid;grid-template-columns:auto 1fr;gap:10px;align-items:start;}
+  .strat .splabel{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;text-transform:uppercase;letter-spacing:.03em;padding:3px 8px;border-radius:5px;white-space:nowrap;margin-top:2px;}
+  .strat .splabel.do{background:rgba(47,107,99,.15);color:var(--teal);}
+  .strat .splabel.why{background:rgba(217,164,65,.2);color:#8a6512;}
+  .strat .splabel.not{background:rgba(193,80,46,.15);color:var(--rust-deep);}
+  .strat .sptext{font-size:.88rem;color:var(--muted);}
+  .strat .sptext b{color:var(--rust-deep);}
+  .s1 .stop{background:var(--rust-deep);}
+  .s2 .stop{background:var(--blue);}
+  .s3 .stop{background:var(--olive);}
+  .s4 .stop{background:var(--plum);}
+  .s5 .stop{background:var(--teal);}
+
+  /* LADDER TABLES */
+  .ladder{border:3px solid var(--ink);border-radius:14px;overflow:hidden;box-shadow:5px 5px 0 var(--ink);margin-top:14px;}
+  .ladder-head{background:var(--ink);color:var(--paper);padding:10px 18px;display:flex;align-items:center;gap:10px;}
+  .ladder-head .lhl{font-family:'JetBrains Mono',monospace;font-size:.62rem;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);font-weight:700;}
+  .ladder-head h5{font-family:'Fraunces',serif;font-weight:600;font-size:1rem;margin-top:2px;}
+  .ladder table{width:100%;border-collapse:collapse;}
+  .ladder th{padding:9px 14px;font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.04em;text-transform:uppercase;font-weight:700;text-align:left;background:var(--paper-2);color:var(--muted);}
+  .ladder td{padding:10px 14px;border-top:1px solid var(--line);font-size:.84rem;background:var(--card);color:var(--muted);}
+  .ladder td.lvl{font-family:'JetBrains Mono',monospace;font-weight:700;font-size:.78rem;}
+  .ladder td.lvl.l1{color:var(--olive);}
+  .ladder td.lvl.l2{color:var(--blue);}
+  .ladder td.lvl.l3{color:var(--plum);}
+  .ladder td.lvl.l4{color:var(--rust);}
+  .ladder td.lvl.l5{color:var(--teal);}
+  .ladder td.mastery{font-family:'JetBrains Mono',monospace;font-size:.76rem;color:var(--teal);}
+
+  /* TOOLS */
+  .tools{display:flex;flex-direction:column;gap:10px;}
+  .tool{border-radius:14px;overflow:hidden;border:2.5px solid var(--ink);box-shadow:4px 4px 0 var(--ink);}
+  .tool .ttop{padding:10px 20px;display:flex;align-items:center;gap:12px;background:var(--ink);}
+  .tool .tn{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;background:rgba(255,255,255,.15);padding:4px 9px;border-radius:5px;color:#fff;}
+  .tool .tname{font-family:'Fraunces',serif;font-weight:600;font-size:1rem;color:#fff;}
+  .tool .tbody{padding:12px 20px;background:var(--card);display:grid;grid-template-columns:1fr 1fr;gap:10px;}
+  @media(max-width:580px){.tool .tbody{grid-template-columns:1fr;}}
+  .tool .tcell .tclabel{font-family:'JetBrains Mono',monospace;font-size:.58rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;color:var(--muted);margin-bottom:3px;}
+  .tool .tcell .tcval{font-size:.84rem;color:var(--ink);}
+  .tool .tcell .tcval b{color:var(--rust-deep);}
+  .tool .tcell .tcval em{font-family:'JetBrains Mono',monospace;font-style:normal;font-size:.78rem;color:var(--teal);}
+
+  /* INTEGRATED FLOW */
+  .flow{display:flex;flex-direction:column;gap:0;max-width:720px;margin:0 auto;}
+  .flow-block{border-radius:14px;overflow:hidden;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .flow-block .fbtop{padding:11px 22px;color:#fff;display:flex;align-items:center;gap:12px;}
+  .flow-block .fbl{font-family:'JetBrains Mono',monospace;font-size:.62rem;font-weight:700;background:rgba(255,255,255,.2);padding:4px 10px;border-radius:5px;}
+  .flow-block .fbname{font-family:'Fraunces',serif;font-weight:600;font-size:1rem;}
+  .flow-block .fbbody{padding:12px 22px;background:var(--card);}
+  .flow-block .fbtools{display:flex;flex-wrap:wrap;gap:6px;}
+  .flow-block .fbt{font-family:'JetBrains Mono',monospace;font-size:.76rem;background:var(--paper-2);border-radius:6px;padding:5px 11px;}
+  .flow-block .fbt.active{background:rgba(47,107,99,.14);color:var(--teal);font-weight:700;}
+  .flow-connector{text-align:center;padding:8px 0;color:var(--rust);font-size:1.2rem;font-weight:700;opacity:.6;}
+  .fb1 .fbtop{background:var(--olive);}
+  .fb2 .fbtop{background:var(--blue);}
+  .fb3 .fbtop{background:var(--rust);}
+  .fb4 .fbtop{background:var(--rust-deep);}
+  .fb5 .fbtop{background:var(--plum);}
+  .fb6 .fbtop{background:var(--teal);}
+
+  /* CLOSING */
+  .closing{background:var(--ink);color:var(--paper);border-radius:18px;padding:28px 34px;text-align:center;}
+  .cl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;}
+  .cbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3.5vw,2.1rem);line-height:1.05;margin-bottom:16px;}
+  .cbig em{font-style:italic;color:var(--rust);}
+  .cchain{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;margin-bottom:18px;}
+  .cc{background:rgba(255,255,255,.1);border:1.5px solid rgba(255,255,255,.2);border-radius:8px;padding:7px 14px;font-family:'Fraunces',serif;font-weight:600;font-size:.88rem;}
+  .cca{color:var(--gold);font-weight:700;}
+  .cbottom{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:14px;}
+  .cb{font-family:'JetBrains Mono',monospace;font-size:.76rem;border-radius:6px;padding:6px 12px;}
+  .cb.hard{background:rgba(193,80,46,.2);color:#e8a070;}
+  .cb.real{background:rgba(47,107,99,.2);color:#7fd4b8;}
+  .cb.gold{background:rgba(217,164,65,.2);color:var(--gold);}
+
+  footer{text-align:center;margin-top:40px;font-family:'Fraunces',serif;font-style:italic;font-size:1.1rem;color:var(--muted);padding-top:24px;border-top:1px solid var(--line);}
+  footer p{font-family:'Spline Sans',sans-serif;font-style:normal;font-size:.9rem;margin-top:10px;}
+</style>
+<div class="wrap">
+
+<header>
+  <div class="crumb">mental model · <b>performance psychology</b> · complete system</div>
+  <div class="kicker">From Fear to Execution</div>
+  <h1>The complete<br><em>five-layer</em> system.</h1>
+  <p class="sub">First principles → purpose → optimization targets → strategies → tools. Each piece has a specific job. <b>None of them ask you to feel less fear in the moment.</b></p>
+  <div class="layer-nav">
+    <div class="ln"><span>L1</span> How Your Brain Works</div>
+    <div class="ln"><span>L2</span> Your Purpose</div>
+    <div class="ln"><span>L3</span> Optimization Targets</div>
+    <div class="ln"><span>L4</span> Strategies</div>
+    <div class="ln"><span>L5</span> Tools + Flow</div>
+  </div>
+</header>
+
+<!-- LAYER 1: TWO SYSTEMS -->
+<section>
+  <div class="layer-label">Layer 1 · First Principles</div>
+  <h2 class="blocktitle">How Your Brain Actually Works</h2>
+  <div class="blocksub">Two systems. They do not cooperate under stress. Everything downstream of this depends on understanding it.</div>
+  <div class="blockrule"></div>
+  <div class="systems">
+    <div class="sys limbic">
+      <div class="sl">system 1 · ancient · milliseconds</div>
+      <h4>The Limbic Brain</h4>
+      <p>Evolved to keep you alive. Operates faster than conscious thought. Cannot distinguish between a lion and a skilled bowling friend — it detects <em>threat to survival or status</em>, period.</p>
+      <p>When it fires, it does three things simultaneously and you cannot override them consciously:</p>
+      <div class="sitems">
+        <div class="sitem">releases adrenaline + cortisol</div>
+        <div class="sitem">redirects blood to large muscles (legs, core)</div>
+        <div class="sitem">suppresses prefrontal cortex activity</div>
+      </div>
+    </div>
+    <div class="sys pfc">
+      <div class="sl">system 2 · slow · deliberate · fragile</div>
+      <h4>The Prefrontal Cortex</h4>
+      <p>Your strategy brain. Holds technique, focus, self-talk, your carefully built approach. Works beautifully at moderate arousal — <em>actively enhances performance</em> there.</p>
+      <p>Past a fear threshold, cortisol and norepinephrine literally reduce PFC synaptic connectivity. This is not metaphor.</p>
+      <div class="sitems">
+        <div class="sitem">your mantras live here ← taken offline under threat</div>
+        <div class="sitem">your technique lives here ← cut off under threat</div>
+        <div class="sitem">your focus instructions live here ← inaccessible</div>
+      </div>
+    </div>
+  </div>
+  <div class="systems-note">
+    <p>This is why your mantras fail in the moment. <b>The mantra is a PFC tool. The PFC has been taken offline.</b> You cannot think your way out of a limbic hijack using PFC tools.</p>
+  </div>
+</section>
+
+<!-- YERKES-DODSON -->
+<section>
+  <div class="layer-label">Layer 1 · First Principles</div>
+  <h2 class="blocktitle">The Arousal-Performance Curve</h2>
+  <div class="blocksub">The most important structural fact in your entire problem. Performance is not linear with arousal.</div>
+  <div class="blockrule"></div>
+  <div class="yd-wrap">
+    <div class="yd-title">Yerkes-Dodson Law — the inverted U</div>
+    <div class="yd-curve">
+      <svg class="yd-svg" viewBox="0 0 600 180" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M2 1L8 5L2 9" fill="none" stroke="#6b6052" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+          </marker>
+        </defs>
+        <!-- Axes -->
+        <line x1="60" y1="20" x2="60" y2="155" stroke="#cdbfa9" stroke-width="1" marker-end="url(#arr)"/>
+        <line x1="55" y1="150" x2="580" y2="150" stroke="#cdbfa9" stroke-width="1" marker-end="url(#arr)"/>
+        <text x="30" y="88" font-size="10" fill="#6b6052" text-anchor="middle" transform="rotate(-90,30,88)" font-family="'JetBrains Mono',monospace">PERFORMANCE</text>
+        <text x="580" y="162" font-size="10" fill="#6b6052" text-anchor="end" font-family="'JetBrains Mono',monospace">AROUSAL →</text>
+        <!-- Curve -->
+        <path d="M70,148 C110,148 150,120 200,72 C240,36 280,24 310,22 C340,24 380,36 420,72 C470,120 510,148 550,148"
+              fill="none" stroke="#c1502e" stroke-width="2.5" stroke-linecap="round"/>
+        <!-- Zones shading -->
+        <path d="M70,148 C110,148 150,120 200,72 L200,148 Z" fill="rgba(58,107,140,.12)"/>
+        <path d="M200,72 C240,36 280,24 310,22 C340,24 380,36 420,72 L420,148 L200,148 Z" fill="rgba(47,107,99,.1)"/>
+        <path d="M420,72 C470,120 510,148 550,148 L420,148 Z" fill="rgba(193,80,46,.1)"/>
+        <!-- Star at peak -->
+        <text x="310" y="15" text-anchor="middle" font-size="14" fill="#d9a441">★</text>
+        <text x="310" y="27" text-anchor="middle" font-size="9" fill="#d9a441" font-family="'JetBrains Mono',monospace">optimal zone</text>
+        <!-- Zone labels -->
+        <text x="135" y="140" text-anchor="middle" font-size="9" fill="#3a6b8c" font-family="'JetBrains Mono',monospace">LOW AROUSAL</text>
+        <text x="310" y="140" text-anchor="middle" font-size="9" fill="#2f6b63" font-family="'JetBrains Mono',monospace">MODERATE</text>
+        <text x="485" y="140" text-anchor="middle" font-size="9" fill="#9c3a1c" font-family="'JetBrains Mono',monospace">HIGH AROUSAL</text>
+        <!-- You are here marker -->
+        <line x1="430" y1="66" x2="430" y2="148" stroke="#c1502e" stroke-width="1" stroke-dasharray="4 3" opacity=".6"/>
+        <text x="440" y="58" font-size="8" fill="#c1502e" font-family="'JetBrains Mono',monospace">← you tip over here</text>
+      </svg>
+    </div>
+    <div class="yd-zones">
+      <div class="yd-zone low">
+        <div class="yzl">low arousal</div>
+        <h4>Underperformance</h4>
+        <p>Bored, not caring, no edge. Execution is flat.</p>
+      </div>
+      <div class="yd-zone mid">
+        <div class="yzl">moderate · the goal</div>
+        <h4>Peak performance</h4>
+        <p>Engaged, alert, slight pressure. PFC fully online. This is the target.</p>
+      </div>
+      <div class="yd-zone high">
+        <div class="yzl">high arousal</div>
+        <h4>Catastrophic collapse</h4>
+        <p>Fear, panic, pounding heart. PFC offline. Technique inaccessible.</p>
+      </div>
+    </div>
+    <div class="yd-key">The goal is never zero arousal. <b>Nervousness is not the enemy. Excess nervousness past the tipping point is.</b></div>
+  </div>
+</section>
+
+<!-- THE SPIRAL -->
+<section>
+  <div class="layer-label">Layer 1 · First Principles</div>
+  <h2 class="blocktitle">The Self-Amplifying Feedback Loop</h2>
+  <div class="blocksub">Nine sequential steps. Each feeds the next. Once started, you cannot think your way out from inside it.</div>
+  <div class="blockrule"></div>
+  <div class="spiral">
+    <div class="sp-step sp1"><span class="sp-num">01</span><div class="sp-body"><h4>Threat trigger</h4><p>Friend bowls well. Bad streak begins. Go-kart speed feels uncontrollable. Social evaluator appears.</p></div></div>
+    <div class="sp-connector"></div>
+    <div class="sp-step sp2"><span class="sp-num">02</span><div class="sp-body"><h4>Amygdala fires — ~200ms</h4><p>Before you consciously register fear. Faster than thought. Already happening.</p></div></div>
+    <div class="sp-connector"></div>
+    <div class="sp-step sp3"><span class="sp-num">03</span><div class="sp-body"><h4>Adrenaline release — 5–10 seconds</h4><p>Hypothalamus signals adrenal glands. The chemistry is now in your bloodstream.</p></div></div>
+    <div class="sp-connector"></div>
+    <div class="sp-step sp4"><span class="sp-num">04</span><div class="sp-body"><h4>Heart rate spikes, breathing shallows</h4><p>Blood moves away from fine motor muscles — your bowling arm, your throttle foot.</p></div></div>
+    <div class="sp-connector"></div>
+    <div class="sp-step sp5"><span class="sp-num">05</span><div class="sp-body"><h4>Cortisol releases — 30–60 seconds</h4><p>Sustains the stress state. PFC synaptic connectivity actively reduced.</p></div></div>
+    <div class="sp-connector"></div>
+    <div class="sp-step sp6"><span class="sp-num">06</span><div class="sp-body"><h4>Technique, strategy, focus: inaccessible</h4><p>Everything you depend on lives in the PFC. The PFC has been suppressed.</p></div></div>
+    <div class="sp-connector"></div>
+    <div class="sp-step sp7"><span class="sp-num">07</span><div class="sp-body"><h4>Dark mind, paralysis, inability to concentrate</h4><p>You want to focus. You cannot. This is not weakness — it's suppressed neurochemistry.</p></div></div>
+    <div class="sp-connector"></div>
+    <div class="sp-step sp8"><span class="sp-num">08</span><div class="sp-body"><h4>Poor execution</h4><p>Bad ball. Bad corner. Bad rally. The thing you feared happening now happens.</p></div></div>
+    <div class="sp-connector"></div>
+    <div class="sp-step sp9"><span class="sp-num">09</span><div class="sp-body"><h4>New threat input → loop reinforces itself</h4><p>Poor execution becomes new evidence. New evidence refires the amygdala. Back to step 2.</p></div></div>
+  </div>
+  <div class="spiral-note"><b>This is a self-amplifying feedback loop.</b> Once it starts, it feeds itself. The intervention points are before step 1, between steps 8 and 9 — not during the spiral itself.</div>
+</section>
+
+<!-- LAYER 2: PURPOSE -->
+<section>
+  <div class="layer-label">Layer 2 · Purpose</div>
+  <h2 class="blocktitle">What You're Actually Trying to Do</h2>
+  <div class="blocksub">Stated precisely — because the real purpose underneath the surface purpose is what's being threatened.</div>
+  <div class="blockrule"></div>
+  <div class="systems">
+    <div class="sys limbic">
+      <div class="sl">surface purpose</div>
+      <h4>Execute Known Skills Under Pressure</h4>
+      <p>Bowling: consistent, focused delivery that maximizes pin fall.</p>
+      <p>Karting: sustained throttle control that maximizes speed and laps.</p>
+      <div class="sitems">
+        <div class="sitem">performance on the day</div>
+        <div class="sitem">technique holding under pressure</div>
+        <div class="sitem">the score, the time, the result</div>
+      </div>
+    </div>
+    <div class="sys pfc">
+      <div class="sl">real purpose · the one being threatened</div>
+      <h4>Not Collapse Under Social Pressure</h4>
+      <p>To be the version of yourself that shows up — not just in practice, not just when alone, but when it counts and when someone is watching.</p>
+      <div class="sitems">
+        <div class="sitem">self-concept as someone who can compete</div>
+        <div class="sitem">identity that holds under evaluation</div>
+        <div class="sitem">this is what's actually at stake when the friend walks in</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 3: TARGETS -->
+<section>
+  <div class="layer-label">Layer 3 · Optimization Targets</div>
+  <h2 class="blocktitle">What You're Actually Optimizing For</h2>
+  <div class="blocksub">Three categories. Each derived from the first principles above — not guesses.</div>
+  <div class="blockrule"></div>
+  <div class="targets">
+    <div class="target-group">
+      <div class="tg-head phys"><span class="tgl">PHYSIOLOGICAL</span><span class="tgh">Body signals to manage</span></div>
+      <div class="tg-body">
+        <div class="tg-row">
+          <div class="tg-cell name">Heart rate</div>
+          <div class="tg-cell what">Stay below ~140–150 bpm during play</div>
+          <div class="tg-cell why">Above this threshold, fine motor control degrades sharply</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-cell name">Breathing pattern</div>
+          <div class="tg-cell what">Exhale longer than inhale, always</div>
+          <div class="tg-cell why">Short fast inhales = more adrenaline. Long exhales = parasympathetic brake</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-cell name">Muscle tension</div>
+          <div class="tg-cell what">Shoulders, bowling arm, throttle foot — loose, not gripped</div>
+          <div class="tg-cell why">Tension restricts movement which causes technique breakdown</div>
+        </div>
+      </div>
+    </div>
+    <div class="target-group">
+      <div class="tg-head cog"><span class="tgl">COGNITIVE</span><span class="tgh">Mind signals to manage</span></div>
+      <div class="tg-body">
+        <div class="tg-row">
+          <div class="tg-cell name">Attentional focus</div>
+          <div class="tg-cell what">External, singular, immediate</div>
+          <div class="tg-cell why">Internal focus and wide focus both destroy execution — proven in sports science</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-cell name">Thought horizon</div>
+          <div class="tg-cell what">One ball. One lap. Nothing else.</div>
+          <div class="tg-cell why">Projecting outcomes floods the PFC with threat simulations before you've even started</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-cell name">Threat reappraisal</div>
+          <div class="tg-cell what">Reclassify "evaluation" as "experiment"</div>
+          <div class="tg-cell why">Changes what the amygdala responds to at the source — before the chemistry starts</div>
+        </div>
+      </div>
+    </div>
+    <div class="target-group">
+      <div class="tg-head beh"><span class="tgl">BEHAVIOURAL</span><span class="tgh">Patterns to manage</span></div>
+      <div class="tg-body">
+        <div class="tg-row">
+          <div class="tg-cell name">Starting arousal</div>
+          <div class="tg-cell what">Enter activity already in moderate zone</div>
+          <div class="tg-cell why">Cold start into fear is harder to manage — if you start lower, the spike lands lower</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-cell name">Bad streak response</div>
+          <div class="tg-cell what">Fixed reset routine within 10 seconds</div>
+          <div class="tg-cell why">Prevents the spiral completing its second loop — interrupts before it compounds</div>
+        </div>
+        <div class="tg-row">
+          <div class="tg-cell name">Exposure gradient</div>
+          <div class="tg-cell what">Each session slightly harder than comfort, not maximally scary</div>
+          <div class="tg-cell why">This is how the amygdala learns — gradual signal updating, not flooding and white-knuckling</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LAYER 4: STRATEGIES -->
+<section>
+  <div class="layer-label">Layer 4 · Strategies</div>
+  <h2 class="blocktitle">Five Strategies to Meet the Targets</h2>
+  <div class="blocksub">Each strategy addresses specific targets. Each has a principle and a practice.</div>
+  <div class="blockrule"></div>
+  <div class="strats">
+
+    <div class="strat s1">
+      <div class="stop"><span class="sn">S1</span><span class="sname">Pre-Regulate Before the Window Closes</span><span class="stag">physiological · before the trigger</span></div>
+      <div class="sbody">
+        <div class="sprinciple">The only reliable intervention point is <b>before adrenaline is circulating</b>. Once it starts, you're managing damage. Before it starts, you're setting baseline.</div>
+        <div class="spractice">
+          <div class="sp"><span class="splabel why">principle</span><span class="sptext">If your panic threshold is 100 and the trigger adds 60 arousal — start at 50 and you hit 110 (collapse). Start at 30 and you hit 90 (high but functional). Lower the baseline.</span></div>
+          <div class="sp"><span class="splabel do">do</span><span class="sptext"><b>Physiological sigh</b> — double inhale through nose, long slow exhale through mouth. 4–5 cycles. 10–15 minutes before the session. Stanford research: single fastest method to reduce physiological arousal. Done privately — bathroom, car, corner.</span></div>
+          <div class="sp"><span class="splabel not">not</span><span class="sptext">Scrolling phone, joking loudly, watching others perform — all of these raise baseline arousal before you've even started.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strat s2">
+      <div class="stop"><span class="sn">S2</span><span class="sname">Reappraise the Threat at Source</span><span class="stag">cognitive · before the trigger</span></div>
+      <div class="sbody">
+        <div class="sprinciple">The amygdala responds to the <b>meaning you assign</b> to a situation, not the situation itself. You cannot argue with it directly. But you can change what you feed into it.</div>
+        <div class="spractice">
+          <div class="sp"><span class="splabel why">principle</span><span class="sptext">Two people in the same go-kart — one terrified, one thrilled. Same physical experience. Different meaning assigned. Different amygdala response. The meaning is the variable.</span></div>
+          <div class="sp"><span class="splabel do">do</span><span class="sptext">Before the session, explicitly reframe: not "I need to perform well" but <b>"I am here to collect data on what happens when I push slightly harder."</b> Not "my friend will see how I bowl" but "my friend being here gives me realistic pressure training."</span></div>
+          <div class="sp"><span class="splabel not">not</span><span class="sptext">This is not positive thinking — "it'll be fine." It's reclassification. Giving the amygdala a different input. Experiment vs test of worth.</span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strat s3">
+      <div class="stop"><span class="sn">S3</span><span class="sname">Install a Fixed Reset Routine</span><span class="stag">behavioural · during · loop interruption</span></div>
+      <div class="sbody">
+        <div class="sprinciple">You need to interrupt the loop between <b>bad event and interpretation</b> with a fixed physical action — before the streak becomes a story, before the story becomes more adrenaline.</div>
+        <div class="spractice">
+          <div class="sp"><span class="splabel why">principle</span><span class="sptext">The content of the routine matters less than the fact that it is <b>identical every time</b>. Your brain associates the routine with "reset" and the next delivery gets a clean start.</span></div>
+          <div class="sp"><span class="splabel do">do</span><span class="sptext">Bowling: walk back to ball return → slow breath → two-hand touch on ball → eyes to target arrow only → go. <b>Same every time. Always.</b></span></div>
+          <div class="sp"><span class="splabel do">do</span><span class="sptext">Karting: after bad corner → deliberate exhale → eyes to exit of next corner (not the wall) → loosen grip slightly → press. <b>Same every time. Always.</b></span></div>
+        </div>
+      </div>
+    </div>
+
+    <div class="strat s4">
+      <div class="stop"><span class="sn">S4</span><span class="sname">Graduated Exposure With Genuine Mastery Checkpoints</span><span class="stag">behavioural · between sessions</span></div>
+      <div class="sbody">
+        <div class="sprinciple">Enduring fear ≠ updating fear. You've done go-karting many times and still feel the same pounding because you jump to maximum scary and white-knuckle it. Your brain files this as <b>"survived danger"</b> — not "that wasn't dangerous."</div>
+        <div class="spractice">
+          <div class="sp"><span class="splabel not">not</span><span class="sptext">Exposure works only when you comfortably master one level before proceeding. The amygdala updates its threat classification only when each level becomes genuinely boring.</span></div>
+        </div>
+        <div class="ladder">
+          <div class="ladder-head"><div><div class="lhl">comfort ladder</div><h5>Go-Karting</h5></div></div>
+          <table>
+            <tr><th>Level</th><th>What You Do</th><th>Mastery Signal</th></tr>
+            <tr><td class="lvl l1">1</td><td>50–60% throttle, brake early into corners</td><td class="mastery">3 full sessions where you feel bored, not scared</td></tr>
+            <tr><td class="lvl l2">2</td><td>70–75% throttle, brake slightly later</td><td class="mastery">2 sessions — challenged but in control</td></tr>
+            <tr><td class="lvl l3">3</td><td>85–90% throttle, corners with intention</td><td class="mastery">1 session — fast but natural</td></tr>
+            <tr><td class="lvl l4">4</td><td>Full throttle, committed cornering</td><td class="mastery">Speed is now familiar, not alien</td></tr>
+          </table>
+        </div>
+        <div class="ladder" style="margin-top:10px;">
+          <div class="ladder-head"><div><div class="lhl">comfort ladder</div><h5>Bowling Under Social Pressure</h5></div></div>
+          <table>
+            <tr><th>Level</th><th>Scenario</th><th>Mastery Signal</th></tr>
+            <tr><td class="lvl l1">1</td><td>Bowl alone, no score pressure — technique focus only</td><td class="mastery">Consistent execution, no anxiety</td></tr>
+            <tr><td class="lvl l2">2</td><td>Bowl alone but track score and care about it</td><td class="mastery">Technique holds when score matters</td></tr>
+            <tr><td class="lvl l3">3</td><td>Bowl with a friend at your level</td><td class="mastery">Technique holds with social presence</td></tr>
+            <tr><td class="lvl l4">4</td><td>Bowl with skilled friend — framed explicitly as practice</td><td class="mastery">Technique holds with skilled observer</td></tr>
+            <tr><td class="lvl l5">5</td><td>Compete with genuine stakes</td><td class="mastery">This is the target environment</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+
+    <div class="strat s5">
+      <div class="stop"><span class="sn">S5</span><span class="sname">Build an Evidence Bank, Not Affirmations</span><span class="stag">cognitive · after sessions · identity</span></div>
+      <div class="sbody">
+        <div class="sprinciple">You cannot tell yourself "I am someone who competes and grows" when your actual recent evidence is bad streaks and fear paralysis. <b>Your brain will reject it.</b> Durable confidence is built from a specific memory bank of real experiences.</div>
+        <div class="spractice">
+          <div class="sp"><span class="splabel do">do</span><span class="sptext">After every session — good or bad — write one sentence: <b>"Today I did [specific action] even though [specific fear I felt]."</b></span></div>
+          <div class="sp"><span class="splabel do">do</span><span class="sptext">Examples: "I held 70% throttle through the long straight even though my heart was pounding." / "I picked up the ball after three bad frames and executed my pre-shot routine even though I wanted to stop."</span></div>
+          <div class="sp"><span class="splabel not">not</span><span class="sptext">Not "I did well" or "I performed badly." Only: what you did in spite of the fear. These are not performance successes. They are evidence that you moved despite fear.</span></div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- LAYER 5: TOOLS + FLOW -->
+<section>
+  <div class="layer-label">Layer 5 · Tools + Integrated Flow</div>
+  <h2 class="blocktitle">The Complete Session Flow</h2>
+  <div class="blocksub">Every tool has one job. They combine into a single session protocol.</div>
+  <div class="blockrule"></div>
+  <div class="tools" style="margin-bottom:28px;">
+    <div class="tool">
+      <div class="ttop"><span class="tn">TOOL 1</span><span class="tname">Physiological Sigh</span></div>
+      <div class="tbody">
+        <div class="tcell"><div class="tclabel">what</div><div class="tcval">Double inhale through nose + long exhale through mouth</div></div>
+        <div class="tcell"><div class="tclabel">when</div><div class="tcval">10–15 min before activity. <b>Never mid-spiral — too late then.</b></div></div>
+        <div class="tcell"><div class="tclabel">config</div><div class="tcval">4–5 cycles. Private. Seated or standing still.</div></div>
+        <div class="tcell"><div class="tclabel">job</div><div class="tcval">Lowers heart rate baseline before the trigger arrives</div></div>
+      </div>
+    </div>
+    <div class="tool">
+      <div class="ttop"><span class="tn">TOOL 2</span><span class="tname">Threat Reappraisal Script</span></div>
+      <div class="tbody">
+        <div class="tcell"><div class="tclabel">what</div><div class="tcval">One specific pre-written sentence said before the session</div></div>
+        <div class="tcell"><div class="tclabel">when</div><div class="tcval">In the car, bathroom — before social exposure begins</div></div>
+        <div class="tcell"><div class="tclabel">config</div><div class="tcval"><em>"Today I am here to find out what my technique does under pressure. I am collecting data, not proving worth."</em> — specific to the session, not generic</div></div>
+        <div class="tcell"><div class="tclabel">job</div><div class="tcval">Changes limbic input signal before amygdala classifies it as threat</div></div>
+      </div>
+    </div>
+    <div class="tool">
+      <div class="ttop"><span class="tn">TOOL 3</span><span class="tname">Reset Routine</span></div>
+      <div class="tbody">
+        <div class="tcell"><div class="tclabel">what</div><div class="tcval">5–8 second fixed physical sequence after bad execution</div></div>
+        <div class="tcell"><div class="tclabel">when</div><div class="tcval">Immediately after bad ball / bad corner — before the next one</div></div>
+        <div class="tcell"><div class="tclabel">bowling</div><div class="tcval"><em>walk back → breath → two-hand touch → eyes to arrow → go</em></div></div>
+        <div class="tcell"><div class="tclabel">karting</div><div class="tcval"><em>exhale → eyes to corner exit → loosen grip → press</em></div></div>
+      </div>
+    </div>
+    <div class="tool">
+      <div class="ttop"><span class="tn">TOOL 4</span><span class="tname">Comfort Ladder</span></div>
+      <div class="tbody">
+        <div class="tcell"><div class="tclabel">what</div><div class="tcval">Predefined progression of challenge levels with mastery checkpoints</div></div>
+        <div class="tcell"><div class="tclabel">when</div><div class="tcval">Structured into sessions over weeks — not improvised on the day</div></div>
+        <div class="tcell"><div class="tclabel">rule</div><div class="tcval"><b>Do not progress until current level is genuinely boring.</b> Boredom is the signal, not courage.</div></div>
+        <div class="tcell"><div class="tclabel">job</div><div class="tcval">Trains amygdala to reclassify harder versions as safe through actual mastery</div></div>
+      </div>
+    </div>
+    <div class="tool">
+      <div class="ttop"><span class="tn">TOOL 5</span><span class="tname">Evidence Log</span></div>
+      <div class="tbody">
+        <div class="tcell"><div class="tclabel">what</div><div class="tcval">One specific sentence written within 30 minutes of finishing</div></div>
+        <div class="tcell"><div class="tclabel">format</div><div class="tcval"><em>"I did [specific action] despite [specific fear]."</em> Never "I did well." Only: moved despite fear.</div></div>
+        <div class="tcell"><div class="tclabel">job</div><div class="tcval">Builds the actual memory bank that durable confidence is constructed from</div></div>
+        <div class="tcell"><div class="tclabel">timeline</div><div class="tcval">Over months becomes real material your confidence can stand on — because it's true, specific, and yours</div></div>
+      </div>
+    </div>
+  </div>
+
+  <h2 class="blocktitle" style="margin-bottom:18px;">The Integrated Session Flow</h2>
+  <div class="flow">
+    <div class="flow-block fb1">
+      <div class="fbtop"><span class="fbl">BEFORE · 10–15 MIN</span><span class="fbname">Pre-Regulation</span></div>
+      <div class="fbbody">
+        <div class="fbtools">
+          <span class="fbt active">Tool 1: Physiological sigh × 4–5</span>
+          <span class="fbt active">Tool 2: Reappraisal script — say it once, mean it</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-connector">↓</div>
+    <div class="flow-block fb2">
+      <div class="fbtop"><span class="fbl">DURING · NORMAL EXECUTION</span><span class="fbname">PFC Online, Moderate Arousal</span></div>
+      <div class="fbbody">
+        <div class="fbtools">
+          <span class="fbt">external focus — target, arrow, corner exit</span>
+          <span class="fbt">one ball, one lap — nothing else exists</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-connector">↓ bad event occurs</div>
+    <div class="flow-block fb3">
+      <div class="fbtop"><span class="fbl">IMMEDIATELY · &lt; 10 SECONDS</span><span class="fbname">Reset Routine</span></div>
+      <div class="fbbody">
+        <div class="fbtools">
+          <span class="fbt active">Tool 3: Fixed reset sequence — identical every time</span>
+          <span class="fbt">interrupts loop before it compounds into story</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-connector">↓</div>
+    <div class="flow-block fb4">
+      <div class="fbtop"><span class="fbl">CONTINUE</span><span class="fbname">One Delivery, One Corner — Nothing Else</span></div>
+      <div class="fbbody">
+        <div class="fbtools">
+          <span class="fbt">not the score — the next ball</span>
+          <span class="fbt">not the session — the next corner</span>
+          <span class="fbt">not your worth — the target arrow</span>
+        </div>
+      </div>
+    </div>
+    <div class="flow-connector">↓ session ends</div>
+    <div class="flow-block fb6">
+      <div class="fbtop"><span class="fbl">AFTER · WITHIN 30 MIN</span><span class="fbname">Evidence Log Entry</span></div>
+      <div class="fbbody">
+        <div class="fbtools">
+          <span class="fbt active">Tool 5: One sentence — "I did X despite Y"</span>
+          <span class="fbt">one entry per session, every session, good or bad</span>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CLOSING -->
+<section style="margin-bottom:0;">
+  <div class="closing">
+    <div class="cl">// what the system actually does</div>
+    <div class="cbig">Regulate before.<br>Interrupt during.<br>Build <em>real material</em> after.</div>
+    <div class="cchain">
+      <span class="cc">lower the baseline</span><span class="cca">→</span>
+      <span class="cc">change the meaning</span><span class="cca">→</span>
+      <span class="cc">interrupt the loop</span><span class="cca">→</span>
+      <span class="cc">master one level</span><span class="cca">→</span>
+      <span class="cc">log the evidence</span>
+    </div>
+    <div class="cbottom">
+      <span class="cb hard">✗ you cannot think your way out of a limbic hijack with PFC tools</span>
+      <span class="cb hard">✗ enduring fear does not update the threat model — mastery does</span>
+      <span class="cb hard">✗ affirmations don't build confidence — specific memories do</span>
+      <span class="cb real">✓ the intervention points are before and after — not during the spiral</span>
+      <span class="cb real">✓ each tool addresses a specific layer of the problem</span>
+      <span class="cb gold">✦ none of this asks you to feel less fear in the moment</span>
+      <span class="cb gold">✦ it asks you to work the edges of the spiral — that's where change actually happens</span>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <em>The spiral has gaps. That's where the work goes.</em>
+  <p>Before the trigger arrives: lower the baseline, change the meaning. Between bad event and next execution: fixed reset, clean start. After the session: one sentence, specific, true. Across months: a library of having moved despite fear — and a threat model that slowly, actually updates.</p>
+</footer>
+
+</div>
+</html>

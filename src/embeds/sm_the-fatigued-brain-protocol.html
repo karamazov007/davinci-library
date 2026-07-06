@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Fatigued Brain Protocol — Why You Can't Think at Minute 45</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--blue:#3a6b8c;--plum:#6d4467;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 8% 3%,rgba(193,80,46,.09),transparent 34%),
+      radial-gradient(circle at 94% 98%,rgba(58,107,140,.09),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1040px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:36px;}
+  .crumb{font-family:'JetBrains Mono',monospace;font-size:.7rem;color:var(--muted);letter-spacing:.04em;margin-bottom:16px;}
+  .crumb b{color:var(--teal);}
+  .kicker{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.18em;text-transform:uppercase;
+    font-weight:700;color:var(--rust-deep);border:1.5px solid var(--rust);padding:8px 18px;border-radius:8px;margin-bottom:22px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.1rem,5.6vw,4.2rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:740px;margin:18px auto 0;font-size:clamp(1.04rem,2vw,1.26rem);color:var(--muted);}
+  .sub b{color:var(--rust-deep);}
+
+  /* OPENING REFRAME */
+  .reframe-top{max-width:800px;margin:28px auto 0;background:var(--ink);color:var(--paper);border-radius:16px;padding:24px 30px;text-align:center;}
+  .reframe-top .rl{font-family:'JetBrains Mono',monospace;font-size:.66rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:12px;}
+  .reframe-top .rbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.15rem,3vw,1.6rem);line-height:1.25;}
+  .reframe-top .rbig em{color:var(--gold);font-style:italic;}
+  .reframe-top p{margin-top:12px;font-size:.95rem;color:#cdbfa9;max-width:580px;margin-left:auto;margin-right:auto;}
+
+  /* SECTION */
+  section{margin-bottom:46px;max-width:980px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.55rem,4vw,2.3rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:700px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* CASCADE CARDS — the 3 biological layers */
+  .cascade{display:flex;flex-direction:column;gap:12px;}
+  .cas{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .cas .ctop{padding:12px 22px;color:#fff;display:flex;align-items:center;gap:12px;}
+  .cas .cnum{font-family:'Fraunces',serif;font-weight:900;font-size:1.4rem;opacity:.8;min-width:24px;}
+  .cas .cname{font-family:'Fraunces',serif;font-weight:600;font-size:1.15rem;line-height:1.1;}
+  .cas .cbody{padding:15px 22px;}
+  .cas .cbody p{font-size:.94rem;margin-bottom:8px;}
+  .cas .cbody p:last-child{margin-bottom:0;}
+  .cas .cbody p b{color:var(--rust-deep);}
+  .C1 .ctop{background:var(--olive);}
+  .C2 .ctop{background:var(--blue);}
+  .C3 .ctop{background:var(--plum);}
+  .cas-arrow{text-align:center;color:var(--rust);font-size:1.1rem;font-weight:700;line-height:1.4;}
+
+  /* TRIAGE DIAGRAM */
+  .triage{background:var(--card);border:2.5px dashed var(--ink);border-radius:14px;padding:16px 20px;margin:10px 0;}
+  .triage .tt{font-family:'JetBrains Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:12px;}
+  .triage-row{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin-bottom:10px;}
+  .triage-row:last-child{margin-bottom:0;}
+  @media(max-width:560px){.triage-row{grid-template-columns:1fr;}}
+  .tr-box{border-radius:10px;padding:10px 14px;text-align:center;}
+  .tr-box .trl{font-family:'JetBrains Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-bottom:4px;}
+  .tr-box b{font-family:'Fraunces',serif;font-size:.95rem;}
+  .tr-box.starved{background:rgba(193,80,46,.1);border:2px solid var(--rust);}
+  .tr-box.starved .trl{color:var(--rust-deep);}
+  .tr-box.fed{background:rgba(47,107,99,.1);border:2px solid var(--teal);}
+  .tr-box.fed .trl{color:var(--teal);}
+  .tr-arr{color:var(--rust);font-weight:700;font-size:1.1rem;text-align:center;}
+  @media(max-width:560px){.tr-arr{transform:rotate(90deg);}}
+
+  /* BANDWIDTH METER */
+  .bw-wrap{margin:10px 0;}
+  .bw-row{display:grid;grid-template-columns:90px 1fr 54px;gap:10px;align-items:center;margin-bottom:8px;}
+  .bw-label{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:var(--ink);}
+  .bw-bar-bg{background:var(--paper-2);border-radius:30px;height:18px;overflow:hidden;border:1.5px solid var(--line);}
+  .bw-bar{height:100%;border-radius:30px;}
+  .bw-pct{font-family:'Fraunces',serif;font-weight:900;font-size:.95rem;text-align:right;}
+  .bw-note{font-size:.8rem;color:var(--muted);margin-top:4px;font-style:italic;text-align:center;}
+
+  /* ONE-DECISION BOX */
+  .one-decision{background:var(--teal);color:#fff;border-radius:20px;padding:30px 36px;text-align:center;box-shadow:8px 8px 0 var(--ink);margin-bottom:16px;}
+  .one-decision .odl{font-family:'JetBrains Mono',monospace;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;opacity:.85;font-weight:700;margin-bottom:14px;}
+  .one-decision .odbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.3rem,3.6vw,2.1rem);line-height:1.15;margin-bottom:18px;}
+  .one-decision .odbig em{color:#ffe3b0;font-style:italic;}
+  .one-decision p{font-size:.96rem;opacity:.92;max-width:580px;margin:0 auto;}
+
+  /* RULE CHIPS — examples of one-decision rules */
+  .rule-chips{display:flex;flex-direction:column;gap:8px;margin:12px 0;}
+  .rule-chip{background:rgba(255,255,255,.13);border:1.5px solid rgba(255,255,255,.25);border-radius:10px;padding:11px 18px;font-family:'Fraunces',serif;font-style:italic;font-size:1.02rem;text-align:center;}
+
+  /* THREE LEVERS — in-the-moment tactics */
+  .levers{display:flex;flex-direction:column;gap:12px;}
+  .lev{border-radius:16px;overflow:hidden;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);}
+  .lev .ltop{padding:12px 22px;color:#fff;display:flex;align-items:center;gap:12px;}
+  .lev .lnum{font-family:'JetBrains Mono',monospace;font-size:.66rem;font-weight:700;background:rgba(255,255,255,.2);padding:5px 11px;border-radius:6px;}
+  .lev .lname{font-family:'Fraunces',serif;font-weight:600;font-size:1.18rem;}
+  .lev .ltag{font-family:'JetBrains Mono',monospace;font-size:.6rem;letter-spacing:.03em;text-transform:uppercase;opacity:.9;margin-left:auto;}
+  .lev .lbody{padding:15px 22px;}
+  .lev .lbody p{font-size:.94rem;margin-bottom:8px;}
+  .lev .lbody p:last-child{margin-bottom:0;}
+  .lev .lbody p b{color:var(--rust-deep);}
+  .L1 .ltop{background:var(--teal);}
+  .L2 .ltop{background:var(--blue);}
+  .L3 .ltop{background:var(--rust);}
+
+  /* BREATHING DIAGRAM */
+  .breath{display:grid;grid-template-columns:1fr auto 1fr;gap:10px;align-items:center;margin:8px 0;}
+  @media(max-width:560px){.breath{grid-template-columns:1fr;}}
+  .br-box{border-radius:10px;padding:11px 14px;text-align:center;}
+  .br-box .brl{font-family:'JetBrains Mono',monospace;font-size:.56rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-bottom:4px;}
+  .br-box b{font-family:'Fraunces',serif;font-size:1rem;}
+  .br-box p{font-size:.78rem;color:var(--muted);margin-top:4px;}
+  .br-box.exhale{background:rgba(47,107,99,.1);border:2px solid var(--teal);}
+  .br-box.exhale .brl{color:var(--teal);}
+  .br-box.inhale{background:rgba(58,107,140,.1);border:2px solid var(--blue);}
+  .br-box.inhale .brl{color:var(--blue);}
+  .br-arr{text-align:center;color:var(--rust);font-weight:700;font-size:1.1rem;}
+  @media(max-width:560px){.br-arr{transform:rotate(90deg);}}
+
+  /* PACE COMPARISON */
+  .pace-vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:8px 0;}
+  @media(max-width:560px){.pace-vs{grid-template-columns:1fr;}}
+  .pv{border-radius:10px;padding:12px 16px;text-align:center;font-size:.86rem;}
+  .pv.wrong{background:rgba(193,80,46,.1);color:var(--rust-deep);border:2px solid var(--rust);}
+  .pv.right{background:rgba(47,107,99,.1);color:var(--teal);border:2px solid var(--teal);font-weight:600;}
+
+  /* LONG-TERM FIXES */
+  .fixes{display:grid;grid-template-columns:1fr 1fr;gap:14px;}
+  @media(max-width:600px){.fixes{grid-template-columns:1fr;}}
+  .fix{border-radius:16px;padding:20px 24px;border:3px solid var(--ink);box-shadow:5px 5px 0 var(--ink);}
+  .fix.A{background:rgba(58,107,140,.08);border-color:var(--blue);}
+  .fix.B{background:rgba(109,68,103,.08);border-color:var(--plum);}
+  .fix .fi{font-size:1.6rem;margin-bottom:8px;}
+  .fix h4{font-family:'Fraunces',serif;font-size:1.15rem;font-weight:600;margin-bottom:6px;}
+  .fix.A h4{color:var(--blue);}.fix.B h4{color:var(--plum);}
+  .fix p{font-size:.88rem;color:var(--muted);}
+  .fix p b{color:var(--ink);}
+
+  /* THRESHOLD DIAGRAM */
+  .threshold{background:var(--card);border:2.5px dashed var(--ink);border-radius:14px;padding:16px 20px;margin:12px 0;}
+  .threshold .tht{font-family:'JetBrains Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:14px;}
+  .th-row{margin-bottom:10px;}
+  .th-row:last-child{margin-bottom:0;}
+  .th-label{display:flex;justify-content:space-between;align-items:center;margin-bottom:4px;}
+  .th-label span{font-size:.8rem;font-family:'JetBrains Mono',monospace;font-weight:700;}
+  .th-label .th-tag{font-size:.72rem;color:var(--muted);font-weight:400;}
+  .th-bar-bg{background:var(--paper-2);border-radius:30px;height:20px;overflow:hidden;border:1.5px solid var(--line);position:relative;}
+  .th-bar{height:100%;border-radius:30px;position:relative;}
+  .th-bar .th-marker{position:absolute;top:2px;bottom:2px;width:3px;background:#fff;border-radius:2px;opacity:.8;}
+  .th-note{font-size:.76rem;color:var(--muted);margin-top:3px;font-style:italic;}
+
+  /* ELITE COMPARISON */
+  .elite-vs{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:12px 0;}
+  @media(max-width:560px){.elite-vs{grid-template-columns:1fr;}}
+  .ev{border-radius:12px;padding:14px 18px;border:2.5px solid var(--ink);text-align:center;}
+  .ev.novice{background:rgba(193,80,46,.08);border-color:var(--rust);}
+  .ev.elite{background:rgba(47,107,99,.09);border-color:var(--teal);}
+  .ev .evl{font-family:'JetBrains Mono',monospace;font-size:.6rem;text-transform:uppercase;letter-spacing:.04em;font-weight:700;margin-bottom:8px;}
+  .ev.novice .evl{color:var(--rust-deep);}.ev.elite .evl{color:var(--teal);}
+  .ev p{font-size:.86rem;color:var(--muted);}
+  .ev p b{color:var(--ink);}
+
+  /* CLOSING REFRAME */
+  .closing{background:var(--ink);color:var(--paper);border-radius:18px;padding:30px 34px;text-align:center;box-shadow:7px 7px 0 var(--rust);}
+  .closing .cvl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.08em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:14px;}
+  .closing .cvbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3.6vw,2rem);line-height:1.2;}
+  .closing .cvbig em{color:var(--gold);font-style:italic;}
+  .closing p{margin-top:14px;font-size:1.02rem;color:#cdbfa9;max-width:620px;margin-left:auto;margin-right:auto;}
+  .closing p b{color:var(--gold);}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:42px;border-top:2px solid var(--line);padding-top:26px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.2rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="crumb">companion to → <b>The Weak Partner Protocol</b> · same session, different constraint</div>
+    <div class="kicker">// why you can't think at minute 45</div>
+    <h1>The <em>Fatigued Brain</em><br>Protocol</h1>
+    <p class="sub">At minute 45, you are not a worse version of yourself who has forgotten strategy. You are a <b>different organism</b> operating under a completely different set of biological constraints.</p>
+
+    <div class="reframe-top">
+      <div class="rl">// the reframe that changes everything</div>
+      <div class="rbig">This is not weakness.<br>It is a <em>predictable biological cascade</em> —<br>and once you understand it, it stops feeling like failure.</div>
+      <p>Your body is triaging. Survival and movement first. Strategy later. The player who wins at minute 45 is not the one who finds more cognitive bandwidth — it's the one who designed their game to need the <strong style="color:#ffe3b0;">least</strong> cognitive bandwidth at that moment.</p>
+    </div>
+  </header>
+
+  <!-- THE CASCADE -->
+  <section>
+    <h2 class="blocktitle">The Biological Cascade</h2>
+    <div class="blocksub">Three layers, all firing simultaneously. Each one compounds the others.</div>
+    <div class="blockrule"></div>
+    <div class="cascade">
+
+      <div class="cas C1">
+        <div class="ctop"><span class="cnum">1</span><span class="cname">Muscle & Metabolic Depletion</span></div>
+        <div class="cbody">
+          <p>45 minutes of intense play burns through your muscles' glycogen — the fast fuel — while producing lactate as a byproduct. Your cardiovascular system is running near its ceiling trying to clear that lactate and deliver oxygen.</p>
+          <p>This is the layer everyone recognises: <b>legs heavy, lungs burning, arms slow.</b> The body is already a diminished machine. But the deeper problem is what this depletion does to your brain.</p>
+        </div>
+      </div>
+      <div class="cas-arrow">↓ which triggers</div>
+
+      <div class="cas C2">
+        <div class="ctop"><span class="cnum">2</span><span class="cname">Prefrontal Cortex Starvation</span></div>
+        <div class="cbody">
+          <p>Your prefrontal cortex — the seat of strategic thinking, planning, and decision-making — is <b>extraordinarily metabolically expensive.</b> It is one of the first regions to get starved under severe physical stress.</p>
+          <div class="triage">
+            <div class="tt">// how your brain triages under load</div>
+            <div class="triage-row">
+              <div class="tr-box fed"><div class="trl">✓ priority — blood & glucose first</div><b>Motor cortex</b><br><span style="font-size:.78rem;color:var(--muted);">movement, coordination</span></div>
+              <div class="tr-arr">→</div>
+              <div class="tr-box fed"><div class="trl">✓ priority — kept online</div><b>Brainstem systems</b><br><span style="font-size:.78rem;color:var(--muted);">keeping you upright</span></div>
+            </div>
+            <div class="triage-row">
+              <div class="tr-box starved"><div class="trl">✗ deprioritised — starved</div><b>Prefrontal cortex</b><br><span style="font-size:.78rem;color:var(--muted);">strategy, planning, decisions</span></div>
+              <div class="tr-arr">→</div>
+              <div class="tr-box starved"><div class="trl">✗ deprioritised — shrinks</div><b>Working memory</b><br><span style="font-size:.78rem;color:var(--muted);">your mental scratchpad</span></div>
+            </div>
+          </div>
+          <p>The multi-step tactical plans you held effortlessly at minute 10 — <em>"serve short, close the net, watch for the cross"</em> — require working memory to hold simultaneously. Under fatigue, that scratchpad shrinks dramatically.</p>
+        </div>
+      </div>
+      <div class="cas-arrow">↓ then compounds with</div>
+
+      <div class="cas C3">
+        <div class="ctop"><span class="cnum">3</span><span class="cname">The Cortisol Layer</span></div>
+        <div class="cbody">
+          <p>Prolonged physical stress elevates cortisol — a stress hormone that <b>further impairs prefrontal cortex function.</b> It doesn't just add to the problem; it multiplies it.</p>
+          <p>The cascade compounds: physical depletion → glucose diverted away from PFC → cortisol rises → PFC impaired further. Each layer makes the next one worse. This is why minute 45 feels so qualitatively different from minute 20.</p>
+        </div>
+      </div>
+
+    </div>
+
+    <!-- BANDWIDTH METER -->
+    <div style="margin-top:18px;background:var(--card);border:2.5px dashed var(--ink);border-radius:14px;padding:18px 22px;">
+      <div style="font-family:'JetBrains Mono',monospace;font-size:.68rem;text-transform:uppercase;letter-spacing:.04em;color:var(--muted);font-weight:700;margin-bottom:14px;">// available cognitive bandwidth over session time</div>
+      <div class="bw-wrap">
+        <div class="bw-row">
+          <div class="bw-label">MINUTE 10</div>
+          <div class="bw-bar-bg"><div class="bw-bar" style="width:100%;background:linear-gradient(90deg,var(--teal),#4a9b8e);"></div></div>
+          <div class="bw-pct" style="color:var(--teal);">~100%</div>
+        </div>
+        <div class="bw-row">
+          <div class="bw-label">MINUTE 20</div>
+          <div class="bw-bar-bg"><div class="bw-bar" style="width:78%;background:linear-gradient(90deg,var(--olive),#8a9a50);"></div></div>
+          <div class="bw-pct" style="color:var(--olive);">~78%</div>
+        </div>
+        <div class="bw-row">
+          <div class="bw-label">MINUTE 30</div>
+          <div class="bw-bar-bg"><div class="bw-bar" style="width:52%;background:linear-gradient(90deg,var(--gold),#c89030);"></div></div>
+          <div class="bw-pct" style="color:var(--gold);">~52%</div>
+        </div>
+        <div class="bw-row">
+          <div class="bw-label">MINUTE 45</div>
+          <div class="bw-bar-bg"><div class="bw-bar" style="width:22%;background:linear-gradient(90deg,var(--rust),#a03a20);"></div></div>
+          <div class="bw-pct" style="color:var(--rust);">~22%</div>
+        </div>
+      </div>
+      <div class="bw-note">Approximate — varies by fitness level. Elite players' curves are flatter. The principle holds universally.</div>
+    </div>
+  </section>
+
+  <!-- IN THE MOMENT -->
+  <section>
+    <h2 class="blocktitle">In the Moment — When You're Already Cooked</h2>
+    <div class="blocksub">Three levers. Applied in order of priority.</div>
+    <div class="blockrule"></div>
+
+    <!-- ONE DECISION -->
+    <div class="one-decision">
+      <div class="odl">// the primary fix</div>
+      <div class="odbig">Collapse to <em>One-Decision Badminton.</em><br>Pick one rule. Execute only that.</div>
+      <p>Do not try to run complex strategy when you have no bandwidth for it. That's like solving algebra while half asleep. Instead, pick one simple rule before the point starts — and let the rule do the thinking for you. Your prefrontal cortex doesn't have to generate strategy in real time if the strategy is already pre-loaded.</p>
+      <div class="rule-chips" style="margin-top:18px;">
+        <div class="rule-chip">"Every shot goes to his backhand corner."</div>
+        <div class="rule-chip">"I will lift everything high and deep and recover centre."</div>
+        <div class="rule-chip">"I only attack when the shuttle is above net height."</div>
+      </div>
+    </div>
+
+    <div class="levers">
+
+      <div class="lev L1">
+        <div class="ltop"><span class="lnum">LEVER 1</span><span class="lname">Use Every Dead Moment to Recover — Not to Think</span><span class="ltag">between points</span></div>
+        <div class="lbody">
+          <p>The moment the rally ends, your job is <b>breathing, not analysis.</b> Your body clears lactate during rest intervals. Proper breathing is the fastest lever you have on recovery rate.</p>
+          <div class="breath">
+            <div class="br-box exhale"><div class="brl">step 1 — first</div><b>Deep exhale</b><p>Forces diaphragm down, clears CO₂, signals the parasympathetic system</p></div>
+            <div class="br-arr">→</div>
+            <div class="br-box inhale"><div class="brl">step 2 — then</div><b>Full inhale</b><p>Now oxygen comes in with full capacity — not before</p></div>
+          </div>
+          <p>Don't stand there mentally replaying the last point. That costs you <b>recovery time and cognitive energy simultaneously</b> — the two resources you can least afford to waste right now.</p>
+        </div>
+      </div>
+
+      <div class="lev L2">
+        <div class="ltop"><span class="lnum">LEVER 2</span><span class="lname">Slow the Game Down — Deliberately</span><span class="ltag">remove pace, hurt them too</span></div>
+        <div class="lbody">
+          <p>At this stage, pace is your enemy. Take your full time between points. Bounce the shuttle a few extra times before serving. <b>Walk, don't jog,</b> to your position.</p>
+          <div class="pace-vs">
+            <div class="pv wrong">✗ Most players speed up under fatigue — anxiety rises, they rush to get the point over with</div>
+            <div class="pv right">✓ The correct move is the opposite — slow everything down. Your opponent is also tired. Removing pace hurts them too.</div>
+          </div>
+          <p>This is one of the simplest tactical moves available to you at minute 45, and almost nobody uses it consciously because anxiety overrides judgment. <b>Slow is the strategy.</b></p>
+        </div>
+      </div>
+
+      <div class="lev L3">
+        <div class="ltop"><span class="lnum">LEVER 3</span><span class="lname">One-Decision Badminton — Pick the Rule Before the Point</span><span class="ltag">pre-load the strategy</span></div>
+        <div class="lbody">
+          <p>This is how experienced players look structured even when visibly exhausted. <b>They're not thinking more. They're thinking less</b> — but better, because what they're thinking is pared down to exactly what the moment requires.</p>
+          <p>Pick your rule in the 5 seconds before you serve or receive. The rule persists for the entire point. You are not deciding during the rally — the rally just executes the pre-loaded decision. That is the <b>entire cognitive load</b> available to you, used efficiently.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- LONG TERM -->
+  <section>
+    <h2 class="blocktitle">Over Time — The Structural Fixes</h2>
+    <div class="blocksub">The in-the-moment levers buy you the session. These fixes raise the ceiling permanently.</div>
+    <div class="blockrule"></div>
+
+    <div class="fixes">
+      <div class="fix A">
+        <div class="fi">🫀</div>
+        <h4>Raise Your Aerobic Base</h4>
+        <p>The real answer to "I can't think at minute 45" is that your aerobic base isn't yet high enough that <b>minute 45 feels like minute 15.</b> As fitness improves, the threshold at which your prefrontal cortex gets starved shifts later and later into the session.</p>
+        <div style="margin-top:12px;">
+          <div class="threshold">
+            <div class="tht">// cognitive collapse threshold — by fitness level</div>
+            <div class="th-row">
+              <div class="th-label"><span style="color:var(--muted);">Beginner</span><span class="th-tag">PFC starved early</span></div>
+              <div class="th-bar-bg"><div class="th-bar" style="width:100%;background:var(--paper-2);"><div class="th-marker" style="left:28%;background:var(--rust);width:3px;"></div></div></div>
+              <div style="font-size:.72rem;color:var(--rust);font-family:'JetBrains Mono',monospace;font-weight:700;margin-top:2px;">collapse ~min 25</div>
+            </div>
+            <div class="th-row">
+              <div class="th-label"><span style="color:var(--olive);">Intermediate</span><span class="th-tag">more runway</span></div>
+              <div class="th-bar-bg"><div class="th-bar" style="width:100%;background:var(--paper-2);"><div class="th-marker" style="left:50%;background:var(--olive);width:3px;"></div></div></div>
+              <div style="font-size:.72rem;color:var(--olive);font-family:'JetBrains Mono',monospace;font-weight:700;margin-top:2px;">collapse ~min 40</div>
+            </div>
+            <div class="th-row">
+              <div class="th-label"><span style="color:var(--teal);">Advanced</span><span class="th-tag">much later</span></div>
+              <div class="th-bar-bg"><div class="th-bar" style="width:100%;background:var(--paper-2);"><div class="th-marker" style="left:74%;background:var(--teal);width:3px;"></div></div></div>
+              <div style="font-size:.72rem;color:var(--teal);font-family:'JetBrains Mono',monospace;font-weight:700;margin-top:2px;">collapse ~min 65</div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="fix B">
+        <div class="fi">🧠</div>
+        <h4>Train Decisions While Fatigued</h4>
+        <p>Most people drill when fresh, then play matches when tired. That means you've <b>never trained the fatigued brain to make decisions.</b> The degradation feels total because it's never been conditioned.</p>
+        <p style="margin-top:10px;">The fix: at the end of a hard session, when you're already exhausted, run short tactical drills where you make a deliberate choice on <b>every single shot</b> — even a simple one.</p>
+        <div style="background:rgba(109,68,103,.12);border-left:4px solid var(--plum);border-radius:8px;padding:12px 16px;margin-top:12px;">
+          <p style="font-family:'Fraunces',serif;font-style:italic;font-size:.95rem;color:var(--plum);">"Teach your brain to function under oxygen debt. Over time, the degradation curve flattens."</p>
+          <p style="font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--plum);font-weight:700;text-transform:uppercase;letter-spacing:.03em;margin-top:6px;">↳ this is what elite conditioning actually trains</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ELITE VS NOVICE -->
+  <section>
+    <h2 class="blocktitle">Why Elite Players Look Calm When Exhausted</h2>
+    <div class="blocksub">It's not that they're not tired. It's that their game was designed for this state.</div>
+    <div class="blockrule"></div>
+    <div class="elite-vs">
+      <div class="ev novice">
+        <div class="evl">// untrained response to fatigue</div>
+        <p>Tries to maintain full strategic complexity. Bandwidth runs out. Execution collapses. Frustration compounds the cognitive drain. Plays worse and <b>doesn't understand why.</b></p>
+      </div>
+      <div class="ev elite">
+        <div class="evl">// trained response to fatigue</div>
+        <p>Pre-loads one simple rule before the point. Breathes between rallies. Slows the pace deliberately. <b>Appears calm and structured</b> — not because they have more bandwidth, but because they need less.</p>
+      </div>
+    </div>
+    <div style="background:rgba(217,164,65,.14);border:2px dashed var(--gold);border-radius:14px;padding:16px 22px;text-align:center;font-size:1.04rem;margin-top:14px;">
+      The live recall and composed execution everyone admires in advanced players is <b>built on top of hundreds of reps of deliberately practising under fatigue.</b> You don't start there. You arrive there.
+    </div>
+  </section>
+
+  <!-- CLOSING REFRAME -->
+  <section style="margin-bottom:0;">
+    <div class="closing">
+      <div class="cvl">// the reframe that holds it all together</div>
+      <div class="cvbig">Stop trying to think more at minute 45.<br>Think <em>less — but better.</em></div>
+      <p>One rule, pre-loaded. Breathing between points, not analysis. Game pace slowed. These three things are not workarounds for exhaustion — they <b>are</b> the strategy. The player who wins late in a session is the one whose entire game was designed to need the fewest cognitive resources at the hardest moment.</p>
+    </div>
+  </section>
+
+  <footer>
+    <em>Your biology is not your enemy. It's the playing field. Design your game around it.</em>
+    <p style="margin-top:10px;">Cascade understood → one-decision rule pre-loaded → breathe between points → slow the pace → train decisions while fatigued → raise the aerobic floor. That's the full stack.</p>
+  </footer>
+
+</div>
+</body>
+</html>

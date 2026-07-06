@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Association Wheel — Mental Model</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,400;9..144,600;9..144,900&family=Spline+Sans:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#1c1814;--paper:#f4ece0;--paper-2:#ebe0cf;--card:#fffaf2;
+    --rust:#c1502e;--rust-deep:#9c3a1c;--teal:#2f6b63;--gold:#d9a441;
+    --olive:#6b7340;--plum:#6d4467;--blue:#3a6b8c;--line:#cdbfa9;--muted:#6b6052;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{font-family:'Spline Sans',sans-serif;
+    background:radial-gradient(circle at 10% 3%,rgba(217,164,65,.10),transparent 36%),
+      radial-gradient(circle at 92% 98%,rgba(109,68,103,.10),transparent 38%),var(--paper);
+    color:var(--ink);line-height:1.55;-webkit-font-smoothing:antialiased;}
+  .wrap{max-width:1100px;margin:0 auto;padding:48px 24px 90px;}
+  .mono{font-family:'JetBrains Mono',monospace;}
+
+  /* HEADER */
+  header{text-align:center;margin-bottom:38px;}
+  .kicker{display:inline-block;font-size:.82rem;letter-spacing:.3em;text-transform:uppercase;
+    font-weight:600;color:var(--rust-deep);border:1.5px solid var(--rust);padding:9px 20px;border-radius:40px;margin-bottom:24px;background:var(--card);}
+  h1{font-family:'Fraunces',serif;font-weight:900;line-height:.95;font-size:clamp(2.2rem,6vw,4.4rem);letter-spacing:-.02em;}
+  h1 em{font-style:italic;color:var(--rust);}
+  .sub{max-width:760px;margin:20px auto 0;font-size:clamp(1.05rem,2vw,1.28rem);color:var(--muted);}
+  .realize{max-width:720px;margin:26px auto 0;background:var(--ink);color:var(--paper);border-radius:16px;padding:22px 30px;box-shadow:6px 6px 0 var(--plum);}
+  .realize .rl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:8px;}
+  .realize p{font-family:'Fraunces',serif;font-size:1.25rem;line-height:1.35;}
+  .realize p b{color:var(--gold);}
+  .realize .small{font-family:'Spline Sans',sans-serif;font-size:.98rem;color:#cdbfa9;margin-top:8px;font-weight:400;}
+
+  /* SECTION */
+  section{margin-bottom:54px;max-width:1040px;margin-left:auto;margin-right:auto;}
+  .blocktitle{font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.6rem,4vw,2.4rem);text-align:center;margin-bottom:4px;letter-spacing:-.01em;}
+  .blocksub{text-align:center;color:var(--muted);font-size:1.05rem;max-width:700px;margin:6px auto 22px;}
+  .blockrule{height:3px;background:linear-gradient(90deg,transparent,var(--rust),transparent);margin:12px auto 26px;border-radius:2px;max-width:460px;}
+
+  /* CENTER + COMPASS HINT */
+  .compass{text-align:center;margin-bottom:24px;}
+  .compass .center{display:inline-block;background:var(--plum);color:#fff;border-radius:14px;padding:14px 30px;font-family:'Fraunces',serif;font-weight:900;font-size:1.4rem;box-shadow:5px 5px 0 var(--ink);}
+  .compass p{margin-top:12px;color:var(--muted);font-size:.98rem;font-style:italic;}
+
+  /* 15 WHEEL CARDS */
+  .wheel{display:grid;grid-template-columns:repeat(3,1fr);gap:13px;}
+  @media(max-width:780px){.wheel{grid-template-columns:1fr 1fr;}}
+  @media(max-width:500px){.wheel{grid-template-columns:1fr;}}
+  .dir{background:var(--card);border:2.5px solid var(--ink);border-radius:14px;padding:15px 17px;box-shadow:4px 4px 0 var(--ink);}
+  .dir .dh{display:flex;align-items:baseline;gap:9px;margin-bottom:7px;}
+  .dir .dn{font-family:'JetBrains Mono',monospace;font-size:.72rem;font-weight:700;color:#fff;background:var(--plum);width:24px;height:24px;border-radius:6px;display:flex;align-items:center;justify-content:center;flex-shrink:0;}
+  .dir h4{font-family:'Fraunces',serif;font-size:1.12rem;font-weight:600;line-height:1.05;}
+  .dir .ask{font-size:.85rem;color:var(--rust-deep);font-style:italic;margin-bottom:8px;}
+  .dir .chips{display:flex;flex-wrap:wrap;gap:5px;margin-bottom:6px;}
+  .dir .chip{background:var(--paper-2);border-radius:30px;padding:2px 9px;font-size:.78rem;}
+  .dir .seed{font-family:'JetBrains Mono',monospace;font-size:.64rem;color:var(--muted);font-weight:700;text-transform:uppercase;letter-spacing:.04em;margin-bottom:5px;}
+  .dir .note{font-size:.78rem;color:var(--muted);font-style:italic;margin-top:4px;}
+  .dir.hot{border-color:var(--rust);box-shadow:4px 4px 0 var(--rust);}
+  .dir.hot .dn{background:var(--rust);}
+  .dir.hot .hottag{display:inline-block;font-family:'JetBrains Mono',monospace;font-size:.54rem;background:var(--rust);color:#fff;padding:2px 6px;border-radius:4px;font-weight:700;letter-spacing:.04em;margin-left:6px;vertical-align:middle;}
+
+  /* SECOND LAYER CHAIN */
+  .chain2{background:var(--ink);color:var(--paper);border-radius:18px;padding:28px 32px;box-shadow:7px 7px 0 var(--gold);}
+  .chain2 .cl{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--gold);font-weight:700;text-align:center;margin-bottom:18px;}
+  .chain2 .flow{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;gap:8px;}
+  .chain2 .cn{background:rgba(255,255,255,.08);border-radius:9px;padding:9px 14px;font-size:.92rem;}
+  .chain2 .cn .clab{display:block;font-family:'JetBrains Mono',monospace;font-size:.56rem;letter-spacing:.05em;text-transform:uppercase;color:var(--gold);font-weight:700;margin-bottom:2px;}
+  .chain2 .car{color:var(--rust);font-weight:700;font-size:1.1rem;}
+  .chain2 .punch{margin-top:20px;text-align:center;background:rgba(217,164,65,.16);border-radius:12px;padding:16px 22px;font-family:'Fraunces',serif;font-style:italic;font-size:1.25rem;color:#ffe3b0;}
+
+  /* RECURSIVE TREE */
+  .recursive{background:rgba(109,68,103,.08);border:2px dashed var(--plum);border-radius:14px;padding:18px 24px;margin-bottom:18px;text-align:center;font-size:1.08rem;}
+  .recursive strong{color:var(--plum);}
+  .tree{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:28px 32px;box-shadow:7px 7px 0 var(--plum);max-width:620px;margin:0 auto;font-family:'JetBrains Mono',monospace;}
+  .tree .tl{font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--plum);font-weight:700;text-align:center;margin-bottom:18px;}
+  .tree .troot{background:var(--plum);color:#fff;border-radius:8px;padding:9px 16px;font-family:'Fraunces',serif;font-weight:700;font-size:1.1rem;display:inline-block;margin-bottom:6px;}
+  .tree .tbranch{margin-left:8px;border-left:2px solid var(--line);padding-left:16px;margin-top:8px;}
+  .tree .tb1{font-weight:700;color:var(--rust-deep);font-size:.95rem;padding:5px 0;}
+  .tree .tkids{margin-left:6px;border-left:1.5px dashed var(--line);padding-left:14px;}
+  .tree .tk{font-size:.86rem;color:var(--muted);padding:2px 0;}
+  .tree-foot{text-align:center;margin-top:16px;font-family:'Spline Sans',sans-serif;font-style:italic;font-size:1.05rem;color:var(--plum);}
+
+  /* COMEDIANS CHAIN */
+  .explorer{background:var(--card);border:3px solid var(--ink);border-radius:18px;padding:26px 30px;box-shadow:6px 6px 0 var(--rust);}
+  .explorer .el{font-family:'JetBrains Mono',monospace;font-size:.7rem;letter-spacing:.1em;text-transform:uppercase;color:var(--rust);font-weight:700;margin-bottom:6px;text-align:center;}
+  .explorer .ebig{font-family:'Fraunces',serif;font-weight:600;font-size:1.3rem;text-align:center;margin-bottom:18px;}
+  .explorer .ebig em{color:var(--rust);font-style:italic;}
+  .explorer .echain{display:flex;flex-direction:column;gap:5px;max-width:420px;margin:0 auto;}
+  .explorer .ec{background:var(--paper-2);border-radius:8px;padding:8px 16px;text-align:center;font-size:.96rem;}
+  .explorer .ecd{text-align:center;color:var(--rust);line-height:.7;font-size:.9rem;}
+  .explorer .efinal{background:var(--gold);color:var(--ink);font-weight:700;border-radius:8px;padding:12px 16px;text-align:center;font-family:'Fraunces',serif;font-style:italic;font-size:1.1rem;margin-top:8px;}
+
+  /* TOP 3 FOR COMEDY */
+  .top3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;}
+  @media(max-width:680px){.top3{grid-template-columns:1fr;}}
+  .t3{border-radius:16px;padding:22px 24px;border:3px solid var(--ink);box-shadow:6px 6px 0 var(--ink);text-align:center;}
+  .t3.c1{background:rgba(193,80,46,.08);border-color:var(--rust);box-shadow:6px 6px 0 var(--rust);}
+  .t3.c2{background:rgba(47,107,99,.08);border-color:var(--teal);box-shadow:6px 6px 0 var(--teal);}
+  .t3.c3{background:rgba(109,68,103,.1);border-color:var(--plum);box-shadow:6px 6px 0 var(--plum);}
+  .t3 h4{font-family:'Fraunces',serif;font-size:1.3rem;font-weight:600;margin-bottom:6px;}
+  .t3 .ask{font-size:.95rem;color:var(--muted);margin-bottom:10px;}
+  .t3 .lives{font-family:'JetBrains Mono',monospace;font-size:.74rem;font-weight:700;padding:6px 12px;border-radius:30px;display:inline-block;}
+  .t3.c1 .lives{background:rgba(193,80,46,.16);color:var(--rust-deep);}
+  .t3.c2 .lives{background:rgba(47,107,99,.16);color:var(--teal);}
+  .t3.c3 .lives{background:rgba(109,68,103,.16);color:var(--plum);}
+
+  /* EXERCISE */
+  .exercise{background:var(--rust);color:#fff;border-radius:22px;padding:42px 40px;text-align:center;box-shadow:8px 8px 0 var(--ink);max-width:940px;margin:0 auto;}
+  .exercise .xl{font-family:'JetBrains Mono',monospace;font-size:.76rem;letter-spacing:.18em;text-transform:uppercase;opacity:.85;margin-bottom:16px;}
+  .exercise .xbig{font-family:'Fraunces',serif;font-weight:900;font-size:clamp(1.4rem,3.6vw,2.1rem);line-height:1.18;margin-bottom:6px;}
+  .exercise .xseed{font-family:'JetBrains Mono',monospace;font-size:1rem;background:rgba(255,255,255,.16);border-radius:8px;padding:6px 16px;display:inline-block;margin-bottom:20px;}
+  .exercise .xgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;max-width:560px;margin:0 auto 20px;}
+  @media(max-width:540px){.exercise .xgrid{grid-template-columns:1fr 1fr;}}
+  .exercise .xg{background:rgba(255,255,255,.14);border-radius:10px;padding:12px 8px;}
+  .exercise .xg .xn{font-family:'Fraunces',serif;font-weight:900;font-size:1.5rem;color:#ffe3b0;}
+  .exercise .xg .xt{font-size:.84rem;opacity:.92;}
+  .exercise .xnot{font-style:italic;opacity:.9;margin-bottom:8px;}
+  .exercise .xforest{background:#fff;color:var(--rust-deep);border-radius:14px;padding:18px 24px;font-family:'Fraunces',serif;font-weight:600;font-size:clamp(1.05rem,2.5vw,1.35rem);max-width:640px;margin:18px auto 0;}
+
+  footer{text-align:center;color:var(--muted);font-size:1.02rem;margin-top:48px;border-top:2px solid var(--line);padding-top:28px;max-width:760px;margin-left:auto;margin-right:auto;}
+  footer em{font-family:'Fraunces',serif;font-style:italic;color:var(--rust);font-size:1.22rem;}
+</style>
+</head>
+<body>
+<div class="wrap">
+
+  <header>
+    <div class="kicker">The Association Wheel</div>
+    <h1>How to Explore<br>the Space Around <em>an Idea</em></h1>
+    <p class="sub">This is deeper than comedy — it's a creativity skill, useful in humor, writing, science, philosophy, business, invention, and storytelling. And it can be trained.</p>
+    <div class="realize">
+      <div class="rl">// the biggest realization</div>
+      <p>Most people think associations are <b>random</b>. They're not.</p>
+      <p class="small">The brain travels through a finite number of relationship types. Once you know the categories, creativity becomes trainable — you're choosing roads, not waiting for lightning.</p>
+    </div>
+  </header>
+
+  <!-- THE 15 DIRECTIONS -->
+  <section>
+    <h2 class="blocktitle">The 15 Directions</h2>
+    <div class="blocksub">For any object, person, situation, or concept, there are roughly fifteen roads leading out from the center.</div>
+    <div class="blockrule"></div>
+    <div class="compass">
+      <div class="center">ANY IDEA</div>
+      <p>…now pick a road. Most people only ever walk the first one.</p>
+    </div>
+    <div class="wheel">
+      <div class="dir"><div class="dh"><span class="dn">1</span><h4>Properties</h4></div><div class="ask">What qualities define it?</div><div class="seed">coffee</div><div class="chips"><span class="chip">hot</span><span class="chip">bitter</span><span class="chip">energizing</span><span class="chip">addictive</span></div><div class="note">the first layer — most people stop here</div></div>
+      <div class="dir"><div class="dh"><span class="dn">2</span><h4>Opposites</h4></div><div class="ask">What's the exact opposite?</div><div class="seed">coffee</div><div class="chips"><span class="chip">sleep</span><span class="chip">relaxation</span><span class="chip">calmness</span><span class="chip">bedtime</span></div><div class="note">opposites create tension</div></div>
+      <div class="dir"><div class="dh"><span class="dn">3</span><h4>Causes</h4></div><div class="ask">Why does this exist?</div><div class="seed">coffee</div><div class="chips"><span class="chip">fatigue</span><span class="chip">work</span><span class="chip">long hours</span><span class="chip">deadlines</span></div><div class="note">backward in the causal chain</div></div>
+      <div class="dir"><div class="dh"><span class="dn">4</span><h4>Consequences</h4></div><div class="ask">What happens because of it?</div><div class="seed">coffee</div><div class="chips"><span class="chip">energy</span><span class="chip">jitters</span><span class="chip">productivity</span><span class="chip">insomnia</span></div><div class="note">forward in the causal chain</div></div>
+      <div class="dir"><div class="dh"><span class="dn">5</span><h4>Parts</h4></div><div class="ask">What components make it up?</div><div class="seed">car</div><div class="chips"><span class="chip">wheels</span><span class="chip">engine</span><span class="chip">seats</span><span class="chip">steering wheel</span></div><div class="note">breaking apart creates observations</div></div>
+      <div class="dir"><div class="dh"><span class="dn">6</span><h4>Whole</h4></div><div class="ask">What larger system is it part of?</div><div class="seed">wheel</div><div class="chips"><span class="chip">car</span><span class="chip">transport</span><span class="chip">economy</span><span class="chip">civilization</span></div><div class="note">zoom out</div></div>
+      <div class="dir"><div class="dh"><span class="dn">7</span><h4>Similar Things</h4></div><div class="ask">What has the same function?</div><div class="seed">coffee</div><div class="chips"><span class="chip">energy drinks</span><span class="chip">tea</span><span class="chip">cocaine (comedically)</span></div><div class="note">analogies appear</div></div>
+      <div class="dir"><div class="dh"><span class="dn">8</span><h4>Categories</h4></div><div class="ask">What category does it belong to?</div><div class="seed">coffee</div><div class="chips"><span class="chip">beverages</span><span class="chip">stimulants</span><span class="chip">morning rituals</span></div><div class="note">abstraction (zoom up)</div></div>
+      <div class="dir"><div class="dh"><span class="dn">9</span><h4>Examples</h4></div><div class="ask">What are specific examples?</div><div class="seed">transportation</div><div class="chips"><span class="chip">cars</span><span class="chip">bikes</span><span class="chip">trains</span></div><div class="note">concretizing (zoom down)</div></div>
+      <div class="dir"><div class="dh"><span class="dn">10</span><h4>Metaphors</h4></div><div class="ask">What else feels like this?</div><div class="seed">coffee</div><div class="chips"><span class="chip">liquid motivation</span><span class="chip">adult fuel</span><span class="chip">morning software update</span></div><div class="note">a major joke source</div></div>
+      <div class="dir hot"><div class="dh"><span class="dn">11</span><h4>Human Motivations</h4></div><div class="ask">What human desire connects to it?</div><div class="seed">coffee</div><div class="chips"><span class="chip">achievement</span><span class="chip">productivity</span><span class="chip">survival</span><span class="chip">belonging</span></div><div class="note">comedy often lives here</div></div>
+      <div class="dir"><div class="dh"><span class="dn">12</span><h4>Emotional</h4></div><div class="ask">What emotions does it create?</div><div class="seed">coffee</div><div class="chips"><span class="chip">comfort</span><span class="chip">anxiety</span><span class="chip">alertness</span></div><div class="note">humans think emotionally</div></div>
+      <div class="dir"><div class="dh"><span class="dn">13</span><h4>Cultural</h4></div><div class="ask">What does society associate with it?</div><div class="seed">coffee</div><div class="chips"><span class="chip">offices</span><span class="chip">writers</span><span class="chip">students</span><span class="chip">corporate life</span></div><div class="note">creates relatable humor</div></div>
+      <div class="dir hot"><div class="dh"><span class="dn">14</span><h4>Extreme Versions</h4></div><div class="ask">What if it were 100× larger?</div><div class="seed">coffee</div><div class="chips"><span class="chip">drinks 40 cups</span><span class="chip">heart enters another dimension</span></div><div class="note">exaggeration emerges</div></div>
+      <div class="dir hot"><div class="dh"><span class="dn">15</span><h4>Hypotheticals<span class="hottag">strongest</span></h4></div><div class="ask">What if it worked differently?</div><div class="seed">coffee</div><div class="chips"><span class="chip">what if it made you sleep?</span><span class="chip">what if kids needed it?</span><span class="chip">what if coffee got addicted to humans?</span></div><div class="note">one of the strongest generators</div></div>
+    </div>
+  </section>
+
+  <!-- SECOND LAYER -->
+  <section>
+    <h2 class="blocktitle">The Second Layer — Chaining</h2>
+    <div class="blocksub">Most people perform one expansion. Creative people chain them — each answer becomes the next question.</div>
+    <div class="blockrule"></div>
+    <div class="chain2">
+      <div class="cl">// coffee, expanded five times</div>
+      <div class="flow">
+        <span class="cn"><span class="clab">start</span>Coffee</span>
+        <span class="car">→</span>
+        <span class="cn"><span class="clab">property</span>Energizing</span>
+        <span class="car">→</span>
+        <span class="cn"><span class="clab">cause</span>Work</span>
+        <span class="car">→</span>
+        <span class="cn"><span class="clab">emotion</span>Stress</span>
+        <span class="car">→</span>
+        <span class="cn"><span class="clab">extreme</span>Mental breakdown</span>
+        <span class="car">→</span>
+        <span class="cn"><span class="clab">metaphor</span>Windows crashing</span>
+      </div>
+      <div class="punch">"Coffee is basically pressing Ctrl+Alt+Delete on your soul."</div>
+    </div>
+  </section>
+
+  <!-- RECURSIVE TREE -->
+  <section>
+    <h2 class="blocktitle">The Recursive Rule</h2>
+    <div class="blocksub">Every association becomes a new center — so the space never runs out.</div>
+    <div class="blockrule"></div>
+    <div class="recursive">Expand <strong>Security Guard</strong> → get <strong>Protection</strong> → now treat <strong>Protection</strong> as the center and expand <em>that</em>. Each node spawns more nodes.</div>
+    <div class="tree">
+      <div class="tl">// the association tree</div>
+      <span class="troot">Security Guard</span>
+      <div class="tbranch">
+        <div class="tb1">├─ Protection</div>
+        <div class="tkids"><div class="tk">├─ Safety</div><div class="tk">├─ Awareness</div><div class="tk">└─ Vigilance</div></div>
+        <div class="tb1">├─ Sleep</div>
+        <div class="tkids"><div class="tk">├─ Dreams</div><div class="tk">├─ Laziness</div><div class="tk">└─ Fatigue</div></div>
+        <div class="tb1">└─ Authority</div>
+        <div class="tkids"><div class="tk">├─ Uniform</div><div class="tk">├─ Rules</div><div class="tk">└─ Responsibility</div></div>
+      </div>
+      <div class="tree-foot">…and this can continue indefinitely.</div>
+    </div>
+  </section>
+
+  <!-- WHAT COMEDIANS DO -->
+  <section>
+    <div class="explorer">
+      <div class="el">// what comedians actually do</div>
+      <div class="ebig">They're not better joke writers.<br>They're better <em>explorers</em>.</div>
+      <div class="echain">
+        <div class="ec">Security guard sleeping</div>
+        <div class="ecd">↓</div>
+        <div class="ec">Protection</div>
+        <div class="ecd">↓</div>
+        <div class="ec">Scarecrow</div>
+        <div class="ecd">↓</div>
+        <div class="ec">Fake protection</div>
+        <div class="ecd">↓</div>
+        <div class="ec">Birds ignore the scarecrow</div>
+        <div class="ecd">↓</div>
+        <div class="ec">Criminals ignore the guard</div>
+        <div class="efinal">"Criminals probably tuck him in before robbing the place."</div>
+      </div>
+      <p style="text-align:center;margin-top:16px;color:var(--muted);font-style:italic;">The joke isn't magic — it's the endpoint of a chain.</p>
+    </div>
+  </section>
+
+  <!-- TOP 3 FOR COMEDY -->
+  <section>
+    <h2 class="blocktitle">The Three Highest-Yield Roads</h2>
+    <div class="blocksub">Of the fifteen, three produce a disproportionate amount of humor.</div>
+    <div class="blockrule"></div>
+    <div class="top3">
+      <div class="t3 c1"><h4>Consequences</h4><div class="ask">If true… then what else is true?</div><div class="lives">sitcoms live here</div></div>
+      <div class="t3 c2"><h4>Analogies</h4><div class="ask">What else has the same structure?</div><div class="lives">stand-up lives here</div></div>
+      <div class="t3 c3"><h4>Hypotheticals</h4><div class="ask">What if it were pushed further?</div><div class="lives">absurdism lives here</div></div>
+    </div>
+  </section>
+
+  <!-- EXERCISE -->
+  <section style="margin-bottom:0;">
+    <div class="exercise">
+      <div class="xl">// the exercise to actually train it</div>
+      <div class="xbig">Take one observation. Generate the network — not jokes.</div>
+      <div class="xseed">e.g. "Gym membership"</div>
+      <div class="xgrid">
+        <div class="xg"><div class="xn">10</div><div class="xt">properties</div></div>
+        <div class="xg"><div class="xn">10</div><div class="xt">causes</div></div>
+        <div class="xg"><div class="xn">10</div><div class="xt">consequences</div></div>
+        <div class="xg"><div class="xn">10</div><div class="xt">analogies</div></div>
+        <div class="xg"><div class="xn">10</div><div class="xt">extremes</div></div>
+        <div class="xg"><div class="xn">10</div><div class="xt">hypotheticals</div></div>
+      </div>
+      <p class="xnot">Joke writing is the <em>downstream</em> skill. The upstream skill is building a rich network around the idea.</p>
+      <div class="xforest">Once the network is large enough, you're no longer staring at one observation — you're standing in a forest of directions, choosing the path most likely to create surprise.</div>
+    </div>
+  </section>
+
+  <footer>
+    <em>Creativity isn't lightning. It's knowing which roads lead out of town.</em>
+    <p style="margin-top:10px;">The people who seem endlessly witty aren't seeing one idea — they're seeing a branching tree of hundreds, and rapidly exploring the branches most likely to surprise.</p>
+  </footer>
+
+</div>
+</body>
+</html>
