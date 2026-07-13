@@ -324,10 +324,24 @@ def build_page_html(relpath, family, entry, local=None):
 
 def _b64(h): return base64.b64encode(h.encode('utf-8')).decode('ascii')
 
+def make_mvp_app():
+    b = "/sessions/eloquent-awesome-knuth/mnt/outputs/"
+    tpl  = open(b + "mvp_app_template.html", encoding="utf-8").read()
+    vlib = open(b + "vizlib.js", encoding="utf-8").read()
+    data = json.dumps(json.load(open(b + "mvp.json", encoding="utf-8")), ensure_ascii=False)
+    return tpl.replace("__VIZLIB__", vlib).replace("__DATA__", data)
+
 # Pass 1 — leaf versions (no local map). This is what the hosted site serves and what gets
 # embedded inside shells so tabs/links also work when the file is opened locally (file://).
 for pid, relpath, name, icon, blurb in TOP_PAGES:
     fam = "brain" if pid == "brain" else ""
+    if pid == "mvp":
+        # MVP is now a modern data-driven app (no MVP_SKIN, no HOME_PANELS).
+        nm = os.path.basename(relpath)  # keep filename minimum-viable-personality.html
+        h  = inject(make_mvp_app().encode('utf-8'), 'minimum-viable-personality.html', '', True)
+        assets[nm] = _b64(h)
+        pages_meta.append({"id": pid, "name": name, "icon": icon, "blurb": blurb, "featured": pid in FEATURED, "file": nm})
+        continue
     nm, h = build_page_html(relpath, fam, True)
     assets[nm] = _b64(h)
     pages_meta.append({"id": pid, "name": name, "icon": icon, "blurb": blurb, "featured": pid in FEATURED, "file": nm})
@@ -557,9 +571,11 @@ def make_workout_app():
     tpl  = open(b + "workout_app_template.html", encoding="utf-8").read()
     vlib = open(b + "vizlib.js", encoding="utf-8").read()
     tax  = json.load(open(b + "workout_taxonomy.json", encoding="utf-8"))
+    howto = json.load(open(b + "workout_howto.json", encoding="utf-8"))
     board = base64.b64encode(open(b + "workout_board.jpg", "rb").read()).decode("ascii")
     return (tpl.replace("__VIZLIB__", vlib)
                .replace("__TAXO__", json.dumps(tax, ensure_ascii=False))
+               .replace("__HOWTO__", json.dumps(howto, ensure_ascii=False))
                .replace("__BOARD__", board))
 
 def make_cricket_app():

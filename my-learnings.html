@@ -1,0 +1,366 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>My Learnings — Development &gt; Premise</title>
+<style>
+:root{
+  --bg:#f6f7f9; --ink:#1c2431; --dim:#6b7280; --line:#e7e9ee; --line2:#dcdfe6;
+  --accent:#4f46e5; --accent2:#7c6cff; --soft:rgba(79,70,229,.08);
+  --card:#ffffff; --shadow:0 1px 2px rgba(20,25,40,.05),0 8px 24px rgba(20,25,40,.06);
+  --seed:#0ea5e9; --seed-soft:rgba(14,165,233,.10);
+  --craft:#16a34a; --craft-soft:rgba(22,163,74,.12);
+  --gold:#d97706; --gold-soft:rgba(217,119,6,.12);
+  --bad:#e11d48; --bad-soft:rgba(225,29,72,.10);
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1117; --ink:#e8eaf0; --dim:#9aa1ad; --line:#242835; --line2:#2e3444;
+    --soft:rgba(124,108,255,.12); --card:#161a23; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35); }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 12% -10%,rgba(79,70,229,.08),transparent 60%),
+    radial-gradient(1000px 520px at 100% 0%,rgba(22,163,74,.06),transparent 55%),
+    var(--bg);
+  color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+
+header.top{position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--line)}
+.top-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:11px 22px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:14.5px;letter-spacing:-.01em;white-space:nowrap}
+.brand span{color:var(--accent)}
+nav.tabs{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
+nav.tabs a{font-size:13px;color:var(--dim);padding:6px 11px;border-radius:8px;font-weight:600;text-decoration:none;transition:.15s}
+nav.tabs a:hover{background:var(--soft);color:var(--ink)}
+
+.wrap{max-width:1080px;margin:0 auto;padding:8px 22px 120px}
+
+.hero{padding:52px 0 8px;text-align:center}
+.kick{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1{font-size:clamp(32px,5.2vw,56px);line-height:1.05;letter-spacing:-1.4px;margin:14px 0 0;font-weight:850;
+  background:linear-gradient(115deg,var(--ink),var(--accent) 68%,var(--craft));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.thesis{font-size:clamp(16px,2.2vw,20px);color:var(--dim);max-width:680px;margin:20px auto 0;line-height:1.55}
+.thesis b{color:var(--ink)}
+
+.sect{margin:76px 0 0}
+.sect-h{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.sect-h .n{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.14em;
+  border:1px solid var(--line2);border-radius:20px;padding:4px 11px;background:var(--card);white-space:nowrap}
+.sect-h h2{font-size:clamp(20px,3vw,28px);margin:0;font-weight:800;letter-spacing:-.5px}
+.sect-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.sect-sub{color:var(--dim);font-size:15px;margin:8px 0 0;max-width:660px}
+
+.fig{margin:26px 0 0;background:var(--card);border:1px solid var(--line);border-radius:20px;
+  box-shadow:var(--shadow);padding:18px;overflow:hidden}
+.fig svg{display:block;width:100%;height:auto}
+.cap{font-size:12.5px;color:var(--dim);text-align:center;margin:12px 4px 2px}
+.cap b{color:var(--ink)}
+
+/* given vs built */
+.gb{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 0}
+@media(max-width:640px){.gb{grid-template-columns:1fr}}
+.gcard{border:1px solid var(--line);border-radius:18px;padding:20px;background:var(--card);box-shadow:var(--shadow)}
+.gcard.given{border-top:4px solid var(--seed)}
+.gcard.built{border-top:4px solid var(--craft)}
+.gcard .lab{font-size:12px;font-weight:800;letter-spacing:.06em;text-transform:uppercase}
+.gcard.given .lab{color:var(--seed)} .gcard.built .lab{color:var(--craft)}
+.gcard h3{margin:6px 0 12px;font-size:18px;font-weight:800;letter-spacing:-.3px}
+.tags{display:flex;flex-wrap:wrap;gap:7px}
+.tag{font-size:12.5px;font-weight:650;padding:5px 11px;border-radius:20px}
+.gcard.given .tag{background:var(--seed-soft);color:#0369a1}
+.gcard.built .tag{background:var(--craft-soft);color:#15803d}
+
+/* edge cards */
+.edges{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 0}
+@media(max-width:720px){.edges{grid-template-columns:1fr}}
+.edge{border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:16px;
+  background:var(--card);box-shadow:var(--shadow);padding:18px}
+.edge .et{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--bad)}
+.edge h4{margin:7px 0 8px;font-size:16px;font-weight:800;letter-spacing:-.2px}
+.edge p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.55}
+.edge p b{color:var(--ink)}
+.edge .rule{margin-top:12px;font-size:12.5px;font-weight:700;color:var(--accent);
+  background:var(--soft);padding:8px 12px;border-radius:12px;display:block;line-height:1.45}
+
+/* OS loop cards */
+.os{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:22px 0 0}
+.osc{border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:var(--shadow);padding:16px}
+.osc .em{font-size:26px}
+.osc .st{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.08em;margin-top:8px}
+.osc .h{font-weight:800;font-size:15px;margin:2px 0 4px}
+.osc p{margin:0;font-size:12.5px;color:var(--dim);line-height:1.5}
+
+.finale{margin:70px 0 0;border-radius:22px;padding:34px 30px;text-align:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:var(--shadow)}
+.finale .lab{font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.85;font-weight:800}
+.finale p{font-size:clamp(17px,2.6vw,22px);font-weight:700;line-height:1.42;margin:12px auto 0;max-width:760px}
+.finale .apply{margin-top:16px;display:flex;gap:8px;justify-content:center;flex-wrap:wrap}
+.finale .apply span{font-size:12px;font-weight:700;background:rgba(255,255,255,.16);padding:5px 12px;border-radius:20px}
+
+.foot{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim);text-align:center}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">Da Vinci <span>· My Learnings</span></div>
+    <nav class="tabs">
+      <a href="#p1">Seed vs Growth</a>
+      <a href="#p2">Pointed Excellence</a>
+      <a href="#edges">The Edges</a>
+      <a href="#thesis">The Thesis</a>
+      <a href="#os">My OS</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <div class="hero">
+    <div class="kick">My Learnings · Craft &amp; Systems</div>
+    <h1>Development &gt; Premise</h1>
+    <p class="thesis">The seed is handed to you. <b>The growth is craft.</b> Excellence isn’t in the starting point — it’s in everything you build on top, and in being <b>pointedly great at a coherent few</b> things rather than evenly good at all.</p>
+  </div>
+
+  <!-- HERO: seed to tree -->
+  <div class="fig">
+    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A weak seed grows into a mammoth through craft">
+      <defs>
+        <linearGradient id="trunk" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#4ade80"/></linearGradient>
+      </defs>
+      <!-- seed -->
+      <circle cx="110" cy="210" r="34" style="fill:var(--seed-soft)" stroke="#0ea5e9" stroke-width="2"/>
+      <text x="110" y="205" text-anchor="middle" font-size="24" font-family="sans-serif">🌱</text>
+      <text x="110" y="228" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0369a1" font-family="sans-serif">PREMISE</text>
+      <text x="110" y="268" text-anchor="middle" font-size="11.5" style="fill:var(--dim)" font-family="sans-serif">“people fight giants”</text>
+      <!-- arrow -->
+      <path d="M152 205 Q230 190 300 175" fill="none" stroke="#7c6cff" stroke-width="2.5" stroke-dasharray="6 6"/>
+      <text x="235" y="160" text-anchor="middle" font-size="12" style="fill:var(--dim)" font-family="sans-serif" font-style="italic">years of craft</text>
+      <!-- tree canopy -->
+      <rect x="470" y="200" width="26" height="70" rx="4" fill="url(#trunk)"/>
+      <circle cx="483" cy="150" r="72" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+      <circle cx="430" cy="185" r="42" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+      <circle cx="540" cy="185" r="42" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+      <text x="483" y="150" text-anchor="middle" font-size="34" font-family="sans-serif">🌳</text>
+      <text x="483" y="255" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d" font-family="sans-serif">MAMMOTH</text>
+      <!-- examples -->
+      <g font-family="sans-serif">
+        <rect x="640" y="70" width="220" height="52" rx="12" style="fill:var(--card)" stroke="var(--line2)"/>
+        <text x="656" y="93" font-size="12.5" font-weight="800" style="fill:var(--ink)">Attack on Titan</text>
+        <text x="656" y="110" font-size="11" style="fill:var(--dim)">one-line premise → epic system</text>
+        <rect x="640" y="132" width="220" height="52" rx="12" style="fill:var(--card)" stroke="var(--line2)"/>
+        <text x="656" y="155" font-size="12.5" font-weight="800" style="fill:var(--ink)">Hunter × Hunter</text>
+        <text x="656" y="172" font-size="11" style="fill:var(--dim)">generic shonen → sophisticated</text>
+        <rect x="640" y="194" width="220" height="52" rx="12" style="fill:var(--bad-soft)" stroke="#e11d48"/>
+        <text x="656" y="217" font-size="12.5" font-weight="800" fill="#be123c">Gifted premise, no craft</text>
+        <text x="656" y="234" font-size="11" fill="#be123c">→ never develops · forgettable</text>
+      </g>
+    </svg>
+    <div class="cap">The premise is just the seed. <b>The craft is everything that grows from it</b> — and it’s almost always the real variable.</div>
+  </div>
+
+  <!-- PRINCIPLE 1 -->
+  <section class="sect" id="p1">
+    <div class="sect-h"><span class="n">01</span><h2>The Start Is Given · The Build Is Yours</h2></div>
+    <p class="sect-sub">People fixate on the seed because it’s visible and fixed. The people who win understood the growth was the real variable — the opposite of the “I need the perfect premise to start” trap.</p>
+
+    <div class="gb">
+      <div class="gcard given">
+        <div class="lab">🎲 Given — the seed</div>
+        <h3>Not in your hands</h3>
+        <div class="tags">
+          <span class="tag">Where you're born</span>
+          <span class="tag">Natural talent</span>
+          <span class="tag">First job</span>
+          <span class="tag">Your face</span>
+          <span class="tag">The premise</span>
+        </div>
+      </div>
+      <div class="gcard built">
+        <div class="lab">🛠️ Built — the growth</div>
+        <h3>Almost always yours</h3>
+        <div class="tags">
+          <span class="tag">The framework you build</span>
+          <span class="tag">Deliberate practice</span>
+          <span class="tag">Craft over years</span>
+          <span class="tag">Development</span>
+          <span class="tag">What you turn it into</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRINCIPLE 2 -->
+  <section class="sect" id="p2">
+    <div class="sect-h"><span class="n">02</span><h2>Pointed Excellence Beats Even Adequacy</h2></div>
+    <p class="sect-sub">You don’t need every channel. Be outstanding on the ones your audience weights highest — a few loud knobs, coherently aimed — and you win the people who value them.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Equalizer: a few knobs turned up beats everything flat">
+        <!-- WINNER board -->
+        <text x="230" y="34" text-anchor="middle" font-size="14" font-weight="800" fill="#16a34a" font-family="sans-serif">✅ POINTEDLY GREAT</text>
+        <g font-family="sans-serif">
+          <!-- tracks -->
+          <!-- 5 sliders, some high -->
+          <g stroke="var(--line2)" stroke-width="6" stroke-linecap="round">
+            <line x1="70" y1="60" x2="70" y2="230"/><line x1="150" y1="60" x2="150" y2="230"/>
+            <line x1="230" y1="60" x2="230" y2="230"/><line x1="310" y1="60" x2="310" y2="230"/>
+            <line x1="390" y1="60" x2="390" y2="230"/>
+          </g>
+          <!-- fills (high = design/experience) -->
+          <g stroke="#16a34a" stroke-width="6" stroke-linecap="round">
+            <line x1="70" y1="70" x2="70" y2="230"/>
+            <line x1="150" y1="80" x2="150" y2="230"/>
+            <line x1="230" y1="185" x2="230" y2="230"/>
+            <line x1="310" y1="200" x2="310" y2="230"/>
+            <line x1="390" y1="75" x2="390" y2="230"/>
+          </g>
+          <!-- knobs -->
+          <g fill="#16a34a">
+            <circle cx="70" cy="70" r="9"/><circle cx="150" cy="80" r="9"/>
+            <circle cx="230" cy="185" r="9"/><circle cx="310" cy="200" r="9"/><circle cx="390" cy="75" r="9"/>
+          </g>
+          <text x="70" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Design</text>
+          <text x="150" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Experience</text>
+          <text x="230" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Price</text>
+          <text x="310" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Features</text>
+          <text x="390" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Story</text>
+          <text x="230" y="274" text-anchor="middle" font-size="11.5" font-weight="700" fill="#15803d">Apple: loved for a few loud knobs</text>
+        </g>
+        <!-- divider -->
+        <line x1="470" y1="50" x2="470" y2="255" stroke="var(--line)" stroke-width="1.5"/>
+        <!-- LOSER board -->
+        <text x="690" y="34" text-anchor="middle" font-size="14" font-weight="800" style="fill:var(--dim)" font-family="sans-serif">😐 EVENLY ADEQUATE</text>
+        <g font-family="sans-serif">
+          <g stroke="var(--line2)" stroke-width="6" stroke-linecap="round">
+            <line x1="530" y1="60" x2="530" y2="230"/><line x1="610" y1="60" x2="610" y2="230"/>
+            <line x1="690" y1="60" x2="690" y2="230"/><line x1="770" y1="60" x2="770" y2="230"/>
+            <line x1="850" y1="60" x2="850" y2="230"/>
+          </g>
+          <g stroke="#9aa1ad" stroke-width="6" stroke-linecap="round">
+            <line x1="530" y1="150" x2="530" y2="230"/><line x1="610" y1="145" x2="610" y2="230"/>
+            <line x1="690" y1="150" x2="690" y2="230"/><line x1="770" y1="148" x2="770" y2="230"/>
+            <line x1="850" y1="150" x2="850" y2="230"/>
+          </g>
+          <g fill="#9aa1ad">
+            <circle cx="530" cy="150" r="9"/><circle cx="610" cy="145" r="9"/>
+            <circle cx="690" cy="150" r="9"/><circle cx="770" cy="148" r="9"/><circle cx="850" cy="150" r="9"/>
+          </g>
+          <text x="690" y="274" text-anchor="middle" font-size="11.5" font-weight="700" style="fill:var(--dim)">No knob loud enough to be loved for</text>
+        </g>
+      </svg>
+      <div class="cap">Adequate-at-everything is <b>forgettable</b>. That’s why Witch Hat bounced off — nothing turned up loud enough to be <i>for</i> someone specifically.</div>
+    </div>
+  </section>
+
+  <!-- EDGES -->
+  <section class="sect" id="edges">
+    <div class="sect-h"><span class="n">03</span><h2>Two Edges — Where the Real Skill Lives</h2></div>
+    <p class="sect-sub">The thesis is true, but not unconditionally. These two edges keep it honest.</p>
+
+    <div class="edges">
+      <div class="edge">
+        <div class="et">Edge 01 — Floors still exist</div>
+        <h4>Craft isn’t free, and some seeds are salted ground</h4>
+        <p>Some premises carry a structural flaw no development overcomes. And craft is the thing you <b>spend years building</b> — the person with a dull premise <i>and</i> no craft isn’t saved by this principle, they’re indicted by it.</p>
+        <span class="rule">Any start is good enough — for someone who did the work to earn the craft. Don’t let “the start doesn’t matter” become permission to skip the part that does.</span>
+      </div>
+      <div class="edge">
+        <div class="et">Edge 02 — Coherence is required</div>
+        <h4>Strong knobs one way · weak knobs kept quiet</h4>
+        <p>JoJo’s weak realism doesn’t hurt — nothing was trying to be realistic, so the weak channel is <b>silent, not fighting</b>. But a weak channel that <i>contradicts</i> the strong one — gorgeous visuals on a confusing story, charisma undercut by visible dishonesty — is corrosive.</p>
+        <span class="rule">Be great at a coherent few, and keep the rest at least non-sabotaging.</span>
+      </div>
+    </div>
+
+    <!-- coherence vectors diagram -->
+    <div class="fig">
+      <svg viewBox="0 0 900 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coherent vectors versus a sabotaging vector">
+        <defs>
+          <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#16a34a"/></marker>
+          <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#e11d48"/></marker>
+        </defs>
+        <!-- coherent -->
+        <rect x="40" y="30" width="380" height="150" rx="16" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+        <text x="230" y="58" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15803d" font-family="sans-serif">COHERENT — arrows aligned</text>
+        <g stroke="#16a34a" stroke-width="4" stroke-linecap="round">
+          <line x1="90" y1="120" x2="230" y2="95" marker-end="url(#ag)"/>
+          <line x1="90" y1="140" x2="230" y2="120" marker-end="url(#ag)"/>
+          <line x1="90" y1="160" x2="200" y2="150" marker-end="url(#ag)"/>
+        </g>
+        <text x="330" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d" font-family="sans-serif">force adds up</text>
+        <!-- sabotage -->
+        <rect x="480" y="30" width="380" height="150" rx="16" style="fill:var(--bad-soft)" stroke="#e11d48" stroke-width="2"/>
+        <text x="670" y="58" text-anchor="middle" font-size="13.5" font-weight="800" fill="#be123c" font-family="sans-serif">SABOTAGE — weak fights strong</text>
+        <g stroke="#16a34a" stroke-width="4" stroke-linecap="round">
+          <line x1="530" y1="110" x2="670" y2="90" marker-end="url(#ag)"/>
+          <line x1="530" y1="130" x2="670" y2="112" marker-end="url(#ag)"/>
+        </g>
+        <line x1="700" y1="150" x2="560" y2="165" stroke="#e11d48" stroke-width="4" stroke-linecap="round" marker-end="url(#ab)"/>
+        <text x="760" y="135" text-anchor="middle" font-size="12" font-weight="700" fill="#be123c" font-family="sans-serif">force cancels</text>
+      </svg>
+      <div class="cap">A silent weakness is neutral. A weakness pulling <b>against</b> your strength is corrosive.</div>
+    </div>
+  </section>
+
+  <!-- THESIS -->
+  <section class="sect" id="thesis">
+    <div class="sect-h"><span class="n">04</span><h2>The Fully-Loaded Thesis</h2></div>
+  </section>
+  <div class="finale">
+    <div class="lab">The version worth signing</div>
+    <p>Excellence is built in <b style="color:#fff">development</b>, not handed to you in the premise — and it comes from being <b style="color:#fff">pointedly great at a coherent few</b> things while keeping your weak points from actively working against you. Not from being evenly good at everything.</p>
+    <div class="apply">
+      <span>📖 Stories</span><span>📦 Products</span><span>❤️ Dating</span><span>🧗 Self-development</span>
+    </div>
+  </div>
+
+  <!-- PERSONAL OS -->
+  <section class="sect" id="os">
+    <div class="sect-h"><span class="n">05</span><h2>This Is Literally My Operating System</h2></div>
+    <p class="sect-sub">Enter a domain late, build the framework, automate through practice. I’ve run this for years — and I’m drawn to stories that dramatize the exact thesis I live by: a late, unpromising start plus relentless craft beats a gifted premise that never develops.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Enter late, build framework, automate — a loop">
+        <defs><marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f46e5"/></marker></defs>
+        <g font-family="sans-serif">
+          <circle cx="150" cy="100" r="60" style="fill:var(--seed-soft)" stroke="#0ea5e9" stroke-width="2"/>
+          <text x="150" y="90" text-anchor="middle" font-size="26">🕗</text>
+          <text x="150" y="118" text-anchor="middle" font-size="12" font-weight="800" fill="#0369a1">ENTER LATE</text>
+          <circle cx="450" cy="100" r="60" style="fill:var(--soft)" stroke="#4f46e5" stroke-width="2"/>
+          <text x="450" y="90" text-anchor="middle" font-size="26">🧩</text>
+          <text x="450" y="114" text-anchor="middle" font-size="11.5" font-weight="800" fill="#4f46e5">BUILD THE</text>
+          <text x="450" y="129" text-anchor="middle" font-size="11.5" font-weight="800" fill="#4f46e5">FRAMEWORK</text>
+          <circle cx="750" cy="100" r="60" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+          <text x="750" y="90" text-anchor="middle" font-size="26">⚙️</text>
+          <text x="750" y="114" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d">AUTOMATE VIA</text>
+          <text x="750" y="129" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d">PRACTICE</text>
+          <path d="M212 100 L385 100" fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ao)"/>
+          <path d="M512 100 L685 100" fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ao)"/>
+        </g>
+      </svg>
+      <div class="cap">Proven across <b>fitness</b>, <b>racket sports</b>, and <b>data science</b> — the development, not the premise, decided it every time.</div>
+    </div>
+  </section>
+
+  <div class="foot">Da Vinci · Personal Library — My Learnings. A first-principles note on craft over premise: development beats the starting point; pointed, coherent excellence beats even adequacy; floors and coherence are the edges that keep it honest.</div>
+
+</div>
+
+<script>
+  document.querySelectorAll('nav.tabs a').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var t=document.querySelector(a.getAttribute('href'));
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
+  });
+</script>
+</body>
+</html>

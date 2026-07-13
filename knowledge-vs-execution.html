@@ -1,0 +1,462 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Knowledge vs Execution — Two Systems</title>
+<style>
+:root{
+  --bg:#f6f7f9; --ink:#1c2431; --dim:#6b7280; --line:#e7e9ee; --line2:#dcdfe6;
+  --accent:#4f46e5; --accent2:#7c6cff; --soft:rgba(79,70,229,.08);
+  --card:#ffffff; --shadow:0 1px 2px rgba(20,25,40,.05),0 8px 24px rgba(20,25,40,.06);
+  --know:#0ea5e9; --know-soft:rgba(14,165,233,.10);
+  --do:#f59e0b; --do-soft:rgba(245,158,11,.12);
+  --good:#16a34a; --bad:#e11d48;
+}
+@media (prefers-color-scheme: dark){
+  :root{ --bg:#0f1117; --ink:#e8eaf0; --dim:#9aa1ad; --line:#242835; --line2:#2e3444;
+    --soft:rgba(124,108,255,.12); --card:#161a23; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35); }
+}
+*{box-sizing:border-box}
+html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:
+    radial-gradient(1200px 600px at 12% -10%,rgba(79,70,229,.08),transparent 60%),
+    radial-gradient(1000px 520px at 100% 0%,rgba(14,165,233,.07),transparent 55%),
+    var(--bg);
+  color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+
+/* sticky nav */
+header.top{position:sticky;top:0;z-index:50;
+  background:color-mix(in srgb,var(--bg) 82%,transparent);
+  backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);
+  border-bottom:1px solid var(--line)}
+.top-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:11px 22px;flex-wrap:wrap}
+.brand{font-weight:800;font-size:14.5px;letter-spacing:-.01em;white-space:nowrap}
+.brand span{color:var(--accent)}
+nav.tabs{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
+nav.tabs a{font-size:13px;color:var(--dim);padding:6px 11px;border-radius:8px;font-weight:600;text-decoration:none;transition:.15s}
+nav.tabs a:hover{background:var(--soft);color:var(--ink)}
+
+.wrap{max-width:1080px;margin:0 auto;padding:8px 22px 120px}
+
+/* hero */
+.hero{padding:52px 0 8px;text-align:center}
+.kick{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1{font-size:clamp(34px,5.4vw,58px);line-height:1.04;letter-spacing:-1.5px;margin:14px 0 0;font-weight:850;
+  background:linear-gradient(115deg,var(--ink),var(--accent) 70%,var(--accent2));
+  -webkit-background-clip:text;background-clip:text;color:transparent}
+.thesis{font-size:clamp(16px,2.2vw,20px);color:var(--dim);max-width:660px;margin:20px auto 0;line-height:1.55}
+.thesis b{color:var(--ink)}
+
+/* section heading */
+.sect{margin:76px 0 0}
+.sect-h{display:flex;align-items:center;gap:14px;margin:0 0 6px}
+.sect-h .n{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.14em;
+  border:1px solid var(--line2);border-radius:20px;padding:4px 11px;background:var(--card)}
+.sect-h h2{font-size:clamp(21px,3vw,29px);margin:0;font-weight:800;letter-spacing:-.5px}
+.sect-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.sect-sub{color:var(--dim);font-size:15px;margin:8px 0 0;max-width:640px}
+
+/* svg blocks */
+.fig{margin:26px 0 0;background:var(--card);border:1px solid var(--line);border-radius:20px;
+  box-shadow:var(--shadow);padding:18px;overflow:hidden}
+.fig svg{display:block;width:100%;height:auto}
+.cap{font-size:12.5px;color:var(--dim);text-align:center;margin:12px 4px 2px}
+
+/* two-panel compare */
+.vs{display:grid;grid-template-columns:1fr 60px 1fr;gap:0;align-items:stretch;margin:26px 0 0}
+@media(max-width:720px){.vs{grid-template-columns:1fr;gap:14px}.vs .mid{display:none}}
+.panel{border:1px solid var(--line);border-radius:20px;padding:22px;background:var(--card);box-shadow:var(--shadow)}
+.panel.know{border-top:4px solid var(--know)}
+.panel.do{border-top:4px solid var(--do)}
+.panel .pic{font-size:30px}
+.panel h3{margin:10px 0 2px;font-size:19px;font-weight:800;letter-spacing:-.3px}
+.panel .who{font-size:12.5px;font-weight:700;letter-spacing:.04em;text-transform:uppercase}
+.panel.know .who{color:var(--know)} .panel.do .who{color:var(--do)}
+.spec{list-style:none;margin:16px 0 0;padding:0}
+.spec li{display:flex;gap:9px;font-size:14px;padding:7px 0;border-top:1px dashed var(--line);align-items:flex-start}
+.spec li:first-child{border-top:0}
+.spec .k{color:var(--dim);flex:0 0 96px;font-weight:600}
+.spec .v{color:var(--ink);font-weight:600}
+.mid{display:flex;align-items:center;justify-content:center}
+.mid span{width:44px;height:44px;border-radius:50%;background:var(--accent);color:#fff;display:flex;
+  align-items:center;justify-content:center;font-weight:800;font-size:14px;box-shadow:var(--shadow)}
+
+/* consequence cards */
+.cons{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:16px;margin:26px 0 0}
+.cc{border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:var(--shadow);
+  padding:18px 18px 20px;position:relative;overflow:hidden}
+.cc .num{position:absolute;top:-14px;right:-6px;font-size:72px;font-weight:900;color:var(--soft);line-height:1}
+.cc .ico{width:40px;height:40px;border-radius:11px;background:var(--soft);display:flex;align-items:center;
+  justify-content:center;font-size:20px}
+.cc h4{margin:13px 0 4px;font-size:15.5px;font-weight:800;letter-spacing:-.2px;position:relative}
+.cc p{margin:0;font-size:13px;color:var(--dim);line-height:1.5;position:relative}
+.cc .pin{display:inline-block;margin-top:10px;font-size:11px;font-weight:700;color:var(--accent);
+  background:var(--soft);padding:3px 9px;border-radius:20px}
+
+/* domain grid */
+.dom{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:14px;margin:22px 0 0}
+.dc{border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:var(--shadow);padding:16px}
+.dc .top{display:flex;align-items:center;gap:10px}
+.dc .em{font-size:22px}
+.dc .nm{font-weight:800;font-size:15px}
+.dc .flow{display:flex;align-items:center;gap:7px;margin-top:13px;font-size:11.5px}
+.dc .chip{flex:1;border-radius:10px;padding:8px 9px;line-height:1.35;font-weight:600}
+.dc .chip.k{background:var(--know-soft);color:var(--know)}
+.dc .chip.d{background:var(--do-soft);color:var(--do)}
+.dc .arr{color:var(--dim);font-weight:800;flex:0 0 auto}
+.grouplab{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);
+  margin:30px 0 0;display:flex;align-items:center;gap:9px}
+.grouplab .e{font-size:16px}
+
+/* practice chips */
+.prac{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin:24px 0 0}
+.pc{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:14px;background:var(--card);
+  box-shadow:var(--shadow);padding:15px 16px}
+.pc .t{font-weight:800;font-size:14.5px;margin:0 0 5px;display:flex;gap:8px;align-items:center}
+.pc .t .d{width:22px;height:22px;border-radius:50%;background:var(--accent);color:#fff;font-size:12px;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto;font-weight:800}
+.pc p{margin:0;font-size:13px;color:var(--dim);line-height:1.5}
+
+/* finale */
+.finale{margin:70px 0 0;border-radius:22px;padding:34px 30px;text-align:center;
+  background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:var(--shadow)}
+.finale .lab{font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.8;font-weight:800}
+.finale p{font-size:clamp(17px,2.6vw,23px);font-weight:700;line-height:1.4;margin:12px auto 0;max-width:720px}
+.finale p .u{border-bottom:2px solid rgba(255,255,255,.5)}
+
+.foot{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim);text-align:center}
+</style>
+</head>
+<body>
+
+<header class="top">
+  <div class="top-in">
+    <div class="brand">Da Vinci <span>· Knowledge vs Execution</span></div>
+    <nav class="tabs">
+      <a href="#core">Two Systems</a>
+      <a href="#why">5 Reasons</a>
+      <a href="#loop">The Loop</a>
+      <a href="#lever">The Lever</a>
+      <a href="#where">Where</a>
+      <a href="#map">The Map</a>
+      <a href="#practice">In Practice</a>
+    </nav>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- HERO -->
+  <div class="hero">
+    <div class="kick">Learning · First Principles</div>
+    <h1>Knowing ≠ Doing</h1>
+    <p class="thesis">Your brain stores <b>“knowing about”</b> and <b>“knowing how”</b> in two separate machines — and <b>there is no wire between them.</b> You can’t pour theory in one and get skill out the other.</p>
+  </div>
+
+  <!-- HERO DIAGRAM: two systems, no wire -->
+  <div class="fig">
+    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two separate brain systems with no connection">
+      <defs>
+        <linearGradient id="gk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#0ea5e9"/><stop offset="1" stop-color="#38bdf8"/></linearGradient>
+        <linearGradient id="gd" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#f59e0b"/><stop offset="1" stop-color="#fbbf24"/></linearGradient>
+      </defs>
+      <!-- KNOW box -->
+      <g>
+        <rect x="40" y="55" width="330" height="190" rx="22" fill="url(#gk)" opacity="0.12"/>
+        <rect x="40" y="55" width="330" height="190" rx="22" fill="none" stroke="#0ea5e9" stroke-width="2"/>
+        <text x="205" y="95" text-anchor="middle" font-size="15" font-weight="800" fill="#0ea5e9" font-family="sans-serif">DECLARATIVE — “knowing about”</text>
+        <text x="205" y="125" text-anchor="middle" font-size="13" style="fill:var(--dim)" font-family="sans-serif">facts you can say out loud</text>
+        <text x="205" y="163" text-anchor="middle" font-size="34" font-family="sans-serif">📖</text>
+        <text x="205" y="205" text-anchor="middle" font-size="12.5" font-weight="700" fill="#0369a1" font-family="sans-serif">hippocampus · prefrontal cortex</text>
+        <text x="205" y="225" text-anchor="middle" font-size="11.5" style="fill:var(--dim)" font-family="sans-serif">fast · verbal · narrow bandwidth</text>
+      </g>
+      <!-- DO box -->
+      <g>
+        <rect x="530" y="55" width="330" height="190" rx="22" fill="url(#gd)" opacity="0.14"/>
+        <rect x="530" y="55" width="330" height="190" rx="22" fill="none" stroke="#f59e0b" stroke-width="2"/>
+        <text x="695" y="95" text-anchor="middle" font-size="15" font-weight="800" fill="#d97706" font-family="sans-serif">PROCEDURAL — “knowing how”</text>
+        <text x="695" y="125" text-anchor="middle" font-size="13" style="fill:var(--dim)" font-family="sans-serif">skill &amp; trained perception</text>
+        <text x="695" y="163" text-anchor="middle" font-size="34" font-family="sans-serif">🤸</text>
+        <text x="695" y="205" text-anchor="middle" font-size="12.5" font-weight="700" fill="#b45309" font-family="sans-serif">cortex · basal ganglia · cerebellum</text>
+        <text x="695" y="225" text-anchor="middle" font-size="11.5" style="fill:var(--dim)" font-family="sans-serif">slow · wordless · massively parallel</text>
+      </g>
+      <!-- broken wire -->
+      <line x1="370" y1="150" x2="425" y2="150" stroke="#e11d48" stroke-width="3" stroke-linecap="round"/>
+      <line x1="475" y1="150" x2="530" y2="150" stroke="#e11d48" stroke-width="3" stroke-linecap="round"/>
+      <g>
+        <line x1="430" y1="132" x2="470" y2="168" stroke="#e11d48" stroke-width="3" stroke-linecap="round"/>
+        <line x1="470" y1="132" x2="430" y2="168" stroke="#e11d48" stroke-width="3" stroke-linecap="round"/>
+      </g>
+      <text x="450" y="112" text-anchor="middle" font-size="12" font-weight="800" fill="#e11d48" font-family="sans-serif">NO WIRE</text>
+    </svg>
+    <div class="cap">A theory and a competence aren’t one file in two formats — they’re two incompatible files in two incompatible systems.</div>
+  </div>
+
+  <!-- CORE COMPARE -->
+  <section class="sect" id="core">
+    <div class="sect-h"><span class="n">01</span><h2>The Core Machinery</h2></div>
+    <p class="sect-sub">Two memory systems, physically separate. One learns in a single exposure. The other only by repetition — and can’t be written to by words.</p>
+
+    <div class="vs">
+      <div class="panel know">
+        <div class="pic">📖</div>
+        <div class="who">Declarative</div>
+        <h3>Knowing about</h3>
+        <ul class="spec">
+          <li><span class="k">Speed</span><span class="v">One exposure lays it down</span></li>
+          <li><span class="k">Form</span><span class="v">Verbal, explicit, statable</span></li>
+          <li><span class="k">Channel</span><span class="v">Narrow · serial · conscious</span></li>
+          <li><span class="k">Holds</span><span class="v">A compact rule</span></li>
+        </ul>
+      </div>
+      <div class="mid"><span>VS</span></div>
+      <div class="panel do">
+        <div class="pic">🤸</div>
+        <div class="who">Procedural / Perceptual</div>
+        <h3>Knowing how</h3>
+        <ul class="spec">
+          <li><span class="k">Speed</span><span class="v">Only by many reps</span></li>
+          <li><span class="k">Form</span><span class="v">Wordless, can’t be dictated</span></li>
+          <li><span class="k">Channel</span><span class="v">Wide · parallel · automatic</span></li>
+          <li><span class="k">Holds</span><span class="v">A grown, tuned structure</span></li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <!-- FIVE CONSEQUENCES -->
+  <section class="sect" id="why">
+    <div class="sect-h"><span class="n">02</span><h2>Five Reasons Theory Can’t Become Skill</h2></div>
+    <p class="sect-sub">Five consequences follow from the split — and each one explains every frustration below.</p>
+
+    <div class="cons">
+      <div class="cc">
+        <span class="num">1</span>
+        <div class="ico">🧵</div>
+        <h4>The bandwidth wall</h4>
+        <p>A phrase is an <b>address label</b>, not a copy of the skill. The conscious pipe is too narrow to hold it.</p>
+        <span class="pin">“the map is not the territory”</span>
+      </div>
+      <div class="cc">
+        <span class="num">2</span>
+        <div class="ico">🌱</div>
+        <h4>Description vs. detector</h4>
+        <p>A rule is compact; the real signal is enormous. The brain must <b>grow a tuned population of neurons</b> to see it.</p>
+        <span class="pin">blueprint ≠ building</span>
+      </div>
+      <div class="cc">
+        <span class="num">3</span>
+        <div class="ico">🌙</div>
+        <h4>The hard clock</h4>
+        <p>Rewiring is rate-limited by biology. Much of it happens <b>offline, during sleep.</b> Cramming loses to spacing.</p>
+        <span class="pin">a hardware constraint</span>
+      </div>
+      <div class="cc">
+        <span class="num">4</span>
+        <div class="ico">🎯</div>
+        <h4>Error only on contact</h4>
+        <p>Learning = error-correction. The <b>mismatch between predicted and actual is the teaching signal.</b> Theory predicts against nothing.</p>
+        <span class="pin">reality generates it</span>
+      </div>
+      <div class="cc">
+        <span class="num">5</span>
+        <div class="ico">🤫</div>
+        <h4>The handoff</h4>
+        <p>Effortlessness is the <b>conscious system going quiet</b> — control migrates to cheap automatic circuits via chunking.</p>
+        <span class="pin">experts can’t explain it</span>
+      </div>
+    </div>
+  </section>
+
+  <!-- THE LOOP -->
+  <section class="sect" id="loop">
+    <div class="sect-h"><span class="n">03</span><h2>How Skill Is Actually Built</h2></div>
+    <p class="sect-sub">The conscious channel can only transmit a goal. A lower, parallel system builds the competence — one error-corrected, sleep-fed rep at a time.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 900 360" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The skill-building loop">
+        <defs>
+          <marker id="ah" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+            <path d="M0 0 L10 5 L0 10 z" fill="#7c6cff"/>
+          </marker>
+        </defs>
+        <!-- nodes around a loop -->
+        <!-- 1 GOAL -->
+        <g><circle cx="130" cy="90" r="52" style="fill:var(--soft)" stroke="#4f46e5" stroke-width="2"/>
+          <text x="130" y="80" text-anchor="middle" font-size="26" font-family="sans-serif">🎯</text>
+          <text x="130" y="112" text-anchor="middle" font-size="12.5" font-weight="800" fill="#4f46e5" font-family="sans-serif">GOAL</text></g>
+        <!-- 2 MOVE -->
+        <g><circle cx="400" cy="70" r="52" style="fill:var(--do-soft)" stroke="#f59e0b" stroke-width="2"/>
+          <text x="400" y="60" text-anchor="middle" font-size="26" font-family="sans-serif">🤸</text>
+          <text x="400" y="92" text-anchor="middle" font-size="12.5" font-weight="800" fill="#d97706" font-family="sans-serif">MOVE</text></g>
+        <!-- 3 ERROR -->
+        <g><circle cx="670" cy="90" r="52" fill="rgba(225,29,72,.10)" stroke="#e11d48" stroke-width="2"/>
+          <text x="670" y="80" text-anchor="middle" font-size="26" font-family="sans-serif">⚡</text>
+          <text x="670" y="106" text-anchor="middle" font-size="11.5" font-weight="800" fill="#e11d48" font-family="sans-serif">PREDICTION</text>
+          <text x="670" y="121" text-anchor="middle" font-size="11.5" font-weight="800" fill="#e11d48" font-family="sans-serif">ERROR</text></g>
+        <!-- 4 SLEEP -->
+        <g><circle cx="670" cy="270" r="52" fill="rgba(14,165,233,.10)" stroke="#0ea5e9" stroke-width="2"/>
+          <text x="670" y="260" text-anchor="middle" font-size="26" font-family="sans-serif">🌙</text>
+          <text x="670" y="292" text-anchor="middle" font-size="11" font-weight="800" fill="#0369a1" font-family="sans-serif">CONSOLIDATE</text></g>
+        <!-- 5 AUTOMATIC -->
+        <g><circle cx="400" cy="290" r="52" style="fill:var(--soft)" stroke="#4f46e5" stroke-width="2"/>
+          <text x="400" y="280" text-anchor="middle" font-size="26" font-family="sans-serif">⚙️</text>
+          <text x="400" y="304" text-anchor="middle" font-size="11" font-weight="800" fill="#4f46e5" font-family="sans-serif">AUTOMATIC</text></g>
+        <!-- 6 EFFORTLESS -->
+        <g><circle cx="130" cy="270" r="52" fill="rgba(22,163,74,.10)" stroke="#16a34a" stroke-width="2"/>
+          <text x="130" y="260" text-anchor="middle" font-size="26" font-family="sans-serif">✨</text>
+          <text x="130" y="292" text-anchor="middle" font-size="10.5" font-weight="800" fill="#16a34a" font-family="sans-serif">EFFORTLESS</text></g>
+        <!-- arrows -->
+        <path d="M182 82 Q290 55 347 66" fill="none" stroke="#7c6cff" stroke-width="2.5" marker-end="url(#ah)"/>
+        <path d="M452 74 Q560 55 618 82" fill="none" stroke="#7c6cff" stroke-width="2.5" marker-end="url(#ah)"/>
+        <path d="M670 142 L670 216" fill="none" stroke="#7c6cff" stroke-width="2.5" marker-end="url(#ah)"/>
+        <path d="M618 278 Q560 300 452 288" fill="none" stroke="#7c6cff" stroke-width="2.5" marker-end="url(#ah)"/>
+        <path d="M348 288 Q250 300 182 280" fill="none" stroke="#7c6cff" stroke-width="2.5" marker-end="url(#ah)"/>
+        <!-- feedback loop back up -->
+        <path d="M130 216 L130 144" fill="none" stroke="#7c6cff" stroke-width="2.5" stroke-dasharray="5 5" marker-end="url(#ah)"/>
+        <text x="450" y="185" text-anchor="middle" font-size="12.5" style="fill:var(--dim)" font-family="sans-serif" font-style="italic">repeat across many sleep-separated sessions</text>
+      </svg>
+      <div class="cap">Beginner clumsiness &amp; exhaustion = the conscious system jammed into a loop it can’t run. The flood of errors <b>is</b> the learning.</div>
+    </div>
+  </section>
+
+  <!-- THE LEVER -->
+  <section class="sect" id="lever">
+    <div class="sect-h"><span class="n">04</span><h2>The One Lever: Where You Point Attention</h2></div>
+    <p class="sect-sub">External cues (a target in the world) free the wide parallel system. Internal cues (your own body parts) jam the narrow channel.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="External vs internal focus">
+        <!-- external good -->
+        <g>
+          <rect x="40" y="30" width="380" height="190" rx="18" fill="rgba(22,163,74,.07)" stroke="#16a34a" stroke-width="2"/>
+          <text x="230" y="62" text-anchor="middle" font-size="15" font-weight="800" fill="#16a34a" font-family="sans-serif">✅ EXTERNAL FOCUS</text>
+          <text x="230" y="86" text-anchor="middle" font-size="13" style="fill:var(--dim)" font-family="sans-serif">point at the goal in the world</text>
+          <text x="230" y="128" text-anchor="middle" font-size="13.5" font-style="italic" style="fill:var(--ink)" font-family="sans-serif">“press the water back to your feet”</text>
+          <text x="230" y="150" text-anchor="middle" font-size="13.5" font-style="italic" style="fill:var(--ink)" font-family="sans-serif">“make them feel understood”</text>
+          <text x="230" y="192" text-anchor="middle" font-size="12.5" font-weight="700" fill="#16a34a" font-family="sans-serif">→ parallel system solves it its own way</text>
+        </g>
+        <!-- internal bad -->
+        <g>
+          <rect x="480" y="30" width="380" height="190" rx="18" fill="rgba(225,29,72,.06)" stroke="#e11d48" stroke-width="2"/>
+          <text x="670" y="62" text-anchor="middle" font-size="15" font-weight="800" fill="#e11d48" font-family="sans-serif">⛔ INTERNAL FOCUS</text>
+          <text x="670" y="86" text-anchor="middle" font-size="13" style="fill:var(--dim)" font-family="sans-serif">point at your own body parts</text>
+          <text x="670" y="128" text-anchor="middle" font-size="13.5" font-style="italic" style="fill:var(--ink)" font-family="sans-serif">“bend your elbow to 90°”</text>
+          <text x="670" y="150" text-anchor="middle" font-size="13.5" font-style="italic" style="fill:var(--ink)" font-family="sans-serif">“am I being charismatic?”</text>
+          <text x="670" y="192" text-anchor="middle" font-size="12.5" font-weight="700" fill="#e11d48" font-family="sans-serif">→ jams the channel · produces stiffness</text>
+        </g>
+      </svg>
+      <div class="cap">The single most useful practical lever — works in the pool, on the platform, in conversation, behind the camera.</div>
+    </div>
+  </section>
+
+  <!-- WHERE IT SHOWS UP -->
+  <section class="sect" id="where">
+    <div class="sect-h"><span class="n">05</span><h2>Where It Shows Up</h2></div>
+    <p class="sect-sub">Same story, different instruments. Each pairs a fast declarative pointer with the slow real skill it points at.</p>
+
+    <div class="grouplab"><span class="e">🏊</span> Part I — Motor Skills · the body is the instrument</div>
+    <div class="dom">
+      <div class="dc"><div class="top"><span class="em">🏊</span><span class="nm">Swimming</span></div>
+        <div class="flow"><span class="chip k">“pull, kick, glide”</span><span class="arr">→</span><span class="chip d">water-calibrated model built by errors</span></div></div>
+      <div class="dc"><div class="top"><span class="em">🏋️</span><span class="nm">The Gym</span></div>
+        <div class="flow"><span class="chip k">form cues + program</span><span class="arr">→</span><span class="chip d">motor pattern + mind-muscle detector</span></div></div>
+      <div class="dc"><div class="top"><span class="em">🧘</span><span class="nm">Yoga / Mobility</span></div>
+        <div class="flow"><span class="chip k">pose names, alignment</span><span class="arr">→</span><span class="chip d">neural release of the stretch-reflex guard</span></div></div>
+      <div class="dc"><div class="top"><span class="em">💃</span><span class="nm">Dance</span></div>
+        <div class="flow"><span class="chip k">step sequence, counts</span><span class="arr">→</span><span class="chip d">motor + timing + aesthetic feel</span></div></div>
+      <div class="dc"><div class="top"><span class="em">🎸</span><span class="nm">Music</span></div>
+        <div class="flow"><span class="chip k">notes, chords, theory</span><span class="arr">→</span><span class="chip d">finger patterns, hand independence, sight-reading</span></div></div>
+    </div>
+
+    <div class="grouplab"><span class="e">🤝</span> Part II — Social Skill · the hidden motor skill, with an audience</div>
+    <div class="dom">
+      <div class="dc"><div class="top"><span class="em">🗣️</span><span class="nm">Conversation</span></div>
+        <div class="flow"><span class="chip k">charisma techniques from books</span><span class="arr">→</span><span class="chip d">real-time reading detector + timed production</span></div></div>
+      <div class="dc"><div class="top"><span class="em">📺</span><span class="nm">Watching Friends/HIMYM</span></div>
+        <div class="flow"><span class="chip k">sharpens the detector</span><span class="arr">→</span><span class="chip d">production only grows on live reps</span></div></div>
+      <div class="dc"><div class="top"><span class="em">😰</span><span class="nm">Social anxiety</span></div>
+        <div class="flow"><span class="chip k">the conscious system</span><span class="arr">→</span><span class="chip d">stuck in a loop it can’t run in real time</span></div></div>
+    </div>
+
+    <div class="grouplab"><span class="e">👁️</span> Part III — Taste &amp; Judgment · the pure perceptual detector, no motor part</div>
+    <div class="dom">
+      <div class="dc"><div class="top"><span class="em">👓</span><span class="nm">Eyeglass Frames</span></div>
+        <div class="flow"><span class="chip k">face-shape rules, mm</span><span class="arr">→</span><span class="chip d">instant “fit-or-clash” read on your face</span></div></div>
+      <div class="dc"><div class="top"><span class="em">🧥</span><span class="nm">Fashion / Style</span></div>
+        <div class="flow"><span class="chip k">color &amp; proportion rules</span><span class="arr">→</span><span class="chip d">the eye + the skill of wearing</span></div></div>
+      <div class="dc"><div class="top"><span class="em">💇</span><span class="nm">Hairstyle</span></div>
+        <div class="flow"><span class="chip k">“soft cuts for angular faces”</span><span class="arr">→</span><span class="chip d">instant suits-me perception</span></div></div>
+      <div class="dc"><div class="top"><span class="em">📷</span><span class="nm">Photography</span></div>
+        <div class="flow"><span class="chip k">rule of thirds, exposure</span><span class="arr">→</span><span class="chip d">compositional eye + camera-as-extension</span></div></div>
+    </div>
+  </section>
+
+  <!-- THE MAP -->
+  <section class="sect" id="map">
+    <div class="sect-h"><span class="n">06</span><h2>The Map — Curation Is Reps for the Eye</h2></div>
+    <p class="sect-sub">Theory hands you labels; contact turns labels into detectors. Pinterest curation isn’t procrastination — it’s calibrated exposure.</p>
+
+    <div class="fig">
+      <svg viewBox="0 0 900 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Description becomes detector through contact">
+        <defs><marker id="ah2" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="8" markerHeight="8" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f46e5"/></marker></defs>
+        <!-- description -->
+        <rect x="40" y="60" width="230" height="90" rx="16" style="fill:var(--know-soft)" stroke="#0ea5e9" stroke-width="2"/>
+        <text x="155" y="98" text-anchor="middle" font-size="14" font-weight="800" fill="#0369a1" font-family="sans-serif">DESCRIPTION</text>
+        <text x="155" y="122" text-anchor="middle" font-size="12" style="fill:var(--dim)" font-family="sans-serif">“warm palette”, “rule of thirds”</text>
+        <!-- contact -->
+        <g>
+          <circle cx="450" cy="105" r="62" style="fill:var(--soft)" stroke="#4f46e5" stroke-width="2"/>
+          <text x="450" y="98" text-anchor="middle" font-size="28" font-family="sans-serif">🔁</text>
+          <text x="450" y="128" text-anchor="middle" font-size="12" font-weight="800" fill="#4f46e5" font-family="sans-serif">CONTACT × REPS</text>
+        </g>
+        <!-- detector -->
+        <rect x="630" y="60" width="230" height="90" rx="16" style="fill:var(--do-soft)" stroke="#f59e0b" stroke-width="2"/>
+        <text x="745" y="98" text-anchor="middle" font-size="14" font-weight="800" fill="#b45309" font-family="sans-serif">DETECTOR</text>
+        <text x="745" y="122" text-anchor="middle" font-size="12" style="fill:var(--dim)" font-family="sans-serif">fires at a glance, no checklist</text>
+        <!-- arrows -->
+        <path d="M272 105 L385 105" fill="none" stroke="#4f46e5" stroke-width="3" marker-end="url(#ah2)"/>
+        <path d="M515 105 L628 105" fill="none" stroke="#4f46e5" stroke-width="3" marker-end="url(#ah2)"/>
+        <text x="328" y="92" text-anchor="middle" font-size="11" style="fill:var(--dim)" font-family="sans-serif" font-style="italic">binds to reality</text>
+        <text x="572" y="92" text-anchor="middle" font-size="11" style="fill:var(--dim)" font-family="sans-serif" font-style="italic">grows structure</text>
+      </svg>
+      <div class="cap">The theory’s real job wasn’t to hand you the answer — it was to let you <b>see</b> discriminations you’d have been blind to.</div>
+    </div>
+  </section>
+
+  <!-- IN PRACTICE -->
+  <section class="sect" id="practice">
+    <div class="sect-h"><span class="n">07</span><h2>In Practice</h2></div>
+    <p class="sect-sub">Five levers you can actually pull.</p>
+
+    <div class="prac">
+      <div class="pc"><div class="t"><span class="d">1</span>Theory makes each rep informative</div><p>It can’t produce skill — wrong system. It sharpens the error signal and turns “something’s off” into a precise, correctable error.</p></div>
+      <div class="pc"><div class="t"><span class="d">2</span>Watch for the switch-over point</div><p>Past a threshold, more reading just defers the reps. Switch when the next gain comes from contact with reality, not more pages.</p></div>
+      <div class="pc"><div class="t"><span class="d">3</span>Protect sleep &amp; spacing</div><p>Consolidation is where the wiring actually changes. Spaced practice with sleep beats the same volume crammed. Literal, not motivational.</p></div>
+      <div class="pc"><div class="t"><span class="d">4</span>Use external focus everywhere</div><p>Aim attention at the goal in the world, not your body or performance — pool, platform, conversation, camera.</p></div>
+      <div class="pc"><div class="t"><span class="d">5</span>Reframe the ugly early phase</div><p>Beginner clumsiness + exhaustion = one event: the conscious system drowning in errors. That flood <b>is</b> the learning.</p></div>
+    </div>
+  </section>
+
+  <!-- FINALE -->
+  <div class="finale">
+    <div class="lab">The whole thing in one line</div>
+    <p>You can’t <span class="u">think</span> your way into a skill — it lives in a system language can’t write to. Point the conscious mind at a clear goal, and let a slower, wider, sleep-fed system build the real machinery through error-corrected reps against reality.</p>
+  </div>
+
+  <div class="foot">Da Vinci · Personal Library — built on the two-memory-systems model (declarative vs. procedural), the bandwidth bottleneck of conscious attention, cerebellar prediction-error learning, sleep-dependent consolidation, chunking / automaticity, and external-focus-of-attention findings.</div>
+
+</div>
+
+<script>
+  document.querySelectorAll('nav.tabs a').forEach(function(a){
+    a.addEventListener('click',function(e){
+      var t=document.querySelector(a.getAttribute('href'));
+      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
+    });
+  });
+</script>
+</body>
+</html>

@@ -92,6 +92,22 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvet
 .boardwrap p{font-size:13.5px;color:var(--dim);max-width:700px;margin:0 auto 14px;line-height:1.6}
 .boardwrap img{max-width:100%;height:auto;border:1px solid var(--line);border-radius:12px;box-shadow:0 2px 14px rgba(20,25,40,.1)}
 @media(max-width:900px){.mlayout{flex-direction:column;padding:22px 18px 80px}.mtoc{display:none}.atlas{flex-direction:column;height:auto}.anav{flex:0 0 auto;border-right:0;border-bottom:1px solid var(--line)}}
+
+.exlink{background:none;border:0;padding:0;font:inherit;font-weight:700;color:var(--accent);cursor:pointer;text-align:left}
+.exlink:hover{text-decoration:underline}
+.exmodal{position:fixed;inset:0;z-index:9999;display:none;align-items:center;justify-content:center;background:rgba(20,25,40,.5);padding:20px}
+.exmodal.open{display:flex}
+.exmodal .card{background:var(--surface);border-radius:16px;max-width:560px;width:100%;max-height:82vh;overflow:auto;padding:22px 24px;box-shadow:0 20px 60px rgba(0,0,0,.3);position:relative}
+.exmodal h3{margin:0 28px 2px 0;font-size:20px;font-weight:850}
+.exmodal .sub{font-size:12px;color:var(--dim);margin-bottom:12px}
+.exmodal ol{margin:8px 0 12px;padding-left:20px}.exmodal ol li{font-size:14.5px;line-height:1.6;margin:6px 0;color:#39424f}
+.exmodal .k{font-size:11px;font-weight:800;letter-spacing:.06em;text-transform:uppercase;color:var(--accent);margin:14px 0 4px}
+.exmodal .k.mk{color:#c0453a}
+.exmodal ul{margin:4px 0 8px;padding-left:18px}.exmodal ul li{font-size:13.5px;line-height:1.55;margin:3px 0;color:#39424f}
+.exmodal .src a{display:inline-block;margin:4px 8px 0 0;font-size:12.5px;font-weight:700;color:var(--accent);text-decoration:none;border:1px solid var(--line2);border-radius:999px;padding:5px 11px}
+.exmodal .src a:hover{border-color:var(--accent)}
+.exmodal .foot{font-size:11.5px;color:var(--dim);margin-top:14px;border-top:1px solid var(--line);padding-top:10px;line-height:1.5}
+.exmodal .x{position:absolute;top:14px;right:16px;border:0;background:none;font-size:22px;cursor:pointer;color:var(--dim);line-height:1}
 </style></head><body>
 <div class="happ">
  <header class="hbar"><div class="hbrand">🏋️ Workout</div><nav class="htabs" id="htabs"></nav></header>
@@ -100,9 +116,10 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvet
 <script>
 __VIZLIB__
 var TAXO=__TAXO__;
+var HOWTO=__HOWTO__;
 var BOARD="__BOARD__";
 (function(){
- var TABS=[["principles","◎ Principles"],["atlas","💪 Muscle Atlas"],["tiers","🏆 Tier Lists"],["board","🗺️ Source Board"]];
+ var TABS=[["principles","◎ Principles"],["structure","🧍 Body Structure"],["atlas","💪 Muscle Atlas"],["tiers","🏆 Tier Lists"],["board","🗺️ Source Board"]];
  var TK="workout.tab.v1"; var tab="principles"; try{tab=localStorage.getItem(TK)||"principles";}catch(e){}
  if(!TABS.some(function(t){return t[0]===tab;}))tab="principles";
  var GROUPS=["Push","Pull","Legs","Core"];
@@ -165,6 +182,48 @@ var BOARD="__BOARD__";
    +'</div><aside class="mtoc"><div class="tl">On this page</div>'+toc+'</aside></div>';
  }
 
+ /* ---------------- BODY STRUCTURE ---------------- */
+ function structureHTML(){
+  var qt=genBodyType(), frame=genFrame(), mmap=genMuscleMap(), fat=genFatMap(), post=genPosture(), recomp=genRecomp();
+  var priorityCards='<div class="cardrow">'
+   +'<div class="gcard"><b>1 · Shoulders</b><span>Widest payoff for the frame — side &amp; rear delts especially.</span></div>'
+   +'<div class="gcard"><b>2 · Back &amp; chest</b><span>The rest of the V-taper.</span></div>'
+   +'<div class="gcard"><b>3 · Arms &amp; core</b><span>Grow alongside the compound lifts.</span></div>'
+   +'<div class="gcard"><b>4 · Legs</b><span>Solid base — maintain, don\'t neglect.</span></div></div>';
+  var leverTable='<table class="gtable"><tr><th>Lever</th><th>What</th><th>Why it matters here</th></tr>'
+   +'<tr><td><b>Resistance training</b></td><td>Progressive; shoulders, back, legs</td><td>Builds the muscle the frame is missing</td></tr>'
+   +'<tr><td><b>Protein</b></td><td>~1.6–2 g / kg bodyweight</td><td>Fuels muscle gain without needing a bulk</td></tr>'
+   +'<tr><td><b>Core + hip mobility</b></td><td>Planks, dead-bugs, hip &amp; hamstring work</td><td>Fixes the tilt that pushes the belly forward</td></tr>'
+   +'<tr><td><b>Sleep · steps · stress</b></td><td>7–9 h, daily walking, manage load</td><td>The multipliers for central fat</td></tr></table>';
+  var toc=[["type","Body type"],["frame","Frame & proportions"],["muscle","Muscle map"],["fat","Fat distribution"],["posture","Posture"],["plan","The plan — recomp"]]
+    .map(function(t){return '<a data-to="'+t[0]+'">'+esc(t[1])+'</a>';}).join("");
+  return '<div class="mlayout"><div class="mmain">'
+   +'<div class="hero"><div class="kick">Body Structure</div><h1>Read the body you\'re building</h1>'
+   +'<p class="sub">Before the training details, a map of what you\'re actually working with — type, frame, muscle, fat and posture — and the one plan that follows from it. Not a weight problem; a composition one, which is the fast-moving kind.</p></div>'
+   +sec("type","Body type — where you sit today","The starting point",
+       '<p>At roughly 5\'9\" and ~71 kg the BMI is about <b>23 — normal</b>. This is the <b>skinny-fat</b> pattern: lean limbs, low muscle, and some fat concentrated centrally. It reads as a stomach standing out against otherwise slim arms and legs, and it responds faster than almost any other starting point.</p>'
+       +fig(qt,"Low muscle + some central fat = the skinny-fat quadrant. The goal isn't smaller — it's up and slightly left."))
+   +sec("frame","Frame & proportions","The skeleton",
+       '<p>A <b>medium-to-narrow</b> frame with a shallow shoulder-to-waist taper. Crucially, the width at the middle is the belly sitting <b>forward</b>, not the waist spreading sideways — you can see it in the side angles.</p>'
+       +fig(frame,"Both limiters are the fixable kind: shoulder width is buildable, central fat shrinks fast.")
+       +'<div class="callout">Widening the shoulders makes the waist look smaller <b>by contrast</b> — you get a better taper before losing a gram.</div>')
+   +sec("muscle","Muscle map — build order","Priority",
+       '<p>Muscle mass is low across the board — an empty canvas, not a flaw. Train in priority order for the frame; <b>shoulders first</b> for the biggest visual payoff.</p>'
+       +fig(mmap,"Shoulders first, then back & chest, then arms & core; legs as a maintained base.")+priorityCards)
+   +sec("fat","Fat distribution","Where it sits",
+       '<p>Fat is <b>centrally distributed</b> — lower belly, forward — while the limbs stay lean. This is normal-weight central adiposity, the most responsive type: as muscle goes up and inputs clean up, this is where visible change shows first.</p>'
+       +fig(fat,"Central, forward-sitting fat with lean limbs — responds to activity, sleep, stress and diet quality."))
+   +sec("posture","Posture — the free upgrade","Carriage",
+       '<p>There\'s a mild <b>forward-head / rounded-upper-back</b> tendency and a slight <b>anterior pelvic tilt</b> that arches the low back and pushes the belly out further than the fat alone would.</p>'
+       +fig(post,"Some of the belly prominence is postural — which means it improves before much fat is lost.")
+       +'<div class="callout">Anti-extension core (planks, dead-bugs) + hip-flexor and hamstring work flattens the look independently of fat loss.</div>')
+   +sec("plan","The plan — recomposition","What to do",
+       '<p>The move is <b>body recomposition</b> — build muscle and reduce central fat at the same time — not "lose weight." Don\'t crash-diet; you\'d lose the little muscle you have. Four levers do the work.</p>'
+       +fig(recomp,"Build muscle + shed central fat together. Redistribution, not restriction.")+leverTable
+       +'<div class="callout">This is fitness guidance, not medical or nutrition advice — for a plan dialled to your numbers, a coach or dietitian can tailor it.</div>')
+   +'</div><aside class="mtoc"><div class="tl">On this page</div>'+toc+'</aside></div>';
+ }
+
  /* ---------------- MUSCLE ATLAS ---------------- */
  function navHTML(){
   var h='<div class="modetog"><button data-mode="all" class="'+(atlasMode==="all"?"active":"")+'">All muscles</button><button data-mode="group" class="'+(atlasMode==="group"?"active":"")+'">By group</button></div>';
@@ -177,7 +236,7 @@ var BOARD="__BOARD__";
   var fnl='<ul class="flist">'+m.function.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';
   var usl='<ul class="flist">'+m.uses.map(function(x){return '<li>'+esc(x)+'</li>';}).join("")+'</ul>';
   var mind=genMindMap(m.n,m.function.map(function(f){return {label:f.split(" — ")[0]};}),{w:720,h:440});
-  var rows=m.ex.map(function(e){return '<tr><td class="exn">'+esc(e.n)+'</td><td><span class="tchip t-'+esc(e.t)+'">'+esc(e.t)+'</span></td><td class="exh">'+esc(e.how)+'</td></tr>';}).join("");
+  var rows=m.ex.map(function(e){return '<tr><td class="exn"><button class="exlink" data-ex="'+esc(e.n)+'">'+esc(e.n)+'</button></td><td><span class="tchip t-'+esc(e.t)+'">'+esc(e.t)+'</span></td><td class="exh">'+esc(e.how)+'</td></tr>';}).join("");
   var extable='<table class="extable"><tr><th>Exercise</th><th>Tier</th><th>How / why</th></tr>'+rows+'</table>';
   var legend='<div class="tierlegend"><span class="li"><span class="tchip t-S">S</span> elite</span><span class="li"><span class="tchip t-A">A</span> great</span><span class="li"><span class="tchip t-B">B</span> solid</span><span class="li"><span class="tchip t-C">C</span> situational</span><span class="li"><span class="tchip t-F">F</span> skip</span></div>';
   var toc='<div class="tl">On this page</div>'+[["anatomy","Anatomy"],["function","Function"],["uses","Where it helps"],["exercises","Best exercises"]].map(function(t){return '<a data-to="'+t[0]+'">'+esc(t[1])+'</a>';}).join("");
@@ -219,14 +278,35 @@ var BOARD="__BOARD__";
   else { stage.className="stage"; stage.scrollTop=0;
     if(key==="tiers")stage.innerHTML=tiersHTML();
     else if(key==="board")stage.innerHTML=boardHTML();
+    else if(key==="structure")stage.innerHTML=structureHTML();
     else stage.innerHTML=principlesHTML();
   }
  }
  stage.addEventListener("click",function(e){var t=e.target;
+   var ex=t.closest?t.closest("[data-ex]"):null; if(ex){openEx(ex.getAttribute("data-ex"));return;}
    var toc=t.closest?t.closest("[data-to]"):null; if(toc){var el=document.getElementById(toc.getAttribute("data-to"));if(el)el.scrollIntoView({behavior:"smooth",block:"start"});return;}
    var mode=t.closest?t.closest("[data-mode]"):null; if(mode){atlasMode=mode.getAttribute("data-mode");try{localStorage.setItem("workout.atlasmode",atlasMode);}catch(_){}var an=document.getElementById("anav");if(an)an.innerHTML=navHTML();return;}
    var mus=t.closest?t.closest("[data-mus]"):null; if(mus){sel=parseInt(mus.getAttribute("data-mus"),10);try{localStorage.setItem("workout.mus",sel);}catch(_){}var an2=document.getElementById("anav");if(an2)an2.innerHTML=navHTML();var am=document.getElementById("amain");if(am){am.innerHTML=muscleMain();am.scrollTop=0;}return;}
  });
+
+ function normEx(x){x=(x||"").toLowerCase().trim();x=x.split("(")[0];x=x.split("/")[0];x=x.replace(/[^a-z0-9 ]/g,"");x=x.replace(/\s+/g," ").trim();return x;}
+ function exSources(name){var q=encodeURIComponent(name+" proper form technique");var n=encodeURIComponent("Jeff Nippard "+name);return [["▶ Video demos","https://www.youtube.com/results?search_query="+q],["Jeff Nippard","https://www.youtube.com/results?search_query="+n],["How-to guide","https://www.google.com/search?q="+q]];}
+ var _exm=null;
+ function closeEx(){ if(_exm)_exm.classList.remove("open"); }
+ function openEx(name){
+   if(!_exm){_exm=document.createElement("div");_exm.className="exmodal";_exm.innerHTML='<div class="card"></div>';document.body.appendChild(_exm);_exm.addEventListener("click",function(e){if(e.target===_exm||(e.target.closest&&e.target.closest(".x")))closeEx();});}
+   var g=(typeof HOWTO==="object"&&HOWTO)?HOWTO[normEx(name)]:null;
+   var h='<button class="x" aria-label="Close">×</button><h3>'+esc(name)+'</h3><div class="sub">How to perform it</div>';
+   if(g){
+     if(g.steps&&g.steps.length){h+='<div class="k">Steps</div><ol>'+g.steps.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ol>';}
+     if(g.cues&&g.cues.length){h+='<div class="k">Cues</div><ul>'+g.cues.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul>';}
+     if(g.mistakes&&g.mistakes.length){h+='<div class="k mk">Common mistakes</div><ul>'+g.mistakes.map(function(x){return "<li>"+esc(x)+"</li>";}).join("")+'</ul>';}
+   } else { h+='<p style="font-size:14px;color:#39424f;line-height:1.6">A step-by-step guide for this one is being added — use the sources below for a demo in the meantime.</p>'; }
+   h+='<div class="k">Sources</div><div class="src">'+exSources(name).map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener">'+esc(x[0])+'</a>';}).join("")+'</div>';
+   h+='<div class="foot">Form guides are educational references — not medical advice. When in doubt, have a coach check your form.</div>';
+   _exm.querySelector(".card").innerHTML=h; _exm.classList.add("open");
+ }
+ document.addEventListener("keydown",function(e){if(e.key==="Escape")closeEx();});
  renderTabs(); show(tab);
 })();
 </script></body></html>

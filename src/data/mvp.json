@@ -1,0 +1,5407 @@
+{
+ "pal": {
+  "a1": "#4f46e5",
+  "a2": "#0891b2",
+  "a3": "#db2777",
+  "a4": "#ea580c",
+  "a5": "#16a34a",
+  "a6": "#9333ea"
+ },
+ "tabs": [
+  {
+   "id": "home",
+   "name": "Home",
+   "icon": "🏠",
+   "intro": "The threshold where appearance and presence stop costing you confidence.",
+   "topics": [
+    {
+     "id": "idea",
+     "name": "The Core Idea",
+     "blurb": "What an MVP actually is.",
+     "blocks": [
+      {
+       "t": "pull",
+       "x": "The point where you're put-together enough to stop being self-conscious — so your attention is free to be present with the person in front of you."
+      },
+      {
+       "t": "p",
+       "x": "Becoming the fullest version of yourself takes years — physique, dance, swimming, social mastery, taste. That's the long road, and it's worth walking. But you don't get to <b>wait</b> for the finished version before you live. This defines the <b>minimum</b> you need to feel ready enough to put yourself out there <em>now</em>: ask someone out, get good photos, get on Hinge, walk into a room and talk to people."
+      },
+      {
+       "t": "h",
+       "x": "An MVP grants readiness, not confidence"
+      },
+      {
+       "t": "p",
+       "x": "An MVP isn't a set of things that <b>grant</b> confidence. It's the point where you're put-together enough to stop being self-conscious, so your attention is free to actually be present. Hit the minimum, then go live — everything deeper gets built while you're already out there."
+      },
+      {
+       "t": "fig",
+       "gen": "genConcentric",
+       "args": [
+        [
+         {
+          "label": "The full self (years)",
+          "color": "#9333ea"
+         },
+         {
+          "label": "The MVP threshold",
+          "color": "#4f46e5"
+         },
+         {
+          "label": "Go live now",
+          "color": "#16a34a"
+         }
+        ],
+        {
+         "caption": "Cross the inner threshold, then keep building on the outside.",
+         "w": 560,
+         "h": 500
+        }
+       ],
+       "cap": "You don't wait for the outer ring; you cross the MVP line and start living."
+      },
+      {
+       "t": "h",
+       "x": "How to read this library"
+      },
+      {
+       "t": "p",
+       "x": "Each category is a tab; the left panel moves between its parts. Parts that matter carry a <b>Status</b> (Active now / Action item / Completed / Excluded) and a <b>Priority</b> (High / Low) you can tap to change — they save on this device. The <b>On Work</b> tab is the running to-do: anything Active or Action item shows there, split by priority."
+      },
+      {
+       "t": "h",
+       "x": "The nine categories"
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "🛠️ On Work",
+         "x": "Your live to-do — what's Active and what's an Action item.",
+         "go": "work"
+        },
+        {
+         "h": "🧴 Grooming",
+         "x": "Highest return-per-effort — mostly habits, not money.",
+         "go": "grooming"
+        },
+        {
+         "h": "👔 Fashion",
+         "x": "One of your three real gaps. A system, not a wardrobe.",
+         "go": "fashion"
+        },
+        {
+         "h": "📸 Photos / Socials",
+         "x": "Your third real gap — a tactical weekend project.",
+         "go": "photos"
+        },
+        {
+         "h": "👥 Communities",
+         "x": "The engine that creates the encounters.",
+         "go": "communities"
+        },
+        {
+         "h": "💪 Physique",
+         "x": "Clothes fit, you don't feel weak. Mostly there.",
+         "go": "physique"
+        },
+        {
+         "h": "💬 Communication",
+         "x": "The highest-leverage area of all.",
+         "go": "communication"
+        },
+        {
+         "h": "🎭 Cult",
+         "x": "Culture + interests: conversation fuel and venues.",
+         "go": "cult"
+        }
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>The rule:</b> clear the action items and you've passed the bar to go out — the rest improves in motion. And plainly: being early to dating is completely normal. This exists to get you out <em>sooner</em>, not to certify you as ready."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "work",
+   "name": "On Work",
+   "icon": "🛠️",
+   "intro": "The running to-do, rebuilt from every page's status and priority.",
+   "topics": [
+    {
+     "id": "active",
+     "name": "Active now",
+     "blurb": "Already in motion.",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Already in motion — keep it up. These are habits running on autopilot; the job is consistency, not activation."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Gym, 4–5× a week",
+         "x": "Progressively heavier. Physique · Training.",
+         "go": "physique"
+        },
+        {
+         "h": "Films, shows & reading",
+         "x": "Your conversation fuel. Cult · Film & TV.",
+         "go": "cult"
+        },
+        {
+         "h": "Learning to swim",
+         "x": "Swim now; dance next. Cult · Interests.",
+         "go": "cult"
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "high",
+     "name": "Action items — High",
+     "blurb": "Do these to pass the bar.",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Open, concrete, high-priority. Clearing this list is the bar to go out — everything else improves in motion."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Settle a facial-hair style</b> that suits you. — Grooming · Face",
+        "<b>Work with the receding hairline,</b> not against it. — Grooming · Hair",
+        "<b>Get the glasses frame right</b> — the most-looked-at thing you own. — Grooming · Glasses",
+        "<b>A few plain, perfect-fitting tops.</b> — Fashion · Top Wear",
+        "<b>Two or three versatile bottoms.</b> — Fashion · Bottom Wear",
+        "<b>Lock 2–3 outfit formulas</b> (minimal base + one current element). — Fashion · Outfits",
+        "<b>One clean, versatile pair of shoes.</b> — Fashion · Accessories",
+        "<b>One signature scent,</b> applied lightly. — Fashion · Accessories",
+        "<b>Two recurring communities</b> you actually show up to. — Communities",
+        "<b>A low-stakes opener</b> you're comfortable with. — Communication · Offline"
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genPyramid",
+       "args": [
+        [
+         {
+          "label": "Clear these → go out",
+          "color": "#ea580c"
+         },
+         {
+          "label": "Refine while out there",
+          "color": "#4f46e5"
+         },
+         {
+          "label": "Deep mastery (years)",
+          "color": "#9333ea"
+         }
+        ],
+        {
+         "w": 640,
+         "h": 420
+        }
+       ],
+       "cap": "Only the top tier is a gate. The rest builds in motion."
+      }
+     ]
+    },
+    {
+     "id": "low",
+     "name": "Action items — Low",
+     "blurb": "Nice, not blocking.",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Low-priority action items — worth doing, but not gating you from going out."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>One simple, clean watch.</b> — Fashion · Accessories",
+        "<b>Learn to stand in front of a camera</b> like it's no big deal. — Photos · Posing"
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>The rule again:</b> clear the High action items and you've passed the bar. This list exists to get you out sooner, not to certify you as ready."
+      }
+     ]
+    }
+   ],
+   "standalone": [
+    {
+     "id": "gym",
+     "name": "Gym, 4-5x a week",
+     "from": "Physique · Training",
+     "go": "physique",
+     "goSel": "training"
+    },
+    {
+     "id": "films",
+     "name": "Films, shows & reading",
+     "from": "Cult · Interests",
+     "go": "cult",
+     "goSel": "interests"
+    },
+    {
+     "id": "swim",
+     "name": "Learning to swim (dance next)",
+     "from": "Cult · Interests",
+     "go": "cult",
+     "goSel": "interests"
+    }
+   ]
+  },
+  {
+   "id": "grooming",
+   "name": "Grooming",
+   "icon": "🧴",
+   "intro": "The highest return-per-effort category — mostly habits, not money.",
+   "topics": [
+    {
+     "id": "face",
+     "name": "Face",
+     "blurb": "Skin (done) + facial hair (open).",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Two parts. <b>Skin</b> is a solved habit. <b>Facial hair</b> is the open decision — and for a round face it's one of your best structure tools."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Skin — completed",
+         "x": "Cleanser, moisturizer, sunscreen, lip balm. Never oily, dry, or flaky."
+        },
+        {
+         "h": "Facial hair — action item",
+         "x": "Consciously pick a style instead of letting it default."
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Skin — the minimum, handled"
+      },
+      {
+       "t": "p",
+       "x": "Clean, consistent skin is a habit, not a product hunt. You already have this handled — protect it, don't over-engineer it."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Cleanser, moisturizer, sunscreen</b> — morning and night. Sunscreen is the single highest-return step.",
+        "A <b>lip balm</b> so lips never crack.",
+        "<b>Minimum:</b> never oily, dry, or flaky. You've got this."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Facial hair — pick a style on purpose"
+      },
+      {
+       "t": "p",
+       "x": "You've never consciously picked a style — the move is to <b>decide one</b> instead of letting it default. For a round face, facial hair is the cheapest way to add angles and vertical length."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Clean-shaven",
+         "x": "Sharpest look, but exposes a round face the most. Highest bar to pull off."
+        },
+        {
+         "h": "Light / designer stubble",
+         "x": "Adds jaw definition, lowest effort — the safest place to start."
+        },
+        {
+         "h": "Short full beard",
+         "x": "The most face-shaping option; adds the most length and angle."
+        }
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genSpectrum",
+       "args": [
+        "Softest read",
+        "Sharpest read",
+        [
+         {
+          "label": "Clean-shaven",
+          "pos": 0.92,
+          "color": "#db2777"
+         },
+         {
+          "label": "Designer stubble",
+          "pos": 0.5,
+          "color": "#16a34a"
+         },
+         {
+          "label": "Short full beard",
+          "pos": 0.28,
+          "color": "#4f46e5"
+         }
+        ],
+        {
+         "title": "Round face: length toward the chin adds structure",
+         "w": 760,
+         "h": 260
+        }
+       ],
+       "cap": "Stubble is the low-risk default; a chin-forward short beard shapes the most."
+      },
+      {
+       "t": "h",
+       "x": "Shaping rules for a round face"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Keep <b>cheeks and sides tidy and a touch shorter</b>, with more length toward the <b>chin</b> — adds vertical length and angles.",
+        "<b>Avoid</b> chin-straps and round shapes that echo the face.",
+        "<b>Pairs with the haircut:</b> stubble or a short beard is exactly what balances a buzz or short crop (see Hair)."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "How to decide — the 80/20"
+      },
+      {
+       "t": "flow",
+       "steps": [
+        "<b>Grow 1–2 weeks</b> to see real density and patchiness",
+        "<b>Barber shapes it</b> — cheek + neck lines set once, properly",
+        "<b>Re-trim weekly</b> — neck and cheek lines only, keep it sharp"
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genTriad",
+       "args": [
+        [
+         {
+          "label": "Effort",
+          "color": "#0891b2"
+         },
+         {
+          "label": "Face-shaping",
+          "color": "#ea580c"
+         },
+         {
+          "label": "Risk",
+          "color": "#db2777"
+         }
+        ],
+        {
+         "ab": "stubble wins",
+         "bc": "beard shapes most",
+         "ca": "clean = highest risk"
+        },
+        "Stubble:\nlow effort, low risk",
+        {
+         "w": 600,
+         "h": 520
+        }
+       ],
+       "cap": "Designer stubble sits in the sweet spot: low effort, low risk, real definition."
+      },
+      {
+       "t": "h",
+       "x": "Decide it this way"
+      },
+      {
+       "t": "call",
+       "x": "<b>80/20:</b> start with <b>designer stubble</b> — lowest effort, adds jaw definition, near-zero risk. If you want more shaping, grow to a <b>short chin-forward beard</b>. Only go clean-shaven once the rest of the look is dialed in."
+      }
+     ]
+    },
+    {
+     "id": "hair",
+     "name": "Hair",
+     "blurb": "First principles → every style → your cut.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "pull",
+       "x": "See the head as a set of zones and a haircut as four adjustable levers. Then you stop copying photos blindly and start choosing on purpose — and you can tell any barber exactly what you want."
+      },
+      {
+       "t": "h",
+       "x": "First principle — what a haircut actually is"
+      },
+      {
+       "t": "p",
+       "x": "A haircut is not a shape you pick off a poster. It is a set of decisions made <b>zone by zone</b> across your head: how much <b>length</b> to leave, how much <b>weight</b> (bulk) to remove, what <b>silhouette</b> that creates, and how the ends are <b>finished</b>. Every named style — buzz, fade, mullet, quiff — is just a <b>preset</b> of those four decisions applied to the zones. Learn the levers and the zones and you can read, request, or invent any cut."
+      },
+      {
+       "t": "h",
+       "x": "The four levers (every choice is one of these)"
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Length</b> — how long the hair is in a zone. Sets the ceiling on what's possible: you can always take away, never add on the day.",
+        "<b>Weight / bulk</b> — how dense and heavy the hair is. Removing weight (thinning, texturising, point-cutting) makes hair lighter and look <b>fuller</b> without losing length.",
+        "<b>Shape / silhouette</b> — the outline from front and side: where volume sits (up, forward, back, flat) and how sides taper into the top.",
+        "<b>Texture / finish</b> — how the ends are cut (blunt = sharp, point-cut = soft) plus product. Decides sharp-vs-messy and matte-vs-glossy."
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genTree",
+       "args": [
+        {
+         "label": "Any haircut",
+         "children": [
+          {
+           "label": "Length"
+          },
+          {
+           "label": "Weight"
+          },
+          {
+           "label": "Shape"
+          },
+          {
+           "label": "Finish"
+          }
+         ]
+        }
+       ],
+       "cap": "Any named style is these four levers, set differently across the zones of the head."
+      },
+      {
+       "t": "h",
+       "x": "The map — the zones of the head"
+      },
+      {
+       "t": "p",
+       "x": "Barbers think in zones, so learn the words. Once you can name where you want a change, instructions stop being vague (“not too short”) and become precise (“leave the fringe, tighten the sides, texture the top”). Drag or scroll the diagram to explore it."
+      },
+      {
+       "t": "fig",
+       "gen": "genHeadMap",
+       "args": [],
+       "cap": "Head in profile — face on the left. Orange marks the temple corners, where recession usually starts."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Zone",
+        "Where it is",
+        "What the cut controls here"
+       ],
+       "rows": [
+        [
+         "Fringe",
+         "The front section that falls onto the forehead",
+         "Coverage of the forehead/hairline; the first thing people see"
+        ],
+        [
+         "Hairline / edge",
+         "The outline where hair meets skin at the front",
+         "How sharp or soft the front reads; boxed vs natural corners"
+        ],
+        [
+         "Temples / corners",
+         "The two front corners above the temples",
+         "The classic recession spot; face framing; the ‘M’ shape"
+        ],
+        [
+         "Sides",
+         "Everything above the ears",
+         "Contrast with the top; where fades and tapers live"
+        ],
+        [
+         "Top",
+         "The flat crown-facing area on top",
+         "The main length you style; height and forward/back flow"
+        ],
+        [
+         "Crown",
+         "The swirl / spiral at the back-top",
+         "Cowlicks and how hair sits; common thinning spot"
+        ],
+        [
+         "Back",
+         "The rounded occipital area behind the crown",
+         "Weight and how the shape rounds off"
+        ],
+        [
+         "Nape",
+         "The hairline at the back of the neck",
+         "How clean the finish looks; blocked, rounded, or tapered"
+        ]
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Region by region — what gets changed and why"
+      },
+      {
+       "t": "p",
+       "x": "The same length means different things in different zones. Here is what a barber is actually adjusting in each, and the trade-off to know."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Fringe</b> — kept long it covers the forehead and receding corners; cut short and forward it becomes a ‘crop’ fringe. Heavy fringes look flat; texturised ones look fuller. Your main tool for coverage.",
+        "<b>Hairline / edge</b> — leaving it natural (soft) suits receding or uneven hairlines; ‘boxing’ it in (sharp) suits strong, full hairlines. Forcing a sharp line onto a weak hairline exposes the gaps.",
+        "<b>Temples / corners</b> — you can’t grow these back with scissors, so the choice is <b>frame them</b> (leave fringe length to cover) or <b>own them</b> (go shorter so there’s no line to defend).",
+        "<b>Sides</b> — the contrast lever. Short sides push attention to the top and make it look fuller; long sides add width (good for narrow faces, bad for round ones).",
+        "<b>Top</b> — where length and height live. More height elongates a round/short face; flat-and-forward suits long faces. Weight removed here stops the top collapsing.",
+        "<b>Crown</b> — cowlicks and the swirl decide which way hair naturally falls; a good barber cuts <b>with</b> it, not against it. Fighting the crown gives a piece that never sits.",
+        "<b>Back</b> — mostly rounding the shape cleanly and removing bulk so the head doesn’t look boxy from behind.",
+        "<b>Nape</b> — a <b>blocked</b> (straight) nape reads formal, a <b>rounded</b> nape softer, and a <b>tapered</b> (faded-out) nape lasts longest between cuts."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Hair type — the hand you’re dealt"
+      },
+      {
+       "t": "p",
+       "x": "Two <b>independent</b> axes decide what a style will actually do: <b>texture</b> (how straight or curly) and <b>strand + density</b> (how fine or coarse each hair is, and how many you have). A cut that looks great on thick straight hair can fail completely on fine wavy hair."
+      },
+      {
+       "t": "fig",
+       "gen": "genSpectrum",
+       "args": [
+        "Straight",
+        "Coily",
+        [
+         {
+          "label": "Straight",
+          "pos": 0.9,
+          "color": "#0891b2"
+         },
+         {
+          "label": "Wavy",
+          "pos": 0.62,
+          "color": "#16a34a"
+         },
+         {
+          "label": "Curly",
+          "pos": 0.34,
+          "color": "#4f46e5"
+         },
+         {
+          "label": "Coily",
+          "pos": 0.12,
+          "color": "#9333ea"
+         }
+        ],
+        {
+         "title": "Texture axis: straighter hair shows the cut’s shape; curlier hair shows volume",
+         "w": 760,
+         "h": 260
+        }
+       ],
+       "cap": "Texture is one axis. Thickness (fine ↔ coarse) and density (sparse ↔ dense) are separate ones."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Hair type",
+        "Strength",
+        "Watch-out",
+        "Tends to suit"
+       ],
+       "rows": [
+        [
+         "Straight",
+         "Sharp, clean lines; shows a precise cut",
+         "Shows scalp when thin; can look flat",
+         "Crops, fades, side parts, slick styles"
+        ],
+        [
+         "Wavy",
+         "Easy natural texture and movement",
+         "Can get shapeless if too long",
+         "Textured crop, mid-length flow, quiff"
+        ],
+        [
+         "Curly / coily",
+         "Big natural volume and shape",
+         "Shrinks when dry; needs its own routine",
+         "High-top, tapered curls, defined curls"
+        ],
+        [
+         "Fine / thin",
+         "Feels light, moves easily",
+         "Shows scalp; length exposes gaps",
+         "Shorter lengths, blunt-ish crops, matte product"
+        ],
+        [
+         "Thick / coarse",
+         "Lots to work with; holds shape",
+         "Gets heavy and ‘puffy’; needs weight removed",
+         "Most styles — but ask to texturise/thin"
+        ]
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Face shape — the target is always balance"
+      },
+      {
+       "t": "p",
+       "x": "The whole game of choosing a cut is nudging your face toward a balanced <b>oval</b>. If a face is round, add height and reduce width; if it’s long, add width and avoid height; if it’s square, soften the corners. Use the hair to add what’s missing and calm what’s excessive."
+      },
+      {
+       "t": "fig",
+       "gen": "genConcentric",
+       "args": [
+        [
+         {
+          "label": "Your face + hair",
+          "color": "#9333ea"
+         },
+         {
+          "label": "Add / calm\nwith the cut",
+          "color": "#4f46e5"
+         },
+         {
+          "label": "Balanced oval",
+          "color": "#16a34a"
+         }
+        ],
+        {
+         "w": 560,
+         "h": 500,
+         "caption": "Every choice nudges the shape toward the centre."
+        }
+       ],
+       "cap": "The goal isn’t a specific style — it’s balance. The cut is how you get there."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Face shape",
+        "Goal",
+        "Add",
+        "Avoid"
+       ],
+       "rows": [
+        [
+         "Oval",
+         "Keep balance (most styles work)",
+         "—",
+         "Covering the face until it reads round"
+        ],
+        [
+         "Round",
+         "Lengthen",
+         "Height on top, tight sides, some angle",
+         "Width at the sides, floppy fringe, mushroom shapes"
+        ],
+        [
+         "Square",
+         "Soften strong jaw/forehead",
+         "Texture, a little length, softer edges",
+         "Ultra-hard lines that echo the jaw"
+        ],
+        [
+         "Oblong / long",
+         "Shorten",
+         "Width via fuller sides, a fringe",
+         "Big height on top (makes it longer)"
+        ],
+        [
+         "Heart",
+         "Balance a wide forehead",
+         "Fringe/texture forward, fuller lower sides",
+         "Volume piled high at the front"
+        ],
+        [
+         "Diamond",
+         "Fill the narrow forehead",
+         "Fringe, width near the temples",
+         "Tight sides that narrow it further"
+        ]
+       ]
+      },
+      {
+       "t": "h",
+       "x": "The famous hairstyles — tap a family to open it"
+      },
+      {
+       "t": "p",
+       "x": "Grouped by how much length they keep. <b>Click a family below</b> to expand the full list, what defines each cut (in zones), who it suits, and how often to re-cut."
+      },
+      {
+       "t": "accordion",
+       "items": [
+        {
+         "h": "Very short",
+         "x": "Buzz · crew · Caesar · crop — lowest upkeep, strongest for thick or thinning hair",
+         "blocks": [
+          {
+           "t": "p",
+           "x": "Length is short everywhere, so the <b>shape of your head</b> and <b>hairline</b> do the talking. These are the most honest and confident options if you’re receding — there’s little to hide."
+          },
+          {
+           "t": "table",
+           "head": [
+            "Style",
+            "What defines it (zones/levers)",
+            "Best for",
+            "Re-cut"
+           ],
+           "rows": [
+            [
+             "Buzz cut",
+             "One guard length all over; no fringe",
+             "Thick or thinning hair; strong head shape",
+             "2–3 wk"
+            ],
+            [
+             "Crew cut",
+             "Short, a touch longer at the front top; tidy tapered sides",
+             "Almost anyone; office-safe",
+             "2–4 wk"
+            ],
+            [
+             "Caesar",
+             "Short top combed forward into a short straight fringe",
+             "Receding corners; wavy/straight hair",
+             "3–4 wk"
+            ],
+            [
+             "French / textured crop",
+             "Short textured top + short forward fringe + faded sides",
+             "Fine or receding hair; round/long faces",
+             "2–4 wk"
+            ]
+           ]
+          },
+          {
+           "t": "call",
+           "x": "<b>Round face tip:</b> pair any of these with <b>defined stubble or a short beard</b> to add jaw angles, and ask for a little <b>height at the front</b> so it isn’t flat."
+          }
+         ]
+        },
+        {
+         "h": "Short top + faded sides",
+         "x": "Fades · undercut · pompadour · quiff · comb-over · slick back — the modern default",
+         "blocks": [
+          {
+           "t": "p",
+           "x": "The defining move is <b>contrast</b>: sides taken down with a fade or taper while the top keeps length to style. Where the short-to-long line sits, and whether it’s blended or a hard step, changes everything."
+          },
+          {
+           "t": "fig",
+           "gen": "genSpectrum",
+           "args": [
+            "Skin (0)",
+            "High / long top",
+            [
+             {
+              "label": "Skin",
+              "pos": 0.06,
+              "color": "#db2777"
+             },
+             {
+              "label": "Low fade",
+              "pos": 0.3,
+              "color": "#ea580c"
+             },
+             {
+              "label": "Mid fade",
+              "pos": 0.55,
+              "color": "#4f46e5"
+             },
+             {
+              "label": "High fade",
+              "pos": 0.8,
+              "color": "#0891b2"
+             },
+             {
+              "label": "Taper (soft)",
+              "pos": 0.45,
+              "color": "#16a34a"
+             }
+            ],
+            {
+             "title": "Fade height = how far up the short part climbs",
+             "w": 780,
+             "h": 270
+            }
+           ],
+           "cap": "Lower fade = subtle, grows out well. Higher fade = more contrast, more upkeep."
+          },
+          {
+           "t": "table",
+           "head": [
+            "Style",
+            "What defines it (zones/levers)",
+            "Best for",
+            "Re-cut"
+           ],
+           "rows": [
+            [
+             "Low / mid / high fade",
+             "Sides blended from skin upward; height = how far it climbs",
+             "Adds contrast; makes the top look fuller",
+             "1–3 wk"
+            ],
+            [
+             "Taper",
+             "A gentle fade only around ears + nape",
+             "Conservative; grows out gracefully",
+             "3–5 wk"
+            ],
+            [
+             "Undercut (disconnected)",
+             "Long top, short sides, NO blend — a hard step",
+             "Bold, modern; thick straight hair",
+             "2–4 wk"
+            ],
+            [
+             "Pompadour",
+             "Top swept up & back with height at the front",
+             "Thick hair; adds height (great for round faces)",
+             "2–4 wk"
+            ],
+            [
+             "Quiff",
+             "Front lifted up & slightly forward; softer than a pomp",
+             "Versatile; most hair types",
+             "3–4 wk"
+            ],
+            [
+             "Comb-over / side part",
+             "Top combed to one side over a part; faded sides",
+             "Classic; works with mild recession",
+             "2–4 wk"
+            ],
+            [
+             "Slick back",
+             "All top length combed straight back with product",
+             "Full hair only — reveals a weak hairline",
+             "3–5 wk"
+            ]
+           ]
+          },
+          {
+           "t": "call",
+           "x": "<b>Thinning-hair tip:</b> keep the fade a <b>taper</b> (not skin) and the top <b>textured</b>, not slicked. High contrast + shine is what exposes a sparse top."
+          }
+         ]
+        },
+        {
+         "h": "Medium & long",
+         "x": "Flow · curtains · mullet · man-bun — commitment and the right hair type",
+         "blocks": [
+          {
+           "t": "p",
+           "x": "Length becomes the whole look. These need decent <b>density</b> and usually <b>wave or thickness</b> to hold shape — on fine or receding hair they tend to expose more than they cover."
+          },
+          {
+           "t": "table",
+           "head": [
+            "Style",
+            "What defines it (zones/levers)",
+            "Best for",
+            "Re-cut"
+           ],
+           "rows": [
+            [
+             "Mid-length flow",
+             "Grown-out top & sides that flow back / over the ears",
+             "Wavy/thick hair; strong hairline",
+             "4–6 wk trims"
+            ],
+            [
+             "Curtains",
+             "Medium top parted in the middle, framing the face",
+             "Wavy hair; the ’90s / 2020s look",
+             "4–6 wk"
+            ],
+            [
+             "Mullet / modern mullet",
+             "Short/faded sides, length kept at the back (modern = textured, not flicked)",
+             "Trend-forward; texture-friendly hair",
+             "3–5 wk"
+            ],
+            [
+             "Man-bun / top-knot",
+             "Long top tied up; sides long or faded",
+             "Long thick hair; commitment to grow",
+             "6+ wk"
+            ]
+           ]
+          },
+          {
+           "t": "call",
+           "x": "<b>Reality check:</b> growing it out is the most common mistake on a receding hairline — weight makes hair separate and show scalp. If you go long, keep the <b>weight out</b> and the <b>fringe textured</b>."
+          }
+         ]
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "How to actually think about a cut (the method)"
+      },
+      {
+       "t": "fig",
+       "gen": "genCycle",
+       "args": [
+        [
+         {
+          "label": "Read hair",
+          "note": "texture + density"
+         },
+         {
+          "label": "Read face",
+          "note": "shape + hairline"
+         },
+         {
+          "label": "Set goal",
+          "note": "toward oval"
+         },
+         {
+          "label": "Pick length",
+          "note": "you'll maintain"
+         },
+         {
+          "label": "Choose preset",
+          "note": "fits the above"
+         },
+         {
+          "label": "Talk in zones",
+          "note": "to the barber"
+         },
+         {
+          "label": "Re-cut",
+          "note": "on a cycle"
+         }
+        ],
+        {
+         "w": 640,
+         "h": 600,
+         "center": "CHOOSING A CUT"
+        }
+       ],
+       "cap": "The loop: read what you’ve got, aim for balance, choose a preset, translate to zones, maintain."
+      },
+      {
+       "t": "call",
+       "x": "<b>The one idea to keep:</b> you are not choosing a picture, you are choosing <b>length + weight + shape + finish for each zone</b>, aimed at balancing your face and flattering the hair you have. A photo is just shorthand for those settings."
+      },
+      {
+       "t": "h",
+       "x": "How to ask the barber (speak in zones + levers)"
+      },
+      {
+       "t": "p",
+       "x": "Bring <b>2–3 reference photos</b> (including one of your hair wet and pushed back so they see your real hairline), then describe it in zones so nothing is left to guessing."
+      },
+      {
+       "t": "flow",
+       "steps": [
+        "Name the <b>preset</b>: e.g. “textured crop” or “mid taper”.",
+        "<b>Sides</b>: how short and how high (“low/mid/high fade” or “just a taper, nothing too tight”).",
+        "<b>Top</b>: length + “take the weight out / texturise” rather than only “shorter”.",
+        "<b>Fringe & corners</b>: how much to keep for coverage or framing.",
+        "<b>Nape</b>: blocked, rounded, or tapered out.",
+        "<b>Finish</b>: matte for fuller-looking hair; save shine for full, thick hair."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Your situation — recession + round face"
+      },
+      {
+       "t": "p",
+       "x": "Advanced recession + round face. The principle: <b>work with the hairline, not against it.</b> Owning it beats concealing it — every time."
+      },
+      {
+       "t": "h",
+       "x": "The principle"
+      },
+      {
+       "t": "p",
+       "x": "With advanced recession, length needs <b>hairline density</b> to frame the face — which is exactly what's gone — so length draws the eye straight to the recession. The winning move is a cut designed around the hairline you actually have."
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "l",
+          "x": "0.22",
+          "y": "0.2",
+          "shape": "#ea580c",
+          "w": 150,
+          "h": 38,
+          "label": "Grow length\non top",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "d",
+          "x": "0.22",
+          "y": "0.55",
+          "shape": "#0891b2",
+          "w": 150,
+          "h": 38,
+          "label": "Needs hairline\ndensity to frame",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "x",
+          "x": "0.22",
+          "y": "0.88",
+          "shape": "diamond",
+          "w": "#db2777",
+          "h": 38,
+          "label": "Eye drawn to\nrecession",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "s",
+          "x": "0.78",
+          "y": "0.2",
+          "shape": "#16a34a",
+          "w": 150,
+          "h": 38,
+          "label": "Short crop /\nfringe",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "f",
+          "x": "0.78",
+          "y": "0.55",
+          "shape": "#0891b2",
+          "w": 150,
+          "h": 38,
+          "label": "No line to\ndefend",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "w",
+          "x": "0.78",
+          "y": "0.88",
+          "shape": "round",
+          "w": "#16a34a",
+          "h": 38,
+          "label": "Reads confident",
+          "fill": "#4f46e5"
+         }
+        ],
+        [
+         {
+          "from": "l",
+          "to": "d"
+         },
+         {
+          "from": "d",
+          "to": "x"
+         },
+         {
+          "from": "s",
+          "to": "f"
+         },
+         {
+          "from": "f",
+          "to": "w"
+         }
+        ],
+        {
+         "w": 700,
+         "h": 480
+        }
+       ],
+       "cap": "Two paths: fighting the hairline (left) vs working with it (right)."
+      },
+      {
+       "t": "h",
+       "x": "Option 1 — Textured crop with a forward fringe"
+      },
+      {
+       "t": "p",
+       "x": "Your best <b>'keeps some length'</b> choice. Short-to-medium top worn deliberately forward as a textured fringe, with tight high-faded sides. The fringe sits over the receded corners and camouflages them naturally — the legit version of a comb-forward."
+      },
+      {
+       "t": "list",
+       "items": [
+        "For a round face, ask for <b>height / texture + a high fade</b> to add vertical lines and angles.",
+        "Products: a <b>matte clay or paste</b> + a <b>sea-salt spray</b> for texture. Never gel or anything shiny — it separates hair and shows scalp."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Option 2 — Buzz / short crop + facial hair"
+      },
+      {
+       "t": "p",
+       "x": "Sharpest, lowest-maintenance. On advanced recession this usually looks the <b>most confident</b>, and there's nothing to hide."
+      },
+      {
+       "t": "list",
+       "items": [
+        "Round-face fix: pair it with <b>defined stubble or a short beard</b> to add jaw angles.",
+        "Near-zero upkeep. Product: <b>nothing but sunscreen</b> on the scalp. Worth trying once before dismissing."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Option 3 — Keeping real length on top"
+      },
+      {
+       "t": "p",
+       "x": "<b>Not recommended.</b> Possible, but needs constant management and highlights exactly what you're trying to downplay. This is the one to talk yourself out of."
+      },
+      {
+       "t": "h",
+       "x": "Decision guide"
+      },
+      {
+       "t": "table",
+       "head": [
+        "Option",
+        "Upkeep",
+        "Round-face fit",
+        "Verdict"
+       ],
+       "rows": [
+        [
+         "Textured crop + fringe",
+         "Medium (2–4 wk)",
+         "Great with height + high fade",
+         "Best if you want length"
+        ],
+        [
+         "Buzz / short crop",
+         "Near-zero",
+         "Great with stubble/beard",
+         "Sharpest, most confident"
+        ],
+        [
+         "Length on top",
+         "High, daily",
+         "Poor — draws the eye up",
+         "Talk yourself out of it"
+        ]
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genTree",
+       "args": [
+        {
+         "label": "Recession + round face",
+         "children": [
+          {
+           "label": "Textured crop + fringe",
+           "children": [
+            {
+             "label": "High fade"
+            },
+            {
+             "label": "Matte clay"
+            }
+           ]
+          },
+          {
+           "label": "Buzz / short crop",
+           "children": [
+            {
+             "label": "+ stubble"
+            },
+            {
+             "label": "scalp SPF"
+            }
+           ]
+          },
+          {
+           "label": "Length on top",
+           "children": [
+            {
+             "label": "avoid"
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "cap": "Two live options (crop, buzz) and one to avoid (length)."
+      },
+      {
+       "t": "h",
+       "x": "What to ask the barber"
+      },
+      {
+       "t": "flow",
+       "steps": [
+        "Bring <b>2–3 reference photos</b>",
+        "Say <b>'textured crop with a fringe'</b> or <b>'short crop'</b>, plus <b>'high skin/taper fade'</b>",
+        "Add <b>'cut to work with a receding hairline'</b>",
+        "Re-cut every <b>2–4 weeks</b> to keep it sharp"
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Regrowth / medical (optional — no pressure)"
+      },
+      {
+       "t": "call",
+       "x": "Since this is advanced male-pattern recession, if keeping or regaining hair genuinely matters to you, the full menu includes dermatologist-prescribed <b>minoxidil</b> and <b>finasteride</b> (can slow and partly reverse loss) and <b>hair transplants</b>. These are medical decisions with real trade-offs — see a dermatologist or trichologist rather than self-prescribing. Plenty of men look great just owning the cut, so treat this as <b>information, not a must-do</b>."
+      },
+      {
+       "t": "h",
+       "x": "Decide it this way"
+      },
+      {
+       "t": "call",
+       "x": "<b>80/20:</b> if you want minimum fuss and maximum confidence, <b>buzz / short crop + defined stubble</b>. If you want to keep some length, <b>textured crop with a forward fringe + high fade</b>. Either beats fighting the hairline."
+      }
+     ]
+    },
+    {
+     "id": "glasses",
+     "name": "Glasses",
+     "blurb": "The most-looked-at thing you own.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "h",
+       "x": "Anatomy of a frame — how to read any pair",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "p",
+       "x": "Stop seeing a frame as one object. It's three zones — <b>front</b>, <b>bridge</b>, <b>temples</b> — plus a set of measurements. Describe each by shape, size, material, thickness and finish and you can specify (and picture) any pair in words.",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "fig",
+       "gen": "genFrameAnatomy",
+       "args": [],
+       "cap": "The parts. Front = rim/eyewire around each lens; bridge over the nose; nose pads; end piece → hinge → temple (the arm); temple tip over the ear.",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "fig",
+       "gen": "genFrameMeasure",
+       "args": [],
+       "cap": "The spec code printed inside a temple: lens width ▢ bridge – temple length, in mm. Plus lens height and total frame width.",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "h",
+       "x": "Shape — just axis one",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "fig",
+       "gen": "genFrameShapes",
+       "args": [],
+       "cap": "The common shapes. For a longer face, angular/rectangular shapes add structure; round softens.",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "h",
+       "x": "Rim, bridge & temple styles",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "fig",
+       "gen": "genRimStyles",
+       "args": [],
+       "cap": "Rim style — how much surrounds the lens: full-rim, semi-rimless (top only), rimless.",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "fig",
+       "gen": "genBridgeTypes",
+       "args": [],
+       "cap": "Bridge type — how it sits on the nose. Metal frames add adjustable nose pads; acetate uses a moulded bridge.",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "fig",
+       "gen": "genTempleStyles",
+       "args": [],
+       "cap": "Temple (arm) style — how it grips: skull curves behind the ear, library is straight, cable wraps around.",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "call",
+       "x": "<b>Describe any frame with 8 axes:</b> shape · rim style · material (acetate / metal / TR90) · thickness · colour &amp; finish · bridge type &amp; fit · temple style · proportion. Everything below is about picking yours.",
+       "_sec": "__anatomy__"
+      },
+      {
+       "t": "h",
+       "x": "How a face maps to a frame — the logic",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "p",
+       "x": "The whole thing runs on one idea: <b>the face states a problem, the frame is the correction.</b> Four rules govern every choice, and each face trait points to exactly one frame lever.",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "fig",
+       "gen": "genFrameRules",
+       "args": [],
+       "cap": "The four governing rules. Contrast the shape; harmonise the colour; match the scale; treat the frame as jewellery for the eyes.",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "h",
+       "x": "The mapping — every face trait points to a frame lever",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "fig",
+       "gen": "genFaceFrameMap",
+       "args": [],
+       "cap": "Read left → right: each property of the face sets one decision about the frame.",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "h",
+       "x": "Shape — contrast the face",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "fig",
+       "gen": "genShapeContrast",
+       "args": [],
+       "cap": "Pick a frame shape that opposes the face's dominant lines — that's what neutralises them.",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "h",
+       "x": "Colour — harmonise with your colouring",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "fig",
+       "gen": "genFrameColourMap",
+       "args": [],
+       "cap": "Undertone sets the hue family; depth of colouring sets how dark you go; personal contrast sets how bold.",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "h",
+       "x": "The order you decide in",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "fig",
+       "gen": "genDecisionOrder",
+       "args": [],
+       "cap": "Fit is mechanics and comes first; shape, scale, position and colour follow; the statement is last.",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "h",
+       "x": "Your readout",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Shape",
+         "x": "Rectangular / soft-geometric — angular enough to add structure, rounded enough not to over-harden a lean face. Wider than tall."
+        },
+        {
+         "h": "Scale",
+         "x": "Medium-to-bold acetate — you can carry structure; thin wire disappears on you."
+        },
+        {
+         "h": "Eyes & top rim",
+         "x": "Top rim on your strong brow; keep the top medium-toned, not heavy-dark, so your deep-set eyes stay forward."
+        },
+        {
+         "h": "Bridge / nose",
+         "x": "Longish nose → a keyhole or higher bridge shortens it; adjustable pads if it slides."
+        },
+        {
+         "h": "Colour",
+         "x": "Warm / olive undertone → tortoise, warm brown, honey, olive, gunmetal, warm navy — over cool black/silver."
+        },
+        {
+         "h": "Statement",
+         "x": "Pick one: a rich tortoise (colour) OR a bold matte (thickness) — never both."
+        }
+       ],
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "call",
+       "x": "<b>Net:</b> a soft-angular, medium-bold, warm-toned rectangular/geometric frame — wider than tall, top rim on the brow. That's your lane. Fit first, then this.",
+       "_sec": "__mapping__"
+      },
+      {
+       "t": "p",
+       "x": "Glasses aren't grooming exactly, but they <b>sit on your face and get read before anything else</b> — so we treat them here. For you this is the <b>single highest-impact appearance fix</b>. This page goes deep: terminology, frame shapes, materials, colour, fit rules, and a face-shape decision framework."
+      },
+      {
+       "t": "pull",
+       "x": "Your face is longer than wide (oblong / oval). The whole game: add <b>width</b> and <b>break the length</b> — angular shapes, a strong horizontal line, decorative temples — without over-sharpening an already lean face."
+      },
+      {
+       "t": "h",
+       "x": "Terminology — the vocabulary of a frame"
+      },
+      {
+       "t": "p",
+       "x": "You can't choose well without the words. Here's the 20% of terminology that drives 80% of good decisions."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Term",
+        "What it means",
+        "Why it matters"
+       ],
+       "rows": [
+        [
+         "Face width",
+         "Distance across your cheekbones/temples — the widest part of your face",
+         "Frames should not be wider than this"
+        ],
+        [
+         "Frame width",
+         "Outer edge to outer edge of the two lenses + bridge",
+         "Should roughly match your face width, never exceed it"
+        ],
+        [
+         "Lens (eye) size",
+         "Width of one lens, in mm",
+         "Larger = bolder; eyes should sit centred in it"
+        ],
+        [
+         "Bridge",
+         "The piece over the nose joining the two lenses",
+         "Sets how frames sit; too wide = they slide down"
+        ],
+        [
+         "Temples (arms)",
+         "The two sides running to your ears",
+         "Where the fit/level comes from; where logos live"
+        ],
+        [
+         "Temple length",
+         "Length of the arms, in mm",
+         "Wrong length = pinching or sliding"
+        ],
+        [
+         "Top edge / brow line",
+         "The upper rim of the frame",
+         "Should sit near — and roughly follow — your brows"
+        ],
+        [
+         "Rim",
+         "The material around each lens",
+         "Full / semi / none defines how bold the frame reads"
+        ]
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "fw",
+          "x": "0.5",
+          "y": "0.12",
+          "shape": "round",
+          "w": 250,
+          "h": 36,
+          "label": "Face width — widest point",
+          "fill": "#9333ea"
+         },
+         {
+          "id": "frame",
+          "x": "0.5",
+          "y": "0.4",
+          "shape": "rect",
+          "w": 240,
+          "h": 34,
+          "label": "Frame width ≤ face width",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "lens",
+          "x": "0.24",
+          "y": "0.7",
+          "shape": "rect",
+          "w": 150,
+          "h": 44,
+          "label": "Lens size\n(eye centred)",
+          "fill": "#0891b2"
+         },
+         {
+          "id": "bridge",
+          "x": "0.5",
+          "y": "0.7",
+          "shape": "rect",
+          "w": 130,
+          "h": 44,
+          "label": "Bridge\n(over nose)",
+          "fill": "#ea580c"
+         },
+         {
+          "id": "temple",
+          "x": "0.76",
+          "y": "0.7",
+          "shape": "rect",
+          "w": 150,
+          "h": 44,
+          "label": "Temples\n(to the ears)",
+          "fill": "#16a34a"
+         }
+        ],
+        [
+         {
+          "from": "fw",
+          "to": "frame"
+         },
+         {
+          "from": "frame",
+          "to": "lens"
+         },
+         {
+          "from": "frame",
+          "to": "bridge"
+         },
+         {
+          "from": "frame",
+          "to": "temple"
+         }
+        ],
+        {
+         "w": 720,
+         "h": 420
+        }
+       ],
+       "cap": "Anatomy of a frame: face width sets the ceiling; everything else fits inside it."
+      },
+      {
+       "t": "p",
+       "x": "<b>How face shape relates to frames:</b> a good frame <b>contrasts</b> the face shape. A <b>longer-than-wide (oblong/oval)</b> face wants frames that add <b>width</b> and <b>cut the length</b> — a strong horizontal line, decorative or contrasting temples, and enough lens depth to fill the vertical. <b>Soft-angular</b> shapes add structure without over-hardening a lean face; pure curves just lengthen it further."
+      },
+      {
+       "t": "h",
+       "x": "Frame shapes — names, why, and traditional vs modern"
+      },
+      {
+       "t": "p",
+       "x": "Frame families are named for their silhouette or their origin. Knowing the name gets you the right frame in any shop or search."
+      },
+      {
+       "t": "fig",
+       "gen": "genTree",
+       "args": [
+        {
+         "label": "Frame families",
+         "children": [
+          {
+           "label": "Angular",
+           "children": [
+            {
+             "label": "Rectangular"
+            },
+            {
+             "label": "Square"
+            },
+            {
+             "label": "Geometric"
+            },
+            {
+             "label": "Browline"
+            }
+           ]
+          },
+          {
+           "label": "Rounded",
+           "children": [
+            {
+             "label": "Round"
+            },
+            {
+             "label": "Oval"
+            },
+            {
+             "label": "Round-metal"
+            }
+           ]
+          },
+          {
+           "label": "Iconic",
+           "children": [
+            {
+             "label": "Aviator"
+            },
+            {
+             "label": "Wayfarer"
+            },
+            {
+             "label": "Cat-eye"
+            }
+           ]
+          },
+          {
+           "label": "By rim",
+           "children": [
+            {
+             "label": "Full-rim"
+            },
+            {
+             "label": "Semi-rimless"
+            },
+            {
+             "label": "Rimless"
+            }
+           ]
+          }
+         ]
+        }
+       ],
+       "cap": "The frame-family tree: angular, rounded, iconic, and by rim style."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Shape",
+        "Why it's called that",
+        "Read"
+       ],
+       "rows": [
+        [
+         "Rectangular",
+         "Lenses wider than tall — a rectangle",
+         "Classic, structured. Adds width + straight lines — great for round faces"
+        ],
+        [
+         "Square",
+         "Roughly equal width/height, sharp corners",
+         "Bold, angular, masculine. Strong structure"
+        ],
+        [
+         "Round",
+         "Circular lenses",
+         "Soft, intellectual, retro. Echoes a round face — avoid"
+        ],
+        [
+         "Oval",
+         "Egg-shaped, slightly wider than tall",
+         "Gentle, safe on most faces; too soft for a round face"
+        ],
+        [
+         "Aviator",
+         "Designed for WWII pilots ('aviators') — teardrop lenses, double bridge",
+         "Cool, classic. Angular teardrop adds some structure"
+        ],
+        [
+         "Wayfarer",
+         "Ray-Ban's 1952 model name — trapezoidal acetate",
+         "Timeless, versatile. Slight angularity works"
+        ],
+        [
+         "Browline / Clubmaster",
+         "Heavy top bar mimics the brow line",
+         "Sharp, intellectual, retro-modern. Adds a strong horizontal line up top"
+        ],
+        [
+         "Cat-eye",
+         "Upswept outer corners like a cat's eye",
+         "Upward lift, more traditionally feminine but unisex versions exist"
+        ],
+        [
+         "Geometric / Hexagonal",
+         "Named for the polygon shape (6+ sides)",
+         "Modern, distinctive. All straight lines — excellent for round faces"
+        ],
+        [
+         "Round-metal / 'Lennon'",
+         "Thin round metal, worn by John Lennon",
+         "Vintage, artsy. Round — avoid for a round face"
+        ],
+        [
+         "Oversized",
+         "Larger than the face proportions",
+         "Fashion-forward statement; can overwhelm"
+        ],
+        [
+         "Rimless / Semi-rimless",
+         "No rim, or rim only on top",
+         "Minimal, invisible, professional. Soft — less face-shaping"
+        ]
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genSpectrum",
+       "args": [
+        "Traditional",
+        "Modern",
+        [
+         {
+          "label": "Round-metal",
+          "pos": 0.08,
+          "color": "#9333ea"
+         },
+         {
+          "label": "Wayfarer",
+          "pos": 0.32,
+          "color": "#4f46e5"
+         },
+         {
+          "label": "Aviator",
+          "pos": 0.44,
+          "color": "#0891b2"
+         },
+         {
+          "label": "Browline",
+          "pos": 0.6,
+          "color": "#ea580c"
+         },
+         {
+          "label": "Rectangular",
+          "pos": 0.72,
+          "color": "#16a34a"
+         },
+         {
+          "label": "Geometric",
+          "pos": 0.92,
+          "color": "#db2777"
+         }
+        ],
+        {
+         "title": "Roughly, traditional → modern",
+         "w": 760,
+         "h": 270
+        }
+       ],
+       "cap": "Where the families sit on the traditional-vs-modern axis."
+      },
+      {
+       "t": "h",
+       "x": "Materials"
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Acetate",
+         "x": "Thick plastic (from cotton/wood). Bold, colourful, warm — bigger visual weight. Where tortoise & statement frames live."
+        },
+        {
+         "h": "Metal",
+         "x": "Thin, minimal, light. Reads understated and professional. Gunmetal and silver-tones."
+        },
+        {
+         "h": "Titanium",
+         "x": "Premium metal: ultra-light, strong, hypoallergenic. Minimal look, higher price."
+        },
+        {
+         "h": "TR90",
+         "x": "Flexible nylon polymer. Light, near-unbreakable, sporty/casual. Great everyday durability."
+        }
+       ]
+      },
+      {
+       "t": "table",
+       "head": [
+        "Rim style",
+        "Look",
+        "Best for"
+       ],
+       "rows": [
+        [
+         "Full-rim",
+         "Boldest, most structure",
+         "Adding definition to a soft/round face"
+        ],
+        [
+         "Semi-rimless",
+         "Rim on top only — lighter",
+         "Balance of structure + minimalism"
+        ],
+        [
+         "Rimless",
+         "No rim — nearly invisible",
+         "Maximum minimalism; least face-shaping"
+        ]
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Colour — versatile picks and how colour changes the read"
+      },
+      {
+       "t": "p",
+       "x": "Colour changes how bold a frame reads and how it plays against your skin and hair. Start with a versatile neutral; add character later."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Tortoise",
+         "x": "Warm brown mottled pattern. Adds character while staying neutral — pairs with almost everything."
+        },
+        {
+         "h": "Dark brown",
+         "x": "Softer than black, warm, flattering on most skin tones. Safe and versatile."
+        },
+        {
+         "h": "Gunmetal",
+         "x": "Dark grey metal. Minimal, modern, understated — disappears into any outfit."
+        },
+        {
+         "h": "Matte black",
+         "x": "Bold and clean without the shine of gloss black. The safest 'statement' neutral."
+        }
+       ]
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Darker, thicker, bolder</b> colours = more of a statement and more face structure.",
+        "<b>Thin metal / neutral tones</b> = the frame recedes and reads minimal.",
+        "Because your Fashion rule is 'one statement per outfit', if the frame is your statement, keep the rest quiet."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Fit rules — the non-negotiables"
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "f1",
+          "x": "0.5",
+          "y": "0.12",
+          "shape": "round",
+          "w": 240,
+          "h": 36,
+          "label": "Not wider than your face",
+          "fill": "#db2777"
+         },
+         {
+          "id": "f2",
+          "x": "0.25",
+          "y": "0.42",
+          "shape": "rect",
+          "w": 180,
+          "h": 44,
+          "label": "Top edge near the brows",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "f3",
+          "x": "0.75",
+          "y": "0.42",
+          "shape": "rect",
+          "w": 180,
+          "h": 44,
+          "label": "Eyes centred in the lens",
+          "fill": "#0891b2"
+         },
+         {
+          "id": "f4",
+          "x": "0.25",
+          "y": "0.78",
+          "shape": "rect",
+          "w": 180,
+          "h": 44,
+          "label": "Sit level, don't slide",
+          "fill": "#16a34a"
+         },
+         {
+          "id": "f5",
+          "x": "0.75",
+          "y": "0.78",
+          "shape": "rect",
+          "w": 190,
+          "h": 44,
+          "label": "Comfortable temples/bridge",
+          "fill": "#ea580c"
+         }
+        ],
+        [
+         {
+          "from": "f1",
+          "to": "f2"
+         },
+         {
+          "from": "f1",
+          "to": "f3"
+         },
+         {
+          "from": "f2",
+          "to": "f4"
+         },
+         {
+          "from": "f3",
+          "to": "f5"
+         }
+        ],
+        {
+         "w": 720,
+         "h": 440
+        }
+       ],
+       "cap": "The four fit rules that decide whether any frame works."
+      },
+      {
+       "t": "list",
+       "items": [
+        "Frames <b>should not be wider than the widest part of your face</b>.",
+        "The <b>top edge sits near your brows</b> and roughly follows them.",
+        "Your <b>eyes are roughly centred</b> in each lens.",
+        "They <b>sit level and don't slide</b> down your nose."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Decision framework — face shape → frames"
+      },
+      {
+       "t": "p",
+       "x": "The master rule: <b>frame shape should contrast face shape.</b> Your face is <b>longer than wide (oblong/oval)</b>, so you want angular structure that adds <b>width</b> and breaks the vertical — soft-angular, not razor-sharp; a horizontal line and decorative temples help."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Face shape",
+        "Go for",
+        "Avoid"
+       ],
+       "rows": [
+        [
+         "Round (you)",
+         "Rectangular, square, geometric/hexagonal, browline — straight lines add structure & length",
+         "Round, oval, round-metal — they echo and soften"
+        ],
+        [
+         "Square",
+         "Round, oval — soften strong angles",
+         "Sharp square/rectangular"
+        ],
+        [
+         "Oval",
+         "Most shapes work; balanced",
+         "Oversized that break proportion"
+        ],
+        [
+         "Heart",
+         "Bottom-heavy / round, rimless",
+         "Top-heavy browline, decorated tops"
+        ]
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genMatrix",
+       "args": [
+        "Angularity",
+        "Face-shaping",
+        {
+         "tl": {
+          "title": "Round frames",
+          "items": [
+           "Round",
+           "Oval",
+           "Round-metal",
+           "→ avoid for you"
+          ]
+         },
+         "tr": {
+          "title": "Angular frames",
+          "items": [
+           "Rectangular",
+           "Geometric",
+           "Square",
+           "→ your zone"
+          ]
+         },
+         "bl": {
+          "title": "Soft + minimal",
+          "items": [
+           "Rimless",
+           "Oval-metal",
+           "Least structure"
+          ]
+         },
+         "br": {
+          "title": "Angular + bold",
+          "items": [
+           "Browline",
+           "Thick rectangular",
+           "Most structure"
+          ]
+         }
+        }
+       ],
+       "cap": "Your zone is the right side — angular. The more structure, the more it fixes a round face."
+      },
+      {
+       "t": "flow",
+       "steps": [
+        "<b>Round face?</b> → angular / rectangular / geometric",
+        "<b>Add structure</b> → straight top edge, some width, matte or dark colour",
+        "<b>Check the 4 fit rules</b> → not wider than face, brow line, centred eyes, sit level",
+        "<b>Pick a versatile colour</b> → tortoise / dark brown / gunmetal / matte black",
+        "<b>Try many in person</b> → take a friend or photos to the optician"
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Practical"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Get an <b>anti-glare coating</b> and keep the lenses <b>smudge-free always</b>.",
+        "<b>Contacts or a second frame later</b> add variety once the main pair is right."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Decide it this way"
+      },
+      {
+       "t": "call",
+       "x": "<b>80/20 for you:</b> one well-fitting <b>angular / rectangular or geometric</b> full-rim pair, in <b>tortoise, dark brown, gunmetal, or matte black</b>, that passes the four fit rules. Take a friend (or photos) to the optician and <b>try a lot of them</b> — the right pair is obvious once it's on your face."
+      }
+     ]
+    },
+    {
+     "id": "nails",
+     "name": "Nails & Hands",
+     "blurb": "Short, clean, never an afterthought.",
+     "status": "completed",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Small surface area, outsized signal. People clock hands more than you'd think — this is a solved habit for you, so the job is just not letting it slip."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Nails trimmed short and clean</b> — no dirt underneath.",
+        "<b>Moisturize hands</b> so they're not dry or cracked.",
+        "<b>Minimum:</b> nothing on your hands that makes someone hesitate. (Handled.)"
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Decide it this way"
+      },
+      {
+       "t": "call",
+       "x": "<b>80/20:</b> a weekly trim + hand cream. That's the whole job. Marked <b>completed</b> — protect it, don't overthink it."
+      }
+     ]
+    },
+    {
+     "id": "teeth",
+     "name": "Teeth & Breath",
+     "blurb": "Fresh breath, always.",
+     "status": "completed",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Fresh breath is a <b>hard floor</b> for any close interaction — non-negotiable, and already handled."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Brush twice daily, floss, scrape the tongue.</b>",
+        "<b>Carry gum or mints</b> by default before any social setting.",
+        "Whitening is a nice extra later; clean and fresh is the minimum now. (Handled.)"
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Decide it this way"
+      },
+      {
+       "t": "call",
+       "x": "<b>80/20:</b> the daily routine + mints in your pocket clears 100% of the risk. Whitening is optional polish, not part of the MVP."
+      }
+     ]
+    },
+    {
+     "id": "face-analysis",
+     "name": "Face Analysis",
+     "blurb": "A full read of your face — in diagrams.",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Everything from the deep-dive, turned into diagrams. This maps three things: the <b>structure</b> (what's fixed and already working for you), the <b>skin</b> (what's changeable), and the <b>signal</b> (what your face communicates at rest). It's a map to give the other grooming tabs a reason — not a verdict."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Structure — a strength",
+         "x": "Lean, angular, longer-than-wide. Good cheekbones and jaw. This is the foundation and it's a good one."
+        },
+        {
+         "h": "Skin — the work",
+         "x": "Combination-oily with post-acne marks and under-eye shadow. All of it is the changeable part."
+        },
+        {
+         "h": "Signal — easily shifted",
+         "x": "Reads intense at rest; the eyes and a half-smile soften it instantly."
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "01 · Structure — shape & proportions"
+      },
+      {
+       "t": "fig",
+       "gen": "genFaceShape",
+       "args": [],
+       "cap": "Oblong / rectangular leaning oval: length clearly greater than width, parallel sides, gentle taper to a slightly narrow chin."
+      },
+      {
+       "t": "p",
+       "x": "Your face is clearly longer than it is wide, with fairly parallel sides. Length-dominant faces look most balanced when styling adds a little <b>width</b> and breaks the vertical — which is exactly why the Hair and Glasses tabs push structure and horizontal lines."
+      },
+      {
+       "t": "h",
+       "x": "02 · Anatomy — feature map"
+      },
+      {
+       "t": "fig",
+       "gen": "genFaceFeatures",
+       "args": [],
+       "cap": "Broad forehead, heavy straight brows over deep-set hooded eyes, a long straight nose, balanced medium lips, cheekbones that read, and a narrow defined chin."
+      },
+      {
+       "t": "p",
+       "x": "The brow-plus-deep-set-eyes combination is what gives your resting face its intensity (see diagram 07). Everything here is well-proportioned — nothing fighting anything else."
+      },
+      {
+       "t": "h",
+       "x": "03 · Skin — how it behaves, and what's on it"
+      },
+      {
+       "t": "fig",
+       "gen": "genTzone",
+       "args": [],
+       "cap": "Combination leaning oily: the T — forehead, nose, chin — carries most of the shine; cheeks catch some too."
+      },
+      {
+       "t": "fig",
+       "gen": "genSkinMap",
+       "args": [],
+       "cap": "The changeable stuff: under-eye darkness, post-acne marks (discolouration, not pitted scars — these fade), a few active breakouts, and mild texture on the cheeks."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Oiliness:</b> a <b>lightweight</b> moisturiser (not heavy) plus daily sunscreen actually reduces oil over time — skipping moisturiser makes oily skin overproduce.",
+        "<b>The brown marks:</b> the single biggest lever is <b>daily sunscreen</b> — sun makes post-acne marks linger far longer.",
+        "<b>Under-eye:</b> partly structural (deep-set eyes, little fat padding), partly sleep, hydration and screen time.",
+        "<b>Lips:</b> read slightly dehydrated — a balm is a five-second fix."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "04 · Bone structure — your strong angle"
+      },
+      {
+       "t": "fig",
+       "gen": "genProfile",
+       "args": [],
+       "cap": "Little facial fat means the structure shows cleanly: defined cheekbones, a clean jaw angle, a lean taper to the chin. The faint nose bump reads as character, not flaw."
+      },
+      {
+       "t": "p",
+       "x": "The three-quarter angle is genuinely your most flattering — worth remembering for photos (see Photos / Socials → Posing)."
+      },
+      {
+       "t": "h",
+       "x": "05 · Colouring — tone & undertone"
+      },
+      {
+       "t": "fig",
+       "gen": "genColoring",
+       "args": [],
+       "cap": "A warm, golden-to-olive undertone at a medium-deep depth."
+      },
+      {
+       "t": "p",
+       "x": "This is the same palette logic the Fashion tab uses — olive, sage, beige, rust and warm navy all sit beautifully against your skin; icy pastels and cool greys next to the face are trickier."
+      },
+      {
+       "t": "h",
+       "x": "06 · The signal — what your face says at rest"
+      },
+      {
+       "t": "fig",
+       "gen": "genFaceGauge",
+       "args": [],
+       "cap": "At rest you read serious and a little intense — driven by the heavy brow, deep-set eyes, and simply not smiling. It swings warm the moment the eyes engage."
+      },
+      {
+       "t": "p",
+       "x": "Worth knowing because in photos a neutral face like yours can look sterner than you feel. The fix isn't structural — it's engaging the eyes and a slight smile."
+      },
+      {
+       "t": "call",
+       "x": "<b>The honest summary:</b> strong, lean bone structure with good cheekbones and jaw — a foundation you already have. Thick hair, a characterful nose, balanced lips. The things that are <b>changeable</b> and move the needle most: managing the oiliness and post-acne marks, the under-eye darkness, and keeping skin and lips hydrated. Structure is the gift; the rest is maintenance."
+      },
+      {
+       "t": "p",
+       "x": "<i>A note: this is a friendly, practical read to guide grooming choices — not a clinical assessment. For the skin points, a dermatologist can tailor a real routine. Treat it as a starting map, not a scorecard.</i>"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "fashion",
+   "name": "Fashion",
+   "icon": "👔",
+   "intro": "A system, not a wardrobe: solid basics, a few formulas, a handful of accessories.",
+   "topics": [
+    {
+     "id": "system",
+     "name": "The System",
+     "blurb": "Read this first.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "One of your three real gaps. You don't need a wardrobe — you need a <b>system</b>: solid basics on top and bottom, a few outfit formulas, and a handful of accessories."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "1 · Fit beats everything",
+         "x": "A cheap tee that fits perfectly beats an expensive one that doesn't. Shoulders, chest, length — get those right and you're 80% there."
+        },
+        {
+         "h": "2 · Basics + one statement",
+         "x": "Build neutral, well-fitting basics, then add ONE statement per outfit. Two compete."
+        },
+        {
+         "h": "3 · The uniform principle",
+         "x": "3–4 formulas you trust. Decision-free dressing is what confidence actually feels like."
+        }
+       ]
+      },
+      {
+       "t": "pull",
+       "x": "Outfit = Fitted Basics × 2–3  +  ONE statement  ·  Neutral + 1 colour"
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "fit",
+          "x": "0.5",
+          "y": "0.12",
+          "shape": "round",
+          "w": 220,
+          "h": 36,
+          "label": "Fit (shoulders, length)",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "base",
+          "x": "0.28",
+          "y": "0.45",
+          "shape": "rect",
+          "w": 160,
+          "h": 34,
+          "label": "Neutral basics",
+          "fill": "#0891b2"
+         },
+         {
+          "id": "st",
+          "x": "0.72",
+          "y": "0.45",
+          "shape": "rect",
+          "w": 160,
+          "h": 34,
+          "label": "ONE statement",
+          "fill": "#ea580c"
+         },
+         {
+          "id": "out",
+          "x": "0.5",
+          "y": "0.82",
+          "shape": "round",
+          "w": 200,
+          "h": 36,
+          "label": "A confident outfit",
+          "fill": "#16a34a"
+         }
+        ],
+        [
+         {
+          "from": "fit",
+          "to": "base"
+         },
+         {
+          "from": "fit",
+          "to": "st"
+         },
+         {
+          "from": "base",
+          "to": "out"
+         },
+         {
+          "from": "st",
+          "to": "out"
+         }
+        ],
+        {
+         "w": 700,
+         "h": 420
+        }
+       ],
+       "cap": "Fit is the foundation; basics are the canvas; one statement is the paint."
+      },
+      {
+       "t": "call",
+       "x": "<b>80/20:</b> get the fit right and keep the palette tight. That alone puts you ahead of most."
+      }
+     ]
+    },
+    {
+     "id": "top",
+     "name": "Top Wear",
+     "blurb": "A few plain, perfect-fitting tops.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "A few plain, perfect-fitting tops do most of the work."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>3–4 plain tees</b> that fit at the shoulder and hit mid-fly in length: white, black, grey, navy.",
+        "<b>1 casual shirt</b> (oxford or linen) for a step up from a tee.",
+        "<b>1 layer:</b> an overshirt, bomber, or clean jacket — instantly elevates any tee.",
+        "<b>Minimum:</b> everything sits clean on the shoulders. Tailor anything boxy — cheap and transformative."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "bottom",
+     "name": "Bottom Wear",
+     "blurb": "Two or three versatile bottoms.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Two or three bottoms that go with everything up top."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>1 pair dark slim/straight jeans</b> — the workhorse, pairs with every top.",
+        "<b>1 pair chinos</b> in a neutral (beige, olive, or navy).",
+        "<b>Optional:</b> one black trouser for smarter settings.",
+        "<b>Minimum:</b> correct length (slight or no break at the shoe) and a fit that isn't baggy or painted-on."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "outfits",
+     "name": "Outfits",
+     "blurb": "Minimal base + one current element.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Your vibe: minimal base + one current element. Built for heat. Clean & minimal is the foundation; 'trendy' is <b>one modern touch per outfit — never two</b>."
+      },
+      {
+       "t": "h",
+       "x": "The three formulas"
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "1 · Coffee / daytime",
+         "x": "Heavyweight plain tee (white/black/sage) + relaxed straight-leg trousers or dark jeans + clean minimal sneakers. Current element: the relaxed cut, or a cap."
+        },
+        {
+         "h": "2 · Evening (default date fit)",
+         "x": "Plain tee + open camp-collar (Cuban) short-sleeve shirt over it + light trousers + clean shoes. Current element: the shirt, or a thin silver chain."
+        },
+        {
+         "h": "3 · Smarter setting",
+         "x": "Crisp linen/cotton shirt untucked, sleeves rolled + tailored chinos + minimal leather sneakers or loafers. Current element: a watch, or the shirt colour."
+        }
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genConcentric",
+       "args": [
+        [
+         {
+          "label": "Modern touch (×1)",
+          "color": "#ea580c"
+         },
+         {
+          "label": "Sharp fit",
+          "color": "#0891b2"
+         },
+         {
+          "label": "Tight neutral palette",
+          "color": "#4f46e5"
+         }
+        ],
+        {
+         "caption": "Minimal core, exactly one current element.",
+         "w": 540,
+         "h": 480
+        }
+       ],
+       "cap": "Minimalism is the current look — one modern touch gives 'fashion-forward' at almost no risk."
+      },
+      {
+       "t": "h",
+       "x": "Palette & fabrics"
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Palette:</b> white, black, grey, navy, beige, olive, sage. Monochrome (shades of one neutral) reads expensive and intentional.",
+        "<b>Fabrics for heat:</b> cotton, linen, linen-blends. Avoid polyester — traps heat, looks cheap. Lighter colours in peak heat.",
+        "The <b>camp-collar shirt</b> is the hot-weather hero — reads stylish without heat."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "The copy-this method"
+      },
+      {
+       "t": "flow",
+       "steps": [
+        "Make a Pinterest board",
+        "Search 'men minimal outfit / smart casual men / neutral menswear'",
+        "Save 8–10 you like",
+        "Copy the pattern — you're curating, not inventing"
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>Starter list:</b> 3–4 heavyweight tees · 1 camp-collar shirt · 1 linen/cotton shirt · 1 relaxed straight trouser + 1 chino + 1 dark jean · 1 pair clean minimal sneakers · (later) 1 silver chain + a cap. <b>Get everything tailored</b> — it matters more than the brand."
+      }
+     ]
+    },
+    {
+     "id": "acc",
+     "name": "Accessories",
+     "blurb": "Shoes · fragrance · watch.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Small surface area, outsized signal — the 'tells'. (Glasses live in Grooming → Glasses.)"
+      },
+      {
+       "t": "h",
+       "x": "Shoes"
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>One clean, versatile pair</b> kept spotless — your sneakers work as the default.",
+        "Shoes are where people check whether you 'tried' — scuffed or dirty undoes a good outfit.",
+        "<b>Minimum:</b> one pair that's clean and goes with your outfit formulas."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Fragrance"
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>One good signature scent</b>, applied lightly (2–3 sprays, not a cloud).",
+        "Invisible but unforgettable — smell is wired straight to memory and attraction.",
+        "<b>Minimum:</b> one versatile, fresh scent you wear by default."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Watch"
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>One simple, clean watch</b> signals intention without trying hard.",
+        "Keep it minimal and matched to your palette; never stack loud accessories.",
+        "Optional but high-leverage — quietly elevates the plainest outfit."
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>First moves:</b> lock 2 outfit formulas and find a tailor this week. Statement pieces come after the basics are solid."
+      }
+     ]
+    },
+    {
+     "id": "fragrance",
+     "name": "Fragrance",
+     "status": "action",
+     "priority": "high",
+     "blurb": "An invisible accessory: the wheel, the pyramid, and a sample-first way to pick one scent per occasion.",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Fragrance is the one accessory you wear before anyone sees your outfit — it arrives half a second early and lingers after you leave. The whole thing is only three ideas: a <b>wheel</b> of scent families (what a smell <i>says</i>), a <b>pyramid</b> of notes (how a smell <i>moves</i> over hours), and a <b>sample-first loop</b> for picking the right one per occasion. Learn those three and you can walk into any shop and not drown."
+      },
+      {
+       "t": "call",
+       "x": "<b>Picks in this topic are illustrative benchmarks, not gospel.</b> Skin chemistry, climate and your own nose decide everything — the only real vote is a test on your own skin. Nothing here is medical or authoritative; treat every named bottle as “start here,” not “buy this.”"
+      },
+      {
+       "t": "h",
+       "x": "A. The Fragrance Wheel — what each family says"
+      },
+      {
+       "t": "p",
+       "x": "Every scent belongs to a <b>family</b>, and the families sit on a wheel. The modern wheel collapses into <b>4 super-families</b> — Fresh, Floral, Amber, Woody — each split into sub-families. The geometry is the whole point: <b>neighbours blend smoothly</b> (citrus flows into green, amber into woods) while <b>opposite families contrast</b> (Fresh sits across from Amber — light/cool vs warm/heavy). Note the modern rename: what older charts called <b>“Oriental” is now “Amber.”</b>"
+      },
+      {
+       "t": "fig",
+       "gen": "genMindMap",
+       "args": [
+        "Wheel",
+        [
+         {
+          "label": "FRESH",
+          "children": [
+           "Citrus",
+           "Aromatic",
+           "Green",
+           "Aquatic"
+          ]
+         },
+         {
+          "label": "FLORAL",
+          "children": [
+           "Floral",
+           "Soft Floral",
+           "Fruity",
+           "Fl-Fruity"
+          ]
+         },
+         {
+          "label": "AMBER",
+          "children": [
+           "Amber",
+           "Soft Amber",
+           "Woody Amber"
+          ]
+         },
+         {
+          "label": "WOODY",
+          "children": [
+           "Woods",
+           "Chypre",
+           "Dry Woods"
+          ]
+         }
+        ],
+        {
+         "w": 780,
+         "h": 560
+        }
+       ],
+       "cap": "The 4 super-families and their sub-families. Neighbours on the wheel blend; opposites contrast."
+      },
+      {
+       "t": "p",
+       "x": "<b>FRESH</b> — clean, energetic, daytime & office. <b>Citrus</b>: zesty, clean, energetic. <b>Aromatic / Fougère</b>: the classic “barbershop” masculine — lavender + herbs, reads professional. <b>Green</b>: crisp, natural, sharp (cut grass, stems). <b>Water / Aquatic</b>: airy, clean, marine — the safest office scent."
+      },
+      {
+       "t": "p",
+       "x": "<b>FLORAL</b> — romantic, soft, elegant. <b>Floral</b>: romantic, feminine-leaning but genuinely unisex. <b>Soft Floral</b>: powdery, elegant, refined. <b>Fruity</b>: playful, youthful, sweet-tart. <b>Floral-Fruity</b>: flirty, easy to like."
+      },
+      {
+       "t": "p",
+       "x": "<b>AMBER</b> (formerly Oriental) — warm, sensual, spicy; evening & cold weather. <b>Amber</b>: warm, resinous, spicy. <b>Soft Amber</b>: cozy, sweet, gourmand-adjacent (vanilla, tonka). <b>Woody Amber</b>: warm + woody, sophisticated."
+      },
+      {
+       "t": "p",
+       "x": "<b>WOODY</b> — grounding, confident, sophisticated. <b>Woods</b>: smooth cedar / sandalwood, refined. <b>Mossy Woods / Chypre</b>: sophisticated, vintage, built on oakmoss. <b>Dry Woods</b>: smoky, leathery, rugged."
+      },
+      {
+       "t": "fig",
+       "gen": "genSpectrum",
+       "args": [
+        "FRESH (light / cool)",
+        "AMBER (warm / heavy)",
+        [
+         {
+          "label": "Citrus",
+          "pos": 0.06,
+          "color": "#0891b2"
+         },
+         {
+          "label": "Aquatic",
+          "pos": 0.2,
+          "color": "#0891b2"
+         },
+         {
+          "label": "Green",
+          "pos": 0.32,
+          "color": "#16a34a"
+         },
+         {
+          "label": "Floral",
+          "pos": 0.5,
+          "color": "#db2777"
+         },
+         {
+          "label": "Woods",
+          "pos": 0.68,
+          "color": "#ea580c"
+         },
+         {
+          "label": "Woody Amber",
+          "pos": 0.82,
+          "color": "#ea580c"
+         },
+         {
+          "label": "Amber",
+          "pos": 0.95,
+          "color": "#9333ea"
+         }
+        ],
+        {
+         "w": 800,
+         "h": 320,
+         "title": "The core axis of the wheel: cool & airy on the left, warm & heavy on the right."
+        }
+       ],
+       "cap": "Fresh ↔ Amber — the single most useful axis. Day/office lives left; date/winter lives right."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Fresh → “competent & clean”",
+         "x": "Reads professional, approachable, low-risk. Default for office, meetings, hot weather."
+        },
+        {
+         "h": "Floral → “approachable & warm”",
+         "x": "Reads romantic and soft. Great for dates and social settings; unisex when balanced with wood."
+        },
+        {
+         "h": "Amber → “magnetic & sensual”",
+         "x": "Reads intimate and confident. Evenings, cold weather, when you want to be remembered."
+        },
+        {
+         "h": "Woody → “grounded & serious”",
+         "x": "Reads mature, put-together, quietly powerful. The safest way to smell expensive."
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "B. The Fragrance Pyramid — a moving picture, not a snapshot"
+      },
+      {
+       "t": "p",
+       "x": "A scent is not one smell; it is a <b>timeline</b>. Perfumers stack notes by weight so the fragrance <b>evolves on your skin</b> over hours. You are smelling a moving picture, not a photograph — which is why the first two minutes tell you almost nothing."
+      },
+      {
+       "t": "fig",
+       "gen": "genPyramid",
+       "args": [
+        [
+         {
+          "label": "TOP — first 5–15 min",
+          "color": "#0891b2",
+          "sub": "citrus, light fruit, herbs"
+         },
+         {
+          "label": "HEART — 20–60 min",
+          "color": "#db2777",
+          "sub": "florals, spices, fruit"
+         },
+         {
+          "label": "BASE — 6+ hours",
+          "color": "#ea580c",
+          "sub": "musk, amber, woods, resins"
+         }
+        ],
+        {
+         "w": 720,
+         "h": 480
+        }
+       ],
+       "cap": "Light molecules flash off first; heavy ones anchor the drydown. Read a scent bottom-up for what it really is."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Top notes — the first impression",
+         "x": "First 5–15 min, most volatile. Citrus & light fruits & aromatic herbs: bergamot, lemon, lavender, mint. What sells you in the store — and what disappears fastest."
+        },
+        {
+         "h": "Heart notes — the true character",
+         "x": "~20–60 min, the real personality. Florals, spices, fruits: rose, jasmine, cinnamon, geranium. This is what you actually 'wear' for most of the day."
+        },
+        {
+         "h": "Base notes — the drydown & longevity",
+         "x": "6+ hours, heaviest molecules + fixatives that slow evaporation: musk, amber, vanilla, sandalwood, cedar, oakmoss, leather. This is what people smell when they hug you goodbye."
+        }
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>Raw material → layer, by weight.</b> Light & volatile (citrus, herbs) → <b>top</b>. Medium-weight florals & spices → <b>heart</b>. Heavy resins, woods, musks & fixatives → <b>base</b>. Same logic as the wheel axis: light on top, heavy at the bottom."
+      },
+      {
+       "t": "h",
+       "x": "C. How notes & families interact — accords & the arc"
+      },
+      {
+       "t": "p",
+       "x": "Blend two or more notes and you get an <b>accord</b> — a new smell that is more than its parts (like a chord, not single notes). Perfumers stack top→heart→base <i>and</i> lean on the wheel: <b>neighbouring families blend harmoniously</b>, while <b>counterpart families create deliberate tension</b>. A classic arc opens citrus-fresh, warms through florals, and lands on woody-amber — a bright hello that dries down to a warm hug."
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "c",
+          "x": 0.5,
+          "y": 0.08,
+          "shape": "round",
+          "w": 180,
+          "h": 36,
+          "label": "Citrus top (bright hello)",
+          "fill": "#0891b2"
+         },
+         {
+          "id": "f",
+          "x": 0.5,
+          "y": 0.4,
+          "shape": "rect",
+          "w": 180,
+          "h": 34,
+          "label": "Floral heart (character)",
+          "fill": "#db2777"
+         },
+         {
+          "id": "w",
+          "x": 0.28,
+          "y": 0.74,
+          "shape": "rect",
+          "w": 150,
+          "h": 40,
+          "label": "Woody base",
+          "fill": "#ea580c"
+         },
+         {
+          "id": "a",
+          "x": 0.72,
+          "y": 0.74,
+          "shape": "rect",
+          "w": 150,
+          "h": 40,
+          "label": "Amber base",
+          "fill": "#9333ea"
+         },
+         {
+          "id": "end",
+          "x": 0.5,
+          "y": 0.95,
+          "shape": "round",
+          "w": 200,
+          "h": 36,
+          "label": "Warm, lingering goodbye",
+          "fill": "#16a34a"
+         }
+        ],
+        [
+         {
+          "from": "c",
+          "to": "f",
+          "label": "20 min"
+         },
+         {
+          "from": "f",
+          "to": "w",
+          "label": "1 hr"
+         },
+         {
+          "from": "f",
+          "to": "a"
+         },
+         {
+          "from": "w",
+          "to": "end"
+         },
+         {
+          "from": "a",
+          "to": "end"
+         }
+        ],
+        {
+         "w": 700,
+         "h": 560
+        }
+       ],
+       "cap": "A sample accord arc: fresh opening → floral character → warm woody-amber drydown."
+      },
+      {
+       "t": "p",
+       "x": "<b>What a blend 'represents'</b> is the <i>story it tells over time</i> and the <i>vibe it projects</i>: a fresh-to-warm arc says “approachable but not forgettable.” A pure-fresh scent says “clean, no drama.” A pure-amber says “here for the evening.” Choosing a fragrance is really choosing which arc you want people to experience."
+      },
+      {
+       "t": "h",
+       "x": "D. Family field guide — vibe, occasion, benchmark, affordable"
+      },
+      {
+       "t": "p",
+       "x": "For each main family: the vibe, what it smells like, best occasions, a well-known <b>designer benchmark</b> (a widely-recognised reference), and an <b>affordable</b> route (clone / budget house). Use benchmarks to <i>learn the category</i>, then test the cheaper option on your own skin."
+      },
+      {
+       "t": "nutri",
+       "items": [
+        {
+         "n": "Citrus",
+         "tag": "FRESH",
+         "fn": [
+          "Vibe: zesty, clean, energetic",
+          "Occasions: office, summer days, gym-adjacent"
+         ],
+         "src": [
+          "Benchmark: Acqua di Parma Colonia / Dior Sauvage (top)",
+          "Affordable: Zara Vibrant Leather / basic cologne"
+         ],
+         "def": [
+          "Fades fast — low longevity; best as a fresh burst"
+         ]
+        },
+        {
+         "n": "Aromatic / Fougère",
+         "tag": "FRESH",
+         "fn": [
+          "Vibe: classic barbershop masculine, professional",
+          "Occasions: work, interviews, everyday reliable"
+         ],
+         "src": [
+          "Benchmark: Boss Bottled / Dior Homme",
+          "Affordable: Armaf / Zara clones of Boss"
+         ],
+         "def": [
+          "Can read 'dated' if too old-school — pick a modern take"
+         ]
+        },
+        {
+         "n": "Aquatic / Water",
+         "tag": "FRESH",
+         "fn": [
+          "Vibe: airy, clean, marine — the safe office pick",
+          "Occasions: office, hot climate, meeting strangers"
+         ],
+         "src": [
+          "Benchmark: Bleu de Chanel / Dior Sauvage",
+          "Affordable: Armaf Club de Nuit / Zara clones"
+         ],
+         "def": [
+          "Very common — safe but not distinctive"
+         ]
+        },
+        {
+         "n": "Green",
+         "tag": "FRESH",
+         "fn": [
+          "Vibe: crisp, natural, sharp (cut grass, stems)",
+          "Occasions: spring/summer daytime, casual smart"
+         ],
+         "src": [
+          "Benchmark: Chanel Cristalle / Polo Green",
+          "Affordable: budget aquatic-green colognes"
+         ],
+         "def": [
+          "Sharpness can feel cold in winter"
+         ]
+        },
+        {
+         "n": "Floral",
+         "tag": "FLORAL",
+         "fn": [
+          "Vibe: romantic, unisex when balanced",
+          "Occasions: dates, social, spring"
+         ],
+         "src": [
+          "Benchmark: classic rose-jasmine scents",
+          "Affordable: high-street floral EDTs"
+         ],
+         "def": [
+          "Skews feminine if very sweet — look for a woody base"
+         ]
+        },
+        {
+         "n": "Soft Floral",
+         "tag": "FLORAL",
+         "fn": [
+          "Vibe: powdery, elegant, refined",
+          "Occasions: formal, refined evenings"
+         ],
+         "src": [
+          "Benchmark: powdery iris / violet scents",
+          "Affordable: budget powdery EDTs"
+         ],
+         "def": [
+          "Powder can read mature/old-fashioned to some"
+         ]
+        },
+        {
+         "n": "Fruity",
+         "tag": "FLORAL",
+         "fn": [
+          "Vibe: playful, youthful, sweet-tart",
+          "Occasions: casual, daytime, younger crowd"
+         ],
+         "src": [
+          "Benchmark: fruity crowd-pleasers",
+          "Affordable: Zara fruity EDTs"
+         ],
+         "def": [
+          "Can read too young/synthetic if overdone"
+         ]
+        },
+        {
+         "n": "Amber",
+         "tag": "AMBER",
+         "fn": [
+          "Vibe: warm, resinous, spicy, sensual",
+          "Occasions: date night, winter, going out"
+         ],
+         "src": [
+          "Benchmark: YSL La Nuit de L'Homme",
+          "Affordable: Armaf / Lattafa amber clones"
+         ],
+         "def": [
+          "Heavy — overspray in heat is a common mistake"
+         ]
+        },
+        {
+         "n": "Soft Amber / Gourmand",
+         "tag": "AMBER",
+         "fn": [
+          "Vibe: cozy, sweet, edible (vanilla, tonka)",
+          "Occasions: cold evenings, cozy dates"
+         ],
+         "src": [
+          "Benchmark: vanilla/tonka gourmands (e.g. Spicebomb-style)",
+          "Affordable: Lattafa Khamrah / budget vanilla"
+         ],
+         "def": [
+          "Sweetness can cloy — one or two sprays only"
+         ]
+        },
+        {
+         "n": "Woods",
+         "tag": "WOODY",
+         "fn": [
+          "Vibe: smooth cedar/sandalwood, refined, expensive-smelling",
+          "Occasions: work-to-dinner, formal, all-year"
+         ],
+         "src": [
+          "Benchmark: Bleu de Chanel / Terre d'Hermès",
+          "Affordable: woody Zara/Armaf clones"
+         ],
+         "def": [
+          "Very safe — rarely a wrong choice, rarely daring"
+         ]
+        },
+        {
+         "n": "Dry Woods / Leather",
+         "tag": "WOODY",
+         "fn": [
+          "Vibe: smoky, leathery, rugged, bold",
+          "Occasions: evenings, autumn/winter, statement"
+         ],
+         "src": [
+          "Benchmark: Tuscan Leather-style / smoky woods",
+          "Affordable: budget oud/leather from Lattafa"
+         ],
+         "def": [
+          "Strong personality — not an office default"
+         ]
+        },
+        {
+         "n": "Mossy Woods / Chypre",
+         "tag": "WOODY",
+         "fn": [
+          "Vibe: sophisticated, vintage, oakmoss backbone",
+          "Occasions: formal, mature, cooler weather"
+         ],
+         "src": [
+          "Benchmark: classic chypres (oakmoss-based)",
+          "Affordable: budget chypre-style EDTs"
+         ],
+         "def": [
+          "Reformulated oakmoss varies — vintage vibe not for everyone"
+         ]
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "E. Concentrations — EDT vs EDP vs Parfum"
+      },
+      {
+       "t": "p",
+       "x": "The same juice at a higher <b>oil percentage</b> smells stronger, lasts longer, and sits closer to the skin. More oil is not 'better' — it changes the <i>job</i> the scent can do."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Type",
+        "Oil %",
+        "Longevity",
+        "Best for"
+       ],
+       "rows": [
+        [
+         "EDC — Eau de Cologne",
+         "~2–5%",
+         "1–2 hrs",
+         "A quick fresh burst, very hot days"
+        ],
+        [
+         "EDT — Eau de Toilette",
+         "~5–15%",
+         "3–5 hrs",
+         "Daytime, office, hot weather — lighter"
+        ],
+        [
+         "EDP — Eau de Parfum",
+         "~15–20%",
+         "5–8 hrs",
+         "The versatile default — stronger, day-to-night"
+        ],
+        [
+         "Parfum / Extrait",
+         "~20–30%+",
+         "8–12+ hrs",
+         "Most intense & intimate — evenings, one spray"
+        ]
+       ]
+      },
+      {
+       "t": "call",
+       "x": "Rule of thumb: <b>EDT for day/heat, EDP as your all-rounder, Parfum for close-up evenings.</b> Stronger = fewer sprays, not more."
+      },
+      {
+       "t": "h",
+       "x": "F. The decision loop — how to actually choose one"
+      },
+      {
+       "t": "p",
+       "x": "Don't buy blind and don't buy 'a signature scent' on day one. Run this loop; it turns an overwhelming wall of bottles into 3–4 cheap samples and one calm decision per occasion."
+      },
+      {
+       "t": "fig",
+       "gen": "genCycle",
+       "args": [
+        [
+         {
+          "label": "Know families",
+          "note": "pick your vibe"
+         },
+         {
+          "label": "Know pyramid",
+          "note": "expect it to move"
+         },
+         {
+          "label": "Shortlist",
+          "note": "2–3 per occasion"
+         },
+         {
+          "label": "Get samples",
+          "note": "3–4 decants"
+         },
+         {
+          "label": "Test on skin",
+          "note": "one per wrist"
+         },
+         {
+          "label": "Live a day",
+          "note": "top→heart→base"
+         },
+         {
+          "label": "Wear it out",
+          "note": "note sillage"
+         },
+         {
+          "label": "Commit",
+          "note": "one per occasion"
+         }
+        ],
+        {
+         "w": 640,
+         "h": 600,
+         "center": "THE LOOP"
+        }
+       ],
+       "cap": "The fragrance decision loop: understand → shortlist → sample → skin-test → live → wear out → commit → grow."
+      },
+      {
+       "t": "flow",
+       "steps": [
+        "Understand the FAMILIES — decide the vibe you want (clean / romantic / warm / grounded)",
+        "Understand the PYRAMID & mixing logic — know it evolves; ignore the first 2 minutes",
+        "Shortlist by OCCASION — day/office, date/evening, casual, formal — 2–3 benchmark candidates each",
+        "Get SAMPLES / DECANTS — about 3–4 total, never full bottles yet",
+        "Test ON SKIN — one scent per wrist, spray and DON'T rub",
+        "LIVE with it a full day — follow top → heart → base",
+        "Wear it OUT — note sillage, projection, longevity, compliments, and how YOU feel",
+        "COMMIT to one per key occasion — then grow your collection slowly around it"
+       ]
+      },
+      {
+       "t": "h",
+       "x": "G. Buying tips — beating overwhelm & the review trap"
+      },
+      {
+       "t": "p",
+       "x": "A fragrance counter is engineered to overwhelm your nose. Go in with a plan and you keep control."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Have a target first",
+         "x": "Know your vibe + occasion before you walk in. Aimless sniffing = nose fatigue and a panic buy."
+        },
+        {
+         "h": "Max 2–3 at a time",
+         "x": "Your nose fatigues fast. Reset by smelling your own skin or coffee beans, then stop for the day."
+        },
+        {
+         "h": "Skin, not blotter",
+         "x": "Paper strips skip skin chemistry. Spray on skin (pulse points) for the real result."
+        },
+        {
+         "h": "Never judge the first 2 min",
+         "x": "You're smelling alcohol + top notes. Wait for the drydown — that's what you'll actually wear."
+        },
+        {
+         "h": "Ask for samples / decants",
+         "x": "A decant (small vial) lets you live with it for days for a few dollars. Always cheaper than a mistake bottle."
+        },
+        {
+         "h": "Factor climate",
+         "x": "Heat amplifies AND shortens a scent — go lighter (EDT, fewer sprays) in hot/humid weather."
+        }
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>The YouTube-review trap.</b> A reviewer's nose, skin chemistry and climate are not yours. Use reviews to BUILD a shortlist, never to DECIDE. Your own skin test is the only real vote. Ignore hype; blind-buy only when it's cheap enough that a miss doesn't hurt."
+      },
+      {
+       "t": "h",
+       "x": "Vocabulary you'll actually use"
+      },
+      {
+       "t": "term",
+       "items": [
+        {
+         "n": "Sillage",
+         "what": "The scent trail you leave behind as you move — how far it travels.",
+         "why": [
+          "High-sillage = fills a room",
+          "Low-sillage = intimate, close"
+         ],
+         "sym": [
+          "People notice you enter/leave a room"
+         ],
+         "fix": [
+          "Fewer sprays or an EDT to dial it down"
+         ]
+        },
+        {
+         "n": "Projection",
+         "what": "How far the scent radiates from your skin right now (the 'bubble' around you).",
+         "why": [
+          "Driven by oil % and note choice"
+         ],
+         "sym": [
+          "Others smell it at arm's length"
+         ],
+         "fix": [
+          "1–2 sprays for close settings; more for outdoors"
+         ]
+        },
+        {
+         "n": "Longevity",
+         "what": "How many hours it lasts on your skin before fading.",
+         "why": [
+          "Base notes + fixatives drive it",
+          "Dry skin holds scent less well"
+         ],
+         "sym": [
+          "Scent gone by lunch = low longevity"
+         ],
+         "fix": [
+          "Higher concentration (EDP/Parfum); moisturise first"
+         ]
+        },
+        {
+         "n": "Pulse points & layering",
+         "what": "Warm spots (wrists, neck, chest) amplify scent; unscented lotion first helps it grip. Layering = pairing a simple base (e.g. vanilla) under a scent.",
+         "why": [
+          "Heat lifts the molecules"
+         ],
+         "sym": [
+          "Scent lasts longer on moisturised skin"
+         ],
+         "fix": [
+          "Spray pulse points; don't rub wrists together (it crushes top notes)"
+         ]
+        },
+        {
+         "n": "Decant / split",
+         "what": "A small vial of a fragrance, sold cheaply so you can test or travel without a full bottle.",
+         "why": [
+          "Cheap way to trial the drydown over days"
+         ],
+         "sym": [
+          "Buy 3–4 decants before any bottle"
+         ],
+         "fix": [
+          "Use decants as your whole shortlisting step"
+         ]
+        }
+       ]
+      }
+     ]
+    },
+    {
+     "id": "watches",
+     "name": "Watches",
+     "status": "action",
+     "priority": "low",
+     "blurb": "Types → movement → sizing → materials → complications → one benchmark + one affordable pick, then a fit-first decision.",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "A watch is jewellery that happens to tell time — it signals taste and how you spend money. The mental model is short: pick a <b>type</b> for the vibe, a <b>movement</b> for how you relate to it, a <b>size</b> that fits your wrist, and the right <b>materials/complications</b>. One good watch beats five random ones."
+      },
+      {
+       "t": "call",
+       "x": "<b>Picks below are illustrative benchmarks, not recommendations.</b> Try on before buying — wrist size and taste decide everything."
+      },
+      {
+       "t": "h",
+       "x": "A. Types — the vibe of each"
+      },
+      {
+       "t": "fig",
+       "gen": "genTree",
+       "args": [
+        {
+         "label": "Watches",
+         "children": [
+          {
+           "label": "Dress",
+           "children": [
+            {
+             "label": "Formal / thin"
+            }
+           ]
+          },
+          {
+           "label": "Tool",
+           "children": [
+            {
+             "label": "Dive"
+            },
+            {
+             "label": "Field"
+            },
+            {
+             "label": "Pilot"
+            }
+           ]
+          },
+          {
+           "label": "Travel",
+           "children": [
+            {
+             "label": "GMT"
+            }
+           ]
+          },
+          {
+           "label": "Sport",
+           "children": [
+            {
+             "label": "Chrono"
+            }
+           ]
+          },
+          {
+           "label": "Everyday",
+           "children": [
+            {
+             "label": "Do-it-all"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "w": 760,
+         "h": 460
+        }
+       ],
+       "cap": "The main watch families: dress vs tool vs travel vs sport vs everyday."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Dress",
+         "x": "Thin, plain dial, leather strap. Slides under a cuff. For suits, formal events. Vibe: elegant, understated."
+        },
+        {
+         "h": "Dive",
+         "x": "Rotating bezel, chunky, water-resistant, luminous. Casual-to-smart. Vibe: rugged, versatile — the most popular all-rounder."
+        },
+        {
+         "h": "Field",
+         "x": "Simple legible dial, tough, often small. Casual/outdoor. Vibe: no-nonsense, utilitarian."
+        },
+        {
+         "h": "Pilot",
+         "x": "Large, high-legibility dial, often big numerals. Casual. Vibe: bold, adventurous."
+        },
+        {
+         "h": "GMT / travel",
+         "x": "Second time-zone hand + 24h bezel. Vibe: worldly, practical for travellers."
+        },
+        {
+         "h": "Chronograph",
+         "x": "Built-in stopwatch (sub-dials + pushers). Sporty-smart. Vibe: busy, technical, energetic."
+        },
+        {
+         "h": "Everyday",
+         "x": "Clean do-it-all that flexes casual to smart. Vibe: reliable, low-drama — the safe first watch."
+        }
+       ]
+      },
+      {
+       "t": "fig",
+       "gen": "genSpectrum",
+       "args": [
+        "CASUAL",
+        "FORMAL",
+        [
+         {
+          "label": "Field",
+          "pos": 0.18,
+          "color": "#16a34a"
+         },
+         {
+          "label": "Dive",
+          "pos": 0.3,
+          "color": "#0891b2"
+         },
+         {
+          "label": "Pilot",
+          "pos": 0.24,
+          "color": "#ea580c"
+         },
+         {
+          "label": "Chrono",
+          "pos": 0.45,
+          "color": "#9333ea"
+         },
+         {
+          "label": "GMT",
+          "pos": 0.52,
+          "color": "#0891b2"
+         },
+         {
+          "label": "Everyday",
+          "pos": 0.62,
+          "color": "#4f46e5"
+         },
+         {
+          "label": "Dress",
+          "pos": 0.92,
+          "color": "#db2777"
+         }
+        ],
+        {
+         "w": 800,
+         "h": 320,
+         "title": "Where each type sits on casual ↔ formal."
+        }
+       ],
+       "cap": "Casual ↔ formal: tool watches skew casual, dress watches anchor the formal end."
+      },
+      {
+       "t": "h",
+       "x": "B. Movements — how the watch runs"
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Quartz",
+         "x": "Battery + quartz crystal. Accurate, cheap, near-zero maintenance. Best if you want 'set and forget'."
+        },
+        {
+         "h": "Mechanical (automatic)",
+         "x": "Self-winds from wrist motion; no battery. Craftsmanship, an heirloom, a sweeping second hand. Needs occasional service."
+        },
+        {
+         "h": "Solar / kinetic",
+         "x": "Quartz accuracy, charged by light or motion — no battery swaps. A practical middle ground."
+        }
+       ]
+      },
+      {
+       "t": "table",
+       "head": [
+        "Movement",
+        "Accuracy",
+        "Upkeep",
+        "Why you'd pick it"
+       ],
+       "rows": [
+        [
+         "Quartz",
+         "Very high",
+         "Battery every few yrs",
+         "Budget, precision, low fuss"
+        ],
+        [
+         "Automatic",
+         "Good",
+         "Service ~5 yrs",
+         "Craft, heirloom, the 'romance'"
+        ],
+        [
+         "Solar / kinetic",
+         "High",
+         "Minimal",
+         "Green, no battery swaps"
+        ]
+       ]
+      },
+      {
+       "t": "h",
+       "x": "C. Sizing — fit the wrist, not the trend"
+      },
+      {
+       "t": "p",
+       "x": "A watch that overhangs your wrist looks wrong no matter how nice it is. Three numbers matter: <b>case diameter</b> (face width), <b>lug-to-lug</b> (tip-to-tip — must not overhang your wrist), and <b>thickness</b> (thin slides under cuffs; thick reads sporty)."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Wrist",
+        "Case diameter",
+        "Note"
+       ],
+       "rows": [
+        [
+         "Small (<16.5 cm)",
+         "36–40 mm",
+         "Thin cases; watch lug-to-lug carefully"
+        ],
+        [
+         "Medium (16.5–18 cm)",
+         "39–42 mm",
+         "Most watches fit — widest choice"
+        ],
+        [
+         "Large (>18 cm)",
+         "42–46 mm",
+         "Can carry bigger dive/pilot pieces"
+        ]
+       ]
+      },
+      {
+       "t": "h",
+       "x": "D. Materials & straps"
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Stainless steel",
+         "x": "Durable, versatile, flexes casual-to-smart. The default bracelet/case material."
+        },
+        {
+         "h": "Leather strap",
+         "x": "Dressier, warmer. Best for dress and smart-casual; avoid heavy water."
+        },
+        {
+         "h": "NATO / fabric",
+         "x": "Casual, cheap, swappable, tough. Instantly makes a watch sporty and relaxed."
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "E. Complications"
+      },
+      {
+       "t": "p",
+       "x": "A <b>complication</b> is any function beyond telling time. Keep it to what you'll use."
+      },
+      {
+       "t": "list",
+       "items": [
+        "Date — the one everyone actually uses",
+        "GMT — a second time zone for travel",
+        "Chronograph — a stopwatch; sporty look even if unused",
+        "Day/date, moonphase, power reserve — nice but add cost & clutter"
+       ]
+      },
+      {
+       "t": "h",
+       "x": "F. Benchmark + affordable, per type"
+      },
+      {
+       "t": "nutri",
+       "items": [
+        {
+         "n": "Dress",
+         "tag": "FORMAL",
+         "fn": [
+          "Thin, minimal, leather"
+         ],
+         "src": [
+          "Benchmark: a slim automatic dress watch",
+          "Affordable: Seiko/Timex dress, Casio thin"
+         ],
+         "def": [
+          "Too big or busy ruins the formal look"
+         ]
+        },
+        {
+         "n": "Dive",
+         "tag": "CASUAL+",
+         "fn": [
+          "Bezel, luminous, water-resistant"
+         ],
+         "src": [
+          "Benchmark: Seiko diver / Rolex Submariner as the icon",
+          "Affordable: Seiko 5, Invicta, Casio"
+         ],
+         "def": [
+          "Very common look"
+         ]
+        },
+        {
+         "n": "Field",
+         "tag": "CASUAL",
+         "fn": [
+          "Legible, tough, compact"
+         ],
+         "src": [
+          "Benchmark: Hamilton Khaki Field",
+          "Affordable: Timex Expedition, Seiko 5"
+         ],
+         "def": [
+          "Plain — not a statement piece"
+         ]
+        },
+        {
+         "n": "Pilot",
+         "tag": "CASUAL",
+         "fn": [
+          "Large, high-legibility"
+         ],
+         "src": [
+          "Benchmark: IWC/Stowa pilot as reference",
+          "Affordable: Citizen/Seiko pilot-style"
+         ],
+         "def": [
+          "Big — check lug-to-lug"
+         ]
+        },
+        {
+         "n": "GMT",
+         "tag": "TRAVEL",
+         "fn": [
+          "Second time zone"
+         ],
+         "src": [
+          "Benchmark: Rolex GMT-Master as the icon",
+          "Affordable: Seiko/Citizen GMT, San Martin"
+         ],
+         "def": [
+          "Slightly thicker cases"
+         ]
+        },
+        {
+         "n": "Chronograph",
+         "tag": "SPORT",
+         "fn": [
+          "Stopwatch sub-dials"
+         ],
+         "src": [
+          "Benchmark: Omega Speedmaster as the icon",
+          "Affordable: Seiko/Citizen chrono, Casio"
+         ],
+         "def": [
+          "Busy dial; often thicker"
+         ]
+        },
+        {
+         "n": "Everyday",
+         "tag": "ALL",
+         "fn": [
+          "Do-it-all, casual–smart"
+         ],
+         "src": [
+          "Benchmark: a clean 38–40mm auto",
+          "Affordable: Seiko 5, Casio, Timex"
+         ],
+         "def": [
+          "Jack of all trades by design"
+         ]
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "G. Decision framework"
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "u",
+          "x": 0.5,
+          "y": 0.08,
+          "shape": "round",
+          "w": 190,
+          "h": 36,
+          "label": "Define use / occasions",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "s",
+          "x": 0.5,
+          "y": 0.3,
+          "shape": "rect",
+          "w": 180,
+          "h": 34,
+          "label": "Size to your wrist",
+          "fill": "#0891b2"
+         },
+         {
+          "id": "m",
+          "x": 0.5,
+          "y": 0.52,
+          "shape": "rect",
+          "w": 180,
+          "h": 34,
+          "label": "Movement preference",
+          "fill": "#9333ea"
+         },
+         {
+          "id": "b",
+          "x": 0.5,
+          "y": 0.74,
+          "shape": "rect",
+          "w": 180,
+          "h": 34,
+          "label": "Set a budget tier",
+          "fill": "#ea580c"
+         },
+         {
+          "id": "t",
+          "x": 0.5,
+          "y": 0.94,
+          "shape": "round",
+          "w": 190,
+          "h": 36,
+          "label": "TRY ON before buying",
+          "fill": "#16a34a"
+         }
+        ],
+        [
+         {
+          "from": "u",
+          "to": "s"
+         },
+         {
+          "from": "s",
+          "to": "m"
+         },
+         {
+          "from": "m",
+          "to": "b"
+         },
+         {
+          "from": "b",
+          "to": "t"
+         }
+        ],
+        {
+         "w": 700,
+         "h": 560
+        }
+       ],
+       "cap": "Watch decision flow: use → size → movement → budget → try on."
+      },
+      {
+       "t": "flow",
+       "steps": [
+        "Define your USE & occasions (one everyday? a dress piece? a travel GMT?)",
+        "SIZE it to your wrist (case + lug-to-lug + thickness) — fit beats trend",
+        "Pick a MOVEMENT (quartz for fuss-free, automatic for craft, solar for practical)",
+        "Set a BUDGET TIER and shop within it — don't stretch for a trophy first watch",
+        "TRY IT ON before buying — photos lie about size and wrist presence"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "shoes",
+     "name": "Shoes",
+     "status": "action",
+     "priority": "low",
+     "blurb": "Types → formality → construction → materials → colour → fit → care → a fit-first starter set that covers 80% of occasions.",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Shoes are the quiet tell. People clock them last but judge them hardest — a scuffed pair undoes a good outfit, and a well-kept pair makes a cheap one look intentional. The mental model is short: pick a <b>type</b> for the vibe, read the <b>formality</b>, check <b>construction</b> for how long it lasts, get the <b>colour</b> and <b>fit</b> right, then keep it alive with a little <b>care</b>. A few versatile pairs beat a closet of one-trick shoes."
+      },
+      {
+       "t": "call",
+       "x": "<b>Picks below are illustrative benchmarks, not recommendations.</b> Fit varies by brand and last, so always try on — the right size and shape decide everything."
+      },
+      {
+       "t": "h",
+       "x": "A. Types — what each one signals"
+      },
+      {
+       "t": "fig",
+       "gen": "genTree",
+       "args": [
+        {
+         "label": "Shoes",
+         "children": [
+          {
+           "label": "Lace-up",
+           "children": [
+            {
+             "label": "Oxford"
+            },
+            {
+             "label": "Derby"
+            },
+            {
+             "label": "Brogue"
+            },
+            {
+             "label": "Monk*"
+            }
+           ]
+          },
+          {
+           "label": "Slip-on",
+           "children": [
+            {
+             "label": "Loafer"
+            },
+            {
+             "label": "Driver"
+            }
+           ]
+          },
+          {
+           "label": "Boots",
+           "children": [
+            {
+             "label": "Chelsea"
+            },
+            {
+             "label": "Chukka"
+            }
+           ]
+          },
+          {
+           "label": "Sneakers",
+           "children": [
+            {
+             "label": "Minimal"
+            },
+            {
+             "label": "Athletic"
+            }
+           ]
+          }
+         ]
+        },
+        {
+         "w": 760,
+         "h": 460
+        }
+       ],
+       "cap": "The main shoe families. (*Monk-strap uses buckles, not laces — grouped with dress lace-ups for vibe.)"
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Oxford",
+         "x": "Closed lacing (the eyelet flaps sit under the vamp). The most formal shoe. Vibe: sharp, dressy — the suit-and-formal default."
+        },
+        {
+         "h": "Derby",
+         "x": "Open lacing (flaps sit on top). Smart but versatile, roomier fit. Vibe: put-together yet easygoing — the safest smart shoe."
+        },
+        {
+         "h": "Loafer",
+         "x": "Slip-on, no laces. Smart-casual and summer-friendly. Vibe: relaxed polish, a touch continental."
+        },
+        {
+         "h": "Monk strap",
+         "x": "Buckle(s) instead of laces. Distinctive, business-fashion. Vibe: stylish, deliberate — a step off the beaten path."
+        },
+        {
+         "h": "Brogue / wingtip",
+         "x": "Decorative perforations (broguing). Less formal the more broguing it has. Vibe: characterful, textured — dresses an outfit down a notch."
+        },
+        {
+         "h": "Chelsea boot",
+         "x": "Ankle boot with elastic side panels, no laces. Smart-casual, very versatile. Vibe: sleek, modern, effortless."
+        },
+        {
+         "h": "Chukka / desert boot",
+         "x": "Ankle boot, 2–3 eyelets, often suede + crepe sole. Smart-casual, relaxed. Vibe: warm, understated, easy."
+        },
+        {
+         "h": "Minimal leather sneaker",
+         "x": "Clean lines, low profile, plain white/neutral leather. Smart-casual. Vibe: modern, tidy — dresses up jeans and chinos."
+        },
+        {
+         "h": "Athletic sneaker",
+         "x": "Runners / trainers with visible tech soles. Casual only. Vibe: sporty, off-duty."
+        },
+        {
+         "h": "Driving moccasin",
+         "x": "Soft slip-on with rubber-nub soles. Casual. Vibe: laid-back, weekend, warm-weather."
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "B. Formality spectrum — casual to formal"
+      },
+      {
+       "t": "p",
+       "x": "Formality isn't just the shape — <b>colour and material shift it too</b>. As a rule: a <b>black Oxford is the most formal shoe you can own</b>, while <b>suede and lighter colours read more casual</b> no matter the style. The same silhouette dresses down in tan suede and up in black calf."
+      },
+      {
+       "t": "fig",
+       "gen": "genSpectrum",
+       "args": [
+        "CASUAL",
+        "FORMAL",
+        [
+         {
+          "label": "Athletic",
+          "pos": 0.06,
+          "color": "#16a34a"
+         },
+         {
+          "label": "Driver",
+          "pos": 0.16,
+          "color": "#16a34a"
+         },
+         {
+          "label": "Minimal sneaker",
+          "pos": 0.3,
+          "color": "#0891b2"
+         },
+         {
+          "label": "Chukka",
+          "pos": 0.4,
+          "color": "#ea580c"
+         },
+         {
+          "label": "Loafer",
+          "pos": 0.55,
+          "color": "#9333ea"
+         },
+         {
+          "label": "Chelsea",
+          "pos": 0.58,
+          "color": "#ea580c"
+         },
+         {
+          "label": "Derby",
+          "pos": 0.68,
+          "color": "#4f46e5"
+         },
+         {
+          "label": "Monk",
+          "pos": 0.78,
+          "color": "#9333ea"
+         },
+         {
+          "label": "Oxford",
+          "pos": 0.94,
+          "color": "#db2777"
+         }
+        ],
+        {
+         "w": 800,
+         "h": 320,
+         "title": "Where each type sits on casual ↔ formal (black + smooth leather pushes right; suede + colour pulls left)."
+        }
+       ],
+       "cap": "Casual ↔ formal: sneakers anchor casual; the black Oxford anchors the formal end."
+      },
+      {
+       "t": "h",
+       "x": "C. Construction — why the sole matters"
+      },
+      {
+       "t": "p",
+       "x": "How the sole attaches to the upper decides how long a shoe lasts and whether it can be repaired. This is the difference between a shoe you own for a decade and one you bin in a year."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Goodyear welt",
+         "x": "A leather strip (welt) stitched to upper + insole, then the sole stitched to the welt. Durable, water-resistant, and <b>resoleable</b> many times. Premium — the value play if you keep shoes."
+        },
+        {
+         "h": "Blake stitch",
+         "x": "Sole stitched directly through the insole. Sleeker, more flexible, lighter. Still <b>resoleable</b> (needs a specialist machine). Common on Italian dress shoes."
+        },
+        {
+         "h": "Cemented / glued",
+         "x": "Sole glued on, no stitching. Cheap and light, but usually <b>not resoleable</b> — once the sole goes, the shoe goes. Fine for sneakers and budget pairs."
+        }
+       ]
+      },
+      {
+       "t": "table",
+       "head": [
+        "Construction",
+        "Durability",
+        "Resoleable?",
+        "Why you'd pick it"
+       ],
+       "rows": [
+        [
+         "Goodyear welt",
+         "Very high",
+         "Yes (many times)",
+         "Longevity & value on shoes you'll keep"
+        ],
+        [
+         "Blake stitch",
+         "High",
+         "Yes (specialist)",
+         "Sleeker, lighter dress shoes"
+        ],
+        [
+         "Cemented / glued",
+         "Low–medium",
+         "Usually no",
+         "Cheapest; fine for sneakers & occasional wear"
+        ]
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>Cost-per-wear beats sticker price.</b> A resoleable welted shoe worn for years is often cheaper per wear than replacing glued shoes annually — and it ages better."
+      },
+      {
+       "t": "h",
+       "x": "D. Materials — leather grades & suede"
+      },
+      {
+       "t": "p",
+       "x": "Leather quality runs on a ladder. Higher grades keep the natural surface, age gracefully, and take a shine; lower grades are coated and crack sooner."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Grade",
+        "What it is",
+        "Ages like"
+       ],
+       "rows": [
+        [
+         "Full-grain",
+         "Top layer, natural surface intact",
+         "Best — develops a patina, most durable"
+        ],
+        [
+         "Top-grain",
+         "Sanded & refinished surface",
+         "Good — smoother, a bit less durable"
+        ],
+        [
+         "Corrected / 'genuine'",
+         "Heavily coated lower splits",
+         "Poorly — can crack & peel; budget tier"
+        ]
+       ]
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Calf leather",
+         "x": "Fine-grained, smooth calfskin — the dress-shoe standard. Takes a high polish; smart and formal."
+        },
+        {
+         "h": "Suede",
+         "x": "Napped underside of the hide. Casual, soft, and stylish — but weather-sensitive. Needs a protector spray and a suede brush, not polish."
+        },
+        {
+         "h": "Care note",
+         "x": "Smooth leather: condition + polish. Suede: brush + protect. Never polish suede or brush polish into smooth leather scratches."
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "E. Colour priority & matching"
+      },
+      {
+       "t": "p",
+       "x": "If you buy shoes in order, buy <b>dark brown first</b> — it's the most versatile and pairs with the widest range of outfits. <b>Black second</b> for formal needs. The classic rule still holds: <b>match your shoe colour to your belt.</b>"
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Dark brown — buy first",
+         "x": "The workhorse. Pairs with navy, grey, and earth tones; works smart-casual to business. If you own one pair, make it this."
+        },
+        {
+         "h": "Black — buy second",
+         "x": "For formal and business-formal. Pairs with charcoal, grey, and black. A black Oxford covers the dressiest events."
+        },
+        {
+         "h": "Matching rule",
+         "x": "Shoe colour = belt colour. Brown shoes → brown belt; black shoes → black belt. Metals (buckle, watch) ideally agree too."
+        }
+       ]
+      },
+      {
+       "t": "table",
+       "head": [
+        "Shoe colour",
+        "Pairs well with",
+        "Best for"
+       ],
+       "rows": [
+        [
+         "Dark brown",
+         "Navy, grey, earth tones",
+         "Smart-casual → business; most versatile"
+        ],
+        [
+         "Black",
+         "Charcoal, grey, black",
+         "Formal & business-formal"
+        ],
+        [
+         "Tan / light brown",
+         "Beige, olive, light denim",
+         "Casual & summer"
+        ],
+        [
+         "White (sneaker)",
+         "Almost everything casual",
+         "Smart-casual, warm weather"
+        ]
+       ]
+      },
+      {
+       "t": "h",
+       "x": "F. Fit & last"
+      },
+      {
+       "t": "p",
+       "x": "A great shoe in the wrong size looks and feels wrong. Three things decide fit: <b>length</b> (a thumb's width of room at the toe), <b>width</b> (snug, no bulging or pinching), and <b>heel slip</b> (a little is normal in new leather; a lot means it's too big). The <b>last</b> — the foot-shaped mould the shoe is built on — sets both the fit and the vibe."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Length",
+         "x": "Roughly a thumb's width of space ahead of your longest toe. Too long looks clownish; too short cramps and creases badly."
+        },
+        {
+         "h": "Width & heel slip",
+         "x": "Snug across the ball of the foot, no pinching. A slight heel slip in new leather settles as it breaks in; heavy slip = size down."
+        },
+        {
+         "h": "Last shape",
+         "x": "A <b>round</b> toe reads classic and relaxed; an <b>almond</b> or chiselled toe reads sleeker and dressier. Same shoe, different vibe."
+        }
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>Sizing varies by brand and last.</b> Your number in one maker isn't your number in another — always try the specific model, ideally late in the day when feet are largest."
+      },
+      {
+       "t": "h",
+       "x": "G. Care & rotation"
+      },
+      {
+       "t": "p",
+       "x": "This is where return-per-effort is highest: a few small habits double a shoe's life and keep it looking new. Care is cheaper than replacement."
+      },
+      {
+       "t": "fig",
+       "gen": "genCycle",
+       "args": [
+        [
+         {
+          "label": "Wear",
+          "note": "one pair a day"
+         },
+         {
+          "label": "Rest 24h",
+          "note": "let it dry out"
+         },
+         {
+          "label": "Tree it",
+          "note": "cedar shoe trees"
+         },
+         {
+          "label": "Brush / wipe",
+          "note": "remove dirt"
+         },
+         {
+          "label": "Condition",
+          "note": "feed the leather"
+         },
+         {
+          "label": "Polish / protect",
+          "note": "shine or suede spray"
+         },
+         {
+          "label": "Resole",
+          "note": "when welt allows"
+         }
+        ],
+        {
+         "w": 640,
+         "h": 600,
+         "center": "CARE LOOP"
+        }
+       ],
+       "cap": "The care loop: rotate and rest, tree, clean, condition, protect, and resole welted shoes to keep them going for years."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Shoe trees (cedar):</b> insert after wearing — they hold shape and absorb moisture and odour.",
+        "<b>Rotate pairs:</b> never wear the same shoes two days running; let them rest ~24h to dry.",
+        "<b>Smooth leather:</b> brush off dirt, condition occasionally, then polish for shine and protection.",
+        "<b>Suede:</b> brush with a suede brush, use a protector spray, and never apply polish.",
+        "<b>Resole welted shoes</b> before the sole wears into the upper — it's a fraction of the price of new."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "H. Occasion matching"
+      },
+      {
+       "t": "p",
+       "x": "Match the shoe to the setting. When in doubt, a dark-brown Derby covers the widest middle ground."
+      },
+      {
+       "t": "table",
+       "head": [
+        "Occasion",
+        "Best types",
+        "Colour"
+       ],
+       "rows": [
+        [
+         "Business / formal",
+         "Oxford, Derby, Monk",
+         "Black or dark brown"
+        ],
+        [
+         "Smart-casual",
+         "Derby, Loafer, Chelsea, Chukka, minimal sneaker",
+         "Dark/tan brown, white"
+        ],
+        [
+         "Casual",
+         "Sneaker, driver, chukka",
+         "Anything relaxed"
+        ]
+       ]
+      },
+      {
+       "t": "h",
+       "x": "I. Benchmark + affordable, per type"
+      },
+      {
+       "t": "p",
+       "x": "For each key type: a widely-recognised <b>benchmark</b> to learn the category, and an <b>affordable</b> route. Use benchmarks to understand what 'good' looks like, then try the cheaper option on your own feet."
+      },
+      {
+       "t": "nutri",
+       "items": [
+        {
+         "n": "Dress (Oxford/Derby)",
+         "tag": "FORMAL",
+         "fn": [
+          "Goodyear-welted, smooth leather",
+          "Black or dark brown"
+         ],
+         "src": [
+          "Benchmark: a welted Oxford like Loake / Meermin",
+          "Affordable: Clarks or a local welted maker"
+         ],
+         "def": [
+          "Needs breaking in; keep polished"
+         ]
+        },
+        {
+         "n": "Loafer",
+         "tag": "SMART-CASUAL",
+         "fn": [
+          "Slip-on, leather or suede",
+          "Summer-friendly"
+         ],
+         "src": [
+          "Benchmark: a classic penny/bit loafer",
+          "Affordable: high-street leather loafer"
+         ],
+         "def": [
+          "Can be too casual for formal suits"
+         ]
+        },
+        {
+         "n": "Chelsea / boot",
+         "tag": "SMART-CASUAL",
+         "fn": [
+          "Elastic-sided or chukka",
+          "Very versatile"
+         ],
+         "src": [
+          "Benchmark: a quality leather Chelsea boot",
+          "Affordable: Clarks Desert Boot (chukka)"
+         ],
+         "def": [
+          "Suede versions need weather care"
+         ]
+        },
+        {
+         "n": "Minimal sneaker",
+         "tag": "SMART-CASUAL",
+         "fn": [
+          "Clean white/neutral leather",
+          "Low profile"
+         ],
+         "src": [
+          "Benchmark: Common Projects-style minimal sneaker",
+          "Affordable: clean white leather trainers"
+         ],
+         "def": [
+          "Keep them spotless or the effect is lost"
+         ]
+        },
+        {
+         "n": "Athletic sneaker",
+         "tag": "CASUAL",
+         "fn": [
+          "Cushioned, sporty sole",
+          "Comfort-first"
+         ],
+         "src": [
+          "Benchmark: a well-regarded runner",
+          "Affordable: any reputable trainer on sale"
+         ],
+         "def": [
+          "Casual only — don't dress it up"
+         ]
+        }
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>Picks are examples to illustrate 'benchmark vs affordable', not endorsements.</b> Fit, comfort, and your own taste on your own feet are the deciding vote."
+      },
+      {
+       "t": "h",
+       "x": "J. Decision framework (80/20)"
+      },
+      {
+       "t": "p",
+       "x": "You don't need many shoes — you need the right few. A <b>dark-brown Derby or Oxford</b>, a <b>clean minimal white sneaker</b>, and a <b>Chelsea or chukka boot</b> together cover roughly <b>80% of occasions</b>. Buy <b>fit-first</b>, prioritise <b>construction</b> for the pairs you'll keep for years, and only then expand into specialised styles."
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "o",
+          "x": 0.5,
+          "y": 0.08,
+          "shape": "round",
+          "w": 210,
+          "h": 36,
+          "label": "Define occasions you dress for",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "f",
+          "x": 0.5,
+          "y": 0.3,
+          "shape": "rect",
+          "w": 190,
+          "h": 34,
+          "label": "Fit first (length + last)",
+          "fill": "#0891b2"
+         },
+         {
+          "id": "c",
+          "x": 0.5,
+          "y": 0.52,
+          "shape": "rect",
+          "w": 210,
+          "h": 34,
+          "label": "Construction for keepers",
+          "fill": "#9333ea"
+         },
+         {
+          "id": "s",
+          "x": 0.5,
+          "y": 0.74,
+          "shape": "rect",
+          "w": 210,
+          "h": 34,
+          "label": "Starter 3: Derby + sneaker + boot",
+          "fill": "#ea580c"
+         },
+         {
+          "id": "e",
+          "x": 0.5,
+          "y": 0.94,
+          "shape": "round",
+          "w": 200,
+          "h": 36,
+          "label": "Expand slowly by need",
+          "fill": "#16a34a"
+         }
+        ],
+        [
+         {
+          "from": "o",
+          "to": "f"
+         },
+         {
+          "from": "f",
+          "to": "c"
+         },
+         {
+          "from": "c",
+          "to": "s"
+         },
+         {
+          "from": "s",
+          "to": "e"
+         }
+        ],
+        {
+         "w": 700,
+         "h": 560
+        }
+       ],
+       "cap": "Shoe decision flow: occasions → fit → construction → the versatile starter three → expand."
+      },
+      {
+       "t": "flow",
+       "steps": [
+        "Define the OCCASIONS you actually dress for (business? smart-casual? mostly casual?)",
+        "Buy FIT-FIRST — length, width, heel slip, and a last shape that suits you; sizing varies by brand",
+        "Prioritise CONSTRUCTION (Goodyear welt / Blake) for shoes you'll keep and resole",
+        "Get the STARTER THREE: a dark-brown Derby or Oxford, a clean white minimal sneaker, a Chelsea/chukka boot",
+        "CARE for them — trees, rotation, brush/condition/polish — to stretch their life",
+        "EXPAND slowly — add loafers, monks, or colours only as real occasions demand"
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "photos",
+   "name": "Photos / Socials",
+   "icon": "📸",
+   "intro": "A tactical weekend project: pose first, then profile, then image.",
+   "topics": [
+    {
+     "id": "why",
+     "name": "Why Posing First",
+     "blurb": "The order matters.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Your third real gap, and a tactical one. The order matters: learn to <b>pose</b> first, then build the <b>profile</b>, then shape the overall <b>image</b>. A weekend project, not years."
+      },
+      {
+       "t": "p",
+       "x": "Most guys blame the camera or the lighting. The real variable is <b>how you carry yourself</b> in front of it. The same face looks completely different relaxed-and-angled vs. stiff-and-square. Learn a few poses and every photo after improves automatically."
+      },
+      {
+       "t": "pull",
+       "x": "Posing → Profile → Image"
+      },
+      {
+       "t": "fig",
+       "gen": "genCycle",
+       "args": [
+        [
+         {
+          "label": "Posing"
+         },
+         {
+          "label": "Profile"
+         },
+         {
+          "label": "Image"
+         }
+        ],
+        {
+         "center": "Weekend\nproject",
+         "w": 560,
+         "h": 500
+        }
+       ],
+       "cap": "Three steps, in order — start with posing, not gear."
+      }
+     ]
+    },
+    {
+     "id": "posing",
+     "name": "Posing",
+     "blurb": "Stand like it's no big deal.",
+     "status": "action",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Learn to stand in front of a camera like it's no big deal."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Don't face the lens square</b> — angle your body slightly, weight on the back foot.",
+        "<b>Relax the shoulders</b> down; push the chin slightly forward and down (kills double-chin, defines jaw).",
+        "<b>Give your hands a job</b> — in a pocket, adjusting a sleeve, holding something. Idle hands look awkward.",
+        "<b>Slightly candid beats stiff-posed</b> — look away, half-laugh, walk and shoot. Find your better side and practice in a mirror."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "insta",
+     "name": "Instagram",
+     "blurb": "A clean, lived-in profile.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "A clean, lived-in profile — not a content grind."
+      },
+      {
+       "t": "list",
+       "items": [
+        "A <b>simple, real bio</b> and a clear profile photo. No try-hard.",
+        "A grid that <b>looks like a life</b>: a few good photos across hobbies, travel, friends, the gym/swim.",
+        "Post occasionally, quality over quantity; use stories for the casual day-to-day.",
+        "<b>Minimum:</b> a profile that makes someone think 'this guy's interesting,' not 'this is empty.'"
+       ]
+      }
+     ]
+    },
+    {
+     "id": "image",
+     "name": "Image",
+     "blurb": "The whole impression.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "The handful of photos that answer the silent questions."
+      },
+      {
+       "t": "p",
+       "x": "Every viewer subconsciously asks: <b>what do you look like, what's your life like, would hanging out be fun?</b> Answer each once."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "One clear face shot",
+         "x": "What you look like."
+        },
+        {
+         "h": "One full-body",
+         "x": "Shows your build + fit."
+        },
+        {
+         "h": "One doing-something",
+         "x": "What your life's like."
+        },
+        {
+         "h": "One relaxed social shot",
+         "x": "Would hanging out be fun."
+        }
+       ]
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Light is everything</b> — natural daylight beats any filter. Get a friend to shoot a golden-hour set in one session.",
+        "<b>Avoid:</b> bathroom mirror selfies, group-only photos, heavy filters, sunglasses in every pic."
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>First move:</b> 20 minutes practicing poses in a mirror, then one golden-hour photo walk with a friend — that's your whole set."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "communities",
+   "name": "Communities",
+   "icon": "👥",
+   "intro": "The engine that creates the encounters. Confidence is built; opportunity is engineered.",
+   "topics": [
+    {
+     "id": "model",
+     "name": "Surface Area for Luck",
+     "blurb": "The mental model.",
+     "status": "active",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Everything else is useless if you're never in rooms with new people. 'Meeting someone' feels like luck, but luck is just <b>how many quality interactions you're exposed to per week</b>. You don't need to be smoother — you need to be in more rooms, more often, with the same people repeatedly."
+      },
+      {
+       "t": "pull",
+       "x": "Encounters = Rooms/week × People/room × Repetition"
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "r",
+          "x": "0.5",
+          "y": "0.12",
+          "shape": "round",
+          "w": 170,
+          "h": 36,
+          "label": "Rooms / week",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "pp",
+          "x": "0.5",
+          "y": "0.4",
+          "shape": "rect",
+          "w": 160,
+          "h": 34,
+          "label": "People / room",
+          "fill": "#0891b2"
+         },
+         {
+          "id": "rep",
+          "x": "0.5",
+          "y": "0.68",
+          "shape": "rect",
+          "w": 160,
+          "h": 34,
+          "label": "Repetition",
+          "fill": "#ea580c"
+         },
+         {
+          "id": "e",
+          "x": "0.5",
+          "y": "0.92",
+          "shape": "round",
+          "w": 200,
+          "h": 36,
+          "label": "Encounters (luck)",
+          "fill": "#16a34a"
+         }
+        ],
+        [
+         {
+          "from": "r",
+          "to": "pp"
+         },
+         {
+          "from": "pp",
+          "to": "rep"
+         },
+         {
+          "from": "rep",
+          "to": "e"
+         }
+        ],
+        {
+         "w": 640,
+         "h": 460
+        }
+       ],
+       "cap": "Luck is a volume game with a multiplier called repetition."
+      },
+      {
+       "t": "call",
+       "x": "<b>Warm beats cold.</b> A recurring group means you meet the same faces again and again — low pressure, no 'approach' needed, familiarity does the work. The cheat code while you're still building social comfort."
+      }
+     ]
+    },
+    {
+     "id": "finding",
+     "name": "Finding Them",
+     "blurb": "Pick your rooms.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Two recurring communities you actually show up to."
+      },
+      {
+       "t": "list",
+       "items": [
+        "Pick <b>2 recurring things</b>: e.g. dance class + a run club, hobby group, sport, or meetup.",
+        "Bias toward <b>mixed-gender, recurring</b> settings over one-off events.",
+        "<b>Dance class counts double</b> — comfort on a dance floor and a community.",
+        "<b>Minimum:</b> two things on your weekly calendar where you'll see new people."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "showing",
+     "name": "Showing Up",
+     "blurb": "Become a regular.",
+     "status": "action",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Consistency turns strangers into familiar faces."
+      },
+      {
+       "t": "list",
+       "items": [
+        "Go often enough that people <b>recognize you</b> — that's when warmth starts for free.",
+        "Say yes to invitations and after-events; be a <b>regular, not a tourist</b>.",
+        "Learn names, ask follow-ups, be the easy-to-talk-to one (see Communication).",
+        "<b>Minimum:</b> enough repetition that you're 'one of the group', not a newcomer each time."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "network",
+     "name": "Building a Network",
+     "blurb": "The long game.",
+     "status": "excluded",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Overlapping circles that generate their own opportunities."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Connect people</b> across your circles — being a connector is high status and makes you central.",
+        "Eventually <b>host or organize</b> — the strongest social position there is.",
+        "A point where introductions, events, and invites <b>come to you</b>.",
+        "This is the long game — the floor is just: <b>be in 2 rooms, consistently</b>."
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>First move:</b> choose 2 recurring communities this month and treat attendance like the gym — non-negotiable reps."
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "physique",
+   "name": "Physique",
+   "icon": "💪",
+   "intro": "Not an aesthetic body — clothes fit you and you don't feel weak in your head.",
+   "topics": [
+    {
+     "id": "training",
+     "name": "Training",
+     "blurb": "Gym, 4–5× a week.",
+     "status": "active",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "The goal isn't an aesthetic body — it's that clothes fit you and you don't feel weak in your head. You're already at the minimum."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Gym 4–5×/week</b> with compound lifts at the core; add weight/reps over time.",
+        "You're already doing this — <b>keep it boring and consistent</b>.",
+        "<b>Minimum:</b> clothes fill out at the shoulders and you don't read as frail. You're here."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "diet",
+     "name": "Diet",
+     "blurb": "Protein-forward, enough to build.",
+     "status": "active",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Protein-forward, enough to build."
+      },
+      {
+       "t": "list",
+       "items": [
+        "Hit a <b>daily protein target</b>; eat in a slight surplus to add muscle.",
+        "<b>Hydrate, sleep</b> — recovery is where the gains actually happen.",
+        "<b>Minimum:</b> eating with intent, not by accident."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "posture",
+     "name": "Posture & Carriage",
+     "blurb": "Free instant upgrade.",
+     "status": "action",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "How you stand changes how the body reads."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Stand tall</b>, shoulders back and down, chest open, chin level.",
+        "Posture changes your silhouette <b>more than a few kg ever will</b> — and signals confidence directly.",
+        "<b>Minimum:</b> catch yourself slouching and reset. Free, immediate, high-impact."
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>Maintenance:</b> gym 4–5×/week, protein + sleep. Runs on autopilot once it's habit."
+      }
+     ]
+    },
+    {
+     "id": "body-analysis",
+     "name": "Body Analysis",
+     "blurb": "A full read of your body — in diagrams.",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "A complete read of your body across the three angles. Three things to understand: your <b>type</b> (where your composition sits today), your <b>structure</b> (frame, muscle, fat), and the <b>plan</b> that follows from it. The headline is encouraging — everything limiting you here is the changeable kind."
+      },
+      {
+       "t": "cards",
+       "items": [
+        {
+         "h": "Type — lean, low muscle",
+         "x": "Not overweight (BMI ~23). The 'skinny-fat' pattern: lean limbs, low muscle, some central fat."
+        },
+        {
+         "h": "Structure — buildable",
+         "x": "Medium-narrow frame, shallow V-taper. Shoulders and central fat are the two levers."
+        },
+        {
+         "h": "Plan — recomposition",
+         "x": "Build muscle + shed central fat at once. Redistribution, not weight loss."
+        }
+       ]
+      },
+      {
+       "t": "h",
+       "x": "01 · Body type — where you sit today"
+      },
+      {
+       "t": "fig",
+       "gen": "genBodyType",
+       "args": [],
+       "cap": "Low muscle with some central fat = the 'skinny-fat' quadrant. The goal isn't smaller — it's up and slightly left: more muscle, less central fat."
+      },
+      {
+       "t": "p",
+       "x": "At ~5'9\" and ~71 kg your BMI is around 23 — normal. So this isn't a weight problem, it's a <b>composition and distribution</b> one, and that's the version that responds fastest to the right training."
+      },
+      {
+       "t": "h",
+       "x": "02 · Frame & proportions"
+      },
+      {
+       "t": "fig",
+       "gen": "genFrame",
+       "args": [],
+       "cap": "Medium-to-narrow frame with a shallow shoulder-to-waist taper. The width you see at the middle is the belly sitting forward, not the waist spreading sideways."
+      },
+      {
+       "t": "p",
+       "x": "Both things limiting your proportions are the fixable ones: <b>shoulder width is buildable</b>, and <b>forward-sitting central fat shrinks quickly</b>. Wider delts also make the waist look smaller by contrast — free value."
+      },
+      {
+       "t": "h",
+       "x": "03 · Muscle map — what to build first"
+      },
+      {
+       "t": "fig",
+       "gen": "genMuscleMap",
+       "args": [],
+       "cap": "Priority order for your frame: shoulders first, then upper back and chest for the V-taper, arms and core alongside, legs as a maintained base."
+      },
+      {
+       "t": "p",
+       "x": "Muscle mass is currently low across the board — which is simply an empty canvas, not a flaw. <b>Shoulders are the single highest-leverage build</b> for how your whole upper body reads."
+      },
+      {
+       "t": "h",
+       "x": "04 · Fat distribution"
+      },
+      {
+       "t": "fig",
+       "gen": "genFatMap",
+       "args": [],
+       "cap": "Fat is centrally distributed — lower belly, sitting forward — while the limbs stay lean. This is normal-weight central adiposity: the most responsive fat type to change."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Oiliness of the plan:</b> add muscle and clean up inputs, and the belly is where visible change shows up.",
+        "Central fat responds most to <b>overall activity, sleep, stress and diet quality</b> — not just calorie cuts.",
+        "You do <b>not</b> need to get smaller — you need to redistribute."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "05 · Posture — the free upgrade"
+      },
+      {
+       "t": "fig",
+       "gen": "genPosture",
+       "args": [],
+       "cap": "A mild forward-head / rounded-upper-back tendency, plus a slight anterior pelvic tilt that arches the low back and pushes the belly further forward than the fat alone would."
+      },
+      {
+       "t": "p",
+       "x": "This is genuinely good news: some of the belly prominence is <b>postural</b>, so better core control and hip/hamstring work flattens the look before you've lost much fat at all."
+      },
+      {
+       "t": "h",
+       "x": "06 · The plan — body recomposition"
+      },
+      {
+       "t": "fig",
+       "gen": "genRecomp",
+       "args": [],
+       "cap": "Recomposition: build muscle and reduce central fat at the same time. Four levers — training, protein, core/mobility, and the sleep/steps/stress multipliers."
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Progressive resistance training</b> biased to shoulders, upper back and legs — getting stronger over months is the lever. (You're already in the gym 4–5×/week — see Training.)",
+        "<b>Protein-forward eating</b> — roughly 1.6–2 g per kg bodyweight to actually build muscle. This is muscle-gain territory, not crash-dieting.",
+        "<b>Core + hip mobility</b> — anti-extension core (planks, dead-bugs) and hip/hamstring work to address the pelvic tilt.",
+        "<b>Sleep, daily steps, stress</b> — the boring multipliers that specifically influence central fat."
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>The honest summary:</b> a lean frame carrying low muscle and forward-sitting belly fat, with a little postural exaggeration on top — and every one of those is among the most changeable things a body can present with. This is a strong place to build from, and you're already running the engine."
+      },
+      {
+       "t": "p",
+       "x": "<i>A note: this is fitness guidance, not medical or nutritional prescription. For a plan dialled to your numbers, a coach or registered dietitian can tailor it; if central fat is a health concern, a doctor can check the basics. Treat this as a map.</i>"
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "communication",
+   "name": "Communication",
+   "icon": "💬",
+   "intro": "The highest-leverage area. At MVP stage you don't need wit — you need to not freeze.",
+   "topics": [
+    {
+     "id": "model",
+     "name": "Curiosity Beats Charisma",
+     "blurb": "The mental model.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "The highest-leverage area of all. At the MVP stage you don't need wit or charisma — you need to <b>not freeze</b>."
+      },
+      {
+       "t": "p",
+       "x": "The bar isn't 'be impressive / funny / smooth.' It's <b>be genuinely interested and easy to talk to</b>. People remember how you made them feel, not your best line. Move the pressure off 'how am I doing?' and onto 'who is this person?' — that single shift kills most anxiety."
+      },
+      {
+       "t": "pull",
+       "x": "Open → Sustain → Flirt → Exit + the ask"
+      },
+      {
+       "t": "fig",
+       "gen": "genGraph",
+       "args": [
+        [
+         {
+          "id": "o",
+          "x": "0.12",
+          "y": "0.5",
+          "shape": "round",
+          "w": 120,
+          "h": 40,
+          "label": "Open",
+          "fill": "#4f46e5"
+         },
+         {
+          "id": "s",
+          "x": "0.37",
+          "y": "0.5",
+          "shape": "round",
+          "w": 120,
+          "h": 40,
+          "label": "Sustain",
+          "fill": "#0891b2"
+         },
+         {
+          "id": "f",
+          "x": "0.63",
+          "y": "0.5",
+          "shape": "round",
+          "w": 120,
+          "h": 40,
+          "label": "Flirt",
+          "fill": "#db2777"
+         },
+         {
+          "id": "e",
+          "x": "0.88",
+          "y": "0.5",
+          "shape": "round",
+          "w": 130,
+          "h": 40,
+          "label": "Exit + ask",
+          "fill": "#16a34a"
+         }
+        ],
+        [
+         {
+          "from": "o",
+          "to": "s"
+         },
+         {
+          "from": "s",
+          "to": "f"
+         },
+         {
+          "from": "f",
+          "to": "e"
+         }
+        ],
+        {
+         "w": 720,
+         "h": 260
+        }
+       ],
+       "cap": "The arc of any interaction, online or offline."
+      },
+      {
+       "t": "call",
+       "x": "<b>Reps beat theory:</b> talk to low-stakes strangers daily (baristas, gym, shops) with no goal but practice. Volume removes the fear faster than anything else."
+      }
+     ]
+    },
+    {
+     "id": "online",
+     "name": "Online",
+     "blurb": "Apps & DMs.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "The texting arc: open on something specific, keep it moving, add warmth, then move it off the app."
+      },
+      {
+       "t": "h",
+       "x": "Opening"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Open on something <b>specific</b> in their profile or photos — never just 'hey'.",
+        "Ask one <b>easy, open question</b> that's effortless to answer.",
+        "Keep it short and light; send once, then let them reply."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Sustaining"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Ask follow-ups and share a bit of yourself — don't interrogate.",
+        "Match their <b>energy and message length</b>; mirror the vibe.",
+        "Move it forward before it fizzles — a voice note or a plan beats endless texting."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Flirting"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Light teasing, a <b>specific genuine compliment</b>, a little cheeky banter.",
+        "Read their replies and calibrate — match, don't overwhelm.",
+        "Easy on the emojis; confidence reads as relaxed, not eager."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Exit & the ask"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Once there's rapport, suggest a <b>low-key first meet</b> — coffee or a walk.",
+        "Be <b>specific with a day</b>; vague plans die.",
+        "<b>Minimum:</b> you move promising chats to a real meeting, not pen-pal limbo."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "offline",
+     "name": "Offline",
+     "blurb": "In person.",
+     "status": "action",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "In person, the same arc — warmth and interest carry you far before any technique."
+      },
+      {
+       "t": "h",
+       "x": "Opening"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Lead with an <b>observation or light question</b> ('this place is packed' / 'how do you know everyone here?').",
+        "It doesn't need to be clever — it needs to be <b>warm and easy</b>.",
+        "<b>Minimum:</b> one go-to opener you can use anywhere without overthinking.",
+        "<b>Reps:</b> talk to low-stakes strangers daily with no goal but practice."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Sustaining"
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Follow-up-question habit:</b> turn every answer into the next question, one layer deeper.",
+        "Actually listen and react — then <b>share a bit of yourself</b> so it's a conversation, not an interview.",
+        "Relaxed body language, eye contact, unhurried pace."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Flirting"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Light teasing, holding <b>eye contact a beat longer</b>, a genuine compliment.",
+        "It's calibration, not a script — read their energy and match it.",
+        "More advanced; warmth + interest already carries you far."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Exit & the ask"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Exit before it fizzles: 'I'm gonna grab a drink — this was fun, what's your Insta?'",
+        "Asking for a contact is <b>normal and low-stakes</b>; treat it that way and it stays light.",
+        "<b>Minimum:</b> you can end an interaction cleanly and get a way to follow up."
+       ]
+      }
+     ]
+    },
+    {
+     "id": "humor",
+     "name": "Humor Development",
+     "blurb": "The deeper layer.",
+     "status": "excluded",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "The slow, compounding game of being funny — parked for now, deliberately."
+      },
+      {
+       "t": "list",
+       "items": [
+        "Notice what makes banter land; keep the lines and rhythms that work.",
+        "<b>Timing, storytelling, callbacks, observational humor</b> — all learnable. Study what lands (good standup, sharp sitcoms) and notice why.",
+        "Lean playful, never try-hard — forced jokes read worse than none.",
+        "<b>Parked (Excluded, Low)</b> — warmth + interest is enough at the MVP stage."
+       ]
+      }
+     ]
+    }
+   ]
+  },
+  {
+   "id": "cult",
+   "name": "Cult",
+   "icon": "🎭",
+   "intro": "Culture & interests — conversation fuel and the venues where you meet people.",
+   "topics": [
+    {
+     "id": "culture",
+     "name": "Cultural Fluency",
+     "blurb": "Already strong.",
+     "status": "active",
+     "priority": "low",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "References are conversation fuel and enjoyment — <b>not a prerequisite</b>. You've watched tons of films; you're past the minimum. Don't let an unfinished sitcom become a reason to wait."
+      },
+      {
+       "t": "h",
+       "x": "Film & TV — your strength"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Loads of films watched — you can hold opinions and follow references.",
+        "Sitcoms (Friends, HIMYM, Big Bang) add shared humor + references; enjoyable, not required.",
+        "<b>Minimum:</b> cleared. Anime and deeper film knowledge are extras."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Books — talking points"
+      },
+      {
+       "t": "list",
+       "items": [
+        "You're reading — keep a couple of current books you can mention naturally.",
+        "Ideas from books are great conversation fuel without trying hard.",
+        "<b>Minimum:</b> one or two things you're reading you can speak about with energy."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Music — quiet signal"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Have a sense of what you like and why — music comes up constantly.",
+        "Useful for events, playlists, shared discovery with someone new.",
+        "<b>Minimum:</b> you can answer 'what do you listen to?' with something real."
+       ]
+      },
+      {
+       "t": "call",
+       "x": "Consume this <b>for pleasure, in the background</b>. It compounds naturally — no sprint needed."
+      }
+     ]
+    },
+    {
+     "id": "interests",
+     "name": "Interests / Hobbies",
+     "blurb": "Fuel and venue.",
+     "status": "active",
+     "priority": "high",
+     "blocks": [
+      {
+       "t": "p",
+       "x": "Hobbies do double duty: things to talk about with real energy, and the places you actually meet people. <b>Fuel and venue, not a gate.</b>"
+      },
+      {
+       "t": "fig",
+       "gen": "genVenn3",
+       "args": [
+        [
+         {
+          "label": "Conversation fuel",
+          "color": "#4f46e5"
+         },
+         {
+          "label": "Venues (people)",
+          "color": "#0891b2"
+         },
+         {
+          "label": "Genuine enjoyment",
+          "color": "#16a34a"
+         }
+        ],
+        {
+         "ab": "stories that pull people in",
+         "bc": "communities",
+         "ca": "energy that shows",
+         "abc": "a great hobby"
+        },
+        "Hobbies",
+        {
+         "w": 640,
+         "h": 540
+        }
+       ],
+       "cap": "The best interests do all three at once."
+      },
+      {
+       "t": "h",
+       "x": "What you have"
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Gym, learning to swim, reading, films</b> — that's a real set.",
+        "At least one (gym/swim) puts you around other people.",
+        "<b>Minimum:</b> cleared. You're not short on things to talk about."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "What to build"
+      },
+      {
+       "t": "list",
+       "items": [
+        "<b>Learning to swim right now</b> — conditioning plus a genuine skill. Keep at it.",
+        "<b>Dance</b> — pull this earlier than 'distant future'; it dissolves club self-consciousness.",
+        "Music (an instrument), advanced swimming, a sport — hobbies deep enough to be interesting and to meet people through."
+       ]
+      },
+      {
+       "t": "h",
+       "x": "Using them socially"
+      },
+      {
+       "t": "list",
+       "items": [
+        "Each interest is both a <b>story to tell</b> and a <b>room full of potential people</b>.",
+        "Pick at least one that's group-based (links straight to Communities).",
+        "<b>Minimum:</b> your interests pull you toward people, not away from them."
+       ]
+      },
+      {
+       "t": "call",
+       "x": "<b>Dance class is the high-value pull</b> here — comfort and community in one."
+      }
+     ]
+    }
+   ]
+  }
+ ]
+}
