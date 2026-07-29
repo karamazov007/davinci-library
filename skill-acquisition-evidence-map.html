@@ -1,0 +1,445 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Skill Acquisition — An Evidence-Grounded Systems Map</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,#fbf9f6 0%,#f4f6fb 60%,#eef2f9 100%);color:#414a60;}
+  header.top{padding:16px 26px 10px}
+  header.top h1{margin:0;font-size:20px;color:#3a4258;letter-spacing:.2px}
+  .titlerow{display:flex;align-items:center;gap:14px;flex-wrap:wrap}
+  .badge-sci{display:inline-flex;align-items:center;gap:6px;font-size:12px;font-weight:700;
+    color:#2f8a5b;background:#e9f7ef;border:1px solid #bfe6cf;border-radius:999px;padding:5px 12px}
+  header.top .sub{color:#6b7690;font-size:13.5px;margin-top:6px;max-width:1120px;line-height:1.55}
+  header.top .sub b{color:#4a5470}
+  .hint{color:#93a0bb;font-size:12.5px;margin-top:7px}
+  .hint b{color:#6b7690}
+  .stage{position:relative}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:9px 20px;
+    background:rgba(255,255,255,.72);border-top:1px solid #e7ebf3;border-bottom:1px solid #e7ebf3;
+    position:sticky;top:0;z-index:5;backdrop-filter:blur(6px)}
+  .grp{display:flex;gap:9px;align-items:center;background:#fff;border:1px solid #e3e8f1;border-radius:11px;padding:6px 12px;box-shadow:0 1px 2px rgba(60,70,100,.04)}
+  .chk{display:flex;gap:8px;align-items:center;font-size:13px;color:#59627c;cursor:pointer;user-select:none}
+  .chk input{width:15px;height:15px}
+  .dot{width:12px;height:12px;border-radius:4px;display:inline-block}
+  button.zbtn{background:#fff;color:#59627c;border:1px solid #e3e8f1;border-radius:9px;min-width:34px;height:34px;font-size:16px;cursor:pointer;padding:0 10px}
+  button.zbtn:hover{background:#f1f4fa;color:#3a4258}
+  button.evbtn{background:#efeafc;color:#6d5bd0;border:1px solid #cfc3f2;border-radius:9px;height:34px;font-size:13px;font-weight:700;cursor:pointer;padding:0 13px}
+  button.evbtn:hover{background:#e6ddfa}
+  input#zslider{width:120px;height:6px;cursor:pointer;accent-color:#6d5bd0;background:transparent}
+  .scroller{overflow:auto;max-height:calc(100vh - 150px);cursor:grab;
+    background:radial-gradient(circle at center,rgba(120,140,180,.05) 1px,transparent 1px) 0 0/38px 38px;}
+  .scroller.grabbing{cursor:grabbing}
+  svg#map{display:block}
+  .stock:hover rect.body{filter:url(#lift)}
+  .stock text.title{font-weight:700;fill:#3a4258}
+  .stock text.tagn{font-weight:700}
+  .stock text.hintlbl{fill:#8894ae;font-weight:500}
+  .cloud path{fill:#eef1f7;stroke:#cdd5e4;stroke-width:1.6}
+  .cloud text{fill:#7f8aa4;font-weight:600}
+  .flow path.pipe{fill:none;stroke:#5f6d95;stroke-width:3.8;marker-end:url(#arrow)}
+  .flow.neg path.pipe{stroke:#d17f8d;stroke-width:3.4;stroke-dasharray:11 7;marker-end:url(#arrowNeg)}
+  .flow:hover path.pipe{stroke:#3f4d72;stroke-width:4.8}
+  .flow.neg:hover path.pipe{stroke:#c26576}
+  .flow text.rate{fill:#4a5578;font-weight:600}
+  .flow text.rate.neg{fill:#b96676}
+  #g-loops{opacity:.82}
+  .badge circle{stroke:#fff;stroke-width:3}
+  .badge text{font-weight:800;fill:#fff}
+  .loop text.looptitle{font-weight:700}
+  .clickable{cursor:pointer}
+  .delay rect.dbox{fill:#fdf1cf;stroke:#e9c46a;stroke-width:1.8}
+  .delay text.dt{font-weight:700;fill:#9a6b16}
+  .delay text.dsub{font-weight:600;fill:#b08a3e}
+  .interv rect{fill:#e4f5ec;stroke:#7cc79c;stroke-width:1.7}
+  .interv text{font-weight:700;fill:#2f8a5b}
+  .interv:hover rect{fill:#d5eede}
+  .evtag rect{fill:#efeafc;stroke:#cfc3f2;stroke-width:1.6}
+  .evtag text{font-weight:700;fill:#6d5bd0}
+  .evtag:hover rect{fill:#e6ddfa}
+  .hidden{display:none !important}
+  .overlay{position:fixed;inset:0;background:rgba(40,52,80,.44);backdrop-filter:blur(2px);
+    display:none;align-items:center;justify-content:center;z-index:50;padding:24px}
+  .overlay.open{display:flex}
+  .modal{background:#fff;width:min(620px,94vw);max-height:88vh;overflow:auto;border-radius:18px;
+    box-shadow:0 24px 70px rgba(40,55,95,.34);padding:28px;position:relative;animation:pop .16s ease}
+  @keyframes pop{from{transform:scale(.94);opacity:.4}to{transform:scale(1);opacity:1}}
+  .modal .kicker{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800}
+  .modal h2{margin:8px 0 8px;font-size:21px;color:#3a4258;line-height:1.28;padding-right:34px}
+  .modal p{color:#59627c;font-size:14.5px;line-height:1.65}
+  .modal .row{margin:13px 0;padding:13px 15px;border-radius:12px;background:#f7f9fc;border:1px solid #edf1f7}
+  .modal .row h4{margin:0 0 6px;font-size:11.5px;color:#8894ae;text-transform:uppercase;letter-spacing:.7px}
+  .modal .row .v{font-size:14px;color:#454e66;line-height:1.55}
+  .modal .row.act{background:#eef8f1;border-color:#cdebd8}
+  .modal .row.act h4{color:#2f8a5b}
+  .modal .chip{display:inline-block;padding:4px 11px;border-radius:8px;font-size:12.5px;font-weight:700;margin-bottom:12px}
+  .modal .closebtn{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:50%;
+    border:1px solid #e6eaf2;background:#f7f9fc;color:#7f8aa4;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .modal .closebtn:hover{background:#eef1f7;color:#3a4258}
+  /* footnote (evidence) block inside each pop-up */
+  .fnote{margin-top:16px;padding-top:14px;border-top:1px dashed #d9dfea}
+  .fnote .fnh{display:flex;align-items:center;gap:10px;margin-bottom:9px}
+  .fnote .evh{font-size:11px;letter-spacing:1px;text-transform:uppercase;font-weight:800;color:#8894ae}
+  .fnote .conf{font-size:11.5px;font-weight:800;border-radius:20px;padding:3px 10px}
+  .fnote .fcite{font-size:12.5px;line-height:1.5;color:#5b647e;margin:7px 0}
+  .fnote .fcite b{color:#454e66}
+  .fnote .fcite a{color:#6d5bd0;text-decoration:none;font-weight:600}
+  .fnote .fcite a:hover{text-decoration:underline}
+  .below{padding:20px 26px 46px}
+  .legend{display:flex;flex-wrap:wrap;gap:20px;font-size:13.5px;color:#59627c;align-items:center}
+  .legend .item{display:flex;gap:9px;align-items:center}
+  .conflegend{display:flex;flex-wrap:wrap;gap:16px;margin-top:14px;font-size:12.5px;color:#59627c;align-items:center}
+  .conflegend .ci{display:flex;gap:7px;align-items:center}
+  .conflegend .sw{font-size:11.5px;font-weight:800;border-radius:20px;padding:3px 10px}
+  .acts{margin-top:22px;background:linear-gradient(180deg,#e9f7ef,transparent);border:1px dashed #7cc79c;border-radius:14px;padding:18px 22px}
+  .acts h3{margin:0 0 4px;color:#2f7d55;font-size:16px}
+  .acts .asub{color:#6b7690;font-size:13px;margin-bottom:12px}
+  .acts ol{margin:0;padding-left:20px}
+  .acts li{font-size:14px;color:#455066;line-height:1.6;margin-bottom:9px}
+  .acts li b{color:#2f8a5b}
+  .acts li .where{color:#8894ae;font-size:12.5px}
+  .footer{color:#9aa5bd;font-size:12px;margin-top:18px;line-height:1.7}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="titlerow">
+    <h1>Skill Acquisition — An Evidence-Grounded Systems Map</h1>
+    <span class="badge-sci">◇ every element sourced &amp; confidence-tagged</span>
+  </div>
+  <div class="sub">
+    How a skill is actually built — as <b>stocks</b>, <b>flows</b>, <b>feedback loops</b> and <b>delays</b>. Top belt = the <b>build engine</b>; bottom belt = the <b>bottleneck and the rival</b>. Green tags are the <b>leverage points / action items</b>. Every element carries its <b>sources</b> and a confidence tag — <b>established</b>, <b>debated</b>, or <b>my interpretation</b> — in its pop-up.
+  </div>
+  <div class="hint"><b>Click any element</b> for its mechanism and its evidence footnote. Click <b>ⓘ Evidence</b> for the full source list. Drag to pan · zoom for detail.</div>
+</header>
+
+<div class="stage">
+  <div class="toolbar">
+    <div class="grp"><label class="chk"><input type="checkbox" id="t-loops" checked><span class="dot" style="background:#3f9b92"></span>Feedback loops</label></div>
+    <div class="grp"><label class="chk"><input type="checkbox" id="t-delays" checked><span class="dot" style="background:#e9c46a"></span>Delays</label></div>
+    <div class="grp"><label class="chk"><input type="checkbox" id="t-interv" checked><span class="dot" style="background:#7cc79c"></span>Action items</label></div>
+    <button class="evbtn" id="evOpen">ⓘ Evidence</button>
+    <div class="grp" style="margin-left:auto">
+      <button class="zbtn" id="zout" title="zoom out">−</button>
+      <input type="range" id="zslider" min="30" max="300" value="100" title="zoom level">
+      <button class="zbtn" id="zin" title="zoom in">+</button>
+      <span style="font-size:13px;color:#7f8aa4;min-width:44px;text-align:center" id="zlabel">100%</span>
+      <button class="zbtn" id="zfit" title="fit to width">fit</button>
+      <button class="zbtn" id="z100" style="font-size:13px" title="reset to 100%">1:1</button>
+    </div>
+  </div>
+  <div class="scroller" id="scroller">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+</div>
+
+<div class="below">
+  <div class="legend" id="legend"></div>
+  <div class="conflegend">
+    <span style="font-size:12px;font-weight:800;color:#8894ae;letter-spacing:.5px">CONFIDENCE:</span>
+    <div class="ci"><span class="sw" style="color:#2f8a5b;background:#e9f7ef">Established</span> strong scientific consensus</div>
+    <div class="ci"><span class="sw" style="color:#b07d1e;background:#fdf3d6">Debated</span> real but the size/conditions are argued</div>
+    <div class="ci"><span class="sw" style="color:#6d5bd0;background:#efeafc">My interpretation</span> systems framing, not a single study</div>
+  </div>
+
+  <div class="acts">
+    <h3>🎯 Action items — leverage points placed on the map</h3>
+    <div class="asub">Each hits a named bottleneck or loop. Ranked roughly by leverage (Meadows 1999): information &amp; loop-strength beat raw parameters.</div>
+    <ol>
+      <li><b>Get a clear error signal — but don't over-feed it</b> — you need to perceive the error (video, a metric, a coach), yet <i>reduced/faded</i> feedback retains better than constant feedback. <span class="where">Acts on: the feedback delay + the B1 loop. [Shadmehr; Winstein &amp; Schmidt]</span></li>
+      <li><b>One cue per rep, external focus</b> — spend the small working-memory channel on the single most informative error, aimed at the effect not your body. <span class="where">Acts on: the WM bottleneck &amp; B1; guards against choking. [Cowan; Wulf; Beilock]</span></li>
+      <li><b>Space it and sleep on it</b> — distribute reps; spacing beats cramming and sleep consolidates offline. <span class="where">Acts on: the consolidation delay. [Cepeda; Walker]</span></li>
+      <li><b>Vary &amp; interleave it</b> — random/varied practice feels worse day-of but retains &amp; transfers better than blocked. <span class="where">Acts on: what actually enters the skill stock. [Shea &amp; Morgan]</span></li>
+      <li><b>Do &gt; know — get to contact early</b> — theory is a separate memory system; past a thin layer it doesn't convert to skill and steals reps. <span class="where">Acts on: the paradigm; starves the theory-trap loop R3. [Anderson; Macnamara]</span></li>
+    </ol>
+  </div>
+  <div class="footer" id="footer"></div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"><button class="closebtn" id="closebtn">✕</button><div id="modalContent"></div></div>
+</div>
+
+<script>
+/* ============================ SOURCES (verified) ============================ */
+const CITES={
+ fitts:{t:"Fitts & Posner (1967). Human Performance — the three stages of skill: cognitive → associative → autonomous.",v:"Brooks/Cole (overview via Oxford Reference).",u:"https://www.oxfordreference.com/display/10.1093/oi/authority.20110803095821507"},
+ anderson:{t:"Anderson (1982). Acquisition of Cognitive Skill — declarative and procedural are separate stages; 'knowledge compilation' moves you across.",v:"Psychological Review 89(4), 369–406.",u:"https://eric.ed.gov/?id=EJ270567"},
+ cowan:{t:"Cowan (2001). The magical number 4 — working memory is a small, limited focus of attention (~4 chunks; the exact number is debated, the limit isn't).",v:"Behavioral and Brain Sciences 24, 87–114.",u:"https://nschwartz.yourweb.csuchico.edu/4.%20Magical%20mystery%204%20cowan.pdf"},
+ shadmehr:{t:"Error-based motor learning — the cerebellum updates an internal 'forward model' from the mismatch between predicted and actual movement (sensory prediction error).",v:"Shadmehr, Smith & Krakauer (2010), Annu. Rev. Neurosci.; review: Cerebellum, Predictions & Errors (2018).",u:"https://pmc.ncbi.nlm.nih.gov/articles/PMC6340992/"},
+ wulf:{t:"Wulf (2013). 15-year review — an EXTERNAL focus (on the movement's effect) beats an INTERNAL focus (on body parts) for learning and performance.",v:"International Review of Sport & Exercise Psychology 6(1), 77–104.",u:"https://gwulf.faculty.unlv.edu/wp-content/uploads/2018/11/Wulf_AF_review_2013.pdf"},
+ beilock:{t:"Beilock & Carr (2001). Choking = explicit monitoring: consciously attending to a proceduralized skill under pressure degrades it.",v:"J. Experimental Psychology: General 130(4), 701–725.",u:"https://pubmed.ncbi.nlm.nih.gov/11757876/"},
+ walker:{t:"Walker et al. (2002/2003). Sleep-dependent motor consolidation — skill improves 'offline' after sleep, without more practice (magnitude/conditions are debated).",v:"Neuron 35, 205–211; Learning & Memory 10, 275–284.",u:"https://learnmem.cshlp.org/content/10/4/275.full.pdf"},
+ cepeda:{t:"Cepeda, Pashler et al. (2006). Distributed (spaced) practice beats massed for retention — meta-analysis of 317 experiments.",v:"Psychological Bulletin 132(3), 354–380.",u:"https://augmentingcognition.com/assets/Cepeda2006.pdf"},
+ winstein:{t:"Winstein & Schmidt (1990). Reduced feedback frequency improves retention (the 'guidance hypothesis') — constant feedback breeds dependence.",v:"J. Experimental Psychology: LMC 16(4), 677–691.",u:"https://www.krigolsonteaching.com/uploads/4/3/8/4/43848243/reduced_frequency_of_kr_1990_winstein_schmidt.pdf"},
+ shea:{t:"Shea & Morgan (1979). Contextual interference — random/varied practice hurts practice-day performance but improves retention & transfer vs blocked.",v:"J. Experimental Psychology: HLM 5(2), 179–187.",u:"https://gwern.net/doc/psychology/spaced-repetition/1979-shea.pdf"},
+ macnamara:{t:"Macnamara, Hambrick & Oswald (2014). Deliberate practice matters, but explains less than claimed (~1–26% of variance by domain; ~5% by rigorous logs).",v:"Psychological Science 25(8), 1608–1618.",u:"https://gwern.net/doc/psychology/2014-macnamara.pdf"},
+ meadows:{t:"Meadows (1999). Leverage Points: Places to Intervene in a System — a hierarchy from weak (parameters) to strong (goal/paradigm).",v:"The Sustainability Institute (framework, not an experiment).",u:"https://donellameadows.org/archives/leverage-points-places-to-intervene-in-a-system/"}
+};
+const CONF={
+ established:["Established · strong consensus","#2f8a5b","#e9f7ef"],
+ debated:["Debated · real but size/conditions argued","#b07d1e","#fdf3d6"],
+ interp:["My interpretation · systems framing","#6d5bd0","#efeafc"]
+};
+function footnote(cites,conf){
+  const cm=CONF[conf||"established"];
+  const links=(cites||[]).map(k=>{const c=CITES[k];if(!c)return"";
+    const l=c.u?`<a href="${c.u}" target="_blank" rel="noopener">${c.v} ↗</a>`:`<span style="color:#8894ae">${c.v}</span>`;
+    return `<div class="fcite"><b>${c.t}</b><br>${l}</div>`;}).join("");
+  return `<div class="fnote"><div class="fnh"><span class="conf" style="color:${cm[1]};background:${cm[2]}">${cm[0]}</span><span class="evh">Evidence</span></div>${links}</div>`;
+}
+
+/* ============================ STOCKS ============================ */
+const SW=340,SH=190;
+const stocks={
+ declarative:{x:440,y:250,pastel:"#ece5fb",edge:"#b7a6ee",tag:"knowing-about",title:"Declarative Cues",hint:"rules & cues you can state",
+   conf:"established",cite:["anderson","fitts"],
+   logic:"The statable knowledge — cues, rules, the language of the skill. Fills fast, often in one exposure (Fitts & Posner's cognitive stage). It's a <b>separate memory system</b> from the skill itself (Anderson): it scaffolds early performance and hands the motor system a target, but it never <i>becomes</i> the skill.",
+   detail:[["Fills via","reading, watching, a coach's demo — a single exposure can do it"],["Its real job","supply the target/cue, then go quiet as the skill proceduralizes"]]},
+ procedural:{x:1250,y:250,pastel:"#daf0e5",edge:"#8dd3b2",tag:"stock",title:"Procedural Skill",hint:"automatic motor programs + trained perception",
+   conf:"established",cite:["anderson","shadmehr"],
+   logic:"The wordless 'knowing-how' — motor programs plus the trained perception that spots errors. Built <b>slowly</b> by error-corrected reps: the cerebellum updates an internal model from the gap between predicted and actual movement (Shadmehr). This is the reservoir everything else exists to fill.",
+   detail:[["Fills via","error-corrected reps on real contact"],["Rate-limited by","the working-memory channel + the sleep/spacing clock"]]},
+ automatic:{x:2060,y:250,pastel:"#d3edf1",edge:"#8bccd1",tag:"output",title:"Effortless Skill",hint:"runs itself · frees the channel",
+   conf:"established",cite:["fitts","beilock"],
+   logic:"Consolidated, automatic performance — Fitts & Posner's autonomous stage, where the conscious system goes quiet. Reaching it <b>frees working memory</b> (the engine of compounding) — but it also means <b>narrating the skill now hurts it</b> (choking; Beilock & Carr).",
+   detail:[["Reached via","many reps + consolidation (much of it in sleep)"],["Payoff & risk","frees bandwidth to fix subtler errors; but conscious monitoring now causes choking"]]},
+ wm:{x:1250,y:1010,pastel:"#e6e9f2",edge:"#b6c0da",tag:"the pipe",title:"Working Memory",hint:"the narrow conscious channel",
+   conf:"established",cite:["cowan","wulf"],
+   logic:"The master bottleneck. Working memory holds only a few chunks at once (Cowan; the exact number is debated, the limit is not). Until a skill automates, every correction squeezes through this pipe — which is <b>why one cue works</b>, and why an external focus (Wulf) keeps the pipe clear.",
+   detail:[["Constraint","~a handful of chunks — two cues at once fix neither"],["Guard it","one cue per rep · external focus · remove distractions"]]},
+ theory:{x:440,y:1010,pastel:"#fbf1cf",edge:"#e6cf7e",tag:"rival stock",title:"Theory Pile",hint:"knowing that feels like doing",
+   conf:"interp",cite:["anderson","macnamara"],
+   logic:"The rival. Because declarative and procedural are <b>separate systems</b> (Anderson), consuming more theory fills a stock that doesn't convert to skill — yet it feels like progress and competes with contact for your hours. <i>(The stock and the 'trap' framing are my systems reading; the underlying separation, and the finding that practice explains only part of skill (Macnamara), are the established parts.)</i>",
+   detail:[["Why it wins","instant, effortless, feels productive — unlike messy reps"],["The harm","past a thin layer, it steals the reps that actually build skill"]]}
+};
+
+const clouds={
+ teach:{x:90,y:270,w:250,h:130,title:"Instruction · demo · a coach's eye"},
+ reality:{x:90,y:930,w:250,h:130,title:"Reality · reps on contact"}
+};
+
+/* ============================ FLOWS ============================ */
+const flows={
+ f_encode:{from:"teach",to:"declarative",rate:"read / watch → a statable cue",bend:0,ldx:0,ldy:-30,conf:"established",cite:["fitts"],
+   logic:"Instruction loads declarative knowledge fast — a cue you can say out loud (Fitts & Posner's cognitive stage). Cheap and quick, but it only deposits a target, not the skill."},
+ f_proc:{from:"declarative",to:"procedural",rate:"error-corrected reps",bend:0,ldx:0,ldy:-32,conf:"established",cite:["anderson","shadmehr"],
+   logic:"The main inflow: the cue directs attention, reps generate error, and error-correction slowly deposits real skill — Anderson's 'knowledge compilation', driven by cerebellar error-based learning (Shadmehr). Throttled by working memory and the sleep clock, so it can't be rushed."},
+ f_contact:{from:"reality",to:"procedural",rate:"contact makes the error signal",bend:-70,ldx:-20,ldy:22,conf:"established",cite:["shadmehr"],
+   logic:"You only learn on contact — the mismatch between predicted and actual movement IS the teaching signal (Shadmehr). Theory predicts against nothing; reality is what produces the error the skill is built from."},
+ f_consol:{from:"procedural",to:"automatic",rate:"sleep + spacing stabilize it",bend:0,ldx:0,ldy:-46,conf:"debated",cite:["walker","cepeda"],
+   logic:"Freshly practised skill is labile; it stabilizes into durable automatic programs over time — much of it offline in sleep (Walker), and better when practice is spaced (Cepeda). The sleep-specific magnitude is debated; the spacing benefit is robust."},
+ f_free:{from:"automatic",to:"wm",rate:"automating frees the channel",bend:70,ldx:60,ldy:0,conf:"established",cite:["fitts"],
+   logic:"As a skill goes automatic (autonomous stage), it stops consuming the conscious channel — freeing bandwidth. That freed capacity is what lets you perceive and fix subtler errors: the engine of compounding."},
+ f_gate:{from:"wm",to:"procedural",rate:"bandwidth gates each rep",bend:0,ldx:160,ldy:0,conf:"established",cite:["cowan","wulf"],
+   logic:"Working memory is the valve on the build flow. Only what fits through the small channel (Cowan) gets corrected per rep — so aiming that scarce bandwidth (one cue, external focus; Wulf) sets the whole build rate."},
+ f_read:{from:"teach",to:"theory",rate:"easy to keep reading",bend:40,ldx:-30,ldy:0,conf:"interp",cite:["anderson"],
+   logic:"The same instruction that seeds one useful cue can, unchecked, just keep filling the Theory Pile — because reading is comfortable and feels like progress. (My framing; grounded in the declarative≠procedural split.)"},
+ f_starve:{from:"theory",to:"procedural",rate:"theory time starves contact",bend:40,ldx:0,ldy:24,neg:true,conf:"interp",cite:["macnamara","anderson"],
+   logic:"Every hour spent accumulating theory past the thin layer you need is an hour not spent on contact — and practice itself explains only part of skill (Macnamara). A negative pull on the real reservoir. (My framing.)"}
+};
+
+/* ============================ LOOPS ============================ */
+const loops={
+ B1:{type:"B",badge:[980,470],col:"#3f9b92",slabel:"Error-correction",title:"Error-correction (balancing)",
+   conf:"established",cite:["shadmehr","winstein"],
+   logic:"Reality surfaces an error → you translate it into one cue → the correction shrinks the gap → less error next time. Self-damping. Its <b>speed</b> is set by the feedback delay; its <b>strength</b> by how well the cue targets attention — but note that <i>constant</i> feedback hurts retention (guidance hypothesis; Winstein & Schmidt).",
+   lever:"Leverage: strengthen the signal — perceive the error clearly, aim one cue, but fade the feedback over time. High: it acts on the dominant loop at the bottleneck."},
+ R1:{type:"R",badge:[1740,490],col:"#e58a63",slabel:"Compounding skill",title:"Compounding skill (reinforcing)",
+   conf:"established",cite:["fitts"],
+   logic:"Automating a fix frees working-memory bandwidth → perception sharpens → subtler errors surface and get fixed → more automates (Fitts & Posner's autonomous stage). Skill feeds skill. It only spins once the first fixes have crossed into the automatic stock.",
+   lever:"Leverage: protect it — keep retiring mastered cues to silence so bandwidth keeps freeing up."},
+ R3:{type:"R",badge:[820,760],col:"#c76b7a",vicious:true,slabel:"Theory trap",title:"Theory trap (vicious reinforcing)",
+   conf:"interp",cite:["anderson","macnamara"],
+   logic:"Reading feels like progress → you read more → less time on contact → the skill doesn't grow → so you reach for more theory to feel progress again. A reinforcing loop pointed the wrong way. <i>This loop is my interpretation — an application of the established declarative≠procedural split (Anderson) and practice's limited share of variance (Macnamara), not a directly-studied loop.</i>",
+   lever:"Leverage: cap theory to a thin layer and get to contact early. Starve the loop rather than out-read it."}
+};
+
+/* ============================ DELAYS ============================ */
+const delays={
+ d_consol:{at:[1830,360],type:"Consolidation delay",short:"overnight · can't cram",conf:"debated",cite:["walker","cepeda"],
+   logic:"The lag between practising and the skill stabilizing. Much runs offline in sleep (Walker) and it's larger when practice is spaced rather than massed (Cepeda) — which is why a skill often 'clicks' the next day and why cramming loses. Spacing is robust; the sleep-specific size is still argued."},
+ d_feedback:{at:[760,560],type:"Feedback delay",short:"seen late = fixed late",conf:"established",cite:["winstein","shadmehr"],
+   logic:"The gap between making an error and perceiving it. Error-based learning can only turn as fast as this delay allows — so a clearer, quicker error signal helps. But the counter-rule matters: <b>constant</b> feedback breeds dependence and hurts retention (Winstein & Schmidt) — aim for clear-but-faded."}
+};
+
+/* ============================ INTERVENTIONS (action items) ============================ */
+const interventions={
+ i_feedback:{at:[560,680],w:250,label:"⚙ Clear error signal",conf:"established",cite:["shadmehr","winstein"],
+   title:"Get a clear error signal (don't over-feed)",
+   logic:"You can't correct what you can't perceive — a video, a metric or a coach turns an invisible error into a usable signal and shortens the feedback delay. But don't hand-hold: <i>reduced/faded</i> feedback retains better than constant feedback (guidance hypothesis).",
+   acts:"Shortens the feedback delay & feeds B1 — while keeping feedback intermittent."},
+ i_cue:{at:[1450,700],w:250,label:"⚙ One cue per rep",conf:"established",cite:["cowan","wulf","beilock"],
+   title:"One cue, external focus",
+   logic:"Spend the small working-memory channel (Cowan) on the single most informative error, phrased as an external effect (Wulf). This guards the bottleneck and — once the skill is consolidated — prevents the choking that comes from narrating a compiled movement (Beilock).",
+   acts:"Guards the WM bottleneck; strengthens B1 at the gate flow."},
+ i_space:{at:[2100,520],w:230,label:"⚙ Space + sleep",conf:"established",cite:["cepeda","walker"],
+   title:"Distribute reps, sleep on it",
+   logic:"Consolidation is rate-limited, so distribute sessions and protect sleep instead of cramming. Spaced practice beats massed for durable retention (Cepeda); sleep does offline stabilizing (Walker).",
+   acts:"Respects the consolidation delay; converts reps into durable skill."},
+ i_vary:{at:[2100,760],w:230,label:"⚙ Vary & interleave",conf:"established",cite:["shea"],
+   title:"Vary and interleave practice",
+   logic:"Blocked repetition feels smoother in the moment but retains poorly. Random/varied practice (high contextual interference) is harder day-of yet produces markedly better retention and transfer (Shea & Morgan). Block briefly to acquire, then interleave.",
+   acts:"Improves what actually enters the skill stock (retention & transfer)."},
+ i_do:{at:[250,880],w:240,label:"⚙ Do > know, early",conf:"interp",cite:["anderson","macnamara"],
+   title:"Cap theory; get to contact",
+   logic:"Theory is a separate memory system and earns its keep only once it meets reps (Anderson); practice itself explains only part of skill, so more reading isn't a substitute (Macnamara). Take the thin layer you need, then get to contact — starving the theory-trap loop at its source.",
+   acts:"Starves R3; redirects hours into proceduralization."}
+};
+
+/* ============================ RENDER ============================ */
+const VBW=3000, VBH=1440;
+const svg=document.getElementById('map');svg.setAttribute('viewBox',`0 0 ${VBW} ${VBH}`);
+const NS="http://www.w3.org/2000/svg";
+function el(t,a={},p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+const defs=el('defs',{},svg);
+defs.innerHTML=`
+<filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#5b6b96" flood-opacity="0.16"/></filter>
+<filter id="lift" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#5b6b96" flood-opacity="0.32"/></filter>
+<marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5f6d95"/></marker>
+<marker id="arrowNeg" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d17f8d"/></marker>`;
+
+const root=el('g',{id:'root'},svg);
+const gLane=el('g',{},root);
+const gFlows=el('g',{},root);
+const gNodes=el('g',{},root);
+const gLoops=el('g',{id:'g-loops'},root);
+const gDelays=el('g',{id:'g-delays'},root);
+const gInterv=el('g',{id:'g-interv'},root);
+const gEv=el('g',{},root);
+
+function lane(y,txt,col){const t=el('text',{x:150,y:y,'font-size':17,'font-weight':800,fill:col,'letter-spacing':'1.5px',opacity:.42},gLane);t.textContent=txt;}
+lane(150,"THE BUILD ENGINE  ·  what you're growing","#8a7cc9");
+lane(1230,"THE BOTTLENECK & THE RIVAL  ·  what fights it","#c98f8f");
+
+function dims(id){const n=stocks[id]?{...stocks[id],w:SW,h:SH}:clouds[id];return n;}
+function boxEdge(n,tx,ty){const cx=n.x+n.w/2,cy=n.y+n.h/2;const dx=tx-cx,dy=ty-cy;const hw=n.w/2+8,hh=n.h/2+8;
+  const sx=dx===0?1e9:hw/Math.abs(dx),sy=dy===0?1e9:hh/Math.abs(dy);const s=Math.min(sx,sy);return {x:cx+dx*s,y:cy+dy*s};}
+
+/* clouds */
+for(const id in clouds){const c=clouds[id];const g=el('g',{class:'cloud'},gNodes);const{x,y,w,h}=c;
+  el('path',{d:`M ${x+w*0.24} ${y+h*0.72} a ${w*0.15} ${h*0.2} 0 0 1 ${-w*0.01} ${-h*0.44} a ${w*0.2} ${h*0.28} 0 0 1 ${w*0.33} ${-h*0.2} a ${w*0.2} ${h*0.26} 0 0 1 ${w*0.38} ${h*0.05} a ${w*0.15} ${h*0.24} 0 0 1 ${-w*0.03} ${h*0.55} z`,filter:'url(#soft)'},g);
+  const tx=el('text',{'text-anchor':'middle','font-size':14.5},g);wrapText(tx,c.title,w-30,x+w/2,y+h*0.52,14.5);}
+
+/* flows */
+function connector(a,b,bend){const A=dims(a),B=dims(b);const ac={x:A.x+A.w/2,y:A.y+A.h/2},bc={x:B.x+B.w/2,y:B.y+B.h/2};
+  const s=boxEdge(A,bc.x,bc.y),e0=boxEdge(B,ac.x,ac.y);
+  const dx=e0.x-s.x,dy=e0.y-s.y,l=Math.hypot(dx,dy)||1,ux=dx/l,uy=dy/l;
+  const e={x:e0.x-ux*3,y:e0.y-uy*3};const mx=(s.x+e.x)/2,my=(s.y+e.y)/2,px=-uy,py=ux;
+  const cx=mx+px*(bend||0),cy=my+py*(bend||0);
+  return {d:`M ${s.x} ${s.y} Q ${cx} ${cy} ${e.x} ${e.y}`,mid:{x:0.25*s.x+0.5*cx+0.25*e.x,y:0.25*s.y+0.5*cy+0.25*e.y}};}
+for(const id in flows){const f=flows[id];const c=connector(f.from,f.to,f.bend);
+  const g=el('g',{class:'flow clickable'+(f.neg?' neg':''),id:'flow-'+id},gFlows);
+  el('path',{class:'pipe',d:c.d},g);
+  const lx=c.mid.x+(f.ldx||0), ly=c.mid.y+(f.ldy||0);
+  const rt=el('text',{class:'rate'+(f.neg?' neg':''),'font-size':15.5,'text-anchor':'middle',x:lx,y:ly},g);
+  wrapText(rt,f.rate,220,lx,ly,15.5);
+  const pGood='#2f8a5b',pBad='#c26576';
+  el('circle',{cx:c.mid.x,cy:c.mid.y,r:12,fill:'#fff',stroke:f.neg?pBad:pGood,'stroke-width':2.4},g);
+  el('text',{x:c.mid.x,y:c.mid.y+(f.neg?4:6),'text-anchor':'middle','font-size':f.neg?21:18,'font-weight':800,fill:f.neg?pBad:pGood},g).textContent=f.neg?'−':'+';
+  g.addEventListener('click',()=>openModal(html(f.neg?'Flow · reduces / drains (−)':'Flow · builds / supports (+)',f.neg?'#c26576':'#2f8a5b',f.rate,`<p>${f.logic}</p>${row('Polarity',f.neg?'<b style="color:#c26576">Negative (−)</b> — when the source rises, the target <b>falls</b>.':'<b style="color:#2f8a5b">Positive (+)</b> — when the source rises, the target <b>rises</b> too.')}${footnote(f.cite,f.conf)}`)));}
+
+/* stocks */
+for(const id in stocks){const s={...stocks[id],w:SW,h:SH};const g=el('g',{class:'stock clickable',id:'stock-'+id},gNodes);
+  el('rect',{class:'body',x:s.x,y:s.y,width:s.w,height:s.h,rx:22,fill:s.pastel,stroke:s.edge,'stroke-width':2.6,filter:'url(#soft)'},g);
+  const pw=Math.max(52,s.tag.length*8.2+18);
+  el('rect',{x:s.x+24,y:s.y+20,width:pw,height:28,rx:14,fill:'#fff',stroke:s.edge,'stroke-width':1.6},g);
+  el('text',{class:'tagn',x:s.x+24+pw/2,y:s.y+39,'text-anchor':'middle','font-size':12.5,fill:s.edge},g).textContent=s.tag;
+  const t=el('text',{class:'title','font-size':22,fill:'#3a4258'},g);
+  wrapText(t,s.title,s.w-52,s.x+26,s.y+100,22,'start');
+  el('text',{class:'hintlbl','font-size':13,x:s.x+26,y:s.y+s.h-22},g).textContent=s.hint;
+  g.addEventListener('click',()=>openModal(html('Stock · accumulation',s.edge,s.title,
+    `<div class="chip" style="background:${s.pastel};color:#556074">${s.tag}</div><p>${s.logic}</p>${(s.detail||[]).map(x=>row(x[0],x[1])).join('')}${footnote(s.cite,s.conf)}`)));}
+
+/* loop badges */
+for(const id in loops){const L=loops[id];const g=el('g',{class:'loop '+L.type+' clickable',id:'loop-'+id},gLoops);
+  const b=el('g',{class:'badge'},g);
+  el('circle',{cx:L.badge[0],cy:L.badge[1],r:20,fill:L.col},b);
+  el('text',{x:L.badge[0],y:L.badge[1]+6,'text-anchor':'middle','font-size':16},b).textContent=id;
+  const col=L.type==='B'?'#347c74':(L.vicious?'#b0576a':'#c96a45');
+  el('text',{class:'looptitle',x:L.badge[0],y:L.badge[1]+40,'text-anchor':'middle','font-size':13.5,fill:col},g).textContent=id+" · "+L.slabel;
+  g.addEventListener('click',()=>openLoop(id));}
+
+/* delays */
+for(const id in delays){const dd=delays[id];const g=el('g',{class:'delay clickable',id:'delay-'+id},gDelays);
+  const cx=dd.at[0],cy=dd.at[1],w=224,h=48;
+  el('rect',{class:'dbox',x:cx-w/2,y:cy-h/2,width:w,height:h,rx:12,filter:'url(#soft)'},g);
+  el('text',{class:'dt',x:cx,y:cy-4,'text-anchor':'middle','font-size':13.5},g).textContent='⏱ '+dd.type;
+  el('text',{class:'dsub',x:cx,y:cy+15,'text-anchor':'middle','font-size':12},g).textContent=dd.short;
+  g.addEventListener('click',e=>{e.stopPropagation();openModal(html('Delay','#b98a2c','⏱ '+dd.type,`<div class="chip" style="background:#fdf1cf;color:#9a6b16">${dd.short}</div><p>${dd.logic}</p>${footnote(dd.cite,dd.conf)}`));});}
+
+/* interventions */
+for(const id in interventions){const iv=interventions[id];const g=el('g',{class:'interv clickable',id:'interv-'+id},gInterv);
+  const w=iv.w,h=42,x=iv.at[0]-w/2,y=iv.at[1]-h/2;
+  el('rect',{x,y,width:w,height:h,rx:12,filter:'url(#soft)'},g);
+  el('text',{x:iv.at[0],y:iv.at[1]+5,'text-anchor':'middle','font-size':14},g).textContent=iv.label;
+  g.addEventListener('click',e=>{e.stopPropagation();openModal(html('Action item · leverage point','#2f8a5b',iv.title,`<p>${iv.logic}</p>${row('Acts on the system by',iv.acts,'act')}${footnote(iv.cite,iv.conf)}`));});}
+
+/* on-map evidence footnote */
+(function(){const g=el('g',{class:'evtag clickable',id:'evtag'},gEv);
+  const x=90,y=1360,w=300,h=44;
+  el('rect',{x,y,width:w,height:h,rx:12,filter:'url(#soft)'},g);
+  el('text',{x:x+w/2,y:y+28,'text-anchor':'middle','font-size':15},g).textContent='ⓘ  Evidence & sources  →';
+  g.addEventListener('click',openEvidence);})();
+
+/* helpers */
+function wrapText(te,str,maxW,x,y,size,anchor='middle'){te.textContent='';const words=str.split(' ');let line='';const lines=[];
+  for(const w of words){const test=line?line+' '+w:w;if(test.length*(size*0.54)>maxW&&line){lines.push(line);line=w;}else line=test;}
+  if(line)lines.push(line);const lh=size+3;const sy=y-((lines.length-1)*lh)/2;
+  lines.forEach((ln,i)=>{el('tspan',{x:x,y:sy+i*lh},te).textContent=ln;});te.setAttribute('text-anchor',anchor);}
+function row(h,v,cls){return `<div class="row ${cls||''}"><h4>${h}</h4><div class="v">${v}</div></div>`;}
+
+/* MODAL */
+const overlay=document.getElementById('overlay'),modalContent=document.getElementById('modalContent');
+function html(kicker,color,title,body){return `<div class="kicker" style="color:${color}">${kicker}</div><h2>${title}</h2>${body}`;}
+function openModal(h){modalContent.innerHTML=h;overlay.classList.add('open');}
+function closeModal(){overlay.classList.remove('open');}
+function openLoop(id){const L=loops[id];const isB=L.type==='B';const c=isB?'#3f9b92':(L.vicious?'#c76b7a':'#d9744c');
+  openModal(html(isB?'Balancing feedback loop':(L.vicious?'Reinforcing loop · vicious':'Reinforcing feedback loop'),c,id+' · '+L.title,
+    `<p>${L.logic}</p>${row('Loop type',isB?'Balancing — self-correcting; settles toward a set-point':'Reinforcing — self-amplifying; each turn makes the next bigger'+(L.vicious?' (here, the wrong way)':''))}${L.lever?row('Leverage (Meadows)',L.lever,'act'):''}${footnote(L.cite,L.conf)}`));}
+function openEvidence(){openModal(html('Evidence & sources','#6d5bd0','What this map is built on',
+  `<p>Every element is tagged <b>established</b>, <b>debated</b>, or <b>my interpretation</b>, and carries these sources in its pop-up. The full list:</p>`+
+  Object.values(CITES).map(c=>`<div class="fcite" style="margin:9px 0"><b>${c.t}</b><br>${c.u?`<a href="${c.u}" target="_blank" rel="noopener">${c.v} ↗</a>`:`<span style="color:#8894ae">${c.v}</span>`}</div>`).join('')+
+  `<p style="margin-top:14px;color:#8894ae;font-size:12.5px">Links open the paper, a stable repository, or an author-hosted PDF. Notation follows Forrester/Meadows system-dynamics conventions. Not medical advice.</p>`));}
+document.getElementById('closebtn').addEventListener('click',closeModal);
+document.getElementById('evOpen').addEventListener('click',openEvidence);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* toggles */
+document.getElementById('t-loops').addEventListener('change',e=>gLoops.classList.toggle('hidden',!e.target.checked));
+document.getElementById('t-delays').addEventListener('change',e=>gDelays.classList.toggle('hidden',!e.target.checked));
+document.getElementById('t-interv').addEventListener('change',e=>gInterv.classList.toggle('hidden',!e.target.checked));
+
+/* zoom + pan */
+let zoom=1;const zlabel=document.getElementById('zlabel');const scroller=document.getElementById('scroller');const zslider=document.getElementById('zslider');
+function applyZoom(){svg.setAttribute('width',VBW*zoom);svg.setAttribute('height',VBH*zoom);const pct=Math.round(zoom*100);zlabel.textContent=pct+'%';if(zslider)zslider.value=Math.max(30,Math.min(300,pct));}
+function setZoom(z){zoom=Math.max(0.3,Math.min(3,z));applyZoom();}
+zslider.addEventListener('input',()=>setZoom(zslider.value/100));
+document.getElementById('zin').onclick=()=>setZoom(zoom*1.15);
+document.getElementById('zout').onclick=()=>setZoom(zoom/1.15);
+document.getElementById('z100').onclick=()=>setZoom(1);
+document.getElementById('zfit').onclick=()=>setZoom((scroller.clientWidth-26)/VBW);
+scroller.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();setZoom(zoom*(e.deltaY<0?1.1:0.9));}},{passive:false});
+let drag=false,sx,sy,sl,st;
+scroller.addEventListener('mousedown',e=>{if(e.target.closest('.clickable'))return;drag=true;sx=e.clientX;sy=e.clientY;sl=scroller.scrollLeft;st=scroller.scrollTop;scroller.classList.add('grabbing');});
+window.addEventListener('mousemove',e=>{if(!drag)return;scroller.scrollLeft=sl-(e.clientX-sx);scroller.scrollTop=st-(e.clientY-sy);});
+window.addEventListener('mouseup',()=>{drag=false;scroller.classList.remove('grabbing');});
+window.addEventListener('load',()=>{document.getElementById('zfit').click();});
+
+/* legend + footer */
+document.getElementById('legend').innerHTML=`
+ <div class="item"><svg width="34" height="22"><rect x="1" y="3" width="32" height="16" rx="6" fill="#ece5fb" stroke="#b7a6ee" stroke-width="2"/></svg>Stock (accumulates)</div>
+ <div class="item"><svg width="40" height="20"><line x1="1" y1="10" x2="30" y2="10" stroke="#5f6d95" stroke-width="3.6"/><path d="M30,5 L39,10 L30,15z" fill="#5f6d95"/></svg>Flow (fills/drains)</div>
+ <div class="item"><svg width="40" height="20"><line x1="1" y1="10" x2="30" y2="10" stroke="#d17f8d" stroke-width="3.2" stroke-dasharray="7 5"/><path d="M30,5 L39,10 L30,15z" fill="#d17f8d"/></svg>Draining influence (−)</div>
+ <div class="item"><svg width="34" height="22"><rect x="2" y="4" width="30" height="15" rx="7" fill="#fdf1cf" stroke="#e9c46a" stroke-width="1.8"/></svg>⏱ Delay</div>
+ <div class="item"><svg width="26" height="26"><circle cx="13" cy="13" r="11" fill="#e58a63"/></svg><b style="color:#d9744c">R</b> Reinforcing loop</div>
+ <div class="item"><svg width="26" height="26"><circle cx="13" cy="13" r="11" fill="#3f9b92"/></svg><b style="color:#3f9b92">B</b> Balancing loop</div>
+ <div class="item"><svg width="34" height="22"><rect x="1" y="3" width="32" height="16" rx="7" fill="#e4f5ec" stroke="#7cc79c" stroke-width="1.8"/></svg><b style="color:#2f8a5b">⚙</b> Action item</div>`;
+document.getElementById('footer').innerHTML=`<b>Built on:</b> `+Object.values(CITES).map(c=>c.t.split('(')[0].replace('.','').trim()).join(' · ')+`. Click <b>ⓘ Evidence</b> or any element for full sources &amp; links.`;
+</script>
+</body>
+</html>

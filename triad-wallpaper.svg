@@ -1,0 +1,111 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="2560" height="1664" viewBox="0 0 2560 1664">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#faf8f5"/>
+      <stop offset="0.5" stop-color="#eef1f7"/>
+      <stop offset="1" stop-color="#e6ebf4"/>
+    </linearGradient>
+    <radialGradient id="glass" cx="0.5" cy="0.28" r="0.9">
+      <stop offset="0" stop-color="#ffffff"/>
+      <stop offset="0.62" stop-color="#ffffff"/>
+      <stop offset="1" stop-color="#eef1f8"/>
+    </radialGradient>
+
+    <!-- mesh blobs -->
+    <radialGradient id="gIndigo" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#6b74d6" stop-opacity="0.22"/><stop offset="1" stop-color="#6b74d6" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gRose"   cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#e07a9b" stop-opacity="0.22"/><stop offset="1" stop-color="#e07a9b" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gTeal"   cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#38b39a" stop-opacity="0.20"/><stop offset="1" stop-color="#38b39a" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gBlue"   cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#4ea3e0" stop-opacity="0.18"/><stop offset="1" stop-color="#4ea3e0" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gAmber"  cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#e0a24e" stop-opacity="0.16"/><stop offset="1" stop-color="#e0a24e" stop-opacity="0"/></radialGradient>
+    <radialGradient id="gViolet" cx="0.5" cy="0.5" r="0.5"><stop offset="0" stop-color="#8b7cf0" stop-opacity="0.16"/><stop offset="1" stop-color="#8b7cf0" stop-opacity="0"/></radialGradient>
+
+    <!-- ring gradients (top-left light -> bottom-right accent) -->
+    <linearGradient id="rContainer" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#9aa0ea"/><stop offset="1" stop-color="#565fce"/></linearGradient>
+    <linearGradient id="rMed" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#b1a4f7"/><stop offset="1" stop-color="#7663ea"/></linearGradient>
+    <linearGradient id="rSwim" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#82c3f2"/><stop offset="1" stop-color="#3a8fd6"/></linearGradient>
+    <linearGradient id="rGym" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#efbd80"/><stop offset="1" stop-color="#d68d31"/></linearGradient>
+    <linearGradient id="rFashion" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#eea0b7"/><stop offset="1" stop-color="#d95c84"/></linearGradient>
+    <linearGradient id="rSocial" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#68c9b3"/><stop offset="1" stop-color="#26a086"/></linearGradient>
+
+    <!-- edge gradients (blend between the two endpoints' colors) -->
+    <linearGradient id="eF" gradientUnits="userSpaceOnUse" x1="720" y1="832" x2="1980" y2="470"><stop offset="0" stop-color="#6b74d6"/><stop offset="1" stop-color="#e07a9b"/></linearGradient>
+    <linearGradient id="eS" gradientUnits="userSpaceOnUse" x1="720" y1="832" x2="1980" y2="1194"><stop offset="0" stop-color="#6b74d6"/><stop offset="1" stop-color="#38b39a"/></linearGradient>
+    <linearGradient id="eFS" gradientUnits="userSpaceOnUse" x1="1980" y1="470" x2="1980" y2="1194"><stop offset="0" stop-color="#e07a9b"/><stop offset="1" stop-color="#38b39a"/></linearGradient>
+
+    <pattern id="dots" width="50" height="50" patternUnits="userSpaceOnUse"><circle cx="2" cy="2" r="1.8" fill="#c1c7d5"/></pattern>
+    <filter id="meshblur" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="90"/></filter>
+    <filter id="halo" x="-60%" y="-60%" width="220%" height="220%"><feGaussianBlur stdDeviation="30"/></filter>
+    <filter id="soft" x="-50%" y="-50%" width="200%" height="200%"><feDropShadow dx="0" dy="14" stdDeviation="30" flood-color="#2a3350" flood-opacity="0.12"/></filter>
+
+    <style>
+      text{font-family:'DejaVu Sans','Helvetica Neue',Arial,sans-serif;fill:#2b3346;}
+      .name{font-weight:600;letter-spacing:.5px;}
+      .sub{font-weight:700;fill:#8f96a8;letter-spacing:5px;}
+    </style>
+  </defs>
+
+  <!-- background wash -->
+  <rect width="2560" height="1664" fill="url(#bg)"/>
+  <g filter="url(#meshblur)">
+    <circle cx="470"  cy="880"  r="720" fill="url(#gIndigo)"/>
+    <circle cx="2280" cy="300"  r="640" fill="url(#gRose)"/>
+    <circle cx="2320" cy="1420" r="640" fill="url(#gTeal)"/>
+    <circle cx="220"  cy="1560" r="560" fill="url(#gBlue)"/>
+    <circle cx="1500" cy="120"  r="520" fill="url(#gAmber)"/>
+    <circle cx="1300" cy="1600" r="520" fill="url(#gViolet)"/>
+  </g>
+  <rect width="2560" height="1664" fill="url(#dots)" opacity="0.22"/>
+
+  <!-- faint emanating rings around the container -->
+  <g fill="none" stroke="#6b74d6">
+    <circle cx="720" cy="832" r="520" stroke-opacity="0.09" stroke-width="2"/>
+    <circle cx="720" cy="832" r="648" stroke-opacity="0.06" stroke-width="2"/>
+    <circle cx="720" cy="832" r="784" stroke-opacity="0.035" stroke-width="2"/>
+  </g>
+
+  <!-- outer triad edges (gradient blends), with a soft glow underlay -->
+  <g fill="none" stroke-linecap="round" opacity="0.7">
+    <line x1="720" y1="832" x2="1980" y2="470"  stroke="url(#eF)"  stroke-width="9" opacity="0.18" filter="url(#halo)"/>
+    <line x1="720" y1="832" x2="1980" y2="1194" stroke="url(#eS)"  stroke-width="9" opacity="0.18" filter="url(#halo)"/>
+    <line x1="1980" y1="470" x2="1980" y2="1194" stroke="url(#eFS)" stroke-width="9" opacity="0.18" filter="url(#halo)"/>
+    <line x1="720" y1="832" x2="1980" y2="470"  stroke="url(#eF)"  stroke-width="3.5"/>
+    <line x1="720" y1="832" x2="1980" y2="1194" stroke="url(#eS)"  stroke-width="3.5"/>
+    <line x1="1980" y1="470" x2="1980" y2="1194" stroke="url(#eFS)" stroke-width="3.5"/>
+  </g>
+
+  <!-- big left container corner -->
+  <circle cx="720" cy="832" r="440" fill="#6b74d6" opacity="0.20" filter="url(#halo)"/>
+  <circle cx="720" cy="832" r="440" fill="url(#glass)" stroke="url(#rContainer)" stroke-width="5" filter="url(#soft)"/>
+  <text class="sub" x="720" y="450" text-anchor="middle" font-size="26">THE INNER TRIAD</text>
+
+  <!-- inner triad edges -->
+  <g stroke="#d3d7e1" stroke-width="2.5" fill="none" stroke-linecap="round">
+    <line x1="720" y1="700" x2="585" y2="978"/>
+    <line x1="720" y1="700" x2="855" y2="978"/>
+    <line x1="585" y1="978" x2="855" y2="978"/>
+  </g>
+
+  <!-- inner circles -->
+  <circle cx="720" cy="700" r="118" fill="#8b7cf0" opacity="0.18" filter="url(#halo)"/>
+  <circle cx="720" cy="700" r="118" fill="url(#glass)" stroke="url(#rMed)" stroke-width="4" filter="url(#soft)"/>
+  <text class="name" x="720" y="712" text-anchor="middle" font-size="36">Meditation</text>
+
+  <circle cx="585" cy="978" r="118" fill="#4ea3e0" opacity="0.18" filter="url(#halo)"/>
+  <circle cx="585" cy="978" r="118" fill="url(#glass)" stroke="url(#rSwim)" stroke-width="4" filter="url(#soft)"/>
+  <text class="name" x="585" y="991" text-anchor="middle" font-size="38">Swimming</text>
+
+  <circle cx="855" cy="978" r="118" fill="#e0a24e" opacity="0.18" filter="url(#halo)"/>
+  <circle cx="855" cy="978" r="118" fill="url(#glass)" stroke="url(#rGym)" stroke-width="4" filter="url(#soft)"/>
+  <text class="name" x="855" y="994" text-anchor="middle" font-size="46">Gym</text>
+
+  <!-- top-right corner -->
+  <circle cx="1980" cy="470" r="225" fill="#e07a9b" opacity="0.20" filter="url(#halo)"/>
+  <circle cx="1980" cy="470" r="225" fill="url(#glass)" stroke="url(#rFashion)" stroke-width="5" filter="url(#soft)"/>
+  <text class="name" x="1980" y="492" text-anchor="middle" font-size="66">Fashion</text>
+
+  <!-- bottom-right corner -->
+  <circle cx="1980" cy="1194" r="225" fill="#38b39a" opacity="0.20" filter="url(#halo)"/>
+  <circle cx="1980" cy="1194" r="225" fill="url(#glass)" stroke="url(#rSocial)" stroke-width="5" filter="url(#soft)"/>
+  <text class="name" x="1980" y="1182" text-anchor="middle" font-size="56">Social</text>
+  <text class="name" x="1980" y="1246" text-anchor="middle" font-size="56">Mastery</text>
+</svg>

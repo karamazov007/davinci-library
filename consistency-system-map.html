@@ -1,0 +1,452 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>The Consistency System — A Systems Map</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --ink:#1c2431; --ink-dim:#6b7280;
+    --line:#e7e9ee; --line2:#dcdfe6; --accent:#4f46e5; --accent2:#7c6cff;
+    --accent-soft:rgba(79,70,229,.08);
+    --stock:#0ea5e9; --stock-soft:rgba(14,165,233,.10);
+    --reinforce:#e11d48; --reinforce-soft:rgba(225,29,72,.08);
+    --balance:#0d9488; --balance-soft:rgba(13,148,136,.08);
+    --vicious:#b45309; --good:#16a34a;
+    --shadow:0 1px 2px rgba(20,25,40,.05),0 8px 26px rgba(20,25,40,.06);
+    --radius:16px;
+  }
+  html[data-theme="dark"]{
+    --bg:#0f1115; --panel:#161923; --ink:#e7e9ee; --ink-dim:#9aa0ac;
+    --line:#262b38; --line2:#2f3545; --accent:#8b9bff; --accent2:#a58bff;
+    --accent-soft:rgba(139,155,255,.12);
+    --stock:#38bdf8; --stock-soft:rgba(56,189,248,.14);
+    --reinforce:#fb7185; --reinforce-soft:rgba(251,113,133,.12);
+    --balance:#2dd4bf; --balance-soft:rgba(45,212,191,.12);
+    --vicious:#e0a458; --good:#3ecf8e;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 30px rgba(0,0,0,.35);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    background:var(--bg);color:var(--ink);line-height:1.6;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:1120px;margin:0 auto;padding:40px 22px 90px}
+  header.hero{margin-bottom:14px}
+  .kicker{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:700}
+  h1{font-size:34px;line-height:1.15;letter-spacing:-.5px;margin:.25em 0 .1em}
+  .sub{color:var(--ink-dim);font-size:17px;max-width:760px}
+  .themebtn{position:fixed;top:16px;right:16px;z-index:50;border:1px solid var(--line2);background:var(--panel);
+    color:var(--ink);border-radius:999px;padding:8px 14px;font-size:13px;cursor:pointer;box-shadow:var(--shadow)}
+  h2{font-size:23px;letter-spacing:-.3px;margin:52px 0 6px;display:flex;align-items:center;gap:10px}
+  h2 .tag{font-size:11px;font-weight:700;letter-spacing:.06em;padding:3px 9px;border-radius:999px;text-transform:uppercase}
+  .tag.s{background:var(--stock-soft);color:var(--stock)}
+  .tag.r{background:var(--reinforce-soft);color:var(--reinforce)}
+  .tag.b{background:var(--balance-soft);color:var(--balance)}
+  .lead{color:var(--ink-dim);max-width:820px;margin:0 0 22px}
+  /* legend */
+  .legend{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px;margin:26px 0 8px}
+  .legend .lc{background:var(--panel);border:1px solid var(--line);border-radius:14px;padding:16px 16px 14px;box-shadow:var(--shadow)}
+  .legend .lc b{display:block;font-size:14px;margin-bottom:3px}
+  .legend .lc span{font-size:13px;color:var(--ink-dim)}
+  .legend .lc .chip{display:inline-block;width:14px;height:14px;border-radius:4px;margin-right:7px;vertical-align:-2px}
+  .polkey{display:flex;gap:22px;flex-wrap:wrap;margin:10px 0 0;font-size:13.5px;color:var(--ink-dim)}
+  .polkey b{color:var(--ink)}
+  /* grids */
+  .grid{display:grid;gap:20px}
+  .grid.stocks{grid-template-columns:repeat(auto-fit,minmax(330px,1fr))}
+  .grid.loops{grid-template-columns:repeat(auto-fit,minmax(360px,1fr))}
+  .card{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+    overflow:hidden;display:flex;flex-direction:column;transition:transform .15s,box-shadow .15s,border-color .15s}
+  .card:hover{transform:translateY(-3px);box-shadow:0 10px 34px rgba(20,25,40,.12);border-color:var(--line2)}
+  .card .head{padding:15px 18px 4px;display:flex;align-items:baseline;gap:9px}
+  .card .head .id{font-weight:800;font-size:13px;padding:3px 8px;border-radius:8px;letter-spacing:.04em}
+  .id.r{background:var(--reinforce-soft);color:var(--reinforce)}
+  .id.b{background:var(--balance-soft);color:var(--balance)}
+  .id.s{background:var(--stock-soft);color:var(--stock)}
+  .card .head h3{font-size:16.5px;margin:0;letter-spacing:-.2px}
+  .card .head .flavor{font-size:11.5px;font-weight:700;text-transform:uppercase;letter-spacing:.05em;margin-left:auto;padding:2px 8px;border-radius:999px}
+  .flavor.virtuous{color:var(--good);background:rgba(22,163,74,.10)}
+  .flavor.vicious{color:var(--vicious);background:rgba(180,83,9,.10)}
+  .card .diagram{padding:6px 8px 2px;display:flex;justify-content:center}
+  .card .desc{padding:6px 18px 18px;font-size:14px;color:var(--ink-dim)}
+  .card .desc b{color:var(--ink)}
+  svg{max-width:100%;height:auto;overflow:visible}
+  .master-wrap{background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);box-shadow:var(--shadow);
+    padding:14px;overflow-x:auto}
+  /* leverage note */
+  .note{margin-top:16px;background:linear-gradient(180deg,var(--accent-soft),transparent);
+    border:1px dashed var(--accent);border-radius:14px;padding:20px 22px}
+  .note h3{margin:0 0 6px;font-size:17px}
+  .note p{margin:.3em 0;color:var(--ink-dim);font-size:14.5px}
+  .blank{border:1px solid var(--line2);border-radius:10px;background:var(--bg);min-height:26px;margin:8px 0;padding:6px 10px;color:var(--ink-dim);font-size:13px}
+  footer{margin-top:60px;color:var(--ink-dim);font-size:13px;border-top:1px solid var(--line);padding-top:18px}
+  .foot-strip{font-size:13.5px;color:var(--ink-dim);background:var(--panel);border:1px solid var(--line);border-radius:12px;padding:14px 18px;margin-top:18px}
+</style>
+</head>
+<body>
+<button class="themebtn" onclick="var h=document.documentElement;h.dataset.theme=h.dataset.theme==='dark'?'light':'dark';">◐ Theme</button>
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">Systems Map · Behaviour Dynamics</div>
+    <h1>The Consistency System</h1>
+    <p class="sub">Consistency is not a willpower quantity — it is the behaviour of a system of <b>stocks</b> that fill and drain through <b>flows</b>, wired together by <b>feedback loops</b> that either compound your effort or quietly cancel it. Here is the whole machine. The leverage points are left for you to find.</p>
+  </header>
+
+  <!-- NOTATION -->
+  <h2>How to read this map</h2>
+  <div class="legend">
+    <div class="lc"><b><span class="chip" style="background:var(--stock)"></span>Stock</b><span>An accumulation — a level that builds up or drains down over time (e.g. Habit Strength). Think of a bathtub.</span></div>
+    <div class="lc"><b><span class="chip" style="background:var(--ink-dim)"></span>Flow</b><span>A rate that fills or empties a stock (the taps and drains). You can only change a stock by changing its flows.</span></div>
+    <div class="lc"><b><span class="chip" style="background:var(--reinforce)"></span>Reinforcing loop (R)</b><span>A snowball. It amplifies change in one direction — virtuous (growth) or vicious (collapse).</span></div>
+    <div class="lc"><b><span class="chip" style="background:var(--balance)"></span>Balancing loop (B)</b><span>A thermostat. It resists change and pulls the system back toward a set point. The source of most "stuckness."</span></div>
+  </div>
+  <div class="polkey">
+    <span><b>Arrow polarity —</b></span>
+    <span><b style="color:var(--good)">+</b> same direction: cause up → effect up (or down → down)</span>
+    <span><b style="color:var(--reinforce)">−</b> opposite direction: cause up → effect down</span>
+    <span>A loop is <b>reinforcing</b> if it has an even number of −'s, <b>balancing</b> if odd.</span>
+  </div>
+
+  <!-- STOCKS -->
+  <h2><span class="tag s">Stocks &amp; Flows</span> The six things that accumulate</h2>
+  <p class="lead">These are the levels the whole system is trying to move. Everything else exists only to fill or drain them. Note which drains are fast and which fills are slow — asymmetry is where fragility hides.</p>
+  <div class="grid stocks" id="stocks"></div>
+
+  <!-- REINFORCING -->
+  <h2><span class="tag r">Reinforcing Loops</span> The snowballs</h2>
+  <p class="lead">Four of these can work <span style="color:var(--good);font-weight:600">for</span> you (compounding consistency) and two work <span style="color:var(--vicious);font-weight:600">against</span> you (compounding collapse). The same loop structure runs in both directions — which way it spins depends on where you start it.</p>
+  <div class="grid loops" id="reinforcing"></div>
+
+  <!-- BALANCING -->
+  <h2><span class="tag b">Balancing Loops</span> The thermostats that fight you</h2>
+  <p class="lead">These are goal-seeking. They are why raw effort erodes and why the system keeps dragging you back to baseline. They are not the enemy — they are constraints. Most durable interventions work by re-setting a balancing loop's target rather than muscling against it.</p>
+  <div class="grid loops" id="balancing"></div>
+
+  <!-- STRUCTURAL FEATURES -->
+  <h2><span class="tag b" style="background:var(--accent-soft);color:var(--accent)">Structure</span> Two features that bias the whole system</h2>
+  <div class="grid loops" id="structure"></div>
+
+  <!-- MASTER -->
+  <h2>The whole machine, interconnected</h2>
+  <p class="lead">Every stock and loop above, on one canvas. Follow any arrow trail back to where it started and you will trace a loop. Coloured edges belong to the loop of that colour.</p>
+  <div class="master-wrap"><div id="master" style="min-width:1040px"></div></div>
+
+  <!-- LEVERAGE (blank, for the user) -->
+  <div class="note">
+    <h3>🎯 Your turn — the leverage points</h3>
+    <p>A leverage point is a place in the system where a <b>small shift produces a large, lasting change</b> in behaviour. Ranked roughly from weakest to strongest, they tend to be: numbers/parameters → buffer &amp; stock sizes → flow &amp; delay structure → feedback-loop strength → information flows → rules → goals → the paradigm (identity) the system serves.</p>
+    <p>Use the map to answer for yourself: <i>Which loop, if I flipped its direction or changed its target, would cascade through the most of the rest of the system?</i></p>
+    <div class="blank">Highest-leverage intervention I can see: ______________________________</div>
+    <div class="blank">The loop it acts on: ______________________________</div>
+    <div class="blank">Why it cascades: ______________________________</div>
+  </div>
+
+  <div class="foot-strip">Tip: the strongest leverage is almost never the stock you're staring at (the behaviour itself). It's usually an upstream flow, a delay, or the paradigm the whole system is organised around. Ask which node the most arrows depend on.</div>
+
+  <footer>Consistency System Map · built for Satyam · a stock-and-flow / causal-loop model of behavioural consistency. Notation follows standard system-dynamics conventions (Forrester / Meadows).</footer>
+</div>
+
+<script>
+const SVGNS="http://www.w3.org/2000/svg";
+function el(tag,attrs={},parent){const e=document.createElementNS(SVGNS,tag);for(const k in attrs)e.setAttribute(k,attrs[k]);if(parent)parent.appendChild(e);return e;}
+function cssVar(n){return getComputedStyle(document.documentElement).getPropertyValue(n).trim();}
+
+/* ---------- STOCK (bathtub) DIAGRAM ---------- */
+function drawStock(spec){
+  const W=300,H=150;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,width:W,height:H});
+  const col=cssVar('--stock'), dim=cssVar('--ink-dim'), ink=cssVar('--ink');
+  const defs=el("defs",{},svg);
+  const m=el("marker",{id:"ah_"+spec.key,markerWidth:9,markerHeight:9,refX:7,refY:3,orient:"auto",markerUnits:"strokeWidth"},defs);
+  el("path",{d:"M0,0 L7,3 L0,6 Z",fill:dim},m);
+  // source cloud (left)
+  cloud(svg,26,52,dim);
+  // inflow pipe -> valve -> stock
+  el("line",{x1:44,y1:60,x2:104,y2:60,stroke:dim,"stroke-width":3,"marker-end":`url(#ah_${spec.key})`},svg);
+  valve(svg,74,60,col);
+  // stock box
+  const bx=el("rect",{x:106,y:38,width:92,height:46,rx:9,fill:cssVar('--stock-soft'),stroke:col,"stroke-width":2},svg);
+  txt(svg,152,58,spec.name,ink,13,700);
+  // outflow pipe -> valve -> sink cloud
+  el("line",{x1:200,y1:60,x2:258,y2:60,stroke:dim,"stroke-width":3,"marker-end":`url(#ah_${spec.key})`},svg);
+  valve(svg,228,60,dim);
+  cloud(svg,282,52,dim);
+  // labels
+  txt(svg,74,104,"▲ "+spec.inflow,cssVar('--good'),11.5,600,"middle");
+  txt(svg,74,120,spec.inflowNote,dim,10.5,400,"middle");
+  txt(svg,228,104,"▼ "+spec.outflow,cssVar('--reinforce'),11.5,600,"middle");
+  txt(svg,228,120,spec.outflowNote,dim,10.5,400,"middle");
+  return svg;
+}
+function cloud(svg,cx,cy,stroke){
+  const g=el("g",{},svg);
+  [[0,0,9],[10,-4,8],[18,2,7],[-8,3,7],[6,6,7]].forEach(c=>el("circle",{cx:cx+c[0],cy:cy+c[1],r:c[2],fill:"none",stroke:stroke,"stroke-width":1.4},g));
+}
+function valve(svg,cx,cy,col){
+  el("path",{d:`M${cx-8},${cy-8} L${cx+8},${cy+8} M${cx+8},${cy-8} L${cx-8},${cy+8}`,stroke:col,"stroke-width":2.4,fill:"none"},svg);
+  el("path",{d:`M${cx-8},${cy-8} L${cx+8},${cy-8} L${cx-8},${cy+8} L${cx+8},${cy+8} Z`,fill:"none",stroke:col,"stroke-width":1.2,opacity:.5},svg);
+}
+function txt(svg,x,y,s,fill,size,weight,anchor="middle"){
+  const t=el("text",{x,y,fill,"font-size":size,"font-weight":weight||400,"text-anchor":anchor,"font-family":"inherit"},svg);
+  t.textContent=s;return t;
+}
+
+/* ---------- CAUSAL LOOP DIAGRAM ---------- */
+function drawLoop(spec){
+  const two=spec.nodes.length===2;
+  const W=380,H=two?250:340;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,width:W,height:H});
+  const loopCol = spec.type==='R'?cssVar('--reinforce'):cssVar('--balance');
+  const ink=cssVar('--ink');
+  const defs=el("defs",{},svg);
+  const mk=el("marker",{id:"lah_"+spec.id,markerWidth:11,markerHeight:11,refX:8,refY:3.2,orient:"auto",markerUnits:"strokeWidth"},defs);
+  el("path",{d:"M0,0 L8,3.2 L0,6.4 Z",fill:loopCol},mk);
+  const n=spec.nodes.length;
+  const cx=W/2, cy=two?118:178, r=two?0:120;
+  let pos=[];
+  if(two) pos=[[cx-112,cy],[cx+112,cy]];
+  else for(let i=0;i<n;i++){const a=(-90+i*360/n)*Math.PI/180; pos.push([cx+r*Math.cos(a),cy+r*Math.sin(a)]);}
+  const boxes=spec.nodes.map((label,i)=>{const w=Math.min(150,50+label.length*5.6),h=46;return {x:pos[i][0],y:pos[i][1],w,h,label};});
+  // edges (drawn first, clipped to box borders so arrowheads land outside the boxes)
+  spec.edges.forEach(e=>{
+    const [a,b,sign]=e;
+    if(two){ curvedEdge(svg,boxes[a],boxes[b],sign,loopCol,spec.id, a<b?-1:1); }
+    else { straightEdge(svg,boxes[a],boxes[b],sign,loopCol,spec.id); }
+  });
+  // center loop badge
+  el("circle",{cx,cy,r:22,fill:spec.type==='R'?cssVar('--reinforce-soft'):cssVar('--balance-soft'),stroke:loopCol,"stroke-width":1.6},svg);
+  el("path",{d:describeArc(cx,cy,16,20,300),fill:"none",stroke:loopCol,"stroke-width":2,"marker-end":`url(#lah_${spec.id})`},svg);
+  txt(svg,cx,cy+5,spec.type,loopCol,15,800,"middle");
+  // nodes on top
+  boxes.forEach(b=>{
+    el("rect",{x:b.x-b.w/2,y:b.y-b.h/2,width:b.w,height:b.h,rx:10,fill:cssVar('--panel'),stroke:cssVar('--line2'),"stroke-width":1.5},svg);
+    multiline(svg,b.x,b.y,b.label,ink,12.5,700,b.w-12);
+  });
+  return svg;
+}
+function boxEdge(b,tx,ty){
+  const dx=tx-b.x, dy=ty-b.y, hw=b.w/2, hh=b.h/2;
+  const sx=dx===0?Infinity:hw/Math.abs(dx);
+  const sy=dy===0?Infinity:hh/Math.abs(dy);
+  const s=Math.min(sx,sy);
+  return {x:b.x+dx*s, y:b.y+dy*s};
+}
+function signBadge(svg,x,y,sign){
+  const good=cssVar('--good'),bad=cssVar('--reinforce');
+  el("circle",{cx:x,cy:y,r:10,fill:cssVar('--panel'),stroke:sign==='+'?good:bad,"stroke-width":1.6},svg);
+  txt(svg,x,y+5,sign,sign==='+'?good:bad,15,800,"middle");
+}
+function straightEdge(svg,A,B,sign,col,id){
+  const s=boxEdge(A,B.x,B.y), e0=boxEdge(B,A.x,A.y);
+  const dx=e0.x-s.x,dy=e0.y-s.y,l=Math.hypot(dx,dy)||1,ux=dx/l,uy=dy/l;
+  const e={x:e0.x-ux*3,y:e0.y-uy*3};
+  el("path",{d:`M ${s.x} ${s.y} L ${e.x} ${e.y}`,fill:"none",stroke:col,"stroke-width":2.2,"marker-end":`url(#lah_${id})`,opacity:.88},svg);
+  signBadge(svg,(s.x+e.x)/2,(s.y+e.y)/2,sign);
+}
+function curvedEdge(svg,A,B,sign,col,id,side){
+  const dir=Math.sign(B.x-A.x)||1;
+  const s={x:A.x+dir*(A.w/2), y:A.y+side*8};
+  const e={x:B.x-dir*(B.w/2), y:B.y+side*8};
+  const mx=(s.x+e.x)/2, my=(s.y+e.y)/2 + side*58;
+  el("path",{d:`M ${s.x} ${s.y} Q ${mx} ${my} ${e.x} ${e.y}`,fill:"none",stroke:col,"stroke-width":2.2,"marker-end":`url(#lah_${id})`,opacity:.88},svg);
+  const t=.5, bx=(1-t)*(1-t)*s.x+2*(1-t)*t*mx+t*t*e.x, by=(1-t)*(1-t)*s.y+2*(1-t)*t*my+t*t*e.y;
+  signBadge(svg,bx,by,sign);
+}
+function describeArc(cx,cy,r,startDeg,endDeg){
+  const s=polar(cx,cy,r,endDeg), e=polar(cx,cy,r,startDeg);
+  const large = endDeg-startDeg<=180?"0":"1";
+  return `M ${s.x} ${s.y} A ${r} ${r} 0 ${large} 0 ${e.x} ${e.y}`;
+}
+function polar(cx,cy,r,deg){const a=(deg-90)*Math.PI/180;return{x:cx+r*Math.cos(a),y:cy+r*Math.sin(a)};}
+function multiline(svg,x,y,text,fill,size,weight,maxw){
+  const words=text.split(" ");let lines=[],cur="";
+  words.forEach(w=>{ if((cur+" "+w).length*6.0>maxw && cur){lines.push(cur);cur=w;} else cur=cur?cur+" "+w:w; });
+  if(cur)lines.push(cur);
+  const lh=size*1.12, start=y-(lines.length-1)*lh/2+size*0.35;
+  lines.forEach((l,i)=>{const t=el("text",{x,y:start+i*lh,fill,"font-size":size,"font-weight":weight,"text-anchor":"middle","font-family":"inherit"},svg);t.textContent=l;});
+}
+
+/* ---------- MASTER CLD ---------- */
+function drawMaster(){
+  const W=1040,H=680;
+  const svg=el("svg",{viewBox:`0 0 ${W} ${H}`,width:W,height:H});
+  const ink=cssVar('--ink'),dim=cssVar('--ink-dim');
+  const cols={R1:'#e11d48',R2:'#7c6cff',R3:'#0ea5e9',R5:'#b45309',R6:'#db2777',B1:'#0d9488'};
+  const defs=el("defs",{},svg);
+  Object.entries(cols).forEach(([k,c])=>{
+    const mk=el("marker",{id:"m_"+k,markerWidth:11,markerHeight:11,refX:8,refY:3.2,orient:"auto",markerUnits:"strokeWidth"},defs);
+    el("path",{d:"M0,0 L8,3.2 L0,6.4 Z",fill:c},mk);
+  });
+  const N={
+    action:[330,360,"Repetition\n(the behaviour)"],
+    habit:[560,200,"Habit\nStrength"],
+    identity:[790,150,"Identity"],
+    motivation:[800,380,"Motivation"],
+    results:[900,540,"Results\n(delayed)"],
+    will:[330,590,"Willpower\nReserve"],
+    distract:[130,220,"Distraction\nHabit"],
+    miss:[140,560,"Missed\nDay"]
+  };
+  const edges=[
+    ['action','habit','+','R1',20],
+    ['habit','action','+','R1',20],
+    ['action','identity','+','R2',-16],
+    ['identity','action','+','R2',22],
+    ['action','results','+','R3',-30],
+    ['results','motivation','+','R3',10],
+    ['motivation','action','+','R3',-18],
+    ['action','will','−','B1',-18],
+    ['will','action','+','B1',18],
+    ['distract','action','−','R5',20],
+    ['distract','will','−','R5',-40],
+    ['miss','motivation','−','R6',60],
+    ['action','miss','−','R6',20]
+  ];
+  edges.forEach(([a,b,sign,loop,bend])=>{
+    masterEdge(svg,N[a],N[b],sign,cols[loop],bend,loop);
+  });
+  // self-loop for distraction (cue → dopamine → seek)
+  const d=N['distract'];
+  el("path",{d:`M ${d[0]-10} ${d[1]-30} C ${d[0]-80} ${d[1]-90}, ${d[0]+70} ${d[1]-95}, ${d[0]+12} ${d[1]-30}`,fill:"none",stroke:cols.R5,"stroke-width":2,"marker-end":"url(#m_R5)"},svg);
+  txt(svg,d[0],d[1]-92,"R5 · supernormal cue",cols.R5,10.5,700,"middle");
+  // nodes
+  Object.values(N).forEach(([x,y,label])=>{
+    const w=118,h=52;
+    el("rect",{x:x-w/2,y:y-h/2,width:w,height:h,rx:11,fill:cssVar('--panel'),stroke:cssVar('--accent'),"stroke-width":1.8},svg);
+    const parts=label.split("\n");
+    const lh=15,start=y-(parts.length-1)*lh/2+5;
+    parts.forEach((p,i)=>{const t=el("text",{x,y:start+i*lh,fill:ink,"font-size":13,"font-weight":700,"text-anchor":"middle","font-family":"inherit"},svg);t.textContent=p;});
+  });
+  // delay marker on action->results
+  const a=N['action'],rz=N['results'];
+  const mmx=(a[0]+rz[0])/2, mmy=(a[1]+rz[1])/2-30;
+  txt(svg,mmx,mmy,"⧗ delay",dim,11,700,"middle");
+  // legend
+  const lg=el("g",{},svg);
+  const items=[['R1','Habit flywheel'],['R2','Identity engine'],['R3','Progress→motivation'],['R5','Distraction spiral'],['R6','Collapse spiral'],['B1','Willpower depletion']];
+  items.forEach((it,i)=>{
+    const y=30+i*22;
+    el("line",{x1:W-250,y1:y,x2:W-224,y2:y,stroke:cols[it[0]],"stroke-width":3},lg);
+    const t=el("text",{x:W-218,y:y+4,fill:dim,"font-size":12,"font-family":"inherit"},lg);t.textContent=it[0]+" · "+it[1];
+  });
+  return svg;
+}
+function masterEdge(svg,p1,p2,sign,col,bend,loop){
+  const A={x:p1[0],y:p1[1],w:118,h:52}, B={x:p2[0],y:p2[1],w:118,h:52};
+  const s=boxEdge(A,p2[0],p2[1]), e0=boxEdge(B,p1[0],p1[1]);
+  const dx=e0.x-s.x,dy=e0.y-s.y,l=Math.hypot(dx,dy)||1,ux=dx/l,uy=dy/l;
+  const ex=e0.x-ux*3, ey=e0.y-uy*3;
+  const mx=(s.x+ex)/2,my=(s.y+ey)/2,px=-uy,py=ux;
+  const cxp=mx+px*bend, cyp=my+py*bend;
+  el("path",{d:`M ${s.x} ${s.y} Q ${cxp} ${cyp} ${ex} ${ey}`,fill:"none",stroke:col,"stroke-width":2,"marker-end":`url(#m_${loop})`,opacity:.82},svg);
+  const t=.5,bxp=(1-t)*(1-t)*s.x+2*(1-t)*t*cxp+t*t*ex, byp=(1-t)*(1-t)*s.y+2*(1-t)*t*cyp+t*t*ey;
+  const good=cssVar('--good');
+  el("circle",{cx:bxp,cy:byp,r:9,fill:cssVar('--panel'),stroke:sign==='+'?good:cssVar('--reinforce'),"stroke-width":1.5},svg);
+  const tt=el("text",{x:bxp,y:byp+5,fill:sign==='+'?good:cssVar('--reinforce'),"font-size":14,"font-weight":800,"text-anchor":"middle","font-family":"inherit"},svg);tt.textContent=sign;
+}
+
+/* ---------- DATA ---------- */
+const STOCKS=[
+  {key:"habit",name:"Habit Strength",inflow:"Repetitions",inflowNote:"each time you do it",outflow:"Decay",outflowNote:"missed days, disuse",
+   desc:"How <b>automatic</b> the behaviour is (lives in the basal ganglia). High stock = runs with almost no willpower. The whole game is moving consistency into this stock."},
+  {key:"will",name:"Willpower Reserve",inflow:"Recovery",inflowNote:"sleep, rest, low stress",outflow:"Expenditure",outflowNote:"decisions, resisting, stress",
+   desc:"Finite prefrontal self-regulation. <b>Drains fast, refills slow.</b> Every decision and act of resistance is a withdrawal. This is the stock most people wrongly rely on."},
+  {key:"identity",name:"Identity Capital",inflow:"Votes",inflowNote:"each completed action",outflow:"Erosion",outflowNote:"inconsistency, 'I'm lazy' talk",
+   desc:'Strength of "I am the kind of person who does this." <b>Slow to build, durable once built.</b> The deepest stock — behaviour tends to align with it automatically.'},
+  {key:"motivation",name:"Motivation",inflow:"Wins & feedback",inflowNote:"visible progress, tracking",outflow:"Decay",outflowNote:"delay, no feedback, monotony",
+   desc:"Felt salience of the reward <b>right now</b>. Volatile and unreliable — it spikes and crashes. Never build a system that depends on this stock being high."},
+  {key:"distract",name:"Distraction Habit",inflow:"Cue exposure",inflowNote:"+ instant dopamine hits",outflow:"Friction",outflowNote:"cue removal, boredom tolerance",
+   desc:"Automaticity of the pull toward supernormal stimuli (phone, feeds). <b>The rival stock</b> — it competes for the same attention and willpower your target behaviour needs."},
+  {key:"results",name:"Results (Payoff)",inflow:"Accumulated action",inflowNote:"arrives on a delay",outflow:"Detraining",outflowNote:"forgetting, reversal",
+   desc:"The actual outcome — fitness, skill, knowledge. <b>Separated from the action by a long delay</b>, which is precisely why it can't motivate you in the moment."}
+];
+
+const REINFORCING=[
+  {id:"R1",type:"R",title:"Habit Flywheel",flavor:"virtuous",
+   nodes:["Repetition","Habit Strength","Effort per rep"],
+   edges:[[0,1,'+'],[1,2,'−'],[2,0,'−']],
+   desc:"More reps build <b>habit strength</b>, which <b>lowers the effort</b> each rep costs, which makes the next rep easier — so you do more. The engine of effortless consistency once it's spinning."},
+  {id:"R2",type:"R",title:"Identity Engine",flavor:"virtuous",
+   nodes:["Completed Action",'Identity: "I am this"',"Self-consistency pull"],
+   edges:[[0,1,'+'],[1,2,'+'],[2,0,'+']],
+   desc:"Each action is a <b>vote</b> for an identity; a stronger identity creates pressure to <b>act in character</b>. Turns behaviour into self-expression instead of a fight."},
+  {id:"R3",type:"R",title:"Progress → Motivation",flavor:"virtuous",
+   nodes:["Action","Results & Reward","Motivation"],
+   edges:[[0,1,'+'],[1,2,'+'],[2,0,'+']],
+   desc:"Action produces <b>visible results and immediate rewards</b> (a tracked tick counts), which raise motivation, which drives more action. <b>Weakened by delay</b> — see the delay structure below."},
+  {id:"R4",type:"R",title:"Momentum / Streak",flavor:"virtuous",
+   nodes:["Consistency","Momentum & Confidence"],
+   edges:[[0,1,'+'],[1,0,'+']],
+   desc:"A run of consistency builds <b>confidence and momentum</b>, which makes the next rep feel inevitable. Small and fast — but it's the loop the collapse spiral (R6) directly attacks."},
+  {id:"R5",type:"R",title:"Distraction Spiral",flavor:"vicious",
+   nodes:["Cue Exposure","Dopamine Hit","Craving / Seeking","Distraction Habit"],
+   edges:[[0,1,'+'],[1,2,'+'],[2,3,'+'],[3,0,'+']],
+   desc:"A supernormal cue delivers an <b>instant, variable reward</b>, which breeds craving, which grooves the distraction habit, which makes you seek the cue again. The most optimised consistency-killer there is — and it drains the same Willpower Reserve."},
+  {id:"R6",type:"R",title:"Collapse Spiral",flavor:"vicious",
+   nodes:["Missed Day","Guilt / Shame","Motivation"],
+   edges:[[0,1,'+'],[1,2,'−'],[2,0,'−']],
+   desc:"One miss breeds <b>guilt</b>, which lowers motivation, which causes more misses. A reinforcing loop pointed at zero. The 'never miss twice' rule is a cut placed on exactly this loop."}
+];
+
+const BALANCING=[
+  {id:"B1",type:"B",title:"Willpower Depletion",
+   nodes:["Willpower-driven Action","Willpower Expenditure","Willpower Reserve"],
+   edges:[[0,1,'+'],[1,2,'−'],[2,0,'+']],
+   desc:"Acting on willpower <b>spends the reserve</b>; a lower reserve reduces your capacity to act. Self-limiting: pure willpower <b>cannot sustain itself</b> — it runs out by definition."},
+  {id:"B2",type:"B",title:"Recovery",
+   nodes:["Willpower Reserve","Rest & Sleep"],
+   edges:[[0,1,'−'],[1,0,'+']],
+   desc:"A depleted reserve triggers <b>rest</b>, which refills the reserve. Goal-seeking back to baseline. It's why guarding sleep is a meta-habit that funds every other loop."},
+  {id:"B3",type:"B",title:"Effort Homeostasis",
+   nodes:["Effort Expended","Comfort-seeking Pull","Return to Low-effort Baseline"],
+   edges:[[0,1,'+'],[1,2,'+'],[2,0,'−']],
+   desc:"The brain's <b>energy-conservation thermostat</b>. Sustained effort raises a comfort-seeking pull that drags behaviour back toward the least-effort baseline. Why intensity fades to the mean."}
+];
+
+const STRUCTURE=[
+  {id:"⧗",type:"B",title:"Delay: action → payoff",
+   nodes:["Action","Results","Motivation"],
+   edges:[[0,1,'+'],[1,2,'+'],[2,0,'+']],
+   desc:"Not a loop of its own but a <b>long delay</b> sitting on R3's first link. Because the payoff is far away, the immediate feedback is near zero — so temporal discounting throttles the virtuous loop. Closing this delay (manufacturing immediate reward) is what re-energises R3."},
+  {id:"⌂",type:"B",title:"Exogenous drivers",
+   nodes:["Environment / Cues","Sleep & Stress"],
+   edges:[[0,1,'+'],[1,0,'+']],
+   desc:"Inputs from outside the loops that <b>set the terms</b>: the cue environment feeds the distraction spiral (R5), and sleep/stress set the ceiling on the Willpower Reserve. You don't control the loops directly — you control these inputs."}
+];
+
+/* ---------- RENDER ---------- */
+function renderCards(containerId, data, isStock){
+  const c=document.getElementById(containerId); c.innerHTML="";
+  data.forEach(spec=>{
+    const card=document.createElement("div");card.className="card";
+    const head=document.createElement("div");head.className="head";
+    if(isStock){
+      head.innerHTML=`<span class="id s">STOCK</span><h3>${spec.name}</h3>`;
+    }else{
+      const idcls = spec.type==='R'?'r':'b';
+      head.innerHTML=`<span class="id ${idcls}">${spec.id}</span><h3>${spec.title}</h3>`+
+        (spec.flavor?`<span class="flavor ${spec.flavor}">${spec.flavor}</span>`:"");
+    }
+    card.appendChild(head);
+    const dia=document.createElement("div");dia.className="diagram";
+    dia.appendChild(isStock?drawStock(spec):drawLoop(spec));
+    card.appendChild(dia);
+    const d=document.createElement("div");d.className="desc";d.innerHTML=spec.desc;
+    card.appendChild(d);
+    c.appendChild(card);
+  });
+}
+function renderAll(){
+  renderCards("stocks",STOCKS,true);
+  renderCards("reinforcing",REINFORCING,false);
+  renderCards("balancing",BALANCING,false);
+  renderCards("structure",STRUCTURE,false);
+  const m=document.getElementById("master");m.innerHTML="";m.appendChild(drawMaster());
+}
+renderAll();
+// re-render on theme toggle so colours update
+new MutationObserver(renderAll).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+</script>
+</body>
+</html>

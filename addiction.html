@@ -1,0 +1,1367 @@
+<!DOCTYPE html>
+<html lang="en" data-theme="light">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Addiction — The Anatomy of a Hijacked Wanting System</title>
+<style>
+  :root{
+    --bg:#f6f7f9; --panel:#ffffff; --panel2:#f1f3f6;
+    --ink:#1c2431; --ink-dim:#5b6472; --ink-faint:#8a93a2;
+    --line:#e7e9ee; --line2:#dcdfe6;
+    --accent:#4f46e5; --accent2:#7c6cff; --accent-soft:rgba(79,70,229,.10);
+    --neuro:#2563eb; --neuro-soft:rgba(37,99,235,.10);
+    --dhamma:#b45309; --dhamma-soft:rgba(180,83,9,.10);
+    --good:#16a34a; --warn:#d97706; --bad:#dc2626;
+    --shadow:0 1px 2px rgba(20,25,40,.05),0 8px 26px rgba(20,25,40,.07);
+    --radius:16px;
+    --fill-node:#ffffff; --stroke-node:#cbd2dc;
+  }
+  html[data-theme="dark"]{
+    --bg:#0e1117; --panel:#161b24; --panel2:#1d2430;
+    --ink:#e8ecf2; --ink-dim:#a2adbd; --ink-faint:#6f7b8c;
+    --line:#242c39; --line2:#2f3948;
+    --accent:#8b83ff; --accent2:#a99cff; --accent-soft:rgba(139,131,255,.14);
+    --neuro:#6ea8ff; --neuro-soft:rgba(110,168,255,.14);
+    --dhamma:#f0b357; --dhamma-soft:rgba(240,179,87,.14);
+    --good:#4ade80; --warn:#fbbf24; --bad:#f87171;
+    --shadow:0 1px 2px rgba(0,0,0,.4),0 10px 30px rgba(0,0,0,.45);
+    --fill-node:#1d2430; --stroke-node:#3a4658;
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0}
+  body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+    background:
+      radial-gradient(1100px 520px at 12% -8%, var(--accent-soft) 0%, transparent 55%),
+      radial-gradient(900px 480px at 100% 0%, var(--dhamma-soft) 0%, transparent 50%),
+      var(--bg);
+    color:var(--ink);line-height:1.62;-webkit-font-smoothing:antialiased;
+    overflow-x:hidden;}
+  .wrap{max-width:1080px;margin:0 auto;padding:0 24px 120px}
+
+  /* ---- top bar ---- */
+  .topbar{position:sticky;top:0;z-index:40;backdrop-filter:blur(10px);
+    background:color-mix(in srgb,var(--bg) 82%,transparent);
+    border-bottom:1px solid var(--line);}
+  .topbar-in{max-width:1080px;margin:0 auto;padding:10px 24px;display:flex;align-items:center;gap:14px;overflow-x:auto}
+  .topbar-in::-webkit-scrollbar{height:0}
+  .tb-brand{font-weight:700;font-size:14px;letter-spacing:-.2px;white-space:nowrap;display:flex;align-items:center;gap:8px}
+  .tb-brand .glyph{width:26px;height:26px;border-radius:8px;background:linear-gradient(135deg,var(--accent),var(--dhamma));display:flex;align-items:center;justify-content:center;font-size:15px}
+  .tb-links{display:flex;gap:4px;flex:1}
+  .tb-links a{font-size:12.5px;color:var(--ink-dim);text-decoration:none;padding:6px 10px;border-radius:8px;white-space:nowrap}
+  .tb-links a:hover{background:var(--panel2);color:var(--ink)}
+  .theme-btn{flex:0 0 auto;width:34px;height:34px;border-radius:9px;border:1px solid var(--line2);background:var(--panel);color:var(--ink);cursor:pointer;font-size:15px}
+
+  /* ---- hero ---- */
+  .hero{padding:70px 0 34px;text-align:center;position:relative}
+  .kicker{font-size:12px;letter-spacing:.18em;text-transform:uppercase;font-weight:700;
+    background:linear-gradient(90deg,var(--neuro),var(--dhamma));-webkit-background-clip:text;background-clip:text;color:transparent}
+  .hero h1{font-size:clamp(30px,5vw,52px);line-height:1.08;letter-spacing:-.02em;margin:14px auto 10px;max-width:16ch;font-weight:800}
+  .hero p.lead{font-size:clamp(16px,2.1vw,19px);color:var(--ink-dim);max-width:60ch;margin:0 auto}
+  .hero .badges{display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:22px}
+  .badge{font-size:12.5px;font-weight:600;padding:7px 13px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);display:flex;align-items:center;gap:7px}
+  .badge.n{color:var(--neuro)} .badge.d{color:var(--dhamma)}
+  .badge .dot{width:8px;height:8px;border-radius:50%} .badge.n .dot{background:var(--neuro)} .badge.d .dot{background:var(--dhamma)}
+
+  /* ---- section scaffolding ---- */
+  section{scroll-margin-top:70px;margin-top:56px}
+  .sec-head{display:flex;align-items:center;gap:12px;margin-bottom:6px}
+  .sec-tag{font-size:11px;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:4px 9px;border-radius:6px}
+  .sec-tag.n{background:var(--neuro-soft);color:var(--neuro)}
+  .sec-tag.d{background:var(--dhamma-soft);color:var(--dhamma)}
+  .sec-tag.s{background:var(--accent-soft);color:var(--accent)}
+  h2.sec-title{font-size:clamp(22px,3vw,30px);letter-spacing:-.02em;margin:.15em 0 .3em;font-weight:800}
+  .sec-intro{color:var(--ink-dim);font-size:16.5px;max-width:72ch;margin:0 0 22px}
+  h3.sub{font-size:19px;margin:34px 0 8px;letter-spacing:-.01em;font-weight:700}
+  p{margin:.5em 0}
+  .prose{max-width:72ch;color:var(--ink);font-size:16px}
+  .prose em{color:var(--ink)}
+  .pull{border-left:3px solid var(--accent);padding:6px 0 6px 16px;margin:20px 0;font-size:18px;color:var(--ink);font-weight:500}
+
+  /* ---- figure / diagram ---- */
+  figure{margin:24px 0;background:var(--panel);border:1px solid var(--line);border-radius:var(--radius);
+    padding:22px 20px 14px;box-shadow:var(--shadow)}
+  figure svg{width:100%;height:auto;display:block}
+  figcaption{font-size:13px;color:var(--ink-faint);text-align:center;margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+  .fig-title{font-size:13px;font-weight:700;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:6px}
+  .hint{font-size:12px;color:var(--accent);font-weight:600}
+
+  /* svg helpers */
+  .svg-label{font:600 13px -apple-system,sans-serif;fill:var(--ink)}
+  .svg-sub{font:500 11px -apple-system,sans-serif;fill:var(--ink-dim)}
+  .svg-tiny{font:600 10px -apple-system,sans-serif;fill:var(--ink-faint)}
+  .node{fill:var(--fill-node);stroke:var(--stroke-node);stroke-width:1.5}
+  .flow{fill:none;stroke:var(--ink-faint);stroke-width:2}
+  .hot{stroke:var(--accent);stroke-width:2.5}
+
+  /* ---- card grid ---- */
+  .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px;margin:20px 0}
+  .card{text-align:left;cursor:pointer;background:var(--panel);border:1px solid var(--line);border-radius:14px;
+    padding:16px 16px 14px;box-shadow:var(--shadow);transition:transform .14s,border-color .14s,box-shadow .14s;font-family:inherit;color:inherit;position:relative}
+  .card:hover{transform:translateY(-3px);border-color:var(--accent);box-shadow:0 10px 30px rgba(79,70,229,.16)}
+  .card .ch{display:flex;align-items:center;gap:9px;margin-bottom:6px}
+  .card .ci{font-size:19px;width:30px;height:30px;flex:0 0 30px;border-radius:9px;background:var(--accent-soft);display:flex;align-items:center;justify-content:center}
+  .card.n .ci{background:var(--neuro-soft)} .card.d .ci{background:var(--dhamma-soft)}
+  .card h4{margin:0;font-size:15px;font-weight:700;letter-spacing:-.01em}
+  .card .teaser{margin:0;font-size:13.5px;color:var(--ink-dim);line-height:1.5}
+  .card .more{margin-top:9px;font-size:11.5px;font-weight:700;color:var(--accent);letter-spacing:.03em;display:flex;align-items:center;gap:4px}
+  .card.n .more{color:var(--neuro)} .card.d .more{color:var(--dhamma)}
+
+  /* ---- convergence table ---- */
+  .conv{width:100%;border-collapse:separate;border-spacing:0;margin:22px 0;font-size:14.5px;border:1px solid var(--line);border-radius:var(--radius);overflow:hidden;box-shadow:var(--shadow)}
+  .conv th{background:var(--panel2);text-align:left;padding:12px 14px;font-size:12px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim)}
+  .conv td{padding:13px 14px;border-top:1px solid var(--line);vertical-align:top;background:var(--panel)}
+  .conv td.b{color:var(--dhamma);font-weight:700;white-space:nowrap}
+  .conv td.n{color:var(--neuro);font-weight:700}
+  .conv tr:hover td{background:var(--panel2)}
+
+  /* ---- modal ---- */
+  .modal-bg{position:fixed;inset:0;z-index:100;background:rgba(10,14,22,.55);backdrop-filter:blur(3px);
+    display:none;align-items:center;justify-content:center;padding:24px}
+  .modal-bg.show{display:flex}
+  .modal{background:var(--panel);border:1px solid var(--line2);border-radius:18px;max-width:640px;width:100%;
+    max-height:84vh;overflow-y:auto;box-shadow:0 30px 80px rgba(0,0,0,.4);padding:28px 30px;position:relative}
+  .modal h3{margin:0 30px .4em 0;font-size:22px;letter-spacing:-.01em}
+  .modal p{font-size:15.5px;color:var(--ink);margin:.6em 0}
+  .modal .src{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px;color:var(--ink-faint)}
+  .modal .src a{color:var(--accent);text-decoration:none} .modal .src a:hover{text-decoration:underline}
+  .modal .tagrow{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:12px}
+  .mtag{font-size:11px;font-weight:700;padding:4px 9px;border-radius:6px;background:var(--accent-soft);color:var(--accent)}
+  .mtag.n{background:var(--neuro-soft);color:var(--neuro)} .mtag.d{background:var(--dhamma-soft);color:var(--dhamma)}
+  .modal-x{position:absolute;top:16px;right:16px;width:34px;height:34px;border-radius:9px;border:1px solid var(--line2);
+    background:var(--panel2);color:var(--ink);cursor:pointer;font-size:17px;line-height:1}
+  .modal-x:hover{border-color:var(--accent);color:var(--accent)}
+  .modal .keyline{background:var(--accent-soft);border-radius:10px;padding:12px 14px;margin:14px 0;font-size:14.5px;font-weight:500}
+
+  /* ---- references ---- */
+  .refs{list-style:none;padding:0;margin:14px 0;counter-reset:r}
+  .refs li{position:relative;padding:12px 0 12px 40px;border-top:1px solid var(--line);font-size:14px;color:var(--ink-dim)}
+  .refs li:before{counter-increment:r;content:counter(r);position:absolute;left:0;top:11px;width:26px;height:26px;
+    border-radius:7px;background:var(--panel2);color:var(--ink-dim);font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center}
+  .refs a{color:var(--accent);text-decoration:none} .refs a:hover{text-decoration:underline}
+  .refs .au{color:var(--ink);font-weight:600}
+
+  .note{background:var(--panel2);border:1px solid var(--line);border-radius:12px;padding:14px 16px;font-size:14px;color:var(--ink-dim);margin:22px 0}
+  .foot{margin-top:70px;padding-top:22px;border-top:1px solid var(--line);font-size:13px;color:var(--ink-faint);text-align:center}
+  @media(max-width:640px){.wrap{padding:0 16px 90px}.topbar-in{padding:10px 16px}}
+
+  /* ---- top tabs ---- */
+  .tabpills{display:flex;gap:6px;flex:1}
+  .tabpill{font-family:inherit;font-size:13px;font-weight:700;color:var(--ink-dim);background:transparent;border:1px solid var(--line2);padding:7px 15px;border-radius:999px;cursor:pointer;white-space:nowrap;transition:all .14s}
+  .tabpill:hover{background:var(--panel2);color:var(--ink)}
+  .tabpill.active{background:var(--accent);color:#fff;border-color:var(--accent);box-shadow:0 4px 14px rgba(79,70,229,.3)}
+  .pane{display:none}
+  .pane.active{display:block;animation:panefade .28s ease}
+  @keyframes panefade{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+  .chipnav{position:sticky;top:54px;z-index:30;display:flex;gap:6px;flex-wrap:wrap;padding:11px 0 12px;margin-bottom:8px;
+    background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+  .chip{font-size:12px;font-weight:600;color:var(--ink-dim);text-decoration:none;padding:5px 12px;border-radius:999px;border:1px solid var(--line2);background:var(--panel);white-space:nowrap}
+  .chip:hover{border-color:var(--accent);color:var(--accent)}
+  .pane-lead{font-size:17px;color:var(--ink-dim);max-width:74ch;margin:8px 0 4px}
+  .pane-h{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.02em;margin:14px 0 2px}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="topbar-in">
+    <div class="tb-brand"><span class="glyph">🌀</span> Addiction</div>
+    <div class="tabpills" role="tablist">
+      <button class="tabpill active" data-tab="model" onclick="switchTab('model')">① The System</button>
+      <button class="tabpill" data-tab="trap" onclick="switchTab('trap')">② The Automation Trap</button>
+    </div>
+    <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="hero">
+    <div class="kicker">A First-Principles Map · Two Lenses, One Machine</div>
+    <h1>The Anatomy of a Hijacked Wanting System</h1>
+    <p class="lead">Addiction is not a moral failure or a lack of willpower. It is a learning system doing exactly what it evolved to do — trained too well, on the wrong thing. <strong>Tab ①</strong> dismantles the machine — its parts, wiring and dynamics. <strong>Tab ②</strong> follows the deeper trap: how the mind's drive to automate turns boredom into the fuel and quietly hands itself over.</p>
+    <div class="badges">
+      <span class="badge n"><span class="dot"></span>Neuroscience &amp; behaviour</span>
+      <span class="badge d"><span class="dot"></span>Buddhist first principles</span>
+    </div>
+  </header>
+
+  <div class="pane active" id="pane-model">
+    <div class="chipnav">
+      <a class="chip" href="#thesis">Core</a>
+      <a class="chip" href="#neuro">Neuroscience</a>
+      <a class="chip" href="#dynamics">Dynamics</a>
+      <a class="chip" href="#cycle">The Cycle</a>
+      <a class="chip" href="#dhamma">Buddhist Model</a>
+      <a class="chip" href="#converge">Convergence</a>
+      <a class="chip" href="#unified">Unified System</a>
+      <a class="chip" href="#exit">The Way Out</a>
+      <a class="chip" href="#refs">Sources</a>
+    </div>
+
+  <!-- ================= CORE THESIS ================= -->
+  <section id="thesis">
+    <div class="sec-head"><span class="sec-tag s">The Core</span></div>
+    <h2 class="sec-title">One machine, described two ways</h2>
+    <p class="sec-intro">Strip away the substance or the behaviour and every addiction runs on the same underlying loop. Learn the loop once and you understand all of them. Two traditions — modern neuroscience and 2,500-year-old Buddhist psychology — mapped this exact machine from opposite ends and arrived at the same diagram.</p>
+
+    <div class="pull">An addiction is a <em>prediction of relief or reward</em> that has been learned so strongly it fires on its own cue — and then demands to be closed, whether or not it still delivers.</div>
+
+    <figure>
+      <div class="fig-title">The Master Loop — the engine under every addiction</div>
+      <svg viewBox="0 0 920 340" role="img" aria-label="The addiction loop: cue, craving, action, reward, reinforcement">
+        <defs>
+          <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--ink-faint)"/></marker>
+          <marker id="arA" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--accent)"/></marker>
+        </defs>
+        <!-- nodes -->
+        <g>
+          <rect class="node" x="30" y="60" rx="14" width="160" height="70"/>
+          <text class="svg-label" x="110" y="90" text-anchor="middle">① Cue</text>
+          <text class="svg-sub" x="110" y="110" text-anchor="middle">trigger · context · feeling</text>
+
+          <rect class="node hot" x="255" y="60" rx="14" width="160" height="70"/>
+          <text class="svg-label" x="335" y="90" text-anchor="middle">② Craving</text>
+          <text class="svg-sub" x="335" y="110" text-anchor="middle">"wanting" fires</text>
+
+          <rect class="node" x="480" y="60" rx="14" width="160" height="70"/>
+          <text class="svg-label" x="560" y="90" text-anchor="middle">③ Action</text>
+          <text class="svg-sub" x="560" y="110" text-anchor="middle">the routine</text>
+
+          <rect class="node" x="705" y="60" rx="14" width="160" height="70"/>
+          <text class="svg-label" x="785" y="90" text-anchor="middle">④ Reward</text>
+          <text class="svg-sub" x="785" y="110" text-anchor="middle">relief / hit</text>
+        </g>
+        <!-- top arrows -->
+        <path class="flow" d="M190,95 L250,95" marker-end="url(#ar)"/>
+        <path class="flow" d="M415,95 L475,95" marker-end="url(#ar)"/>
+        <path class="flow" d="M640,95 L700,95" marker-end="url(#ar)"/>
+        <!-- reinforcement return -->
+        <path class="flow" d="M785,130 C785,235 110,235 110,133" marker-end="url(#ar)" stroke-dasharray="0"/>
+        <text class="svg-label" x="447" y="228" text-anchor="middle" style="fill:var(--accent)">⑤ Reinforcement — each completion re-strengthens the cue→craving link</text>
+        <!-- leverage marker -->
+        <path class="hot" d="M223,42 L223,150" stroke-dasharray="5 5"/>
+        <circle cx="223" cy="42" r="5" fill="var(--accent)"/>
+        <text class="svg-tiny" x="223" y="30" text-anchor="middle" style="fill:var(--accent);font-size:11px">▲ leverage point</text>
+        <text class="svg-tiny" x="223" y="300" text-anchor="middle">The only cheap place to intervene is <tspan style="fill:var(--accent);font-weight:700">before craving becomes action.</tspan> Fighting at step ③ is expensive and unreliable.</text>
+      </svg>
+      <figcaption>Neuroscience calls the arrows conditioning, incentive salience, and reinforcement learning. Buddhism calls almost the same arrows contact → feeling → craving → clinging → becoming. Same loop, two vocabularies.</figcaption>
+    </figure>
+
+    <p class="prose">Notice what the loop implies. The craving is not the problem to be crushed; it is a <em>signal</em> — a learned prediction announcing that a reward is available. It carries no obligation. And the loop only tightens at step ⑤: every time the circuit is run to completion, the association it just used gets reinforced. So the leverage is not willpower applied at the moment of action — that is the loudest, most expensive point. The leverage is <em>seeing the craving as a passing event and not feeding it</em>, which lets the whole loop weaken on its own. Both traditions below are, at bottom, elaborate instructions for standing at that leverage point.</p>
+  </section>
+
+  <!-- ================= NEUROSCIENCE ================= -->
+  <section id="neuro">
+    <div class="sec-head"><span class="sec-tag n">Lens 1 · Neuroscience</span></div>
+    <h2 class="sec-title">The wetware: a reward circuit, captured</h2>
+    <p class="sec-intro">The brain runs a reward-learning system whose job is to notice what predicts survival payoffs and to bias you toward repeating it. Addictive substances and behaviours are <em>supernormal</em> keys — they fit this lock harder than anything in nature — so they train the circuit far past its design tolerance. Here are the components and how they wire together.</p>
+
+    <figure>
+      <div class="fig-title">The reward circuit &amp; where it goes wrong</div>
+      <svg viewBox="0 0 900 470" role="img" aria-label="Schematic of the brain reward circuit">
+        <defs>
+          <marker id="ar2" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--neuro)"/></marker>
+          <marker id="ar3" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--ink-faint)"/></marker>
+        </defs>
+        <!-- brain silhouette -->
+        <path d="M120,250 C90,150 200,70 340,72 C430,72 470,45 560,55 C720,68 820,150 800,250 C792,300 760,330 700,338 C690,378 640,405 585,392 C560,430 470,432 440,398 C380,420 300,405 285,360 C200,362 132,320 120,250 Z"
+              fill="var(--panel2)" stroke="var(--line2)" stroke-width="2" opacity=".7"/>
+        <!-- pathway arrows (mesolimbic + cortical) -->
+        <path d="M300,320 C330,300 360,280 380,262" stroke="var(--neuro)" stroke-width="3" fill="none" marker-end="url(#ar2)"/>
+        <path d="M410,250 C470,235 520,225 560,222" stroke="var(--neuro)" stroke-width="3" fill="none" marker-end="url(#ar2)"/>
+        <path d="M560,255 C520,290 470,300 415,290" stroke="var(--ink-faint)" stroke-width="2.4" fill="none" stroke-dasharray="5 5" marker-end="url(#ar3)"/>
+        <path d="M390,240 C360,200 330,175 320,150" stroke="var(--ink-faint)" stroke-width="2.2" fill="none" marker-end="url(#ar3)"/>
+        <!-- nodes -->
+        <g>
+          <circle cx="290" cy="330" r="30" fill="var(--neuro)" opacity=".92"/><text x="290" y="335" text-anchor="middle" style="font:700 12px sans-serif;fill:#fff">VTA</text>
+          <circle cx="392" cy="252" r="34" fill="var(--neuro)" opacity=".82"/><text x="392" y="250" text-anchor="middle" style="font:700 11px sans-serif;fill:#fff">Nucleus</text><text x="392" y="264" text-anchor="middle" style="font:700 11px sans-serif;fill:#fff">Accumbens</text>
+          <circle cx="415" cy="160" r="27" fill="#fff" stroke="var(--stroke-node)" stroke-width="2"/><text x="415" y="158" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--ink)">Dorsal</text><text x="415" y="170" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--ink)">striatum</text>
+          <circle cx="580" cy="220" r="34" fill="#fff" stroke="var(--stroke-node)" stroke-width="2"/><text x="580" y="218" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--ink)">Pre-</text><text x="580" y="232" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--ink)">frontal</text>
+          <circle cx="320" cy="140" r="24" fill="#fff" stroke="var(--stroke-node)" stroke-width="2"/><text x="320" y="144" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--ink)">OFC/ACC</text>
+          <circle cx="470" cy="330" r="26" fill="var(--dhamma)" opacity=".8"/><text x="470" y="327" text-anchor="middle" style="font:700 9.5px sans-serif;fill:#fff">Extended</text><text x="470" y="340" text-anchor="middle" style="font:700 9.5px sans-serif;fill:#fff">amygdala</text>
+          <circle cx="600" cy="320" r="22" fill="#fff" stroke="var(--stroke-node)" stroke-width="2"/><text x="600" y="324" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--ink)">Hippo.</text>
+        </g>
+        <!-- legend -->
+        <g transform="translate(650,400)">
+          <rect x="0" y="-6" width="14" height="14" rx="3" fill="var(--neuro)"/><text x="20" y="5" class="svg-tiny">dopamine "go" system</text>
+          <rect x="0" y="14" width="14" height="14" rx="3" fill="var(--dhamma)"/><text x="20" y="25" class="svg-tiny">stress / anti-reward</text>
+        </g>
+        <text class="svg-tiny" x="150" y="440">Solid blue = dopamine reward path (VTA → accumbens → cortex). Dashed = top-down control that weakens in addiction.</text>
+      </svg>
+      <figcaption>A schematic, not an anatomy chart. <span class="hint">Tap a component below to open it.</span></figcaption>
+    </figure>
+
+    <div class="grid">
+      <button class="card n" onclick="openCard(this)">
+        <div class="ch"><span class="ci">⚡</span><h4>VTA — the dopamine source</h4></div>
+        <p class="teaser">Fires the "prediction error" signal that drives all reward learning.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag n">Neuroscience</span><span class="mtag n">Dopamine</span></div>
+          <h3>VTA — the dopamine source</h3>
+          <p>The ventral tegmental area is a small cluster of dopamine-producing neurons in the midbrain. It is the origin of the <em>mesolimbic pathway</em> — the wire that runs up to the nucleus accumbens and cortex.</p>
+          <p>Crucially, these neurons do not signal pleasure. They signal <em>prediction error</em>: "reality was better (or worse) than expected." An unexpected reward spikes them; a fully predicted reward produces nothing; a promised reward that fails to arrive drops them below baseline. This error signal is the teaching signal that rewires the whole circuit.</p>
+          <div class="keyline">Addictive keys cause a dopamine surge that is larger, faster and more reliable than any natural reward — an error signal that screams "this was far better than predicted," over-training the circuit.</div>
+          <div class="src">Source: Schultz, Dayan &amp; Montague (1997), <em>A Neural Substrate of Prediction and Reward</em>, Science 275:1593–1599. <a href="https://www.science.org/doi/10.1126/science.275.5306.1593" target="_blank" rel="noopener">science.org</a></div>
+        </template>
+      </button>
+
+      <button class="card n" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🎯</span><h4>Nucleus accumbens — "wanting"</h4></div>
+        <p class="teaser">Where dopamine paints a cue with incentive salience — the pull of "I want that."</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag n">Neuroscience</span><span class="mtag n">Incentive salience</span></div>
+          <h3>Nucleus accumbens — the "wanting" hub</h3>
+          <p>The accumbens (ventral striatum) is where the dopamine signal gets converted into motivation. Robinson &amp; Berridge showed that the brain's system for <em>wanting</em> a reward is physically separate from the system that <em>likes</em> it. Dopamine drives wanting, not liking.</p>
+          <p>With repeated use the circuit becomes <em>sensitized</em>: wanting grows louder and louder while liking flattens or even fades. This is why late-stage addiction feels like intense craving for something that no longer delivers much pleasure — the pull without the payoff.</p>
+          <div class="keyline">"Wanting" is not "liking." Addiction is a disease of amplified wanting, not of excess pleasure.</div>
+          <div class="src">Source: Robinson &amp; Berridge (1993), <em>The neural basis of drug craving: an incentive-sensitization theory of addiction</em>, Brain Research Reviews 18:247–291. <a href="https://pubmed.ncbi.nlm.nih.gov/8401595/" target="_blank" rel="noopener">PubMed</a></div>
+        </template>
+      </button>
+
+      <button class="card n" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🔁</span><h4>Dorsal striatum — habit</h4></div>
+        <p class="teaser">Turns a deliberate choice into an automatic, cue-triggered routine.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag n">Neuroscience</span><span class="mtag n">Habit</span></div>
+          <h3>Dorsal striatum — the habit engine</h3>
+          <p>As a behaviour repeats, control migrates from the goal-directed front of the brain down into the dorsal striatum, which "chunks" the whole sequence into a single automatic unit. Graybiel showed the striatum bookends a routine with start/stop activity and then runs the middle on autopilot.</p>
+          <p>This is why addiction stops feeling like a decision. The cue arrives and the routine executes before the thinking brain is even consulted. The behaviour has become a <em>habit</em> in the technical sense: stimulus-triggered, insensitive to whether the reward is still wanted.</p>
+          <div class="keyline">Repetition physically moves the behaviour from "choice" circuitry to "automatic" circuitry. This migration is the neural definition of a habit forming.</div>
+          <div class="src">Source: Graybiel (2008), <em>Habits, Rituals, and the Evaluative Brain</em>, Annual Review of Neuroscience 31:359–387. <a href="https://www.annualreviews.org/content/journals/10.1146/annurev.neuro.29.051605.112851" target="_blank" rel="noopener">annualreviews.org</a></div>
+        </template>
+      </button>
+
+      <button class="card n" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🛑</span><h4>Prefrontal cortex — the brake</h4></div>
+        <p class="teaser">Executive control and inhibition — and it goes partly offline in addiction.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag n">Neuroscience</span><span class="mtag n">Control</span></div>
+          <h3>Prefrontal cortex — the weakened brake</h3>
+          <p>The prefrontal cortex provides top-down control: inhibiting impulses, weighing long-term consequences, and correctly valuing what matters. In addiction this system is measurably impaired — the <strong>iRISA</strong> model (impaired Response Inhibition and Salience Attribution).</p>
+          <p>Two failures compound: the accelerator (salience attribution) over-fires toward the addictive cue, and the brake (response inhibition) under-fires. So the pull gets stronger exactly as the ability to resist gets weaker. This is structural, not a character flaw — and it partly recovers with abstinence.</p>
+          <div class="keyline">Addiction is a two-sided imbalance: a screaming accelerator plus a fading brake. Willpower is the brake — which is precisely the part being undermined.</div>
+          <div class="src">Source: Goldstein &amp; Volkow (2011), <em>Dysfunction of the prefrontal cortex in addiction</em>, Nature Reviews Neuroscience 12:652–669. <a href="https://www.nature.com/articles/nrn3119" target="_blank" rel="noopener">nature.com</a></div>
+        </template>
+      </button>
+
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🌩️</span><h4>Extended amygdala — the dark side</h4></div>
+        <p class="teaser">Anti-reward and stress circuitry that creates withdrawal's misery.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Neuroscience</span><span class="mtag d">Anti-reward</span></div>
+          <h3>Extended amygdala — the "dark side"</h3>
+          <p>As the reward system down-regulates, an opposing <em>anti-reward</em> system in the extended amygdala ramps up, flooding the brain with stress chemicals — corticotropin-releasing factor (CRF) and dynorphin. This is the engine of the withdrawal / negative-affect stage.</p>
+          <p>Now the behaviour is driven by a second motive: not to feel good, but to stop feeling bad. This is <em>negative reinforcement</em>, and it is far stickier than pleasure-seeking. The person is escaping a manufactured discomfort the addiction itself created.</p>
+          <div class="keyline">Late addiction is powered less by chasing highs and more by fleeing lows the addiction manufactured. Relief becomes the reward.</div>
+          <div class="src">Source: Koob &amp; Volkow (2016), <em>Neurobiology of addiction: a neurocircuitry analysis</em>, Lancet Psychiatry 3:760–773. <a href="https://www.thelancet.com/journals/lanpsy/article/PIIS2215-0366(16)00104-8/abstract" target="_blank" rel="noopener">thelancet.com</a></div>
+        </template>
+      </button>
+
+      <button class="card n" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🧬</span><h4>ΔFosB — the molecular switch</h4></div>
+        <p class="teaser">A stubborn protein that accumulates and locks the change in place.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag n">Neuroscience</span><span class="mtag n">Molecular</span></div>
+          <h3>ΔFosB — the sustained molecular switch</h3>
+          <p>Repeated activation of the reward circuit causes a highly stable transcription factor, ΔFosB, to build up in the accumbens and dorsal striatum. Because it degrades so slowly, it persists for weeks to months and changes which genes those neurons express.</p>
+          <p>Nestler called it a "molecular switch" that helps flip the brain into — and hold it in — an addicted state. It is one reason vulnerability outlasts the last use: the hardware has been re-tuned, and relapse risk stays elevated long after the behaviour stops.</p>
+          <div class="keyline">Addiction leaves a long molecular shadow. The circuit stays primed after quitting — why "recovered" is a stance, not a finish line.</div>
+          <div class="src">Source: Nestler, Barrot &amp; Self (2001), <em>ΔFosB: A sustained molecular switch for addiction</em>, PNAS 98:11042–11046. <a href="https://www.pnas.org/doi/10.1073/pnas.191352698" target="_blank" rel="noopener">pnas.org</a></div>
+        </template>
+      </button>
+    </div>
+  </section>
+
+  <!-- ================= DYNAMICS ================= -->
+  <section id="dynamics">
+    <div class="sec-head"><span class="sec-tag n">Lens 1 · Neuroscience</span></div>
+    <h2 class="sec-title">Two dynamics that make it stick</h2>
+    <p class="sec-intro">Two experimental findings explain why cravings feel the way they do — and why they attach themselves to <em>cues</em> rather than to the reward itself.</p>
+
+    <h3 class="sub">1 · Dopamine is a teacher, not a treat</h3>
+    <p class="prose">Record a dopamine neuron while an animal learns, and its behaviour is startling. It does not fire for pleasure — it fires for <em>surprise about reward</em>, and once a cue reliably predicts the reward, the signal jumps <em>backward</em> in time onto the cue. The craving you feel at a trigger is literally this signal firing: an old prediction, not a present need.</p>
+    <figure>
+      <div class="fig-title">Reward-prediction-error — the signal moves onto the cue</div>
+      <svg viewBox="0 0 900 250" role="img" aria-label="Three panels of dopamine firing during learning">
+        <g transform="translate(0,0)">
+          <!-- panel A -->
+          <text class="svg-label" x="145" y="20" text-anchor="middle">Before learning</text>
+          <text class="svg-sub" x="145" y="38" text-anchor="middle">reward is a surprise</text>
+          <line x1="30" y1="150" x2="270" y2="150" stroke="var(--line2)" stroke-width="1.5"/>
+          <path d="M30,150 L150,150 L150,150 C165,150 165,80 175,80 C185,80 185,150 200,150 L270,150" fill="none" stroke="var(--neuro)" stroke-width="2.5"/>
+          <text class="svg-tiny" x="175" y="170" text-anchor="middle">reward ↑</text>
+          <text class="svg-tiny" x="80" y="170" text-anchor="middle">(cue)</text>
+        </g>
+        <g transform="translate(300,0)">
+          <text class="svg-label" x="145" y="20" text-anchor="middle">After learning</text>
+          <text class="svg-sub" x="145" y="38" text-anchor="middle">cue now predicts reward</text>
+          <line x1="30" y1="150" x2="270" y2="150" stroke="var(--line2)" stroke-width="1.5"/>
+          <path d="M30,150 L70,150 C80,150 80,80 90,80 C100,80 100,150 110,150 L270,150" fill="none" stroke="var(--neuro)" stroke-width="2.5"/>
+          <text class="svg-tiny" x="90" y="170" text-anchor="middle" style="fill:var(--accent);font-weight:700">cue ↑</text>
+          <text class="svg-tiny" x="190" y="170" text-anchor="middle">reward (flat)</text>
+        </g>
+        <g transform="translate(600,0)">
+          <text class="svg-label" x="145" y="20" text-anchor="middle">Predicted reward omitted</text>
+          <text class="svg-sub" x="145" y="38" text-anchor="middle">the "dip" of disappointment</text>
+          <line x1="30" y1="150" x2="270" y2="150" stroke="var(--line2)" stroke-width="1.5"/>
+          <path d="M30,150 L70,150 C80,150 80,80 90,80 C100,80 100,150 110,150 L180,150 C190,150 190,205 200,205 C210,205 210,150 220,150 L270,150" fill="none" stroke="var(--neuro)" stroke-width="2.5"/>
+          <text class="svg-tiny" x="90" y="170" text-anchor="middle" style="fill:var(--accent);font-weight:700">cue ↑</text>
+          <text class="svg-tiny" x="200" y="222" text-anchor="middle" style="fill:var(--bad)">no reward → dip</text>
+        </g>
+      </svg>
+      <figcaption>The spike migrates from reward (left) to cue (middle). When a predicted reward fails, dopamine dips below baseline (right) — the neural sting of disappointment that a craving threatens. Schultz, Dayan &amp; Montague (1997).</figcaption>
+    </figure>
+
+    <h3 class="sub">2 · Wanting outgrows liking</h3>
+    <p class="prose">Because the circuit sensitizes with use, the motivational pull ("wanting") climbs while the actual pleasure ("liking") stalls or declines. The gap between the two curves <em>is</em> the felt experience of craving something that no longer satisfies.</p>
+    <figure>
+      <div class="fig-title">Incentive sensitization — the diverging curves</div>
+      <svg viewBox="0 0 660 320" role="img" aria-label="Wanting rises while liking flattens over repeated use">
+        <line x1="70" y1="270" x2="620" y2="270" stroke="var(--line2)" stroke-width="1.5"/>
+        <line x1="70" y1="40" x2="70" y2="270" stroke="var(--line2)" stroke-width="1.5"/>
+        <text class="svg-sub" x="345" y="300" text-anchor="middle">repeated use / exposure →</text>
+        <text class="svg-sub" x="30" y="155" text-anchor="middle" transform="rotate(-90 30 155)">intensity →</text>
+        <!-- wanting -->
+        <path d="M70,240 C200,225 320,150 620,70" fill="none" stroke="var(--accent)" stroke-width="3.5"/>
+        <text class="svg-label" x="560" y="60" style="fill:var(--accent)">WANTING</text>
+        <text class="svg-tiny" x="560" y="76">incentive salience ↑</text>
+        <!-- liking -->
+        <path d="M70,150 C200,140 320,150 620,175" fill="none" stroke="var(--good)" stroke-width="3.5" stroke-dasharray="2 0"/>
+        <text class="svg-label" x="560" y="165" style="fill:var(--good)">LIKING</text>
+        <text class="svg-tiny" x="560" y="181">hedonic impact — flat</text>
+        <!-- gap -->
+        <path d="M500,92 L500,170" stroke="var(--ink-faint)" stroke-width="1.2" stroke-dasharray="4 4"/>
+        <text class="svg-tiny" x="512" y="135" style="fill:var(--warn)">the craving gap</text>
+      </svg>
+      <figcaption>The essence of addiction: maximal wanting for minimal liking. Robinson &amp; Berridge (1993).</figcaption>
+    </figure>
+  </section>
+
+  <!-- ================= THE CYCLE ================= -->
+  <section id="cycle">
+    <div class="sec-head"><span class="sec-tag n">Lens 1 · Neuroscience</span></div>
+    <h2 class="sec-title">The three-stage cycle — a spiral, not a circle</h2>
+    <p class="sec-intro">Zoom out from a single loop to the long arc of an addiction and Koob &amp; Volkow describe three recurring stages, each in a different brain system. The key is that it is not a flat circle — each lap sinks a little lower, because the brain keeps re-setting "normal" downward.</p>
+
+    <figure>
+      <div class="fig-title">The addiction cycle (Koob &amp; Volkow, 2016)</div>
+      <svg viewBox="0 0 900 430" role="img" aria-label="Three-stage addiction cycle">
+        <defs><marker id="arc" markerWidth="11" markerHeight="11" refX="7" refY="3.2" orient="auto"><path d="M0,0 L8,3.2 L0,6.4 Z" fill="var(--neuro)"/></marker></defs>
+        <!-- circular arrows -->
+        <path d="M450,90 A150,150 0 0,1 585,320" fill="none" stroke="var(--neuro)" stroke-width="2.5" marker-end="url(#arc)" opacity=".6"/>
+        <path d="M560,340 A150,150 0 0,1 315,340" fill="none" stroke="var(--neuro)" stroke-width="2.5" marker-end="url(#arc)" opacity=".6"/>
+        <path d="M300,320 A150,150 0 0,1 435,92" fill="none" stroke="var(--neuro)" stroke-width="2.5" marker-end="url(#arc)" opacity=".6"/>
+        <!-- stage 1 top -->
+        <g>
+          <circle cx="450" cy="80" r="58" fill="var(--neuro-soft)" stroke="var(--neuro)" stroke-width="2"/>
+          <text x="450" y="70" text-anchor="middle" style="font:800 14px sans-serif;fill:var(--neuro)">BINGE</text>
+          <text x="450" y="88" text-anchor="middle" style="font:600 11px sans-serif;fill:var(--ink)">Intoxication</text>
+          <text x="450" y="104" text-anchor="middle" class="svg-tiny">basal ganglia</text>
+        </g>
+        <!-- stage 2 bottom right -->
+        <g>
+          <circle cx="600" cy="345" r="58" fill="var(--dhamma-soft)" stroke="var(--dhamma)" stroke-width="2"/>
+          <text x="600" y="335" text-anchor="middle" style="font:800 13px sans-serif;fill:var(--dhamma)">WITHDRAWAL</text>
+          <text x="600" y="353" text-anchor="middle" style="font:600 10px sans-serif;fill:var(--ink)">Negative affect</text>
+          <text x="600" y="369" text-anchor="middle" class="svg-tiny">extended amygdala</text>
+        </g>
+        <!-- stage 3 bottom left -->
+        <g>
+          <circle cx="300" cy="345" r="58" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/>
+          <text x="300" y="335" text-anchor="middle" style="font:800 12px sans-serif;fill:var(--accent)">PREOCCUPATION</text>
+          <text x="300" y="353" text-anchor="middle" style="font:600 10px sans-serif;fill:var(--ink)">Anticipation / craving</text>
+          <text x="300" y="369" text-anchor="middle" class="svg-tiny">prefrontal cortex</text>
+        </g>
+        <!-- center note -->
+        <text x="450" y="225" text-anchor="middle" style="font:700 13px sans-serif;fill:var(--ink)">each lap resets</text>
+        <text x="450" y="245" text-anchor="middle" style="font:700 13px sans-serif;fill:var(--ink)">"normal" lower</text>
+        <text x="450" y="265" text-anchor="middle" class="svg-tiny">→ allostatic spiral</text>
+      </svg>
+      <figcaption>Reward chemistry falls in stage 1's aftermath; stress chemistry (CRF, dynorphin) rises in stage 2; impaired prefrontal control fuels stage 3's craving — which drives the next binge. <span class="hint">Tap a stage below.</span></figcaption>
+    </figure>
+
+    <div class="grid">
+      <button class="card n" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🌊</span><h4>Stage 1 · Binge / Intoxication</h4></div>
+        <p class="teaser">The reward hit and the making of a drug-seeking habit.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag n">Cycle</span><span class="mtag n">Basal ganglia</span></div>
+          <h3>Stage 1 · Binge / Intoxication</h3>
+          <p>The act delivers a dopamine and opioid-peptide surge in the basal ganglia. Beyond the immediate reward, this stage builds <em>incentive salience</em> (cues become magnetic) and lays down the <em>drug-seeking habit</em> in the dorsal striatum.</p>
+          <p>Repetition here is what trains the loop. The reward is real, but each repetition is also a lesson the circuit over-learns.</p>
+          <div class="src">Source: Koob &amp; Volkow (2016), Lancet Psychiatry 3:760–773. <a href="https://www.thelancet.com/journals/lanpsy/article/PIIS2215-0366(16)00104-8/abstract" target="_blank" rel="noopener">thelancet.com</a></div>
+        </template>
+      </button>
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🥀</span><h4>Stage 2 · Withdrawal / Negative affect</h4></div>
+        <p class="teaser">Reward dips, stress rises — the low that begs to be escaped.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Cycle</span><span class="mtag d">Extended amygdala</span></div>
+          <h3>Stage 2 · Withdrawal / Negative affect</h3>
+          <p>Between uses, the dopamine reward system is under-active while the anti-reward system (CRF, dynorphin in the extended amygdala) is over-active. The result is dysphoria, irritability, and stress — a manufactured low.</p>
+          <p>Now the behaviour recruits <em>negative reinforcement</em>: it is repeated to end discomfort, not to chase pleasure. This motive is more relentless than pleasure-seeking.</p>
+          <div class="src">Source: Koob &amp; Volkow (2016), Lancet Psychiatry 3:760–773. <a href="https://www.thelancet.com/journals/lanpsy/article/PIIS2215-0366(16)00104-8/abstract" target="_blank" rel="noopener">thelancet.com</a></div>
+        </template>
+      </button>
+      <button class="card" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🎣</span><h4>Stage 3 · Preoccupation / Craving</h4></div>
+        <p class="teaser">A weakened brake and a loud cue pull you back to Stage 1.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag">Cycle</span><span class="mtag">Prefrontal cortex</span></div>
+          <h3>Stage 3 · Preoccupation / Anticipation</h3>
+          <p>A cue or stressor triggers craving while prefrontal executive control is compromised (impaired inhibition + over-weighted salience). Attention narrows onto the reward, future consequences fade, and the person is pulled back toward the binge.</p>
+          <p>This is the stage where relapse lives — and, crucially, the stage where the leverage point from the master loop sits. Intervene here, upstream of action, and the whole spiral loses fuel.</p>
+          <div class="src">Source: Koob &amp; Volkow (2016), Lancet Psychiatry 3:760–773. Goldstein &amp; Volkow (2011), Nat Rev Neurosci 12:652–669.</div>
+        </template>
+      </button>
+    </div>
+
+    <h3 class="sub">Why the spiral tightens: opponent process &amp; allostasis</h3>
+    <p class="prose">Solomon &amp; Corbit's opponent-process theory explains the sinking. Every strong pleasure (an <em>a-process</em>) automatically summons an opposing <em>b-process</em> that cancels it and lingers afterward. With repetition the b-process grows stronger and longer while the a-process shrinks. That is tolerance and withdrawal in one mechanism — and it drags the emotional baseline below zero.</p>
+    <figure>
+      <div class="fig-title">Opponent process — how pleasure inverts into need</div>
+      <svg viewBox="0 0 900 340" role="img" aria-label="Opponent process before and after repeated use">
+        <!-- first use -->
+        <g transform="translate(0,0)">
+          <text class="svg-label" x="210" y="22" text-anchor="middle">First exposures</text>
+          <line x1="40" y1="110" x2="390" y2="110" stroke="var(--line2)" stroke-width="1.4"/>
+          <text class="svg-tiny" x="395" y="114">baseline</text>
+          <path d="M60,110 C90,110 90,55 130,55 C180,55 220,110 260,120 C300,128 340,112 390,110" fill="none" stroke="var(--good)" stroke-width="3"/>
+          <text class="svg-tiny" x="130" y="48" text-anchor="middle" style="fill:var(--good)">big pleasure</text>
+          <text class="svg-tiny" x="290" y="145" text-anchor="middle" style="fill:var(--warn)">small dip</text>
+        </g>
+        <!-- chronic -->
+        <g transform="translate(460,0)">
+          <text class="svg-label" x="210" y="22" text-anchor="middle">After chronic use</text>
+          <line x1="40" y1="110" x2="390" y2="110" stroke="var(--line2)" stroke-width="1.4"/>
+          <text class="svg-tiny" x="395" y="114">baseline</text>
+          <path d="M60,110 C85,110 90,90 120,90 C160,90 190,180 240,190 C300,200 350,150 390,132" fill="none" stroke="var(--good)" stroke-width="3"/>
+          <text class="svg-tiny" x="120" y="82" text-anchor="middle" style="fill:var(--good)">weak pleasure (tolerance)</text>
+          <text class="svg-tiny" x="250" y="212" text-anchor="middle" style="fill:var(--bad)">deep, long crash (withdrawal)</text>
+        </g>
+        <!-- sinking setpoint -->
+        <g transform="translate(0,240)">
+          <text class="svg-sub" x="450" y="8" text-anchor="middle">the emotional set-point sinks with each cycle — you now use to reach "okay," not "high"</text>
+          <path d="M80,30 L820,80" stroke="var(--dhamma)" stroke-width="2.5" stroke-dasharray="6 5"/>
+          <line x1="80" y1="30" x2="820" y2="30" stroke="var(--line2)" stroke-width="1.2"/>
+          <text class="svg-tiny" x="825" y="34">original normal</text>
+          <text class="svg-tiny" x="60" y="34" text-anchor="end">then</text>
+        </g>
+      </svg>
+      <figcaption>Tolerance (shrinking a-process) and withdrawal (growing b-process) are two faces of one adaptation. The chase is no longer for the peak — it is to climb back to baseline. Solomon &amp; Corbit (1974).</figcaption>
+    </figure>
+  </section>
+
+  <!-- ================= BUDDHIST MODEL ================= -->
+  <section id="dhamma">
+    <div class="sec-head"><span class="sec-tag d">Lens 2 · Buddhist First Principles</span></div>
+    <h2 class="sec-title">The dhamma: craving mapped from the inside</h2>
+    <p class="sec-intro">Twenty-five centuries before fMRI, Buddhist psychology mapped the same machine by careful first-person observation. Its central claim — the Second Noble Truth — is that the origin of suffering is <em>taṇhā</em>, craving: the mind's compulsive reaching for pleasant experience, away from unpleasant, and toward "more." Addiction is simply taṇhā that has found an especially reliable object.</p>
+
+    <div class="pull">"It is craving that leads to renewed becoming." The chain that turns a fleeting sensation into a compulsion is called <em>paṭicca-samuppāda</em> — dependent origination — and it has a seam you can pry open.</div>
+
+    <figure>
+      <div class="fig-title">The wheel of dependent origination — and the seam</div>
+      <svg viewBox="0 0 900 480" role="img" aria-label="Twelve-link wheel of dependent origination with the feeling-craving-clinging gap highlighted">
+        <defs><marker id="arD" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--dhamma)"/></marker>
+        <marker id="arGap" markerWidth="11" markerHeight="11" refX="7" refY="3.2" orient="auto"><path d="M0,0 L8,3.2 L0,6.4 Z" fill="var(--accent)"/></marker></defs>
+        <!-- ring -->
+        <circle cx="430" cy="235" r="165" fill="none" stroke="var(--line2)" stroke-width="2" stroke-dasharray="4 6"/>
+        <!-- nodes: 1..12 -->
+        <!-- helper: normal node -->
+        <g>
+          <circle cx="430" cy="70" r="22" class="node"/><text x="430" y="75" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">1</text><text x="430" y="25" text-anchor="middle" class="svg-tiny">Ignorance</text>
+          <circle cx="513" cy="92" r="22" class="node"/><text x="513" y="97" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">2</text><text x="540" y="72" class="svg-tiny">Formations</text>
+          <circle cx="573" cy="153" r="22" class="node"/><text x="573" y="158" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">3</text><text x="602" y="140" class="svg-tiny">Consciousness</text>
+          <circle cx="595" cy="235" r="22" class="node"/><text x="595" y="240" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">4</text><text x="624" y="238" class="svg-tiny">Name &amp; form</text>
+          <circle cx="573" cy="317" r="22" class="node"/><text x="573" y="322" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">5</text><text x="602" y="335" class="svg-tiny">Six senses</text>
+          <circle cx="513" cy="378" r="22" class="node"/><text x="513" y="383" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">6</text><text x="540" y="405" class="svg-tiny">Contact</text>
+          <!-- 7 Feeling (highlight) -->
+          <circle cx="430" cy="400" r="24" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"/><text x="430" y="405" text-anchor="middle" style="font:800 12px sans-serif;fill:var(--accent)">7</text><text x="430" y="447" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--accent)">Feeling · vedanā</text>
+          <!-- 8 Craving (highlight) -->
+          <circle cx="347" cy="378" r="24" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"/><text x="347" y="383" text-anchor="middle" style="font:800 12px sans-serif;fill:var(--accent)">8</text><text x="320" y="405" text-anchor="end" style="font:700 11px sans-serif;fill:var(--accent)">Craving · taṇhā</text>
+          <!-- 9 Clinging (highlight) -->
+          <circle cx="287" cy="317" r="24" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.5"/><text x="287" y="322" text-anchor="middle" style="font:800 12px sans-serif;fill:var(--accent)">9</text><text x="258" y="335" text-anchor="end" style="font:700 11px sans-serif;fill:var(--accent)">Clinging · upādāna</text>
+          <circle cx="265" cy="235" r="22" class="node"/><text x="265" y="240" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">10</text><text x="236" y="238" text-anchor="end" class="svg-tiny">Becoming</text>
+          <circle cx="287" cy="153" r="22" class="node"/><text x="287" y="158" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">11</text><text x="258" y="140" text-anchor="end" class="svg-tiny">Birth</text>
+          <circle cx="347" cy="92" r="22" class="node"/><text x="347" y="97" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--ink)">12</text><text x="320" y="72" text-anchor="end" class="svg-tiny">Ageing &amp; death</text>
+        </g>
+        <!-- highlighted gap segment 7->8->9 -->
+        <path d="M407,395 Q375,395 366,382" fill="none" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#arGap)"/>
+        <path d="M330,362 Q300,345 296,338" fill="none" stroke="var(--accent)" stroke-width="3.5" marker-end="url(#arGap)"/>
+        <!-- the seam marker -->
+        <line x1="388" y1="389" x2="388" y2="330" stroke="var(--accent)" stroke-width="1.4" stroke-dasharray="4 4"/>
+        <circle cx="388" cy="389" r="4" fill="var(--accent)"/>
+        <text x="388" y="322" text-anchor="middle" style="font:800 11px sans-serif;fill:var(--accent)">⚡ THE SEAM</text>
+        <!-- center -->
+        <text x="430" y="222" text-anchor="middle" style="font:800 15px sans-serif;fill:var(--dhamma)">Paṭicca-samuppāda</text>
+        <text x="430" y="244" text-anchor="middle" class="svg-sub">each link conditions the next</text>
+        <text x="430" y="266" text-anchor="middle" class="svg-tiny">cut one link and the chain slackens</text>
+      </svg>
+      <figcaption>Contact (6) produces a feeling-tone (7). Normally feeling <em>automatically</em> ignites craving (8), which hardens into clinging (9) and drives action (10+). But the link 7→8 is not a law of physics — it is a habit. That is the seam. <span class="hint">Tap the concepts below.</span></figcaption>
+    </figure>
+  </section>
+
+  <!-- ================= BUDDHIST MECHANICS ================= -->
+  <section id="dhamma2">
+    <div class="sec-head"><span class="sec-tag d">Lens 2 · Buddhist First Principles</span></div>
+    <h2 class="sec-title">The moving parts of craving</h2>
+    <p class="sec-intro">Six interlocking terms describe the machinery — and each maps cleanly onto something the neuroscientists later measured.</p>
+
+    <div class="grid">
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🌡️</span><h4>Vedanā — feeling-tone</h4></div>
+        <p class="teaser">The raw pleasant/unpleasant tag on every experience — before the story starts.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Buddhist</span><span class="mtag d">The hinge</span></div>
+          <h3>Vedanā — the feeling-tone</h3>
+          <p>Every moment of contact carries an immediate hedonic tag: pleasant, unpleasant, or neutral. This is <em>vedanā</em>, and it arrives before any thought. It is not craving yet — it is just a tone.</p>
+          <p>Vedanā is the hinge of the whole chain. Craving is the mind's habitual <em>reaction</em> to a pleasant tone ("more!") or an unpleasant one ("away!"). If you can meet the tone as merely a tone — and let it pass — the reaction never gets its fuel. In vipassanā this is the entire training: observe sensation with equanimity, break the reflex.</p>
+          <div class="keyline">You do not have to stop the pleasant tone from arising. You only have to stop automatically converting it into "I want."</div>
+          <div class="src">Source: Sallatha Sutta (SN 36.6); the vedanā→taṇhā link of dependent origination (SN 12.2). <a href="https://www.accesstoinsight.org/tipitaka/sn/sn36/sn36.006.than.html" target="_blank" rel="noopener">accesstoinsight.org</a></div>
+        </template>
+      </button>
+
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🔥</span><h4>Taṇhā — the three cravings</h4></div>
+        <p class="teaser">Craving comes in three flavours: sense-pleasure, becoming, and un-becoming.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Buddhist</span><span class="mtag d">Second Noble Truth</span></div>
+          <h3>Taṇhā — craving, in three forms</h3>
+          <p>The Buddha names craving the origin of suffering, and distinguishes three kinds:</p>
+          <p><strong>Kāma-taṇhā</strong> — craving for sense pleasure (the hit itself).<br>
+          <strong>Bhava-taṇhā</strong> — craving to <em>become</em> / to keep an experience or identity going ("one more, so this state continues").<br>
+          <strong>Vibhava-taṇhā</strong> — craving for <em>non-being</em> / to make an unpleasant state disappear (escape, numbing, oblivion).</p>
+          <p>Addiction usually runs on all three at once: the pleasure, the wish to prolong it, and the wish to blot out the discomfort of not having it — which is exactly the neuroscience's positive + negative reinforcement.</p>
+          <div class="src">Source: Dhammacakkappavattana Sutta (SN 56.11), the Second Noble Truth. <a href="https://www.accesstoinsight.org/tipitaka/sn/sn56/sn56.011.than.html" target="_blank" rel="noopener">accesstoinsight.org</a></div>
+        </template>
+      </button>
+
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🪵</span><h4>Upādāna — clinging / fuel</h4></div>
+        <p class="teaser">When craving hardens into grasping. The word literally means "fuel."</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Buddhist</span><span class="mtag d">Clinging</span></div>
+          <h3>Upādāna — clinging, the fuel</h3>
+          <p>If craving (taṇhā) is not met with awareness, it thickens into <em>upādāna</em> — clinging, grasping, identification. The Pali word doubles as "fuel," as in the fuel that sustains a fire. Craving is the flame; clinging is the wood you keep throwing on.</p>
+          <p>This is the point where "there is wanting" becomes "I am going to have it, this is mine, I need it." It is the last link before the behaviour is committed — the hardening between craving and action.</p>
+          <div class="keyline">Craving may arise on its own. Clinging is where you sign the contract. Refuse to add fuel and the flame cannot grow.</div>
+          <div class="src">Source: upādāna in dependent origination; Fire Sermon imagery (SN 35.28). <a href="https://www.accesstoinsight.org/tipitaka/sn/sn35/sn35.028.nymo.html" target="_blank" rel="noopener">accesstoinsight.org</a></div>
+        </template>
+      </button>
+
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">☠️</span><h4>The three poisons</h4></div>
+        <p class="teaser">Greed, aversion, delusion — the roots every craving grows from.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Buddhist</span><span class="mtag d">Roots</span></div>
+          <h3>The three poisons (akusala-mūla)</h3>
+          <p>Beneath specific cravings lie three root tendencies: <strong>rāga/lobha</strong> (greed, grasping toward), <strong>dosa</strong> (aversion, pushing away), and <strong>moha</strong> (delusion, not seeing clearly). The Fire Sermon says the senses and their objects are "burning" with exactly these three fires.</p>
+          <p>Addiction is greed amplified and delusion sustaining it — the mind grasps the object and simultaneously mis-sees it as a genuine solution. Aversion joins in as the flight from withdrawal's discomfort. Undo the delusion (see clearly) and the other two lose their footing.</p>
+          <div class="src">Source: Ādittapariyāya Sutta — the Fire Sermon (SN 35.28). <a href="https://www.accesstoinsight.org/tipitaka/sn/sn35/sn35.028.nymo.html" target="_blank" rel="noopener">accesstoinsight.org</a></div>
+        </template>
+      </button>
+
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🌱</span><h4>Anusaya — latent tendencies</h4></div>
+        <p class="teaser">Dormant craving lying underground, waiting for a cue to sprout.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Buddhist</span><span class="mtag d">Latent</span></div>
+          <h3>Anusaya — the latent tendencies</h3>
+          <p>The <em>anusaya</em> are underlying dispositions — craving and aversion that lie dormant below the surface and are activated by contact with the right cue. They are not active thoughts; they are potentials, grooves worn into the mind, ready to fire.</p>
+          <p>This is a near-exact description of a conditioned, sensitized reward circuit that stays quiet until its trigger appears. It explains why someone calm for weeks can be ambushed by a sudden urge: the tendency never left, it was only sleeping.</p>
+          <div class="keyline">A quiet period is not eradication. The groove persists until repeated non-reaction slowly wears it smooth.</div>
+          <div class="src">Source: doctrine of anusaya (latent tendencies), e.g. the Madhupiṇḍika &amp; related suttas; standard Theravāda Abhidhamma.</div>
+        </template>
+      </button>
+
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">〰️</span><h4>Saṅkhāra — conditioning</h4></div>
+        <p class="teaser">Each reaction deepens the groove; each non-reaction lets an old one dissolve.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Buddhist</span><span class="mtag d">Reconsolidation</span></div>
+          <h3>Saṅkhāra — the habit-formations</h3>
+          <p><em>Saṅkhāra</em> are mental formations — the volitional reactions that condition future mind-states. Every time you react to a feeling with craving, you strengthen the saṅkhāra that makes the next craving more likely. Every time you observe without reacting, an old formation surfaces, finds no fuel, and passes away.</p>
+          <p>This is strikingly parallel to memory reconsolidation and extinction: retrieving a habit and <em>not</em> reinforcing it lets the association weaken. Reaction rewrites the pattern stronger; equanimous observation lets it rewrite weaker.</p>
+          <div class="keyline">You are always editing the pattern. Reaction saves a stronger version; calm observation saves a weaker one.</div>
+          <div class="src">Source: saṅkhāra in dependent origination; contemplative articulation in the U Ba Khin / Goenka vipassanā tradition.</div>
+        </template>
+      </button>
+    </div>
+
+    <h3 class="sub">The two arrows — separating the event from the reaction</h3>
+    <p class="prose">The Buddha's sharpest image for addiction's real cost. An urge (or a pain) arising is the <em>first arrow</em> — often unavoidable, a conditioned event. The <em>second arrow</em> is what we then do to ourselves: the grasping, the "I must," the story of lack. The first is a sensation; the second is the suffering — and it is optional.</p>
+    <figure>
+      <div class="fig-title">Sallatha Sutta — the second arrow is the one you fire</div>
+      <svg viewBox="0 0 900 230" role="img" aria-label="The two arrows: unavoidable feeling versus optional reaction">
+        <defs><marker id="arrowh" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--dhamma)"/></marker>
+        <marker id="arrowh2" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--bad)"/></marker></defs>
+        <!-- left: one arrow -->
+        <g transform="translate(0,0)">
+          <text class="svg-label" x="210" y="26" text-anchor="middle">First arrow — unavoidable</text>
+          <circle cx="270" cy="120" r="42" fill="none" stroke="var(--ink-dim)" stroke-width="2"/>
+          <circle cx="270" cy="120" r="26" fill="none" stroke="var(--ink-dim)" stroke-width="2"/>
+          <circle cx="270" cy="120" r="8" fill="var(--dhamma)"/>
+          <line x1="70" y1="120" x2="222" y2="120" stroke="var(--dhamma)" stroke-width="3" marker-end="url(#arrowh)"/>
+          <text class="svg-tiny" x="150" y="108" text-anchor="middle">the urge / feeling arises</text>
+          <text class="svg-sub" x="270" y="196" text-anchor="middle">a conditioned event — just a sensation</text>
+        </g>
+        <line x1="450" y1="30" x2="450" y2="200" stroke="var(--line)" stroke-width="1.5"/>
+        <!-- right: two arrows -->
+        <g transform="translate(460,0)">
+          <text class="svg-label" x="210" y="26" text-anchor="middle">Second arrow — optional</text>
+          <circle cx="270" cy="120" r="42" fill="none" stroke="var(--ink-dim)" stroke-width="2"/>
+          <circle cx="270" cy="120" r="26" fill="none" stroke="var(--ink-dim)" stroke-width="2"/>
+          <circle cx="270" cy="120" r="8" fill="var(--dhamma)"/>
+          <line x1="70" y1="120" x2="222" y2="120" stroke="var(--dhamma)" stroke-width="3" marker-end="url(#arrowh)"/>
+          <line x1="120" y1="40" x2="240" y2="102" stroke="var(--bad)" stroke-width="3" marker-end="url(#arrowh2)"/>
+          <text class="svg-tiny" x="120" y="34" text-anchor="middle" style="fill:var(--bad)">"I need it. I can't bear this."</text>
+          <text class="svg-sub" x="270" y="196" text-anchor="middle" style="fill:var(--bad)">the reaction — this is the suffering</text>
+        </g>
+      </svg>
+      <figcaption>Awareness cannot always stop the first arrow. Its whole power is over the second. Removing the second arrow is not suppression — it is simply declining to add the reaction. Sallatha Sutta (SN 36.6).</figcaption>
+    </figure>
+
+    <h3 class="sub">Fire &amp; fuel — why "just stop" misunderstands the flame</h3>
+    <p class="prose">The Fire Sermon frames craving as fire. A fire is not a thing you can grab and remove; it is a <em>process</em> that continues only while fed. Clinging (upādāna, "fuel") is the feeding. You do not extinguish craving by fighting the flame — you starve it by no longer supplying fuel. The word <em>nibbāna</em> literally means "blowing out," as a flame goes out when its fuel is spent.</p>
+    <figure>
+      <div class="fig-title">Craving as fire; clinging as fuel</div>
+      <svg viewBox="0 0 900 250" role="img" aria-label="Fire fed by fuel keeps burning; remove fuel and it goes out">
+        <!-- left: fed -->
+        <g transform="translate(0,0)">
+          <text class="svg-label" x="220" y="26" text-anchor="middle">Fed with fuel → keeps burning</text>
+          <path d="M220,60 C255,95 255,120 235,140 C250,135 262,120 262,120 C275,150 255,190 220,190 C185,190 168,152 182,122 C185,138 198,146 198,146 C186,120 195,90 220,60 Z" fill="var(--dhamma)" opacity=".9"/>
+          <text style="font:700 12px sans-serif;fill:#fff" x="220" y="150" text-anchor="middle">taṇhā</text>
+          <rect x="165" y="196" width="110" height="14" rx="4" fill="#8a5a2b"/>
+          <rect x="178" y="210" width="84" height="12" rx="4" fill="#6b4420"/>
+          <text class="svg-tiny" x="220" y="240" text-anchor="middle">fuel = upādāna (clinging, feeding the urge)</text>
+        </g>
+        <line x1="450" y1="30" x2="450" y2="220" stroke="var(--line)" stroke-width="1.5"/>
+        <!-- right: unfed -->
+        <g transform="translate(460,0)">
+          <text class="svg-label" x="220" y="26" text-anchor="middle">Fuel withheld → it goes out</text>
+          <path d="M220,150 C232,135 232,128 226,120 C232,124 236,132 236,132 C240,146 232,168 220,168 C208,168 200,150 206,134 C208,142 214,146 214,146 C210,136 213,140 220,150 Z" fill="var(--dhamma)" opacity=".45"/>
+          <text class="svg-tiny" x="220" y="112" text-anchor="middle" style="fill:var(--good)">shrinking…</text>
+          <line x1="150" y1="200" x2="290" y2="200" stroke="var(--line2)" stroke-width="2"/>
+          <text class="svg-tiny" x="220" y="222" text-anchor="middle">no fuel added — the urge crests and passes</text>
+          <text class="svg-sub" x="220" y="240" text-anchor="middle" style="fill:var(--good)">nibbāna = "blowing out"</text>
+        </g>
+      </svg>
+      <figcaption>Both traditions agree: you win not by out-muscling the flame but by understanding it is a fed process, and quietly stopping the feeding. Ādittapariyāya Sutta (SN 35.28).</figcaption>
+    </figure>
+  </section>
+
+  <!-- ================= CONVERGENCE ================= -->
+  <section id="converge">
+    <div class="sec-head"><span class="sec-tag s">Synthesis</span></div>
+    <h2 class="sec-title">The convergence map</h2>
+    <p class="sec-intro">Line the two lenses up term-by-term and the same machine appears in both. One was built from third-person measurement, the other from first-person observation — and they lock together almost perfectly. This is the heart of the whole page.</p>
+
+    <table class="conv">
+      <thead><tr><th style="width:22%">Buddhist term</th><th style="width:30%">Neuroscience counterpart</th><th>The shared truth</th></tr></thead>
+      <tbody>
+        <tr><td class="b">Vedanā<br><span style="font-weight:400;color:var(--ink-dim)">feeling-tone</span></td><td class="n">Hedonic/interoceptive tag; the valence of a prediction signal</td><td>Every experience gets an instant pleasant/unpleasant stamp — before thought, before choice.</td></tr>
+        <tr><td class="b">Taṇhā<br><span style="font-weight:400;color:var(--ink-dim)">craving</span></td><td class="n">Incentive salience — dopaminergic "wanting" in the accumbens</td><td>The pull toward the object, distinct from any pleasure it gives. Wanting, not liking.</td></tr>
+        <tr><td class="b">Upādāna<br><span style="font-weight:400;color:var(--ink-dim)">clinging / fuel</span></td><td class="n">Commitment to action; failing prefrontal veto</td><td>The moment wanting hardens into "I will." The last exit before the behaviour runs.</td></tr>
+        <tr><td class="b">Anusaya<br><span style="font-weight:400;color:var(--ink-dim)">latent tendency</span></td><td class="n">Sensitized, dormant cue-reactive circuit (ΔFosB-primed)</td><td>The pattern sleeps between cues but never truly leaves — it waits for its trigger.</td></tr>
+        <tr><td class="b">Saṅkhāra<br><span style="font-weight:400;color:var(--ink-dim)">formations</span></td><td class="n">Habit engram; memory reconsolidation &amp; extinction</td><td>Every reaction re-saves the pattern stronger; every non-reaction lets it re-save weaker.</td></tr>
+        <tr><td class="b">Moha<br><span style="font-weight:400;color:var(--ink-dim)">delusion</span></td><td class="n">Distorted value/salience coding (OFC); mis-prediction</td><td>The circuit insists the object is the solution. Believing that is the core error.</td></tr>
+        <tr><td class="b">The seam<br><span style="font-weight:400;color:var(--ink-dim)">vedanā→taṇhā</span></td><td class="n">The leverage point before craving becomes automatic action</td><td>The one cheap place to intervene: catch the tone before it recruits the "want" and the routine.</td></tr>
+        <tr><td class="b">2nd arrow<br><span style="font-weight:400;color:var(--ink-dim)">reaction</span></td><td class="n">Amplifying affective loop; negative-reinforcement spiral</td><td>Most of the suffering is the reaction we add, not the urge itself.</td></tr>
+        <tr><td class="b">Non-feeding<br><span style="font-weight:400;color:var(--ink-dim)">nibbāna, "blowing out"</span></td><td class="n">Extinction of the conditioned response</td><td>Starve the loop and it fades. You do not defeat it — you stop supplying it.</td></tr>
+        <tr><td class="b">Sati + upekkhā<br><span style="font-weight:400;color:var(--ink-dim)">mindful equanimity</span></td><td class="n">Cue exposure without response; mindfulness-based relapse prevention</td><td>Watching the urge with steadiness <em>is</em> the rewiring — not a prelude to it.</td></tr>
+      </tbody>
+    </table>
+
+    <div class="note">Why this matters practically: the two traditions independently reach the same verdict — <strong>suppression is the wrong tool, and observation is the right one.</strong> Neuroscience: cue exposure without the response drives extinction, whereas fighting spikes stress (which impairs the very prefrontal control you are relying on). Buddhism: aversion is itself a form of craving and only tightens the knot, whereas equanimous seeing lets the formation dissolve. Both say: don't fight the wave — understand it, and stop feeding it.</div>
+  </section>
+
+  <!-- ================= UNIFIED SYSTEM ================= -->
+  <section id="unified">
+    <div class="sec-head"><span class="sec-tag s">Synthesis</span></div>
+    <h2 class="sec-title">The whole system on one page</h2>
+    <p class="sec-intro">Everything above, assembled into a single machine: the spine of the loop, the Buddhist names on top, the neural mechanisms below, the two reinforcement loops that make it self-sustaining — and the single exit.</p>
+
+    <figure>
+      <div class="fig-title">The unified model of addiction</div>
+      <svg viewBox="0 0 940 500" role="img" aria-label="Unified diagram integrating Buddhist and neuroscience models of addiction">
+        <defs>
+          <marker id="uA" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--ink-faint)"/></marker>
+          <marker id="uPos" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--dhamma)"/></marker>
+          <marker id="uNeg" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--bad)"/></marker>
+          <marker id="uExit" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--good)"/></marker>
+        </defs>
+
+        <!-- EXIT box -->
+        <rect x="285" y="40" width="380" height="60" rx="12" fill="var(--good)" opacity=".12" stroke="var(--good)" stroke-width="1.8"/>
+        <text x="475" y="65" text-anchor="middle" style="font:800 13px sans-serif;fill:var(--good)">THE EXIT · see the feeling, don't feed the craving</text>
+        <text x="475" y="85" text-anchor="middle" class="svg-tiny" style="fill:var(--good)">the urge crests &amp; passes → the loop weakens (extinction · nibbāna)</text>
+
+        <!-- Buddhist top band labels -->
+        <text x="280" y="178" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--dhamma)">vedanā</text>
+        <text x="455" y="178" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--dhamma)">taṇhā</text>
+        <text x="545" y="150" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--dhamma)">upādāna →</text>
+
+        <!-- spine nodes -->
+        <g>
+          <rect class="node" x="40" y="200" width="130" height="60" rx="12"/><text x="105" y="226" text-anchor="middle" class="svg-label">Cue</text><text x="105" y="244" text-anchor="middle" class="svg-tiny">trigger</text>
+          <rect x="215" y="200" width="130" height="60" rx="12" fill="var(--dhamma-soft)" stroke="var(--dhamma)" stroke-width="1.6"/><text x="280" y="226" text-anchor="middle" class="svg-label">Feeling</text><text x="280" y="244" text-anchor="middle" class="svg-tiny">pleasant tone</text>
+          <rect x="390" y="200" width="130" height="60" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text x="455" y="226" text-anchor="middle" class="svg-label">Craving</text><text x="455" y="244" text-anchor="middle" class="svg-tiny">"wanting"</text>
+          <rect class="node" x="565" y="200" width="130" height="60" rx="12"/><text x="630" y="226" text-anchor="middle" class="svg-label">Action</text><text x="630" y="244" text-anchor="middle" class="svg-tiny">the routine</text>
+          <rect class="node" x="740" y="200" width="130" height="60" rx="12"/><text x="805" y="226" text-anchor="middle" class="svg-label">Reward</text><text x="805" y="244" text-anchor="middle" class="svg-tiny">hit / relief</text>
+        </g>
+        <!-- spine arrows -->
+        <path class="flow" d="M170,230 L212,230" marker-end="url(#uA)"/>
+        <path class="flow" d="M345,230 L387,230" marker-end="url(#uA)"/>
+        <path class="flow" d="M520,230 L562,230" marker-end="url(#uA)"/>
+        <path class="flow" d="M695,230 L737,230" marker-end="url(#uA)"/>
+
+        <!-- neuro bottom labels -->
+        <text x="105" y="284" text-anchor="middle" class="svg-tiny">conditioned trigger</text>
+        <text x="280" y="284" text-anchor="middle" class="svg-tiny">hedonic tag</text>
+        <text x="455" y="284" text-anchor="middle" class="svg-tiny">dopamine · accumbens</text>
+        <text x="630" y="284" text-anchor="middle" class="svg-tiny">dorsal-striatal habit</text>
+        <text x="805" y="284" text-anchor="middle" class="svg-tiny">surge → anti-reward</text>
+
+        <!-- seam + exit arrow -->
+        <line x1="367" y1="200" x2="367" y2="102" stroke="var(--good)" stroke-width="2" stroke-dasharray="5 5"/>
+        <path d="M367,120 C367,110 420,102 455,102" fill="none" stroke="var(--good)" stroke-width="2" marker-end="url(#uExit)"/>
+        <circle cx="367" cy="200" r="5" fill="var(--good)"/>
+        <text x="360" y="196" text-anchor="end" style="font:800 10px sans-serif;fill:var(--good)">seam ⚡</text>
+
+        <!-- positive reinforcement loop (outer bottom) -->
+        <path d="M805,260 C805,430 105,430 105,262" fill="none" stroke="var(--dhamma)" stroke-width="2.4" marker-end="url(#uPos)"/>
+        <text x="455" y="423" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--dhamma)">⟳ positive reinforcement — reward re-strengthens the cue→craving link (saṅkhāra · ΔFosB)</text>
+
+        <!-- negative reinforcement loop (inner) -->
+        <rect x="580" y="330" width="150" height="46" rx="10" fill="var(--bad)" opacity=".12" stroke="var(--bad)" stroke-width="1.5"/>
+        <text x="655" y="350" text-anchor="middle" style="font:700 10.5px sans-serif;fill:var(--bad)">Withdrawal /</text><text x="655" y="366" text-anchor="middle" style="font:700 10.5px sans-serif;fill:var(--bad)">anti-reward low</text>
+        <path d="M805,260 C800,300 740,330 730,345" fill="none" stroke="var(--bad)" stroke-width="2" marker-end="url(#uNeg)"/>
+        <path d="M580,352 C500,352 470,300 458,262" fill="none" stroke="var(--bad)" stroke-width="2" marker-end="url(#uNeg)"/>
+        <text x="455" y="470" text-anchor="middle" class="svg-tiny" style="fill:var(--bad)">⟳ negative reinforcement — later you run the loop to escape the low the loop itself created</text>
+      </svg>
+      <figcaption>Read the spine left-to-right; the Buddhist names sit above it, the neural mechanisms below. Two loops keep it alive: the amber loop (chasing the reward) and the red loop (fleeing withdrawal). The green exit is the only low-cost intervention — and it sits at the seam, upstream of action.</figcaption>
+    </figure>
+
+    <p class="prose">The design insight the whole model delivers: <em>do not attack at Action.</em> By the time craving has become action, the habit circuitry is already executing and the prefrontal brake is already weak — you are fighting on the worst possible ground. Every high-leverage move lives at the seam, between feeling and craving, where a small amount of clear awareness does what a large amount of willpower cannot.</p>
+  </section>
+
+  <!-- ================= THE WAY OUT ================= -->
+  <section id="exit">
+    <div class="sec-head"><span class="sec-tag s">Application</span></div>
+    <h2 class="sec-title">The way out — starve, don't fight</h2>
+    <p class="sec-intro">If the loop is fed by completion and dissolved by non-completion, then the whole strategy follows: meet the craving as a passing wave, decline to feed it, and let repetition run in reverse. This is not heroic resistance. It is patient un-learning.</p>
+
+    <figure>
+      <div class="fig-title">The craving wave — and why each un-fed wave is smaller</div>
+      <svg viewBox="0 0 900 340" role="img" aria-label="A craving rises, crests, and falls; unfed, later waves shrink">
+        <defs><marker id="wA" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--bad)"/></marker></defs>
+        <line x1="60" y1="270" x2="850" y2="270" stroke="var(--line2)" stroke-width="1.5"/>
+        <text class="svg-sub" x="455" y="300" text-anchor="middle">time (minutes) →</text>
+        <text class="svg-sub" x="34" y="160" text-anchor="middle" transform="rotate(-90 34 160)">urge intensity →</text>
+
+        <!-- intervention window -->
+        <rect x="120" y="60" width="120" height="210" fill="var(--accent-soft)"/>
+        <text class="svg-tiny" x="180" y="52" text-anchor="middle" style="fill:var(--accent)">act here: observe</text>
+
+        <!-- wave 1 (observe, full) -->
+        <path d="M100,270 C160,270 190,90 260,90 C330,90 360,270 420,270" fill="none" stroke="var(--accent)" stroke-width="3.5"/>
+        <circle cx="260" cy="90" r="5" fill="var(--accent)"/>
+        <text class="svg-tiny" x="260" y="78" text-anchor="middle" style="fill:var(--accent);font-weight:700">crest — peak want, weakest brake</text>
+        <text class="svg-tiny" x="370" y="255" text-anchor="middle">falls on its own</text>
+
+        <!-- if fed branch -->
+        <path d="M260,90 C270,70 285,60 300,58" fill="none" stroke="var(--bad)" stroke-width="2" stroke-dasharray="4 4" marker-end="url(#wA)"/>
+        <text class="svg-tiny" x="330" y="56" style="fill:var(--bad)">if fed → brief hit, loop reinforced</text>
+
+        <!-- wave 2 smaller -->
+        <path d="M540,270 C590,270 615,165 670,165 C725,165 750,270 800,270" fill="none" stroke="var(--accent)" stroke-width="3" stroke-dasharray="6 5" opacity=".8"/>
+        <circle cx="670" cy="165" r="4.5" fill="var(--accent)" opacity=".8"/>
+        <text class="svg-tiny" x="670" y="153" text-anchor="middle" style="fill:var(--accent)">next time: weaker (extinction)</text>
+      </svg>
+      <figcaption>A craving is self-limiting — it peaks and subsides, usually within minutes, if it is not fed. Not feeding it teaches the circuit its prediction was wrong, so the next wave arrives smaller. Feeding it does the reverse.</figcaption>
+    </figure>
+
+    <div class="grid">
+      <button class="card" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🏄</span><h4>Urge surfing</h4></div>
+        <p class="teaser">Ride the craving like a wave instead of blocking it.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag">Application</span><span class="mtag">Relapse prevention</span></div>
+          <h3>Urge surfing</h3>
+          <p>Marlatt's classic technique: instead of fighting an urge or giving in, you observe it as a physical wave — where you feel it, how it changes — and stay with it, knowing it will crest and fall. You are neither suppressing nor obeying; you are watching it complete its natural arc without action.</p>
+          <p>Mechanistically this is cue exposure without the response: the trigger fires, the reward does not follow, and the association weakens. It also keeps the observing, prefrontal part of the mind online instead of ceding control to the habit circuit.</p>
+          <div class="keyline">You don't have to make the urge go away. You only have to outlast it once — and each time you do, it comes back smaller.</div>
+          <div class="src">Source: Marlatt &amp; Gordon (1985), <em>Relapse Prevention</em>, Guilford Press; Bowen, Chawla &amp; Marlatt, Mindfulness-Based Relapse Prevention (2011).</div>
+        </template>
+      </button>
+
+      <button class="card" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🐻</span><h4>Why suppression backfires</h4></div>
+        <p class="teaser">Trying not to think of it makes it louder — the white-bear effect.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag">Application</span><span class="mtag">Ironic process</span></div>
+          <h3>Why suppression backfires</h3>
+          <p>Wegner showed that trying to suppress a thought installs a background "monitor" that keeps scanning for the very thought you are avoiding — which keeps surfacing it. Under stress or fatigue, this ironic process wins, and the suppressed thought rebounds stronger.</p>
+          <p>This is the neuroscience and the dhamma agreeing again: fighting the urge (aversion) spends the scarce prefrontal control you need and keeps the target hot. Observation without struggle avoids the trap entirely.</p>
+          <div class="keyline">"Don't think about it" is a plan that recruits your mind to think about it. Watch it instead of banning it.</div>
+          <div class="src">Source: Wegner (1994), <em>Ironic processes of mental control</em>, Psychological Review 101:34–52. <a href="https://pubmed.ncbi.nlm.nih.gov/8121959/" target="_blank" rel="noopener">PubMed</a></div>
+        </template>
+      </button>
+
+      <button class="card" onclick="openCard(this)">
+        <div class="ch"><span class="ci">📉</span><h4>Extinction vs reconsolidation</h4></div>
+        <p class="teaser">Every retrieval is a chance to save the pattern weaker — or stronger.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag">Application</span><span class="mtag">Learning</span></div>
+          <h3>Extinction vs reconsolidation</h3>
+          <p>A learned association is not fixed. When a cue re-activates it, the memory becomes briefly editable. If the expected reward follows, the pattern is <em>reconsolidated</em> — re-saved, often stronger. If it does not, the brain updates toward <em>extinction</em> — the prediction weakens.</p>
+          <p>This is the lever. Extinction is not forgetting (the old trace persists, which is why relapse is possible), but a new, competing "the cue no longer means reward" learning that, with repetition, comes to dominate. Each un-fed craving is a deposit in that account.</p>
+          <div class="keyline">You cannot delete the groove, but you can lay a stronger parallel track — "cue, but nothing follows" — until it becomes the default.</div>
+          <div class="src">Source: extinction &amp; reconsolidation literature; converges with Koob &amp; Volkow (2016) and the saṅkhāra model above.</div>
+        </template>
+      </button>
+
+      <button class="card d" onclick="openCard(this)">
+        <div class="ch"><span class="ci">🧘</span><h4>Mindful equanimity</h4></div>
+        <p class="teaser">Awareness of the feeling-tone, held steady — the dhamma's core method.</p>
+        <div class="more">Open ›</div>
+        <template>
+          <div class="tagrow"><span class="mtag d">Application</span><span class="mtag d">Sati · upekkhā</span></div>
+          <h3>Mindful equanimity</h3>
+          <p>The Buddhist training is precise: bring <em>sati</em> (clear awareness) to <em>vedanā</em> (the feeling-tone) and hold <em>upekkhā</em> (equanimity) — neither grasping the pleasant nor pushing away the unpleasant. Meeting the tone at the seam, before it becomes craving, breaks the automatic link.</p>
+          <p>Practised repeatedly, old latent tendencies (anusaya) surface, find no reaction to feed on, and dissolve. Modern mindfulness-based relapse prevention is a direct clinical descendant of this, and shows measurable reductions in craving and relapse.</p>
+          <div class="keyline">Equanimity is not indifference. It is the active, alert refusal to add the second arrow.</div>
+          <div class="src">Source: Sallatha Sutta (SN 36.6); Satipaṭṭhāna framework; Witkiewitz, Marlatt &amp; Walker on mindfulness-based relapse prevention.</div>
+        </template>
+      </button>
+    </div>
+
+    <div class="note"><strong>The one principle under all of it:</strong> an addiction is a fed process, not a fixed thing. You do not need to overpower it — you cannot reliably out-muscle a system that weakens your muscle. You need to <em>see it clearly enough that feeding it becomes optional</em>, and then, wave by un-fed wave, let it starve. Understanding is not a preliminary to the work. Understanding, held as steady attention at the seam, <em>is</em> the work.</div>
+  </section>
+
+  <!-- ================= REFERENCES ================= -->
+  <section id="refs">
+    <div class="sec-head"><span class="sec-tag s">Sources</span></div>
+    <h2 class="sec-title">Sources &amp; further reading</h2>
+    <p class="sec-intro">Primary sources for the claims above. Neuroscience papers are peer-reviewed originals; Buddhist references point to the suttas cited.</p>
+    <ol class="refs">
+      <li><span class="au">Schultz, W., Dayan, P., &amp; Montague, P. R. (1997).</span> A neural substrate of prediction and reward. <em>Science</em>, 275(5306), 1593–1599. <a href="https://www.science.org/doi/10.1126/science.275.5306.1593" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Robinson, T. E., &amp; Berridge, K. C. (1993).</span> The neural basis of drug craving: an incentive-sensitization theory of addiction. <em>Brain Research Reviews</em>, 18(3), 247–291. <a href="https://pubmed.ncbi.nlm.nih.gov/8401595/" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Koob, G. F., &amp; Volkow, N. D. (2016).</span> Neurobiology of addiction: a neurocircuitry analysis. <em>The Lancet Psychiatry</em>, 3(8), 760–773. <a href="https://www.thelancet.com/journals/lanpsy/article/PIIS2215-0366(16)00104-8/abstract" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Goldstein, R. Z., &amp; Volkow, N. D. (2011).</span> Dysfunction of the prefrontal cortex in addiction (the iRISA model). <em>Nature Reviews Neuroscience</em>, 12(11), 652–669. <a href="https://www.nature.com/articles/nrn3119" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Nestler, E. J., Barrot, M., &amp; Self, D. W. (2001).</span> ΔFosB: a sustained molecular switch for addiction. <em>PNAS</em>, 98(20), 11042–11046. <a href="https://www.pnas.org/doi/10.1073/pnas.191352698" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Graybiel, A. M. (2008).</span> Habits, rituals, and the evaluative brain. <em>Annual Review of Neuroscience</em>, 31, 359–387. <a href="https://www.annualreviews.org/content/journals/10.1146/annurev.neuro.29.051605.112851" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Solomon, R. L., &amp; Corbit, J. T. (1974).</span> An opponent-process theory of motivation: I. Temporal dynamics of affect. <em>Psychological Review</em>, 81(2), 119–145.</li>
+      <li><span class="au">Wegner, D. M. (1994).</span> Ironic processes of mental control. <em>Psychological Review</em>, 101(1), 34–52. <a href="https://pubmed.ncbi.nlm.nih.gov/8121959/" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Marlatt, G. A., &amp; Gordon, J. R. (1985).</span> <em>Relapse Prevention.</em> Guilford Press. (Urge surfing.) Bowen, Chawla &amp; Marlatt (2011), <em>Mindfulness-Based Relapse Prevention.</em></li>
+      <li><span class="au">Sallatha Sutta (SN 36.6)</span> — the two arrows. <a href="https://www.accesstoinsight.org/tipitaka/sn/sn36/sn36.006.than.html" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Ādittapariyāya Sutta — the Fire Sermon (SN 35.28).</span> <a href="https://www.accesstoinsight.org/tipitaka/sn/sn35/sn35.028.nymo.html" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Dhammacakkappavattana Sutta (SN 56.11)</span> — the Four Noble Truths &amp; the three cravings. <a href="https://www.accesstoinsight.org/tipitaka/sn/sn56/sn56.011.than.html" target="_blank" rel="noopener">link</a></li>
+      <li><span class="au">Paṭiccasamuppāda-vibhaṅga Sutta (SN 12.2)</span> — dependent origination, the twelve links. <a href="https://www.accesstoinsight.org/tipitaka/sn/sn12/sn12.002.than.html" target="_blank" rel="noopener">link</a></li>
+    </ol>
+  </section>
+
+  </div><!-- /pane-model -->
+
+  <!-- ============================================================= -->
+  <!-- ==================== PANE 2: THE TRAP ======================== -->
+  <!-- ============================================================= -->
+  <div class="pane" id="pane-trap">
+    <div class="chipnav">
+      <a class="chip" href="#trap-auto">Automation</a>
+      <a class="chip" href="#trap-migration">Migration</a>
+      <a class="chip" href="#trap-internal">Cue → Internal</a>
+      <a class="chip" href="#trap-boredom">Boredom</a>
+      <a class="chip" href="#trap-loop">The Loop</a>
+      <a class="chip" href="#trap-neutral">Neutral Tone</a>
+      <a class="chip" href="#trap-takeover">"Takeover"</a>
+      <a class="chip" href="#trap-reframe">Reframe</a>
+    </div>
+
+    <div style="padding:14px 0 4px">
+      <div class="kicker" style="background:linear-gradient(90deg,var(--accent),var(--accent2));-webkit-background-clip:text;background-clip:text;color:transparent">Part Two · The deeper mechanism</div>
+      <h1 class="pane-h">The Automation Trap</h1>
+      <p class="pane-lead">The same genius that makes you skilled — the mind's relentless drive to automate whatever it can predict — is the exact mechanism a superstimulus captures. This tab follows that capture from first principles: why the brain automates, how the craving creeps upstream until it seems to run on its own, why boredom becomes its fuel, and why "total takeover" is real as a feeling but false as a fact.</p>
+    </div>
+
+    <div class="pull" style="border-color:var(--accent)">The fundamental problem is not that your mind is broken. It is that your mind is working perfectly — automating the predictable and hunting for surprise — inside an environment engineered to exploit exactly those two habits.</div>
+
+    <!-- ============ AUTOMATION ============ -->
+    <section id="trap-auto">
+      <div class="sec-head"><span class="sec-tag s">First principle</span></div>
+      <h2 class="sec-title">The mind automates everything it can</h2>
+      <p class="sec-intro">Deliberate thought is the brain's most expensive, slowest resource. So its default economics are simple: anything you can predict, offload to cheap automatic circuitry, and reserve costly attention for what is still surprising. Repetition is the conveyor belt that carries a behaviour from "decision" down into "reflex."</p>
+      <figure>
+        <div class="fig-title">Repetition migrates control downward — deliberate → automatic</div>
+        <svg viewBox="0 0 900 300" role="img" aria-label="Behaviour sinking from deliberate to automatic control with repetition">
+          <defs><marker id="tDown" markerWidth="12" markerHeight="12" refX="4" refY="9" orient="auto"><path d="M0,0 L8,0 L4,9 Z" fill="var(--accent)"/></marker></defs>
+          <!-- top band -->
+          <rect x="60" y="55" width="700" height="72" rx="14" fill="var(--panel2)" stroke="var(--line2)" stroke-width="1.5"/>
+          <text x="410" y="86" text-anchor="middle" style="font:800 14px sans-serif;fill:var(--ink)">DELIBERATE · prefrontal ("System 2")</text>
+          <text x="410" y="108" text-anchor="middle" class="svg-sub">flexible &amp; wise — but slow, effortful, energy-hungry</text>
+          <!-- bottom band -->
+          <rect x="60" y="185" width="700" height="72" rx="14" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.8"/>
+          <text x="410" y="216" text-anchor="middle" style="font:800 14px sans-serif;fill:var(--accent)">AUTOMATIC · basal-ganglia habit ("System 1")</text>
+          <text x="410" y="238" text-anchor="middle" class="svg-sub">fast, cheap, tireless — but rigid &amp; cue-driven</text>
+          <!-- down arrows -->
+          <path d="M230,130 L230,182" stroke="var(--accent)" stroke-width="3" marker-end="url(#tDown)"/>
+          <path d="M410,130 L410,182" stroke="var(--accent)" stroke-width="3" marker-end="url(#tDown)"/>
+          <path d="M590,130 L590,182" stroke="var(--accent)" stroke-width="3" marker-end="url(#tDown)"/>
+          <text x="410" y="160" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--accent)">every repetition pushes it down</text>
+          <!-- cost gauge -->
+          <text x="805" y="60" text-anchor="middle" class="svg-tiny">cost</text>
+          <rect x="795" y="70" width="16" height="170" rx="8" fill="url(#none)" stroke="var(--line2)"/>
+          <rect x="795" y="70" width="16" height="60" rx="8" fill="var(--bad)" opacity=".55"/>
+          <rect x="795" y="180" width="16" height="60" rx="8" fill="var(--good)" opacity=".55"/>
+          <text x="835" y="100" class="svg-tiny" style="fill:var(--bad)">high</text>
+          <text x="835" y="215" class="svg-tiny" style="fill:var(--good)">low</text>
+          <text x="410" y="285" text-anchor="middle" class="svg-tiny">Automation frees attention — but a freed prediction-engine does not rest. It goes looking for something new to consume.</text>
+        </svg>
+        <figcaption>This is a feature: skills, walking, reading all live down in the automatic band. Addiction rides the same conveyor belt down — and once a behaviour lands in the automatic band, it fires before "you" are consulted.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ MIGRATION ============ -->
+    <section id="trap-migration">
+      <div class="sec-head"><span class="sec-tag s">Your model</span></div>
+      <h2 class="sec-title">The craving creeps upstream</h2>
+      <p class="sec-intro">You spotted the real trajectory: at first the reward is a surprise, then the mind learns to predict it from the action, then it jumps the prediction back onto the cue — and it does not stop there. Through higher-order conditioning the trigger keeps creeping to ever-earlier links, so the craving fires sooner and sooner in the chain. This is temporal-difference credit assignment migrating to the earliest reliable predictor.</p>
+      <figure>
+        <div class="fig-title">The dopamine spike migrates to the earliest predictor</div>
+        <svg viewBox="0 0 900 330" role="img" aria-label="The craving marker moving upstream across the causal chain over four stages">
+          <defs><marker id="mLeft" markerWidth="11" markerHeight="11" refX="8" refY="3.2" orient="auto"><path d="M8,0 L0,3.2 L8,6.4 Z" fill="var(--accent)"/></marker>
+          <marker id="mR" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--ink-faint)"/></marker></defs>
+          <!-- sweep arrow -->
+          <path d="M800,70 C560,40 340,40 120,70" fill="none" stroke="var(--accent)" stroke-width="2.5" stroke-dasharray="6 5" marker-end="url(#mLeft)"/>
+          <text x="460" y="34" text-anchor="middle" style="font:700 12px sans-serif;fill:var(--accent)">⟵ the craving fires earlier and earlier</text>
+          <!-- stage stars -->
+          <text x="120" y="112" text-anchor="middle" style="font:800 20px sans-serif;fill:var(--accent)">★</text><text x="120" y="132" text-anchor="middle" class="svg-tiny" style="fill:var(--accent)">③ precedes the cue</text>
+          <text x="340" y="112" text-anchor="middle" style="font:800 18px sans-serif;fill:var(--accent)" opacity=".8">★</text><text x="340" y="132" text-anchor="middle" class="svg-tiny">② from the cue</text>
+          <text x="560" y="112" text-anchor="middle" style="font:800 16px sans-serif;fill:var(--accent)" opacity=".6">★</text><text x="560" y="132" text-anchor="middle" class="svg-tiny">① from the action</text>
+          <text x="780" y="112" text-anchor="middle" style="font:800 15px sans-serif;fill:var(--ink-faint)">★</text><text x="780" y="132" text-anchor="middle" class="svg-tiny">⓪ at the reward</text>
+          <!-- chain nodes -->
+          <g>
+            <rect class="node" x="55" y="160" width="130" height="58" rx="12"/><text x="120" y="185" text-anchor="middle" class="svg-label">Distal cue</text><text x="120" y="203" text-anchor="middle" class="svg-tiny">"upstream"</text>
+            <rect class="node" x="275" y="160" width="130" height="58" rx="12"/><text x="340" y="185" text-anchor="middle" class="svg-label">Cue</text><text x="340" y="203" text-anchor="middle" class="svg-tiny">trigger</text>
+            <rect class="node" x="495" y="160" width="130" height="58" rx="12"/><text x="560" y="185" text-anchor="middle" class="svg-label">Action</text><text x="560" y="203" text-anchor="middle" class="svg-tiny">the routine</text>
+            <rect class="node" x="715" y="160" width="130" height="58" rx="12"/><text x="780" y="185" text-anchor="middle" class="svg-label">Reward</text><text x="780" y="203" text-anchor="middle" class="svg-tiny">the hit</text>
+          </g>
+          <path class="flow" d="M185,189 L273,189" marker-end="url(#mR)"/>
+          <path class="flow" d="M405,189 L493,189" marker-end="url(#mR)"/>
+          <path class="flow" d="M625,189 L713,189" marker-end="url(#mR)"/>
+          <text x="450" y="270" text-anchor="middle" class="svg-sub">Each stage is more automated than the last. By stage ③ the "trigger" has crept so far upstream it feels like the craving came from nowhere.</text>
+          <text x="450" y="298" text-anchor="middle" class="svg-tiny" style="fill:var(--accent)">…but "nowhere" has an address. See "Cue → Internal".</text>
+        </svg>
+        <figcaption>Higher-order conditioning: an earlier cue comes to predict the next cue, so the pull keeps moving back up the chain — place predicts feeling predicts thought predicts craving.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ CUE GOES INTERNAL ============ -->
+    <section id="trap-internal">
+      <div class="sec-head"><span class="sec-tag s">The key correction</span></div>
+      <h2 class="sec-title">The cue doesn't vanish — it moves inside</h2>
+      <p class="sec-intro">"A craving with no cue" is the trap's convincing illusion. What actually happens is that the trigger becomes <em>internal</em> and subtle — a mood, a flicker of fatigue, a transition between tasks, a time of day, a stray thought — so it drops below the waterline of awareness. The behaviour looks self-starting only because you can no longer see what starts it. And the deepest, most submerged cue of all is boredom itself.</p>
+      <figure>
+        <div class="fig-title">The iceberg of cues — most of them are underwater</div>
+        <svg viewBox="0 0 900 420" role="img" aria-label="Iceberg: small visible external cues above water, large hidden internal cues below, boredom at the bottom">
+          <!-- water -->
+          <rect x="0" y="150" width="900" height="270" fill="var(--neuro-soft)"/>
+          <!-- iceberg -->
+          <path d="M300,50 L355,150 L455,175 L410,335 L330,398 L270,400 L195,332 L160,185 L250,150 Z" fill="var(--fill-node)" stroke="var(--stroke-node)" stroke-width="2"/>
+          <!-- submerge tint over lower berg -->
+          <rect x="120" y="150" width="360" height="270" fill="var(--neuro)" opacity=".16"/>
+          <!-- waterline -->
+          <path d="M0,150 Q40,143 80,150 T160,150 T240,150 T320,150 T400,150 T480,150 T560,150 T640,150 T720,150 T800,150 T900,150" fill="none" stroke="var(--neuro)" stroke-width="2.5"/>
+          <text x="860" y="144" text-anchor="end" class="svg-tiny" style="fill:var(--neuro)">awareness line</text>
+          <!-- connector lines -->
+          <line x1="330" y1="95" x2="520" y2="95" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="400" y1="235" x2="540" y2="235" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3"/>
+          <line x1="330" y1="360" x2="540" y2="360" stroke="var(--ink-faint)" stroke-width="1" stroke-dasharray="3 3"/>
+          <!-- labels -->
+          <text x="528" y="80" style="font:800 12px sans-serif;fill:var(--ink)">ABOVE — visible &amp; external</text>
+          <text x="528" y="100" class="svg-sub">the screen · the place · the person · the hour</text>
+          <text x="548" y="220" style="font:800 12px sans-serif;fill:var(--neuro)">BELOW — where it hides</text>
+          <text x="548" y="240" class="svg-sub">a mood · fatigue · a task-transition · a stray thought</text>
+          <text x="548" y="345" style="font:800 12px sans-serif;fill:var(--accent)">AT THE BOTTOM — the master cue</text>
+          <text x="548" y="365" class="svg-sub" style="fill:var(--accent)">boredom / restlessness itself</text>
+        </svg>
+        <figcaption>Practically, this is liberating: if the cue only went invisible, it can be made visible again. The work shifts from "resist the mysterious urge" to "find the internal trigger" — usually a feeling-state you learned to flee.</figcaption>
+      </figure>
+      <p class="prose">There is a sliver of truth in the stronger claim, and it's worth keeping honest: sensitized circuits can fire semi-spontaneously, craving can <em>incubate</em> and grow during abstinence, and the mind's default-mode wandering throws up thoughts that then act as cues. So craving is not <em>always</em> reducible to a clean external trigger. But even the endogenous pull arises from a <em>state</em> — it is dependently arisen, not truly self-caused — which is exactly why it stays interruptible.</p>
+    </section>
+
+    <!-- ============ BOREDOM ============ -->
+    <section id="trap-boredom">
+      <div class="sec-head"><span class="sec-tag s">Mechanism</span></div>
+      <h2 class="sec-title">Why boredom and restlessness keep rising</h2>
+      <p class="sec-intro">Two separate engines drive it, and they compound. One is healthy and ancient; the other is manufactured by the modern reward environment.</p>
+      <figure>
+        <div class="fig-title">Two engines of boredom</div>
+        <svg viewBox="0 0 900 320" role="img" aria-label="Habituation zeroing the signal, and an inflated stimulation baseline">
+          <!-- panel 1 -->
+          <g>
+            <text x="220" y="28" text-anchor="middle" style="font:800 13px sans-serif;fill:var(--ink)">1 · Habituation zeroes the signal</text>
+            <line x1="50" y1="250" x2="410" y2="250" stroke="var(--line2)" stroke-width="1.5"/>
+            <line x1="50" y1="70" x2="50" y2="250" stroke="var(--line2)" stroke-width="1.5"/>
+            <rect x="80" y="100" width="34" height="150" fill="var(--neuro)" opacity=".85"/>
+            <rect x="140" y="150" width="34" height="100" fill="var(--neuro)" opacity=".7"/>
+            <rect x="200" y="192" width="34" height="58" fill="var(--neuro)" opacity=".55"/>
+            <rect x="260" y="222" width="34" height="28" fill="var(--neuro)" opacity=".4"/>
+            <rect x="320" y="240" width="34" height="10" fill="var(--neuro)" opacity=".3"/>
+            <text x="220" y="272" text-anchor="middle" class="svg-sub">repetitions →</text>
+            <text x="30" y="160" text-anchor="middle" class="svg-tiny" transform="rotate(-90 30 160)">signal</text>
+            <text x="360" y="235" text-anchor="middle" class="svg-tiny" style="fill:var(--warn)">≈ 0 = boredom</text>
+            <text x="220" y="300" text-anchor="middle" class="svg-tiny">predicted reward → no error → the "go find novelty" nudge</text>
+          </g>
+          <line x1="455" y1="40" x2="455" y2="290" stroke="var(--line)" stroke-width="1.5"/>
+          <!-- panel 2 -->
+          <g transform="translate(460,0)">
+            <text x="220" y="28" text-anchor="middle" style="font:800 13px sans-serif;fill:var(--ink)">2 · The baseline inflates</text>
+            <line x1="40" y1="250" x2="410" y2="250" stroke="var(--line2)" stroke-width="1.5"/>
+            <line x1="40" y1="55" x2="40" y2="250" stroke="var(--line2)" stroke-width="1.5"/>
+            <!-- deprivation gap fill -->
+            <path d="M70,205 L390,95 L390,205 Z" fill="var(--warn)" opacity=".18"/>
+            <!-- normal life line -->
+            <line x1="70" y1="205" x2="390" y2="205" stroke="var(--good)" stroke-width="3"/>
+            <text x="395" y="209" class="svg-tiny" style="fill:var(--good)">ordinary life</text>
+            <!-- rising minimum line -->
+            <path d="M70,200 L390,95" stroke="var(--bad)" stroke-width="3" marker-end="url(#tDown)"/>
+            <text x="250" y="120" text-anchor="middle" class="svg-tiny" style="fill:var(--bad)">min. acceptable stimulation ↑</text>
+            <text x="230" y="180" text-anchor="middle" class="svg-tiny" style="fill:var(--warn)">the gap = restlessness</text>
+            <text x="220" y="300" text-anchor="middle" class="svg-tiny">superstimuli raise the bar until normal life reads as deprivation</text>
+          </g>
+        </svg>
+        <figcaption>Engine 1 makes calm feel like nothing (functional — it says "explore"). Engine 2 makes "nothing" feel unbearable (pathological — trained by a flood of cheap novelty). Together they turn every idle moment into an itch.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ THE LOOP ============ -->
+    <section id="trap-loop">
+      <div class="sec-head"><span class="sec-tag s">Synthesis</span></div>
+      <h2 class="sec-title">The self-closing loop</h2>
+      <p class="sec-intro">Here your two observations fuse into one engine. Automation frees attention; the freed engine can't rest and goes seeking; that seeking <em>is</em> the restless neutral state; and that state has become the internal cue for the most over-learned reward path. Boredom is simultaneously the exit the addiction offers and the entrance it uses.</p>
+      <figure>
+        <div class="fig-title">Boredom is both the entrance and the exit</div>
+        <svg viewBox="0 0 680 540" role="img" aria-label="A six-node vicious circle where boredom becomes the cue for craving">
+          <circle cx="340" cy="250" r="175" fill="none" stroke="var(--line2)" stroke-width="2" stroke-dasharray="4 7"/>
+          <!-- direction hint -->
+          <path d="M430,88 A175,175 0 0,1 470,120" fill="none" stroke="var(--accent)" stroke-width="3" marker-end="url(#mR)"/>
+          <text x="340" y="242" text-anchor="middle" style="font:800 14px sans-serif;fill:var(--accent)">⟳ the loop feeds itself</text>
+          <text x="340" y="264" text-anchor="middle" class="svg-sub">each lap makes the next boredom arrive sooner</text>
+          <!-- nodes -->
+          <g>
+            <ellipse cx="340" cy="75" rx="90" ry="40" class="node"/><text x="340" y="70" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--ink)">1 · Automation</text><text x="340" y="86" text-anchor="middle" class="svg-tiny">frees up attention</text>
+            <ellipse cx="491" cy="162" rx="90" ry="40" class="node"/><text x="491" y="157" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--ink)">2 · Idle engine</text><text x="491" y="173" text-anchor="middle" class="svg-tiny">seeks input</text>
+            <ellipse cx="491" cy="337" rx="92" ry="42" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2.4"/><text x="491" y="330" text-anchor="middle" style="font:800 11px sans-serif;fill:var(--accent)">3 · Restless state</text><text x="491" y="346" text-anchor="middle" class="svg-tiny" style="fill:var(--accent)">⚡ the internal cue</text>
+            <ellipse cx="340" cy="425" rx="90" ry="40" class="node"/><text x="340" y="420" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--ink)">4 · Craving fires</text><text x="340" y="436" text-anchor="middle" class="svg-tiny">and gets fed</text>
+            <ellipse cx="188" cy="337" rx="90" ry="40" class="node"/><text x="188" y="332" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--ink)">5 · Quick hit</text><text x="188" y="348" text-anchor="middle" class="svg-tiny">brief relief</text>
+            <ellipse cx="188" cy="162" rx="90" ry="40" class="node"/><text x="188" y="157" text-anchor="middle" style="font:700 11px sans-serif;fill:var(--ink)">6 · Faster habituation</text><text x="188" y="173" text-anchor="middle" class="svg-tiny">calm feels flatter</text>
+          </g>
+        </svg>
+        <figcaption>Node 3 is the hinge: the restless, neutral, under-stimulated state <em>is</em> the cue. Which is why the deepest intervention isn't at the craving — it's learning to sit inside node 3 without needing to escape it.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ NEUTRAL TONE ============ -->
+    <section id="trap-neutral">
+      <div class="sec-head"><span class="sec-tag d">Buddhist bridge</span></div>
+      <h2 class="sec-title">The intolerable neutral</h2>
+      <p class="sec-intro">The dhamma names this with startling precision. Every contact carries a feeling-tone — pleasant, unpleasant, or <em>neutral</em> — and the untrained mind's specific weakness is that it cannot rest in the neutral. Neutral reads as "nothing," and the reflex is to convert it into something pleasant. Restlessness (<em>uddhacca</em>) is even listed as one of the five hindrances. Boredom, in this language, is simply the unbearable neutrality of an unstimulated moment.</p>
+      <figure>
+        <div class="fig-title">What the mind does with a neutral feeling-tone</div>
+        <svg viewBox="0 0 900 310" role="img" aria-label="Three feeling-tones and the trained vs untrained response to the neutral one">
+          <defs><marker id="nA" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--ink-faint)"/></marker>
+          <marker id="nR" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--bad)"/></marker>
+          <marker id="nG" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--good)"/></marker></defs>
+          <!-- three tones -->
+          <rect x="70" y="40" width="200" height="58" rx="12" class="node"/><text x="170" y="66" text-anchor="middle" class="svg-label">Pleasant</text><text x="170" y="85" text-anchor="middle" class="svg-tiny">→ grasp toward</text>
+          <rect x="350" y="40" width="200" height="58" rx="12" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="2"/><text x="450" y="66" text-anchor="middle" class="svg-label">Neutral</text><text x="450" y="85" text-anchor="middle" class="svg-tiny" style="fill:var(--accent)">the hard one</text>
+          <rect x="630" y="40" width="200" height="58" rx="12" class="node"/><text x="730" y="66" text-anchor="middle" class="svg-label">Unpleasant</text><text x="730" y="85" text-anchor="middle" class="svg-tiny">→ push away</text>
+          <!-- fork from neutral -->
+          <path d="M410,98 C360,150 320,170 300,190" fill="none" stroke="var(--good)" stroke-width="2.6" marker-end="url(#nG)"/>
+          <path d="M490,98 C560,150 600,170 620,190" fill="none" stroke="var(--bad)" stroke-width="2.6" marker-end="url(#nR)"/>
+          <!-- trained -->
+          <rect x="150" y="195" width="230" height="66" rx="12" fill="var(--good)" opacity=".12" stroke="var(--good)" stroke-width="1.8"/>
+          <text x="265" y="222" text-anchor="middle" style="font:800 12px sans-serif;fill:var(--good)">Trained · equanimity</text>
+          <text x="265" y="242" text-anchor="middle" class="svg-tiny">rest in it — it's just a tone. Loop starved.</text>
+          <!-- untrained -->
+          <rect x="540" y="195" width="230" height="66" rx="12" fill="var(--bad)" opacity=".1" stroke="var(--bad)" stroke-width="1.8"/>
+          <text x="655" y="222" text-anchor="middle" style="font:800 12px sans-serif;fill:var(--bad)">Untrained · uddhacca</text>
+          <text x="655" y="242" text-anchor="middle" class="svg-tiny">flee it → reach for a hit. Loop fed.</text>
+          <text x="450" y="292" text-anchor="middle" class="svg-sub">Learning to sit in the neutral tone attacks the master cue at its root — this is what meditation trains.</text>
+        </svg>
+        <figcaption>The same lever in two vocabularies: neuroscience says "raise your tolerance for low stimulation"; the dhamma says "learn to abide in neutral vedanā with equanimity." Identical instruction.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ TAKEOVER ============ -->
+    <section id="trap-takeover">
+      <div class="sec-head"><span class="sec-tag s">Honest correction</span></div>
+      <h2 class="sec-title">"Takeover" is a shifted default, not a severed wire</h2>
+      <p class="sec-intro">You're right that it trends toward feeling like a hostile takeover — automaticity deepens, attention narrows onto the object, and the behaviour fuses with identity so it stops feeling like an intruder. But "completely out of the loop, running on its own" is not mechanically true, and believing it is the addiction's most useful lie. The aware override is never deleted. It just becomes the steeper, costlier path — no longer the default, but always still there.</p>
+      <figure>
+        <div class="fig-title">Two paths from the cue — the override never disappears</div>
+        <svg viewBox="0 0 900 330" role="img" aria-label="From a cue, a wide easy automatic path and a narrow steep but still-present override path">
+          <defs><marker id="pA" markerWidth="11" markerHeight="11" refX="7" refY="3.2" orient="auto"><path d="M0,0 L8,3.2 L0,6.4 Z" fill="var(--accent)"/></marker>
+          <marker id="pG" markerWidth="11" markerHeight="11" refX="7" refY="3.2" orient="auto"><path d="M0,0 L8,3.2 L0,6.4 Z" fill="var(--good)"/></marker></defs>
+          <!-- cue -->
+          <circle cx="95" cy="165" r="46" fill="var(--panel2)" stroke="var(--line2)" stroke-width="2"/><text x="95" y="163" text-anchor="middle" class="svg-label">Cue</text><text x="95" y="181" text-anchor="middle" class="svg-tiny">trigger</text>
+          <!-- automatic wide downhill -->
+          <path d="M140,185 C360,235 520,270 700,285" fill="none" stroke="var(--accent)" stroke-width="14" opacity=".28" stroke-linecap="round"/>
+          <path d="M140,185 C360,235 520,270 690,284" fill="none" stroke="var(--accent)" stroke-width="3" marker-end="url(#pA)"/>
+          <text x="360" y="252" style="font:700 12px sans-serif;fill:var(--accent)">AUTOMATIC · low cost · fast · now the DEFAULT</text>
+          <rect x="700" y="262" width="150" height="48" rx="10" fill="var(--accent-soft)" stroke="var(--accent)" stroke-width="1.6"/><text x="775" y="290" text-anchor="middle" class="svg-label">Action / the hit</text>
+          <!-- override narrow uphill -->
+          <path d="M140,145 C360,105 520,80 690,66" fill="none" stroke="var(--good)" stroke-width="3" marker-end="url(#pG)"/>
+          <text x="330" y="92" style="font:700 12px sans-serif;fill:var(--good)">OVERRIDE · high cost · effortful · but NEVER deleted ★</text>
+          <rect x="700" y="44" width="150" height="48" rx="10" fill="var(--good)" opacity=".12" stroke="var(--good)" stroke-width="1.6"/><text x="775" y="66" text-anchor="middle" class="svg-label">Pause →</text><text x="775" y="82" text-anchor="middle" class="svg-tiny">see · choose</text>
+          <!-- lie callout -->
+          <rect x="150" y="290" width="520" height="30" rx="8" fill="var(--bad)" opacity=".1"/>
+          <text x="410" y="310" text-anchor="middle" style="font:600 12px sans-serif;fill:var(--bad)">The addiction's lie: "the override is gone." It isn't — it's just steeper, and re-trainable.</text>
+        </svg>
+        <figcaption>Both models converge here. Neuroscience: it's a conditioned response, and what's conditioned can be extinguished. Buddhism: it's dependently arisen, and what arises dependently can be interrupted at the seam. The feeling of autonomy is the phenomenology of not seeing the (now internal) links — not proof they're gone.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ REFRAME ============ -->
+    <section id="trap-reframe">
+      <div class="sec-head"><span class="sec-tag s">The reframe</span></div>
+      <h2 class="sec-title">Mismatch, not malfunction</h2>
+      <p class="sec-intro">So the fundamental problem isn't your mind. It's the collision between machinery tuned for a world of scarce, effortful, delayed rewards and an environment engineered to deliver abundant, effortless, instant ones. That mismatch is the whole disease — and it points to two fronts, only one of which is the loop itself.</p>
+      <figure>
+        <div class="fig-title">The mismatch — and the two levers out</div>
+        <svg viewBox="0 0 900 360" role="img" aria-label="Ancient brain colliding with modern environment produces capture; two levers to intervene">
+          <defs><marker id="rA" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--ink-faint)"/></marker></defs>
+          <rect x="50" y="40" width="330" height="86" rx="14" fill="var(--dhamma-soft)" stroke="var(--dhamma)" stroke-width="1.6"/>
+          <text x="215" y="72" text-anchor="middle" style="font:800 13px sans-serif;fill:var(--dhamma)">ANCIENT BRAIN</text>
+          <text x="215" y="94" text-anchor="middle" class="svg-tiny">tuned for scarce · effortful · delayed rewards</text>
+          <text x="215" y="112" text-anchor="middle" class="svg-tiny">automate the predictable · hunt for surprise</text>
+          <rect x="520" y="40" width="330" height="86" rx="14" fill="var(--neuro-soft)" stroke="var(--neuro)" stroke-width="1.6"/>
+          <text x="685" y="72" text-anchor="middle" style="font:800 13px sans-serif;fill:var(--neuro)">MODERN WORLD</text>
+          <text x="685" y="94" text-anchor="middle" class="svg-tiny">abundant · effortless · instant superstimuli</text>
+          <text x="685" y="112" text-anchor="middle" class="svg-tiny">engineered to hijack both habits</text>
+          <!-- collision -->
+          <path d="M380,90 L455,120" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#rA)"/>
+          <path d="M520,90 L445,120" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#rA)"/>
+          <rect x="360" y="128" width="180" height="52" rx="12" fill="var(--bad)" opacity=".14" stroke="var(--bad)" stroke-width="1.8"/>
+          <text x="450" y="152" text-anchor="middle" style="font:800 13px sans-serif;fill:var(--bad)">CAPTURE</text>
+          <text x="450" y="170" text-anchor="middle" class="svg-tiny">(what we call addiction)</text>
+          <!-- levers -->
+          <path d="M410,180 L270,230" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#rA)"/>
+          <path d="M490,180 L630,230" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#rA)"/>
+          <rect x="70" y="235" width="360" height="86" rx="14" fill="var(--panel)" stroke="var(--accent)" stroke-width="1.6"/>
+          <text x="250" y="264" text-anchor="middle" style="font:800 12px sans-serif;fill:var(--accent)">LEVER 1 · Starve the loop</text>
+          <text x="250" y="285" text-anchor="middle" class="svg-tiny">meet the craving at the seam; don't feed it;</text>
+          <text x="250" y="301" text-anchor="middle" class="svg-tiny">let each un-fed wave weaken the next</text>
+          <rect x="470" y="235" width="360" height="86" rx="14" fill="var(--good)" opacity=".1" stroke="var(--good)" stroke-width="2"/>
+          <text x="650" y="264" text-anchor="middle" style="font:800 12px sans-serif;fill:var(--good)">LEVER 2 · Rebuild tolerance</text>
+          <text x="650" y="285" text-anchor="middle" class="svg-tiny">learn to abide in neutral / low-stim states</text>
+          <text x="650" y="301" text-anchor="middle" class="svg-tiny">so boredom stops being an emergency · ROOT LEVER</text>
+        </svg>
+        <figcaption>Lever 1 disarms specific cravings. Lever 2 drains the reservoir that generates them. Willpower attacks neither — it just tries to out-muscle the loop at its strongest point, which is why it fails.</figcaption>
+      </figure>
+
+      <div class="grid">
+        <button class="card" onclick="openCard(this)">
+          <div class="ch"><span class="ci">🪜</span><h4>Higher-order conditioning</h4></div>
+          <p class="teaser">Why the trigger keeps creeping to ever-earlier cues.</p>
+          <div class="more">Open ›</div>
+          <template>
+            <div class="tagrow"><span class="mtag">Trap</span><span class="mtag">Learning</span></div>
+            <h3>Higher-order conditioning</h3>
+            <p>Once a cue reliably predicts reward, a <em>second, earlier</em> cue that predicts the first cue can itself acquire pulling power — without ever being paired with the reward directly. Stack these and the trigger marches upstream: a time of day predicts a mood predicts a thought predicts the craving.</p>
+            <p>This is the mechanism behind your "craving precedes the cue" observation. The pull hasn't detached from cues — it has attached to cues so far upstream and so internal that they're below awareness.</p>
+            <div class="src">Source: Pavlovian second-/higher-order conditioning; consistent with temporal-difference accounts of dopamine (Schultz, Dayan &amp; Montague, 1997).</div>
+          </template>
+        </button>
+        <button class="card" onclick="openCard(this)">
+          <div class="ch"><span class="ci">📈</span><h4>Incubation of craving</h4></div>
+          <p class="teaser">Craving can grow during abstinence, not just fade.</p>
+          <div class="more">Open ›</div>
+          <template>
+            <div class="tagrow"><span class="mtag">Trap</span><span class="mtag">Relapse</span></div>
+            <h3>Incubation of craving</h3>
+            <p>Counter-intuitively, cue-induced craving can <em>increase</em> over the first weeks-to-months of abstinence before it declines — the "incubation" effect. It's one reason a person can feel ambushed by a strong urge well after quitting, when they expected it to only get easier.</p>
+            <p>It's not a sign of failure; it's a known arc. Knowing it's coming makes it far less destabilising — an expected wave rather than a betrayal.</p>
+            <div class="src">Source: Grimm, Hope, Wise &amp; Shaham (2001), <em>Incubation of cocaine craving after withdrawal</em>, Nature 412:141–142; extended across reward types by Shaham and colleagues.</div>
+          </template>
+        </button>
+        <button class="card" onclick="openCard(this)">
+          <div class="ch"><span class="ci">🕳️</span><h4>The helplessness lie</h4></div>
+          <p class="teaser">Why believing in "total takeover" is itself part of the trap.</p>
+          <div class="more">Open ›</div>
+          <template>
+            <div class="tagrow"><span class="mtag">Trap</span><span class="mtag">Framing</span></div>
+            <h3>The helplessness lie</h3>
+            <p>The belief "it has completely taken over, I have no say" produces learned helplessness — and helplessness stops you looking for the internal cue and the still-open seam, which guarantees the behaviour continues. The belief manufactures the very powerlessness it claims to describe.</p>
+            <p>The accurate stance is neither "I'm fine, I can stop anytime" (denial) nor "it owns me" (helplessness). It's: <em>the default has shifted, the override costs more, and it is re-trainable.</em> That stance keeps you searching for the lever — which is where all the power actually is.</p>
+            <div class="src">Source: learned-helplessness literature (Seligman); converges with the extinction/agency framing throughout Tab ①.</div>
+          </template>
+        </button>
+      </div>
+
+      <div class="note"><strong>The cue to carry out of this tab:</strong> when the pull appears "from nowhere," don't fight it and don't obey it — <em>ask what feeling you were just trying to leave.</em> Nine times out of ten the honest answer is a flavour of restless, neutral under-stimulation. Name that, sit in it for one breath longer than is comfortable, and you've done two things at once: found the invisible cue, and started draining the reservoir. That is Lever 1 and Lever 2 in a single move.</div>
+    </section>
+
+  </div><!-- /pane-trap -->
+
+  <div class="foot">Da Vinci · Addiction — a living model. Click any card for depth and sources. Specifics of individual habits are handled in separate notes.</div>
+</div>
+
+<!-- modal -->
+<div class="modal-bg" id="modalBg" onclick="if(event.target===this)closeCard()">
+  <div class="modal" role="dialog" aria-modal="true">
+    <button class="modal-x" onclick="closeCard()" aria-label="Close">✕</button>
+    <div id="modalBody"></div>
+  </div>
+</div>
+
+<script>
+  // theme
+  var root=document.documentElement, tb=document.getElementById('themeBtn');
+  function setTheme(t){root.setAttribute('data-theme',t);tb.textContent=(t==='dark'?'☀️':'🌙');try{localStorage.setItem('addiction.theme',t)}catch(e){}}
+  (function(){var t='light';try{t=localStorage.getItem('addiction.theme')||(matchMedia('(prefers-color-scheme:dark)').matches?'dark':'light')}catch(e){}setTheme(t)})();
+  tb.onclick=function(){setTheme(root.getAttribute('data-theme')==='dark'?'light':'dark')};
+
+  // modal cards
+  var mb=document.getElementById('modalBg'), body=document.getElementById('modalBody');
+  window.openCard=function(el){var t=el.querySelector('template');if(!t)return;body.innerHTML=t.innerHTML;mb.classList.add('show');mb.scrollTop=0;body.parentElement.scrollTop=0;};
+  window.closeCard=function(){mb.classList.remove('show');};
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closeCard();});
+
+  // top tabs
+  window.switchTab=function(t){
+    document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('active',p.id==='pane-'+t);});
+    document.querySelectorAll('.tabpill').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-tab')===t);});
+    try{localStorage.setItem('addiction.tab',t);}catch(e){}
+    window.scrollTo({top:0,behavior:'smooth'});
+  };
+  (function(){var t='model';try{t=localStorage.getItem('addiction.tab')||'model';}catch(e){} if(t==='trap')switchTab('trap');})();
+
+  // smooth in-page nav (works inside hub iframe)
+  document.querySelectorAll('.chipnav a').forEach(function(a){
+    a.addEventListener('click',function(e){var id=this.getAttribute('href');if(id&&id[0]==='#'){var t=document.querySelector(id);if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}}});
+  });
+</script>
+</body>
+</html>

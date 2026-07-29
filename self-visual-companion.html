@@ -1,0 +1,1269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Self — Visual Companion</title>
+<style>
+  :root{--ink:#1c2431;--dim:#5b6572;--line:#e7e9ee;--teal:#0f766e;--tealsoft:#e6f4f1;--indigo:#4f46e5;--indigosoft:#eef0ff;--green:#2e7d32;--greensoft:#eaf6ee;--red:#a13b3b;--redsoft:#fdecec}
+  *{box-sizing:border-box}
+  body{margin:0;background:#faf9f6;color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Inter,Roboto,Helvetica,Arial,sans-serif;-webkit-font-smoothing:antialiased}
+  .wrap{max-width:880px;margin:0 auto;padding:30px 20px 90px}
+  header h1{font-size:27px;margin:0 0 4px;letter-spacing:-.01em}
+  header .sub{color:var(--dim);font-size:14px;margin:0}
+  header .upd{color:#9aa4b2;font-size:11.5px;font-style:italic;margin-top:6px}
+  .card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 22px 22px;margin:18px 0;box-shadow:0 6px 22px rgba(20,25,40,.05);position:relative;cursor:pointer;transition:transform .12s,box-shadow .12s}
+  .card:hover{transform:translateY(-2px);box-shadow:0 14px 32px rgba(20,25,40,.10)}
+  .card h2{font-size:16.5px;margin:0;display:flex;align-items:center;gap:10px;line-height:1.3;padding-right:96px}
+  .num{display:inline-flex;width:25px;height:25px;border-radius:50%;background:var(--teal);color:#fff;font-size:12.5px;font-weight:800;align-items:center;justify-content:center;flex:0 0 auto}
+  .hint{position:absolute;top:16px;right:16px;font-size:10.5px;font-weight:700;color:var(--teal);background:var(--tealsoft);border:1px solid #bfe0d8;border-radius:20px;padding:3px 10px}
+  .cap{color:var(--dim);font-size:13.5px;line-height:1.6;margin:12px 2px 0}
+  .cap b{color:var(--ink)}
+  svg{display:block;width:100%;height:auto;margin:10px 0 2px}
+  .sec{font-size:11px;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:#9aa4b2;margin:26px 2px 2px}
+  /* modal */
+  #backdrop{display:none;position:fixed;inset:0;background:rgba(20,25,40,.42);z-index:40}
+  #pop{display:none;position:fixed;left:50%;top:50%;transform:translate(-50%,-50%);width:min(650px,93vw);max-height:87vh;overflow:auto;background:#fff;border-radius:18px;box-shadow:0 30px 70px rgba(20,25,40,.35);z-index:50;padding:26px 28px}
+  #pop h3{margin:0 0 8px;font-size:20px;padding-right:32px;line-height:1.25}
+  #popx{position:absolute;top:14px;right:18px;border:0;background:none;font-size:26px;line-height:1;color:#9aa4b2;cursor:pointer;font-weight:800}
+  #pop h4{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.07em;color:var(--teal);margin:18px 0 4px}
+  #pop p{font-size:14px;line-height:1.62;margin:6px 0;color:#2c3550}
+  #pop b{color:var(--ink)}
+  .ok{font-size:10px;font-weight:800;color:var(--green);background:var(--greensoft);border-radius:20px;padding:2px 8px}
+  .no{font-size:10px;font-weight:800;color:var(--red);background:var(--redsoft);border-radius:20px;padding:2px 8px}
+  .cue{margin:16px 0 2px;padding:12px 15px;background:#eef7f0;border-left:4px solid var(--green);border-radius:10px;font-size:13.5px;font-weight:600;color:var(--ink)}
+  #pop .mini{width:100%;height:auto;margin:12px 0 4px}
+  #pop .src{margin:6px 0 0;padding-left:18px}
+  #pop .src li{font-size:12.5px;line-height:1.5;margin:6px 0;color:var(--dim)}
+  #pop .src a{color:var(--indigo);text-decoration:none;font-weight:600}
+  #pop .src a:hover{text-decoration:underline}
+
+  .card.tapp{cursor:pointer}
+  [data-pop]{cursor:pointer}
+  .num{min-width:25px;width:auto;padding:0 7px;border-radius:13px}
+  .board{background:#fff;border:1px solid var(--line);border-radius:18px;padding:16px 14px 10px;margin:14px 0;box-shadow:0 6px 22px rgba(20,25,40,.05)}
+  .legend{display:flex;flex-wrap:wrap;gap:14px;margin:6px 4px 12px;font-size:12px;color:var(--dim)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .dot{width:12px;height:12px;border-radius:3px;display:inline-block}
+  .note{color:var(--dim);font-size:13px;line-height:1.6;margin:14px 4px 4px}
+  .note b{color:var(--ink)}
+  .chip{display:inline-block;font-size:10px;font-weight:800;border-radius:20px;padding:2px 9px;color:#fff;vertical-align:middle}
+  #pop .mini{border:1px solid var(--line);border-radius:12px;background:#faf9f6}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header>
+    <h1>The Self — Visual Companion</h1>
+    <p class="sub">Every card is clickable — tap to read the full explanation &amp; more illustrations.</p>
+    <p class="upd">Grows one card per turn · newest at the bottom · now one complete document — concepts, the witness architecture &amp; the causal map</p>
+  </header>
+
+  <div class="sec">Pre-root · what the self is &amp; how it forms</div>
+
+  <!-- CARD 1 -->
+  <div class="card" data-pop="c1">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">1</span> "Self" means three different things — don't mix them</h2>
+    <svg viewBox="0 0 780 210">
+      <rect x="10" y="34" width="240" height="150" rx="12" fill="var(--greensoft)" stroke="#bfe0c7" stroke-width="1.5"/>
+      <text x="130" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="var(--green)">THE PERSON</text>
+      <text x="130" y="86" text-anchor="middle" font-size="11" fill="#3d6b47">body–mind stream</text>
+      <text x="130" y="104" text-anchor="middle" font-size="11" fill="#3d6b47">name · history</text>
+      <text x="130" y="150" text-anchor="middle" font-size="30">✓</text>
+      <text x="130" y="174" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--green)">REAL</text>
+      <rect x="270" y="34" width="240" height="150" rx="12" fill="var(--indigosoft)" stroke="#c8ccf5" stroke-width="1.5"/>
+      <text x="390" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="var(--indigo)">THE SELF-MODEL</text>
+      <text x="390" y="86" text-anchor="middle" font-size="11" fill="#5158b8">the mind's picture</text>
+      <text x="390" y="104" text-anchor="middle" font-size="11" fill="#5158b8">of "me" (body/traits/story)</text>
+      <text x="390" y="150" text-anchor="middle" font-size="30">✓</text>
+      <text x="390" y="174" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--indigo)">REAL (a construct)</text>
+      <rect x="530" y="34" width="240" height="150" rx="12" fill="var(--redsoft)" stroke="#e6b8b8" stroke-width="1.5"/>
+      <text x="650" y="60" text-anchor="middle" font-size="13" font-weight="800" fill="var(--red)">THE FIXED SELF</text>
+      <text x="650" y="86" text-anchor="middle" font-size="11" fill="#a86a6a">a permanent owner</text>
+      <text x="650" y="104" text-anchor="middle" font-size="11" fill="#a86a6a">"behind the eyes"</text>
+      <text x="650" y="150" text-anchor="middle" font-size="28">✗</text>
+      <text x="650" y="174" text-anchor="middle" font-size="11.5" font-weight="700" fill="var(--red)">ILLUSION (anattā)</text>
+    </svg>
+    <p class="cap">The first two are real. The third — a fixed watcher that <b>owns</b> it all — is the only illusion.</p>
+  </div>
+
+  <!-- CARD 2 -->
+  <div class="card" data-pop="c2">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">2</span> The river: real as a flow, empty of a fixed "thing"</h2>
+    <svg viewBox="0 0 780 200">
+      <rect x="0" y="0" width="780" height="200" rx="12" fill="#f4faf9"/>
+      <path d="M20,60 C180,40 200,120 360,110 C520,100 560,160 760,150" fill="none" stroke="#3d8ba3" stroke-width="16" stroke-linecap="round" opacity="0.85"/>
+      <path d="M20,60 C180,40 200,120 360,110 C520,100 560,160 760,150" fill="none" stroke="#7fc4d6" stroke-width="6" stroke-linecap="round"/>
+      <text x="120" y="40" font-size="11.5" font-style="italic" fill="#3d8ba3">water always changing…</text>
+      <text x="430" y="95" font-size="11.5" font-style="italic" fill="#3d8ba3">"river" = just a name for the flow</text>
+      <g transform="translate(620,40)">
+        <circle cx="20" cy="10" r="10" fill="none" stroke="#a13b3b" stroke-width="2"/>
+        <line x1="13" y1="18" x2="27" y2="2" stroke="#a13b3b" stroke-width="2"/>
+        <text x="20" y="48" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a13b3b">no permanent</text>
+        <text x="20" y="62" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a13b3b">river-owner</text>
+        <text x="20" y="76" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a13b3b">on the bank</text>
+      </g>
+    </svg>
+    <p class="cap">You are a river: real as a <b>process</b>, useful to name — with no fixed "river-thing" inside, and no one on the bank who owns it.</p>
+  </div>
+
+  <!-- CARD 3 -->
+  <div class="card" data-pop="c3">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">3</span> How the five aggregates assemble a "self"</h2>
+    <svg viewBox="0 0 780 250">
+      <g font-size="11.5" font-weight="800" fill="#fff" text-anchor="middle">
+        <g><rect x="40" y="105" width="120" height="42" rx="9" fill="#5a6b7b"/><text x="100" y="131">FORM (body)</text></g>
+        <g><rect x="200" y="40" width="130" height="42" rx="9" fill="#5a6b7b"/><text x="265" y="66">FEELING-tone</text></g>
+        <g><rect x="370" y="40" width="130" height="42" rx="9" fill="#5a6b7b"/><text x="435" y="66">PERCEPTION</text></g>
+        <g><rect x="540" y="40" width="150" height="42" rx="9" fill="#8c1d3f"/><text x="615" y="60">FORMATIONS</text><text x="615" y="74" font-size="9" font-weight="600">(makes the "I")</text></g>
+        <g><rect x="560" y="105" width="130" height="42" rx="9" fill="#5a6b7b"/><text x="625" y="131">CONSCIOUSNESS</text></g>
+      </g>
+      <g fill="none" stroke="#b9c2cf" stroke-width="2" marker-end="url(#a3)">
+        <defs><marker id="a3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#b9c2cf"/></marker></defs>
+        <path d="M120,105 C140,70 170,61 200,61"/>
+        <path d="M330,61 L366,61"/>
+        <path d="M500,61 L536,61"/>
+        <path d="M615,82 L625,101"/>
+      </g>
+      <rect x="300" y="150" width="240" height="66" rx="12" fill="#1c2431"/>
+      <text x="420" y="178" text-anchor="middle" font-size="13" font-weight="800" fill="#fff">the felt "I"</text>
+      <text x="420" y="199" text-anchor="middle" font-size="10" fill="#c9d2df">= the bundling, not a 6th part</text>
+      <path d="M615,147 C560,160 500,168 542,178" fill="none" stroke="#8c1d3f" stroke-width="1.6" stroke-dasharray="4 3"/>
+    </svg>
+    <p class="cap">No sixth "self" ingredient — the self is the <b>five working together</b>, and "I-making" is itself just one of the formations.</p>
+  </div>
+
+  <!-- CARD 4 -->
+  <div class="card" data-pop="c4">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">4</span> Self-model vs. Fixed self: the <em>content</em> vs. its felt <em>haver</em></h2>
+    <svg viewBox="0 0 780 220">
+      <text x="200" y="26" text-anchor="middle" font-size="12" font-weight="800" fill="var(--indigo)">SELF-MODEL = content (keeps changing)</text>
+      <rect x="120" y="46" width="150" height="60" rx="10" fill="#eef0ff" stroke="#c8ccf5"/>
+      <rect x="132" y="58" width="150" height="60" rx="10" fill="#e3e6ff" stroke="#c8ccf5"/>
+      <rect x="144" y="70" width="150" height="60" rx="10" fill="#4f46e5"/>
+      <text x="219" y="96" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">"I'm someone</text>
+      <text x="219" y="112" text-anchor="middle" font-size="11" font-weight="700" fill="#fff">who…"</text>
+      <text x="200" y="165" text-anchor="middle" font-size="10.5" fill="var(--dim)">body · traits · story — updatable</text>
+      <line x1="360" y1="40" x2="360" y2="180" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="575" y="26" text-anchor="middle" font-size="12" font-weight="800" fill="var(--red)">FIXED SELF = the felt "haver"</text>
+      <g transform="translate(500,60)">
+        <ellipse cx="75" cy="45" rx="70" ry="46" fill="#fbeeee" stroke="#e6b8b8" stroke-width="1.5"/>
+        <ellipse cx="75" cy="42" rx="26" ry="15" fill="#fff" stroke="#a13b3b" stroke-width="1.6"/>
+        <circle cx="75" cy="42" r="6" fill="#1c2431"/>
+        <text x="75" y="80" text-anchor="middle" font-size="10.5" font-weight="700" fill="#a13b3b">the "one" watching</text>
+      </g>
+      <text x="575" y="178" text-anchor="middle" font-size="10.5" fill="var(--dim)">feels constant — but is itself just more content</text>
+    </svg>
+    <p class="cap">Change every belief and the felt <b>owner</b> of them seems to remain — that "haver" is the fixed self, and it's itself just another appearance.</p>
+  </div>
+
+  <!-- CARD 5 -->
+  <div class="card" data-pop="c5">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">5</span> How the "witness behind the eyes" gets built</h2>
+    <svg viewBox="0 0 780 250">
+      <g font-size="10.5" text-anchor="middle">
+        <g><rect x="20" y="30" width="200" height="40" rx="9" fill="#e6f4f1" stroke="#bfe0d8"/><text x="120" y="47" font-weight="800" fill="var(--teal)">1 · Centeredness</text><text x="120" y="62" fill="#3d8f84">all view from one point</text></g>
+        <g><rect x="20" y="80" width="200" height="40" rx="9" fill="#e6f4f1" stroke="#bfe0d8"/><text x="120" y="97" font-weight="800" fill="var(--teal)">2 · the "mine" tag</text><text x="120" y="112" fill="#3d8f84">every frame stamped "for me"</text></g>
+        <g><rect x="20" y="130" width="200" height="40" rx="9" fill="#e6f4f1" stroke="#bfe0d8"/><text x="120" y="147" font-weight="800" fill="var(--teal)">3 · subject-pole</text><text x="120" y="162" fill="#3d8f84">"seeing" implies a "see-er"</text></g>
+        <g><rect x="20" y="180" width="200" height="40" rx="9" fill="#e6f4f1" stroke="#bfe0d8"/><text x="120" y="197" font-weight="800" fill="var(--teal)">4 · never appears</text><text x="120" y="212" fill="#3d8f84">so it seems permanent</text></g>
+      </g>
+      <g fill="none" stroke="#9cc7a6" stroke-width="2" marker-end="url(#a5)">
+        <defs><marker id="a5" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9cc7a6"/></marker></defs>
+        <path d="M220,50 C330,60 360,110 470,120"/>
+        <path d="M220,100 C330,105 360,118 470,124"/>
+        <path d="M220,150 C330,145 360,132 470,128"/>
+        <path d="M220,200 C330,180 360,145 470,134"/>
+      </g>
+      <ellipse cx="595" cy="125" rx="120" ry="70" fill="#fbeeee" stroke="#e6b8b8" stroke-width="1.6"/>
+      <text x="595" y="115" text-anchor="middle" font-size="13" font-weight="800" fill="var(--red)">felt "witness"</text>
+      <text x="595" y="136" text-anchor="middle" font-size="10.5" fill="#a86a6a">real as a feeling,</text>
+      <text x="595" y="151" text-anchor="middle" font-size="10.5" fill="#a86a6a">empty as an entity</text>
+    </svg>
+    <p class="cap">Four ordinary features get misread as one thing. <b>Look for the watcher and you only ever find more watched.</b></p>
+  </div>
+
+  <!-- CARD 6 -->
+  <div class="card" data-pop="c6">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">6</span> The self is <em>intermittent</em> — it flares and vanishes</h2>
+    <svg viewBox="0 0 780 200">
+      <line x1="30" y1="150" x2="760" y2="150" stroke="#c9d0da" stroke-width="1.5"/>
+      <text x="30" y="172" font-size="10" fill="#9aa4b2">time →</text>
+      <path d="M30,150 L120,150 L160,55 L200,150 L340,150 L380,45 L420,150 L520,150 L560,70 L600,150 L760,150" fill="none" stroke="#8c1d3f" stroke-width="2.6"/>
+      <text x="160" y="44" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8c1d3f">offense</text>
+      <text x="380" y="34" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8c1d3f">comparison</text>
+      <text x="560" y="60" text-anchor="middle" font-size="10.5" font-weight="700" fill="#8c1d3f">rumination</text>
+      <text x="268" y="142" text-anchor="middle" font-size="10.5" font-style="italic" fill="var(--teal)">flow — no "me"</text>
+      <text x="680" y="142" text-anchor="middle" font-size="10.5" font-style="italic" fill="var(--teal)">absorbed — no "me"</text>
+    </svg>
+    <p class="cap">In flow the "me" is simply <b>gone</b> — which a permanent thing could never be. It seems continuous only because you never catch the gaps.</p>
+  </div>
+
+  <!-- CARD 7 -->
+  <div class="card" data-pop="c7">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">7</span> The self is the same <em>kind</em> of thing as a sound</h2>
+    <svg viewBox="0 0 780 230">
+      <ellipse cx="390" cy="115" rx="360" ry="100" fill="#f4f6f9" stroke="#dfe4ec" stroke-width="1.5"/>
+      <text x="390" y="30" text-anchor="middle" font-size="11.5" font-weight="800" letter-spacing=".05em" fill="#9aa4b2">FIELD OF CONSCIOUSNESS — all just arises &amp; passes</text>
+      <g text-anchor="middle" font-size="11.5" font-weight="700">
+        <circle cx="200" cy="95" r="34" fill="#e6f4f1" stroke="#bfe0d8"/><text x="200" y="99" fill="var(--teal)">a sound</text>
+        <circle cx="320" cy="150" r="34" fill="#e6f4f1" stroke="#bfe0d8"/><text x="320" y="154" fill="var(--teal)">an itch</text>
+        <circle cx="470" cy="90" r="38" fill="#e6f4f1" stroke="#bfe0d8"/><text x="470" y="94" fill="var(--teal)">a thought</text>
+        <circle cx="590" cy="150" r="44" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/><text x="590" y="146" fill="var(--indigo)">"the self"</text><text x="590" y="162" font-size="8.5" font-weight="600" fill="#5158b8">poses as background</text>
+      </g>
+      <text x="390" y="212" text-anchor="middle" font-size="11" font-style="italic" fill="#9aa4b2">no special "self-stuff" — just stickier, centrally-framed, and stamped "mine"</text>
+    </svg>
+    <p class="cap">Seeing the self as <b>one more arising</b> — same status as a passing sound — is the whole insight.</p>
+  </div>
+
+  <div class="sec">The recurring puzzle</div>
+
+  <!-- CARD 8 -->
+  <div class="card" data-pop="c8">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">8</span> "It's all caused" ≠ "I can't change anything"</h2>
+    <svg viewBox="0 0 780 170">
+      <g font-size="11" text-anchor="middle" font-weight="700">
+        <rect x="20" y="60" width="110" height="46" rx="9" fill="#eef1f5" stroke="#d5dbe4"/><text x="75" y="88" fill="#5b6572">prior causes</text>
+        <rect x="180" y="55" width="120" height="56" rx="10" fill="#0f766e"/><text x="240" y="80" fill="#fff">YOU</text><text x="240" y="96" font-size="8.5" fill="#cdeee7">intention · effort</text>
+        <rect x="350" y="60" width="110" height="46" rx="9" fill="#eef1f5" stroke="#d5dbe4"/><text x="405" y="88" fill="#5b6572">your action</text>
+        <rect x="510" y="60" width="110" height="46" rx="9" fill="#eef1f5" stroke="#d5dbe4"/><text x="565" y="88" fill="#5b6572">real change</text>
+        <rect x="655" y="60" width="105" height="46" rx="9" fill="#eef1f5" stroke="#d5dbe4"/><text x="707" y="88" fill="#5b6572">…onward</text>
+      </g>
+      <g fill="none" stroke="#9aa1ac" stroke-width="2.2" marker-end="url(#a8)">
+        <defs><marker id="a8" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+        <path d="M130,83 L176,83"/><path d="M300,83 L346,83"/><path d="M460,83 L506,83"/><path d="M620,83 L651,83"/>
+      </g>
+      <text x="240" y="132" text-anchor="middle" font-size="11" font-style="italic" fill="var(--teal)">you're a link IN the chain — not outside it</text>
+    </svg>
+    <p class="cap">Determinism isn't fatalism. Your effort is a <b>real cause</b>. Because the self is caused, it can be <b>re-conditioned</b> — the whole basis of practice.</p>
+  </div>
+
+  <!-- CARD 9 -->
+  <div class="card" data-pop="c9">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">9</span> The fusion: how "a sound is heard" becomes "I heard it"</h2>
+    <svg viewBox="0 0 780 240">
+      <rect x="24" y="34" width="270" height="66" rx="11" fill="var(--tealsoft)" stroke="#bfe0d8" stroke-width="1.5"/>
+      <text x="159" y="62" text-anchor="middle" font-size="13" font-weight="800" fill="var(--teal)">a sound is heard</text>
+      <text x="159" y="82" text-anchor="middle" font-size="10.5" fill="#3d8f84">bare event — impersonal</text>
+      <rect x="24" y="140" width="270" height="66" rx="11" fill="var(--redsoft)" stroke="#e6b8b8" stroke-width="1.5"/>
+      <text x="159" y="168" text-anchor="middle" font-size="13" font-weight="800" fill="var(--red)">auto "I / mine" tag</text>
+      <text x="159" y="188" text-anchor="middle" font-size="10.5" fill="#a86a6a">fires the same moment · no one does it</text>
+      <g fill="none" stroke="#9aa1ac" stroke-width="2.2" marker-end="url(#a9)">
+        <defs><marker id="a9" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+        <path d="M294,67 C360,67 384,112 446,116"/>
+        <path d="M294,173 C360,173 384,128 446,124"/>
+      </g>
+      <text x="392" y="106" text-anchor="middle" font-size="15">⚡</text>
+      <text x="392" y="150" text-anchor="middle" font-size="9.5" font-style="italic" fill="#9aa4b2">fused, instantly</text>
+      <rect x="470" y="78" width="286" height="84" rx="12" fill="#4f46e5"/>
+      <text x="613" y="112" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">"I heard the sound"</text>
+      <text x="613" y="134" text-anchor="middle" font-size="10.5" fill="#cdd0f7">feels like one thing — but the "I" was glued on</text>
+      <text x="390" y="228" text-anchor="middle" font-size="11" font-style="italic" fill="#9aa4b2">pull them apart → there's just: <tspan font-weight="800" fill="var(--teal)">hearing happens</tspan> (no hearer behind it)</text>
+    </svg>
+    <p class="cap">The "I" is never <b>in</b> the hearing — it's a <b>separate arising fused on</b> so fast it looks like one event. Grammar ("I heard") then fakes a pre-existing doer.</p>
+  </div>
+
+  <div class="sec">Evidence · is this backed by more than my inference?</div>
+
+  <!-- CARD 10 -->
+  <div class="card" data-pop="c10">
+    <span class="hint">tap for sources →</span>
+    <h2><span class="num">10</span> Is this just my inference? No — both "heads" converge</h2>
+    <svg viewBox="0 0 780 240">
+      <rect x="18" y="46" width="250" height="150" rx="12" fill="var(--tealsoft)" stroke="#bfe0d8" stroke-width="1.5"/>
+      <text x="143" y="38" text-anchor="middle" font-size="11" font-weight="800" fill="var(--teal)">CONTEMPLATIVE · ~2,500 yrs</text>
+      <g font-size="10.5" fill="#245e56" text-anchor="middle">
+        <text x="143" y="80">I-making &amp; mine-making (SN 22.71)</text>
+        <text x="143" y="110">"in the heard, just the heard" (Ud 1.10)</text>
+        <text x="143" y="140">"this is mine" refuted at contact (MN 148)</text>
+        <text x="143" y="170">the aggregates are not-self (SN 22.59)</text>
+      </g>
+      <rect x="512" y="46" width="250" height="150" rx="12" fill="var(--indigosoft)" stroke="#c8ccf5" stroke-width="1.5"/>
+      <text x="637" y="38" text-anchor="middle" font-size="11" font-weight="800" fill="var(--indigo)">COGNITIVE SCIENCE</text>
+      <g font-size="10.5" fill="#3b3f8f" text-anchor="middle">
+        <text x="637" y="80">self-model theory (Metzinger)</text>
+        <text x="637" y="110">mineness · centeredness · selfhood</text>
+        <text x="637" y="140">ownership ≠ agency — they dissociate</text>
+        <text x="637" y="170">rubber-hand: "mine" is manipulable</text>
+      </g>
+      <g fill="none" stroke="#9aa1ac" stroke-width="2.2" marker-end="url(#a10)">
+        <defs><marker id="a10" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+        <path d="M268,121 L296,121"/>
+        <path d="M512,121 L484,121"/>
+      </g>
+      <rect x="300" y="86" width="180" height="72" rx="12" fill="#1c2431"/>
+      <text x="390" y="112" text-anchor="middle" font-size="11.5" font-weight="800" fill="#fff">SAME FINDING</text>
+      <text x="390" y="132" text-anchor="middle" font-size="9" fill="#c9d2df">self = a built model;</text>
+      <text x="390" y="145" text-anchor="middle" font-size="9" fill="#c9d2df">"I / mine" = an added tag</text>
+      <text x="390" y="224" text-anchor="middle" font-size="11" font-style="italic" fill="#9aa4b2">two independent traditions, one conclusion — tap for sources &amp; the honest tiering</text>
+    </svg>
+    <p class="cap">The specific claim maps almost one-to-one onto <b>Metzinger's self-model theory</b> and onto core Buddhist texts. Only the <b>metaphors</b> are mine.</p>
+  </div>
+
+  <div class="sec">Deep-dive · the architecture of the witness &amp; the causal map</div>
+
+    <!-- MASTER HIERARCHY -->
+  <div class="card">
+    <h2><span class="num">MAP</span> The whole build, top to bottom</h2>
+    <svg viewBox="0 0 860 470">
+      <!-- edges -->
+      <g fill="none" stroke="#c3ccd8" stroke-width="1.8">
+        <path d="M430,74 C430,100 235,104 235,128"/>
+        <path d="M430,74 C430,100 640,104 640,128"/>
+        <path d="M200,188 C160,215 130,225 115,248"/>
+        <path d="M235,188 C260,215 275,225 285,248"/>
+        <path d="M215,188 C150,225 120,300 115,338"/>
+        <path d="M250,188 C260,260 280,300 285,338"/>
+        <path d="M640,188 L640,248"/>
+      </g>
+      <!-- fixed self -->
+      <g data-pop="w-fixed"><rect x="315" y="20" width="230" height="54" rx="12" fill="#1c2431"/>
+        <text x="430" y="44" text-anchor="middle" font-size="14" font-weight="800" fill="#fff">THE FIXED SELF</text>
+        <text x="430" y="62" text-anchor="middle" font-size="10" fill="#c9d2df">the felt permanent owner (the illusion)</text></g>
+      <!-- felt witness -->
+      <g data-pop="w-witness"><rect x="120" y="130" width="230" height="58" rx="11" fill="#fbeeee" stroke="#a13b3b" stroke-width="1.6"/>
+        <text x="235" y="155" text-anchor="middle" font-size="12.5" font-weight="800" fill="#a13b3b">FELT WITNESS</text>
+        <text x="235" y="174" text-anchor="middle" font-size="10" fill="#a86a6a">the owner, right now</text></g>
+      <!-- continuity -->
+      <g data-pop="w-cont"><rect x="540" y="130" width="200" height="58" rx="11" fill="#e6f4f1" stroke="#0f766e" stroke-width="1.6"/>
+        <text x="640" y="155" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0f766e">CONTINUITY</text>
+        <text x="640" y="174" text-anchor="middle" font-size="10" fill="#3d8f84">the same "me", over time</text></g>
+      <!-- four ingredients -->
+      <g font-size="11.5" font-weight="800" text-anchor="middle">
+        <g data-pop="w-center"><rect x="40" y="248" width="150" height="66" rx="10" fill="var(--indigosoft)" stroke="#c8ccf5"/><text x="115" y="278" fill="var(--indigo)">1 · Centeredness</text><text x="115" y="296" font-size="9" font-weight="600" fill="#5158b8">a center to look from</text></g>
+        <g data-pop="w-mine"><rect x="210" y="248" width="150" height="66" rx="10" fill="var(--indigosoft)" stroke="#c8ccf5"/><text x="285" y="278" fill="var(--indigo)">2 · "Mine" tag</text><text x="285" y="296" font-size="9" font-weight="600" fill="#5158b8">stamped "for me"</text></g>
+        <g data-pop="w-subject"><rect x="40" y="338" width="150" height="66" rx="10" fill="var(--indigosoft)" stroke="#c8ccf5"/><text x="115" y="368" fill="var(--indigo)">3 · Subject-pole</text><text x="115" y="386" font-size="9" font-weight="600" fill="#5158b8">a grammatical ghost</text></g>
+        <g data-pop="w-never"><rect x="210" y="338" width="150" height="66" rx="10" fill="var(--indigosoft)" stroke="#c8ccf5"/><text x="285" y="368" fill="var(--indigo)">4 · Never appears</text><text x="285" y="386" font-size="9" font-weight="600" fill="#5158b8">so it seems permanent</text></g>
+        <g data-pop="w-cont"><rect x="565" y="248" width="150" height="66" rx="10" fill="var(--tealsoft)" stroke="#bfe0d8"/><text x="640" y="278" fill="var(--teal)">Memory</text><text x="640" y="296" font-size="9" font-weight="600" fill="#3d8f84">binds moments into a story</text></g>
+      </g>
+      <text x="235" y="436" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">four features fuse → the felt witness</text>
+      <text x="640" y="436" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">memory → the sense of sameness</text>
+    </svg>
+    <p class="cap">Read bottom-up: four ordinary features fuse into the <b>felt witness</b> (now); memory builds <b>continuity</b> (over time); the two together get reified into a single <b>fixed self</b>. Tap any box.</p>
+  </div>
+
+  <div class="sec">The two components of the fixed self</div>
+
+  <!-- FIXED SELF -->
+  <div class="card tapp" data-pop="w-fixed">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">▲</span> The fixed self = witness + continuity, fused</h2>
+    <svg viewBox="0 0 780 150">
+      <g data-pop="w-witness"><rect x="60" y="45" width="250" height="60" rx="11" fill="#fbeeee" stroke="#a13b3b" stroke-width="1.5"/><text x="185" y="72" text-anchor="middle" font-size="12.5" font-weight="800" fill="#a13b3b">FELT WITNESS</text><text x="185" y="90" text-anchor="middle" font-size="10" fill="#a86a6a">an owner, right now</text></g>
+      <text x="390" y="82" text-anchor="middle" font-size="20" fill="#9aa4b2">+</text>
+      <g data-pop="w-cont"><rect x="470" y="45" width="250" height="60" rx="11" fill="#e6f4f1" stroke="#0f766e" stroke-width="1.5"/><text x="595" y="72" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0f766e">CONTINUITY</text><text x="595" y="90" text-anchor="middle" font-size="10" fill="#3d8f84">the same one, over time</text></g>
+      <text x="390" y="30" text-anchor="middle" font-size="12" font-weight="800" fill="#1c2431">= "a permanent, unchanging ME"</text>
+      <text x="390" y="132" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">two constructions, welded together and mistaken for one solid thing</text>
+    </svg>
+    <p class="cap">The "fixed self" isn't a single illusion — it's <b>two</b> welded together: an owner in the present (witness) and a sameness across time (continuity).</p>
+  </div>
+
+  <!-- FELT WITNESS -->
+  <div class="card tapp" data-pop="w-witness">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">◆</span> The felt witness = four ingredients, fused</h2>
+    <svg viewBox="0 0 780 170">
+      <g font-size="10.5" font-weight="700" text-anchor="middle" fill="var(--indigo)">
+        <rect x="20" y="30" width="150" height="40" rx="9" fill="var(--indigosoft)" stroke="#c8ccf5"/><text x="95" y="55">centeredness</text>
+        <rect x="20" y="100" width="150" height="40" rx="9" fill="var(--indigosoft)" stroke="#c8ccf5"/><text x="95" y="125">"mine" tag</text>
+        <rect x="200" y="30" width="150" height="40" rx="9" fill="var(--indigosoft)" stroke="#c8ccf5"/><text x="275" y="55">subject-pole</text>
+        <rect x="200" y="100" width="150" height="40" rx="9" fill="var(--indigosoft)" stroke="#c8ccf5"/><text x="275" y="125">never appears</text>
+      </g>
+      <g fill="none" stroke="#9cc7a6" stroke-width="2" marker-end="url(#wm)">
+        <defs><marker id="wm" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9cc7a6"/></marker></defs>
+        <path d="M350,50 C420,55 440,80 500,85"/><path d="M350,120 C420,115 440,90 500,85"/>
+        <path d="M170,50 C220,60 440,80 500,85"/><path d="M170,120 C220,110 440,90 500,85"/>
+      </g>
+      <ellipse cx="620" cy="85" rx="130" ry="58" fill="#fbeeee" stroke="#a13b3b" stroke-width="1.6"/>
+      <text x="620" y="80" text-anchor="middle" font-size="13" font-weight="800" fill="#a13b3b">felt witness</text>
+      <text x="620" y="99" text-anchor="middle" font-size="10" fill="#a86a6a">"the one who is here"</text>
+    </svg>
+    <p class="cap">None of the four is a self. Fused fast enough, they <b>feel</b> like a single someone at the center to whom everything happens.</p>
+  </div>
+
+  <div class="sec">The four ingredients — in depth</div>
+
+  <!-- 1 CENTEREDNESS -->
+  <div class="card tapp" data-pop="w-center">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">1</span> Centeredness — a point to look from</h2>
+    <svg viewBox="0 0 780 220">
+      <circle cx="390" cy="110" r="88" fill="#f4f6ff" stroke="#c8ccf5" stroke-width="1.5"/>
+      <g stroke="#9aa1ac" stroke-width="1.6" marker-end="url(#c1)">
+        <defs><marker id="c1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+        <line x1="300" y1="60" x2="372" y2="98"/><line x1="480" y1="60" x2="408" y2="98"/>
+        <line x1="300" y1="160" x2="372" y2="122"/><line x1="480" y1="160" x2="408" y2="122"/>
+      </g>
+      <text x="250" y="55" font-size="10.5" fill="#5b6572">a sound "over there"</text>
+      <text x="470" y="55" font-size="10.5" fill="#5b6572">a sight "over there"</text>
+      <circle cx="390" cy="110" r="7" fill="#4f46e5"/>
+      <text x="390" y="150" text-anchor="middle" font-size="11" font-weight="800" fill="#4f46e5">"here"</text>
+      <text x="390" y="205" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">everything is arranged around a center — but a center is a point, not a thing</text>
+    </svg>
+    <p class="cap">All experience comes from one viewpoint, so there's a <b>"here"</b> everything else is "over there" from. The mind turns that point into "someone standing at it." <b>Tap for the camera analogy — the whole idea in pictures.</b></p>
+  </div>
+
+  <!-- 2 MINE TAG -->
+  <div class="card tapp" data-pop="w-mine">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">2</span> The "mine / for-me" tag — a stamp on every frame</h2>
+    <svg viewBox="0 0 780 210">
+      <g>
+        <rect x="70" y="40" width="150" height="96" rx="10" fill="#eef0ff" stroke="#c8ccf5"/>
+        <rect x="95" y="52" width="150" height="96" rx="10" fill="#e6e9ff" stroke="#c8ccf5"/>
+        <rect x="120" y="64" width="150" height="96" rx="10" fill="#fff" stroke="#4f46e5" stroke-width="1.5"/>
+        <text x="195" y="100" text-anchor="middle" font-size="11" fill="#5b6572">a sight</text>
+        <rect x="150" y="112" width="92" height="24" rx="6" fill="#4f46e5"/><text x="196" y="129" text-anchor="middle" font-size="11" font-weight="800" fill="#fff">MINE ✓</text>
+      </g>
+      <text x="196" y="185" text-anchor="middle" font-size="10.5" fill="#5b6572">every moment gets the same stamp…</text>
+      <g stroke="#9aa1ac" stroke-width="2" fill="none" marker-end="url(#m1)">
+        <defs><marker id="m1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+        <path d="M300,105 L360,105"/>
+      </g>
+      <g transform="translate(430,60)">
+        <ellipse cx="120" cy="45" rx="120" ry="46" fill="#fdecec" stroke="#e6b8b8" stroke-width="1.5"/>
+        <text x="120" y="40" text-anchor="middle" font-size="12" font-weight="800" fill="#a13b3b">so you infer ONE owner</text>
+        <text x="120" y="60" text-anchor="middle" font-size="10" fill="#a86a6a">…but there's only the recurring stamp</text>
+      </g>
+      <text x="550" y="185" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">no tagged-to "someone" — just the tagging</text>
+    </svg>
+    <p class="cap">Each experience is auto-stamped "this is <b>mine</b>." Same stamp everywhere → you invent a single owner. But the owner is just the repeating stamp.</p>
+  </div>
+
+  <!-- 3 SUBJECT POLE -->
+  <div class="card tapp" data-pop="w-subject">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">3</span> The subject-pole — a grammatical ghost</h2>
+    <svg viewBox="0 0 780 200">
+      <text x="200" y="46" text-anchor="middle" font-size="14" font-weight="800" fill="#1c2431">"It is raining"</text>
+      <text x="200" y="74" text-anchor="middle" font-size="11" fill="#5b6572">what is the "it"?</text>
+      <g transform="translate(160,92)"><circle cx="40" cy="18" r="15" fill="none" stroke="#a13b3b" stroke-width="2"/><line x1="30" y1="30" x2="50" y2="6" stroke="#a13b3b" stroke-width="2"/></g>
+      <text x="200" y="150" text-anchor="middle" font-size="10.5" fill="#a13b3b">no "it" — there's just <tspan font-weight="800">raining</tspan></text>
+      <line x1="390" y1="30" x2="390" y2="175" stroke="var(--line)" stroke-width="1.5" stroke-dasharray="4 4"/>
+      <text x="580" y="46" text-anchor="middle" font-size="14" font-weight="800" fill="#1c2431">"I am seeing"</text>
+      <text x="580" y="74" text-anchor="middle" font-size="11" fill="#5b6572">what is the "I"?</text>
+      <g transform="translate(540,92)"><circle cx="40" cy="18" r="15" fill="none" stroke="#a13b3b" stroke-width="2"/><line x1="30" y1="30" x2="50" y2="6" stroke="#a13b3b" stroke-width="2"/></g>
+      <text x="580" y="150" text-anchor="middle" font-size="10.5" fill="#a13b3b">maybe no "I" — there's just <tspan font-weight="800">seeing</tspan></text>
+      <text x="390" y="192" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">grammar demands a subject slot — so one is posited, then mistaken for a real thing</text>
+    </svg>
+    <p class="cap">"Seeing" seems to need a "see-er," and language hard-wires "I." But like the "it" in "it's raining," the "I" may be an empty slot the sentence <b>requires</b>, not an entity that was found.</p>
+  </div>
+
+  <!-- 4 NEVER APPEARS -->
+  <div class="card tapp" data-pop="w-never">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">4</span> It never appears as an object — so it feels permanent</h2>
+    <svg viewBox="0 0 780 200">
+      <g transform="translate(150,40)">
+        <ellipse cx="60" cy="60" rx="52" ry="30" fill="#f4f6ff" stroke="#c8ccf5" stroke-width="1.5"/>
+        <circle cx="60" cy="60" r="14" fill="#fff" stroke="#4f46e5" stroke-width="1.6"/><circle cx="60" cy="60" r="6" fill="#1c2431"/>
+        <path d="M120,60 C170,20 170,100 120,62" fill="none" stroke="#a13b3b" stroke-width="2" marker-end="url(#n1)"/>
+        <defs><marker id="n1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#a13b3b"/></marker></defs>
+        <text x="60" y="112" text-anchor="middle" font-size="10.5" fill="#a13b3b">the eye can't see itself</text>
+      </g>
+      <text x="470" y="70" text-anchor="middle" font-size="11.5" fill="#5b6572">never seen to change or stop</text>
+      <text x="470" y="94" text-anchor="middle" font-size="11.5" fill="#5b6572">↓</text>
+      <text x="470" y="118" text-anchor="middle" font-size="12.5" font-weight="800" fill="#a13b3b">felt as a permanent background</text>
+      <text x="470" y="160" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">but it never appears because there's nothing there to appear</text>
+    </svg>
+    <p class="cap">The witness is the one everything appears <b>to</b>, so it never shows up as content that could be seen to change — which is why it feels constant. Look for it and you find only more content.</p>
+  </div>
+
+  <div class="sec">The other branch</div>
+
+  <!-- CONTINUITY -->
+  <div class="card tapp" data-pop="w-cont">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">↻</span> Continuity — the "same me" across time (from memory)</h2>
+    <svg viewBox="0 0 780 160">
+      <line x1="40" y1="90" x2="740" y2="90" stroke="#c9d0da" stroke-width="1.5"/>
+      <g text-anchor="middle" font-size="10" fill="#5b6572">
+        <circle cx="130" cy="90" r="20" fill="#e6f4f1" stroke="#bfe0d8"/><text x="130" y="93">age 5</text>
+        <circle cx="330" cy="90" r="20" fill="#e6f4f1" stroke="#bfe0d8"/><text x="330" y="93">age 15</text>
+        <circle cx="530" cy="90" r="20" fill="#e6f4f1" stroke="#bfe0d8"/><text x="530" y="93">age 25</text>
+        <circle cx="700" cy="90" r="22" fill="#0f766e"/><text x="700" y="94" fill="#fff" font-weight="800">now</text>
+      </g>
+      <path d="M150,82 C240,60 250,60 312,82" fill="none" stroke="#3d8ba3" stroke-width="2" stroke-dasharray="4 3"/>
+      <path d="M350,82 C440,60 450,60 512,82" fill="none" stroke="#3d8ba3" stroke-width="2" stroke-dasharray="4 3"/>
+      <path d="M550,82 C630,60 640,60 680,82" fill="none" stroke="#3d8ba3" stroke-width="2" stroke-dasharray="4 3"/>
+      <text x="400" y="40" text-anchor="middle" font-size="11" font-weight="700" fill="#3d8ba3">memory threads the moments into one "story of me"</text>
+      <text x="400" y="140" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">each recall rewrites the story — the latest edit feels like "how it always was"</text>
+    </svg>
+    <p class="cap">The sense of being <b>the same one</b> from your first memory to now is autobiographical memory binding moments together — and memory is <b>reconstructive</b>, not a recording.</p>
+  </div>
+
+  <div class="sec">The engine · dependent origination (why the whole map works)</div>
+  <div class="card tapp" data-pop="do-principle">
+    <span class="hint">tap to read →</span>
+    <h2><span class="num">◉</span> The method: starve the causes, and the self can't arise</h2>
+    <svg viewBox="0 0 780 200">
+      <rect x="18" y="70" width="150" height="58" rx="11" fill="#eef1f5" stroke="#d5dbe4"/>
+      <text x="93" y="95" text-anchor="middle" font-size="12" font-weight="800" fill="#5b6572">CAUSES</text>
+      <text x="93" y="113" text-anchor="middle" font-size="9" fill="#7a828d">the whole chain (fuel)</text>
+      <path d="M168,99 L300,99" fill="none" stroke="#c8892a" stroke-width="3" marker-end="url(#dof)"/>
+      <defs><marker id="dof" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#c8892a"/></marker></defs>
+      <text x="234" y="89" text-anchor="middle" font-size="9" font-style="italic" fill="#c8892a">feeds &#8594;</text>
+      <g transform="translate(234,99)"><line x1="-13" y1="-13" x2="13" y2="13" stroke="#a13b3b" stroke-width="2.6"/><line x1="13" y1="-13" x2="-13" y2="13" stroke="#a13b3b" stroke-width="2.6"/></g>
+      <text x="234" y="130" text-anchor="middle" font-size="9" font-weight="700" fill="#a13b3b">see through / starve</text>
+      <text x="405" y="78" text-anchor="middle" font-size="30">&#128293;</text>
+      <text x="405" y="108" text-anchor="middle" font-size="12" font-weight="800" fill="#8c1d3f">FIXED SELF</text>
+      <text x="405" y="123" text-anchor="middle" font-size="9" fill="#a86a6a">the effect &#183; burns only while fed</text>
+      <path d="M470,99 L588,99" fill="none" stroke="#9aa1ac" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#dog)"/>
+      <defs><marker id="dog" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+      <text x="529" y="89" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">goes out</text>
+      <rect x="598" y="70" width="164" height="58" rx="11" fill="#eaf6ee" stroke="#bfe0c7"/>
+      <text x="680" y="95" text-anchor="middle" font-size="12" font-weight="800" fill="#2e7d32">INSIGHT</text>
+      <text x="680" y="113" text-anchor="middle" font-size="9" fill="#4f8a58">what remains when it dissolves</text>
+      <text x="390" y="176" text-anchor="middle" font-size="10.5" font-style="italic" fill="#9aa4b2">don&#8217;t fight the flame &#8212; remove the fuel, and it goes out on its own</text>
+    </svg>
+    <p class="cap">The fixed self is an <b>effect</b> — it appears only while its causes are fed. You never attack it directly; you <b>see through / starve the causes</b>, and it goes out on its own. <b>Insight is what remains.</b></p>
+  </div>
+
+    <div class="sec">The causal &amp; intervention map — where practice cuts the chain</div>
+  <div class="board">
+    <div class="legend">
+      <span><i class="dot" style="background:#a13b3b"></i> cut the cause</span>
+      <span><i class="dot" style="background:#c8892a"></i> re-route it</span>
+      <span><i class="dot" style="background:#0f766e"></i> expose it as empty</span>
+      <span><i class="dot" style="background:#9aa1ac"></i> steady (prep)</span>
+    </div>
+    <svg viewBox="0 0 980 560">
+      <defs>
+        <marker id="ar" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6 Z" fill="#8a93a3"/></marker>
+        <marker id="up" markerWidth="10" markerHeight="10" refX="4" refY="1" orient="auto"><path d="M0,6 L4,0 L8,6 Z" fill="#8a93a3"/></marker>
+      </defs>
+      <text x="18" y="24" font-size="11" font-weight="800" letter-spacing=".05em" fill="#9aa4b2">THE CAUSAL CHAIN  ·  each node CONDITIONS the next  (dependent origination)</text>
+      <g data-pop="n-memory"><rect x="648" y="150" width="118" height="42" rx="9" fill="#e6f4f1" stroke="#bfe0d8"/><text x="707" y="170" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0f766e">Memory</text><text x="707" y="184" text-anchor="middle" font-size="8.5" fill="#3d8f84">reconstructive</text></g>
+      <g data-pop="n-continuity"><rect x="784" y="150" width="118" height="42" rx="9" fill="#e6f4f1" stroke="#bfe0d8"/><text x="843" y="170" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0f766e">Continuity</text><text x="843" y="184" text-anchor="middle" font-size="8.5" fill="#3d8f84">"same me over time"</text></g>
+      <path d="M766,171 L782,171" fill="none" stroke="#8a93a3" stroke-width="1.6" marker-end="url(#ar)"/>
+      <path d="M843,192 L843,240" fill="none" stroke="#8a93a3" stroke-width="1.6" marker-end="url(#ar)"/>
+      <g font-size="12" font-weight="800" fill="#fff" text-anchor="middle">
+        <g data-pop="n-contact"><rect x="18" y="240" width="120" height="60" rx="11" fill="#5a6b7b"/><text x="78" y="266">Contact</text><text x="78" y="284" font-size="9" font-weight="600" fill="#e6ebf0">sense · object · consciousness</text></g>
+        <g data-pop="n-feeling"><rect x="158" y="240" width="120" height="60" rx="11" fill="#c8892a"/><text x="218" y="266">Feeling-tone</text><text x="218" y="284" font-size="9" font-weight="600" fill="#fdf1df">pleasant / unpleasant</text></g>
+        <g data-pop="n-perception"><rect x="298" y="240" width="120" height="60" rx="11" fill="#5a6b7b"/><text x="358" y="266">Perception</text><text x="358" y="284" font-size="9" font-weight="600" fill="#e6ebf0">labels &amp; recognises</text></g>
+        <g data-pop="n-formations"><rect x="438" y="240" width="140" height="60" rx="11" fill="#8c1d3f"/><text x="508" y="264">Formations</text><text x="508" y="282" font-size="9" font-weight="600" fill="#f4d9e2">"I-making / mine-making"</text></g>
+        <g data-pop="n-witness"><rect x="598" y="240" width="140" height="60" rx="11" fill="#a13b3b"/><text x="668" y="264">Felt witness</text><text x="668" y="282" font-size="8.5" font-weight="600" fill="#f4dede">4 ingredients fuse</text></g>
+        <g data-pop="n-fixed"><rect x="758" y="240" width="120" height="60" rx="11" fill="#1c2431"/><text x="818" y="266">FIXED SELF</text><text x="818" y="284" font-size="8.5" font-weight="600" fill="#c9d2df">the illusion</text></g>
+      </g>
+      <g fill="none" stroke="#8a93a3" stroke-width="2" marker-end="url(#ar)">
+        <path d="M138,270 L156,270"/><path d="M278,270 L296,270"/><path d="M418,270 L436,270"/><path d="M578,270 L596,270"/><path d="M738,270 L756,270"/>
+        <path d="M878,270 L928,270"/>
+      </g>
+      <text x="147" y="234" font-size="8.5" font-style="italic" fill="#9aa4b2">conditions →</text>
+      <text x="953" y="258" text-anchor="middle" font-size="9.5" font-weight="700" fill="#8c1d3f">→ operations</text>
+      <text x="953" y="272" text-anchor="middle" font-size="9.5" font-weight="700" fill="#8c1d3f">→ distortions</text>
+      <text x="953" y="286" text-anchor="middle" font-size="9.5" font-weight="700" fill="#8c1d3f">→ locks</text>
+      <text x="953" y="300" text-anchor="middle" font-size="8" font-style="italic" fill="#9aa4b2">(Self-Tree)</text>
+      <g font-size="8.5" fill="#9aa4b2" text-anchor="middle" font-style="italic">
+        <text x="78" y="316">sensory cortex</text>
+        <text x="218" y="316">insula</text>
+        <text x="358" y="316">assoc. cortex</text>
+        <text x="508" y="316">SMA / parietal</text>
+        <text x="668" y="316">TPJ / parietal</text>
+        <text x="818" y="316">DMN · hippocampus</text>
+      </g>
+      <text x="18" y="352" font-size="11" font-weight="800" letter-spacing=".05em" fill="#9aa4b2">THE TOOLS  ·  where meditation acts on the chain</text>
+      <g data-pop="p-anchor"><rect x="18" y="366" width="120" height="74" rx="10" fill="#f2f4f7" stroke="#9aa1ac" stroke-width="1.4"/><rect x="18" y="366" width="5" height="74" rx="2" fill="#9aa1ac"/><text x="80" y="390" text-anchor="middle" font-size="10.5" font-weight="800" fill="#5b6572">Breath anchor</text><text x="80" y="406" text-anchor="middle" font-size="9" fill="#7a828d">samatha</text><text x="80" y="428" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa1ac">STEADY — makes</text><text x="80" y="438" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa1ac">the seam visible</text></g>
+      <path d="M78,366 L78,302" fill="none" stroke="#9aa1ac" stroke-width="1.5" stroke-dasharray="4 3" marker-end="url(#up)"/>
+      <g data-pop="p-feeling"><rect x="158" y="366" width="120" height="74" rx="10" fill="#f7ecd8" stroke="#c8892a" stroke-width="1.4"/><rect x="158" y="366" width="5" height="74" rx="2" fill="#c8892a"/><text x="220" y="388" text-anchor="middle" font-size="10.5" font-weight="800" fill="#9c5f1e">Mindful of</text><text x="220" y="401" text-anchor="middle" font-size="10.5" font-weight="800" fill="#9c5f1e">feeling-tone</text><text x="220" y="422" text-anchor="middle" font-size="9" font-style="italic" fill="#b07a2e">RE-ROUTE — feeling</text><text x="220" y="432" text-anchor="middle" font-size="9" font-style="italic" fill="#b07a2e">→ calm, not craving</text></g>
+      <path d="M218,366 L218,302" fill="none" stroke="#c8892a" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#up)"/>
+      <g data-pop="p-notself"><rect x="438" y="366" width="140" height="74" rx="10" fill="#fdecec" stroke="#a13b3b" stroke-width="1.4"/><rect x="438" y="366" width="5" height="74" rx="2" fill="#a13b3b"/><text x="510" y="388" text-anchor="middle" font-size="10.5" font-weight="800" fill="#a13b3b">Not-self (anattā)</text><text x="510" y="404" text-anchor="middle" font-size="9" fill="#a86a6a">"not mine, not I"</text><text x="510" y="424" text-anchor="middle" font-size="9" font-style="italic" fill="#a13b3b">CUT — I-making at</text><text x="510" y="434" text-anchor="middle" font-size="9" font-style="italic" fill="#a13b3b">the source</text></g>
+      <path d="M508,366 L508,302" fill="none" stroke="#a13b3b" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#up)"/>
+      <g data-pop="p-bare"><rect x="438" y="450" width="140" height="74" rx="10" fill="#e6f4f1" stroke="#0f766e" stroke-width="1.4"/><rect x="438" y="450" width="5" height="74" rx="2" fill="#0f766e"/><text x="510" y="472" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0f766e">Bare attention</text><text x="510" y="488" text-anchor="middle" font-size="9" fill="#3d8f84">"in the seen, just seen"</text><text x="510" y="508" text-anchor="middle" font-size="9" font-style="italic" fill="#0f766e">EXPOSE — before the</text><text x="510" y="518" text-anchor="middle" font-size="9" font-style="italic" fill="#0f766e">"I" glues on</text></g>
+      <path d="M508,450 L508,442" fill="none" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#up)"/>
+      <g data-pop="p-vipassana"><rect x="598" y="366" width="140" height="74" rx="10" fill="#e6f4f1" stroke="#0f766e" stroke-width="1.4"/><rect x="598" y="366" width="5" height="74" rx="2" fill="#0f766e"/><text x="670" y="388" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0f766e">Vipassanā (anicca)</text><text x="670" y="404" text-anchor="middle" font-size="9" fill="#3d8f84">note arising &amp; passing</text><text x="670" y="424" text-anchor="middle" font-size="9" font-style="italic" fill="#0f766e">EXPOSE — witness is</text><text x="670" y="434" text-anchor="middle" font-size="9" font-style="italic" fill="#0f766e">just more content</text></g>
+      <path d="M668,366 L668,302" fill="none" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#up)"/>
+      <g data-pop="p-inquiry"><rect x="598" y="450" width="140" height="74" rx="10" fill="#e6f4f1" stroke="#0f766e" stroke-width="1.4"/><rect x="598" y="450" width="5" height="74" rx="2" fill="#0f766e"/><text x="670" y="472" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0f766e">Find the watcher</text><text x="670" y="488" text-anchor="middle" font-size="9" fill="#3d8f84">turn to look for "I"</text><text x="670" y="508" text-anchor="middle" font-size="9" font-style="italic" fill="#0f766e">EXPOSE — only more</text><text x="670" y="518" text-anchor="middle" font-size="9" font-style="italic" fill="#0f766e">watched is found</text></g>
+      <path d="M668,450 L668,442" fill="none" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#up)"/>
+      <g data-pop="p-concentration"><rect x="758" y="366" width="120" height="74" rx="10" fill="#e6f4f1" stroke="#0f766e" stroke-width="1.4"/><rect x="758" y="366" width="5" height="74" rx="2" fill="#0f766e"/><text x="820" y="388" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0f766e">Deep samādhi</text><text x="820" y="404" text-anchor="middle" font-size="9" fill="#3d8f84">quiet the narrative</text><text x="820" y="424" text-anchor="middle" font-size="9" font-style="italic" fill="#0f766e">EXPOSE — the "me"</text><text x="820" y="434" text-anchor="middle" font-size="9" font-style="italic" fill="#0f766e">can fall silent (DMN↓)</text></g>
+      <path d="M818,366 L818,302" fill="none" stroke="#0f766e" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#up)"/>
+    </svg>
+    <p class="note"><b>How to read it:</b> the top row is the causal chain — each link <b>conditions</b> the next, ending in the fixed self and its downstream locks. The coloured tools below act on a <b>specific</b> link: freeze that cause, and everything downstream of it (including the fixed self) loses its footing. You don't fight the self directly — you <b>starve it of a cause</b>. Tap any node or tool for the full mechanism, the exact practice, and sources.</p>
+  </div>
+
+  <!-- APPEND-HERE: new cards go above this line, newest last -->
+
+</div>
+
+<div id="backdrop"></div>
+<div id="pop"></div>
+
+<script>
+var C='<span class="chip" style="background:#a13b3b">CUT</span>', R='<span class="chip" style="background:#c8892a">RE-ROUTE</span>', E='<span class="chip" style="background:#0f766e">EXPOSE</span>', S='<span class="chip" style="background:#9aa1ac">STEADY</span>';
+var DATA = {
+"do-principle": `<h3>The engine — dependent origination as method</h3>
+<h4>The move you&#8217;ve been building toward</h4>
+<p>Everything is an <b>effect of prior causes</b> (dependent origination). The <b>fixed self</b> is no exception — an effect with <b>no power of its own</b>, appearing <i>only</i> while its causes are supplied.</p>
+<h4>1 &#183; See it as an effect</h4><p>Stop treating the self as a thing to defeat. It is the <i>downstream</i> of a chain, not a fortress.</p>
+<h4>2 &#183; Find its causes &#183; 3 &#183; read them out</h4><p>Trace back to the workable causes — feeling-reaction, I-making, the fusion, the narrative. Then <b>attack the causes, not the effect</b>: see through them, prevent them, starve them.</p>
+<h4>4 &#183; The effect can&#8217;t appear</h4><p>With its causes unfed, the fixed self has <b>nothing to arise from</b> — there are no conditions under which that effect <i>can</i> appear.</p>
+<h4>5 &#183; Insight is the dissolving</h4><p><b>Insight isn&#8217;t added — it is what remains when the effect dissolves</b> through the complete non-feeding of causes. The emptiness of the self is <i>revealed</i>, not manufactured.</p>
+<h4>The fire simile</h4><p>The self is a flame; clinging is the fuel. You don&#8217;t win by fighting the fire — you stop feeding it and it goes out on its own. (This is why <b>&#8220;nibb&#0257;na&#8221; literally means &#8220;extinguishing.&#8221;</b>)</p>
+<div class="cue">Don&#8217;t attack the self — starve its causes. The effect cannot arise unfed, and what remains when it dissolves is insight.</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://en.wikipedia.org/wiki/Pratityasamutpada" target="_blank" rel="noopener">Dependent origination (prat&#0299;tyasamutp&#0257;da) — all things arise from causes &#8599;</a></li><li><a href="https://suttacentral.net/sn22.59/en/sujato" target="_blank" rel="noopener">SN 22.59 — the aggregates are conditioned &amp; not-self &#8599;</a></li><li><a href="https://suttacentral.net/ud1.10/en/sujato" target="_blank" rel="noopener">Ud 1.10 B&#0257;hiya — the practice of adding nothing &#8599;</a></li></ul>`,
+c1: `<h3>"Self" means three different things — don't mix them</h3>
+<h4>The move that clears the fog</h4>
+<p>Almost all confusion about "the self" comes from three very different things sharing one word. Pull them apart and it settles.</p>
+<h4>1 · The person <span class="ok">real</span></h4>
+<p>The whole living body–mind stream — a name, a history, preferences, this felt life. Nobody denies you're here. This exists (conventionally).</p>
+<h4>2 · The self-model <span class="ok">real construct</span></h4>
+<p>The <b>picture</b> your brain draws of "me": my body, my traits, my story. A genuine cognitive tool — it's what you plan and remember with, and what neuroscience actually studies. It changes all the time.</p>
+<h4>3 · The fixed self <span class="no">illusion</span></h4>
+<p>The <b>felt sense</b> that behind all that sits a permanent, unchanging <i>owner</i> watching from behind your eyes. <b>This</b> is the only illusion — there is no such entity. This is exactly what "anattā" (not-self) denies.</p>
+<p>Your river caught it: the flowing water (person) and the useful name "river" (model) are real — a scoopable "river-essence" (fixed self) was never there.</p>
+<div class="cue">The person is real. The model is a real tool. Only the fixed inner owner is the fiction.</div>`,
+
+c2: `<h3>The river: real as a flow, empty of a fixed "thing"</h3>
+<h4>Why the analogy fits perfectly</h4>
+<p>A river isn't a <i>thing</i> — it's a <b>pattern of water flowing</b>. You can't scoop out a cup and say "this is the river." Yet it has a name, a shape, and continuity. It's real <b>as a process</b>, not as an object.</p>
+<h4>Two things are real, one is imagined</h4>
+<p><b>Real:</b> the ever-changing water (the person) and the handy name "river" (the self-model).<br><b>Imagined:</b> a permanent <i>river-owner</i> sitting on the bank who has always been there and to whom the water belongs. There is no one on the bank.</p>
+<h4>The same is true of you</h4>
+<p>Body, feelings, thoughts, memories — all flowing and changing. "You" is a useful name for that flow. The <b>fixed self</b> is the imagined watcher on the bank. Flowing doesn't need a "flower" behind it.</p>
+<div class="cue">You are a river: real as a process, nameable, useful — with no fixed core and no owner on the bank.</div>`,
+
+c3: `<h3>How the five aggregates assemble a "self"</h3>
+<h4>The moment-cycle (this repeats constantly)</h4>
+<p>1 · <b>Form</b> — the body contacts something. → 2 · <b>Feeling-tone</b> — pleasant / unpleasant / neutral arises. → 3 · <b>Perception</b> — the mind labels & recognizes it. → 4 · <b>Formations</b> — reactions fire: wanting, judging, intending. → 5 · <b>Consciousness</b> — it's all known.</p>
+<p>This cycles so fast, and memory binds it so smoothly, that it feels like one continuous experiencer.</p>
+<h4>There is no sixth "self" part</h4>
+<p>The self is not an ingredient added on top — it's the <b>bundling itself</b>. A "chariot" is just wheels + axle + frame working together; take them apart and there's no extra "chariot" to find. A "forest" is just many trees. "Self" is the five aggregates working together.</p>
+<svg class="mini" viewBox="0 0 620 90">
+  <g font-size="11" font-weight="700" text-anchor="middle" fill="#5b6572">
+    <rect x="10" y="30" width="90" height="34" rx="8" fill="#eef1f5" stroke="#d5dbe4"/><text x="55" y="52">wheels</text>
+    <rect x="115" y="30" width="90" height="34" rx="8" fill="#eef1f5" stroke="#d5dbe4"/><text x="160" y="52">axle</text>
+    <rect x="220" y="30" width="90" height="34" rx="8" fill="#eef1f5" stroke="#d5dbe4"/><text x="265" y="52">frame</text>
+    <text x="345" y="52" font-size="16" fill="#9aa4b2">=</text>
+    <rect x="370" y="24" width="110" height="46" rx="10" fill="#1c2431"/><text x="425" y="45" fill="#fff">"chariot"</text><text x="425" y="60" font-size="8.5" fill="#c9d2df">no extra part</text>
+    <text x="560" y="52" font-size="10" font-style="italic" fill="#9aa4b2">just a name</text>
+  </g>
+</svg>
+<h4>The twist</h4>
+<p>One of the <b>Formations</b> is the act of self-making itself — the mind generates the thought "I / me / mine" and stamps it onto experience. So the self isn't <i>behind</i> the aggregates authoring them; it's <b>produced by</b> one of them. The self is an <b>output</b>, not the author.</p>
+<div class="cue">No sixth "self" part — the self is the bundling of the five, and "I-making" is itself one of the formations firing.</div>`,
+
+c4: `<h3>Self-model vs. Fixed self — the content vs. its felt "haver"</h3>
+<h4>Self-model = the content</h4>
+<p>A <b>picture that appears</b>: "I'm someone who…", the image of your body, your story. It's updatable and ever-changing — you can revise any of it with new evidence.</p>
+<h4>Fixed self = the felt haver behind it</h4>
+<p>The sense of a <b>viewer</b> the content belongs to — the "one" looking from behind the eyes. Here's the test: change <i>every</i> belief in your model ("bad at sports" → "decent now") and the <b>same felt "I" who has the beliefs</b> seems to remain. That never-changing "haver" is the fixed self — and it's <b>itself just more content</b> dressed up as a subject.</p>
+<h4>Two illusions bundled</h4>
+<p><b>(1) Continuity</b> — one "me" across time. This comes from <b>memory</b> (each recall rewrites the story; the latest edit feels like "how it always was").<br><b>(2) Ownership</b> — a witness behind the eyes right now. This is the deeper one (see card 5).</p>
+<h4>Why it fools you: transparency</h4>
+<p>The model never arrives <i>labeled</i> "model." You look <b>through</b> it like clean glass you don't notice — so its contents (including the self at the center) are taken as directly real. A map you can't see is a map gets mistaken for the territory.</p>
+<h4>And no one is doing the mistaking</h4>
+<p>There's no fixed self <i>making</i> this error — the <b>mistaking itself generates</b> the felt fixed self. Impersonal process → felt entity, not entity → process.</p>
+<div class="cue">Self-model = what changes. Fixed self = the felt constant that "has" it — and that constant is manufactured, not found.</div>`,
+
+c5: `<h3>How the "witness behind the eyes" gets built</h3>
+<h4>It's not a thing — it's a sense, built fresh</h4>
+<p>The witness is manufactured moment to moment, mostly only when needed. Four ordinary features combine and then get misread as one entity:</p>
+<h4>1 · Centeredness</h4>
+<p>All experience arrives from one viewpoint, so there's a <b>center</b> everything is arranged around. But a center is a <i>geometric origin, not a thing</i> — like the centre of a circle. The mind reifies it into "someone who is here."</p>
+<h4>2 · The "mine / for-me" tag</h4>
+<p>The brain stamps each experience "this matters to me." Because <b>every frame carries the same stamp</b>, it feels like one constant owner they all belong to. But the owner is just the recurring stamp — not a thing it points to.</p>
+<h4>3 · The subject-pole (a grammatical ghost)</h4>
+<p>Consciousness isn't pre-split into knower & known — the brain builds the split. "Seeing" implies a "see-er"; language hard-wires "I". So a subject-pole is posited to complete the structure.</p>
+<h4>4 · It never appears as an object</h4>
+<p>The witness is felt as the one everything appears <i>to</i>, so it never shows up as content that could be seen to change or stop — which is <b>why it feels permanent</b>. But it never appears because <b>there's nothing there to appear</b>. Look for it and you only find more content: a subtle thought "I", a tightness behind the eyes.</p>
+<div class="cue">Look for the watcher, and you only ever find more watched. Real as a feeling, empty as an entity.</div>`,
+
+c6: `<h3>The self is intermittent — it flares and vanishes</h3>
+<h4>Your own observation is the proof</h4>
+<p>You noticed it exactly: when you ruminate (someone offended me, betrayed me), the "me" appears vividly. When you drop into absorbed work or flow, it <b>disappears</b> — there's just the task. Then something happens and it returns.</p>
+<h4>What that means</h4>
+<p>The felt self is an <b>event, not a standing thing</b>. It spikes when something is <i>self-relevant or threatening</i> (offense, comparison, evaluation) — that's when the "mine / threat" system fires and manufactures the self-sense. A truly <b>permanent</b> witness could never vanish in flow.</p>
+<h4>Why it still <i>seems</i> continuous</h4>
+<p>You <b>never catch its absences</b>. In the gap there's no one home to notice "the self is gone," so on return it reappears and papers over the gap — feeling like it was here the whole time. The self's own absences are invisible to it. That's the entire trick of "permanence."</p>
+<div class="cue">In flow the "me" is simply gone. It seems continuous only because its absences have no one home to notice them.</div>`,
+
+c7: `<h3>The self is the same kind of thing as a sound</h3>
+<h4>The liberating answer</h4>
+<p>Are the self-model and the felt self <i>also</i> just arisings — like sounds, sensations, thoughts? <b>Yes.</b> Same status as a sound or an itch. There is <b>no special "self-stuff."</b> They arise, persist a while, and pass, like everything else in the field of experience.</p>
+<h4>The only differences are functional, not fundamental</h4>
+<p><b>Framing</b> — a sound appears as an <i>object</i> in the field; the self poses as the <i>background / center</i>, disguising itself. But examined, it's just another figure.</p>
+<p><b>Stickiness</b> — self-thoughts recur far more and stick harder (the mind prioritizes self-relevant content for survival), so they <i>feel</i> more solid. But recurring often ≠ being permanent. A frequent event is still an event.</p>
+<p><b>The mine-tag</b> — self-arisings carry the extra "this is ME" watermark. But the watermark is itself just another arising — not proof of an owner.</p>
+<h4>Why this is the whole insight</h4>
+<p>Insight meditation drops the self-arisings into the <b>same field</b> as sounds and sensations and watches them all arise & pass <i>equally</i>. The self quietly loses its special "I'm the exception, I'm the watcher" status.</p>
+<div class="cue">No special self-stuff: the self is one more arising — just stickier, centrally-framed, and stamped "mine".</div>`,
+
+c8: `<h3>"It's all caused" ≠ "I can't change anything"</h3>
+<h4>Yes: the self is an effect</h4>
+<p>The self is a <b>conditioned arising</b> — the aggregates plus conditions produce the self-model moment to moment. It's downstream, not an uncaused author. (This is "dependent origination.")</p>
+<h4>But determinism is not fatalism</h4>
+<p>The wrong turn is "so we can't change anything." You are not <i>outside</i> the causal chain watching helplessly — <b>you are a link inside it</b>. Your intentions, effort, and deliberation are <b>real causes</b> that produce real effects; they don't stop being causes just because they were themselves caused. The chain runs <i>through</i> you.</p>
+<p>Watering a plant still grows it, even though the watering was itself caused. Change is not forbidden by causation — change is exactly what a causal system <i>does</i>.</p>
+<h4>The practical gold</h4>
+<p>Because the self is <b>caused, it's workable</b> — caused things can be re-conditioned. That's the entire basis of practice. (This very conversation is re-conditioning your model right now.)</p>
+<div class="cue">You're a link in the chain, not outside it. Because the self is caused, it can be re-conditioned.</div>`,
+
+c9: `<h3>The fusion: how "a sound is heard" becomes "I heard it"</h3>
+<h4>First — what "frame" means</h4>
+<p>Consciousness isn't a smooth stream; it's a rapid series of discrete <b>moments</b>, like frames of a film. "Every frame" = every one of those moments-of-experiencing.</p>
+<h4>The "stamp" — and who applies it: no one</h4>
+<p>The "mine" stamp is <b>not</b> applied by a self — that would be circular (a self can't be doing the stamping if the stamp is what <i>creates</i> the sense of self). The stamping is <b>itself an automatic, impersonal event</b> — one more arising. Like your phone auto-tagging every photo with GPS: no one tags each by hand; the camera does it. Because you see the <b>same tag on everything</b>, you infer "an owner" — but there's only the tagging, no tagger.</p>
+<h4>Your model — and it's exactly right</h4>
+<p>• Raw event: <b>a sound is heard</b> (impersonal — hearing just happens).<br>• At the same instant, the automatic self-referencing fires: an <b>"I / mine"</b> arising.<br>• The two get <b>bound/fused</b> so fast they present as one: <b>"I heard a sound."</b><br>• The "I" was never <i>in</i> the hearing — it's a <b>separate, parallel event glued on</b>, and grammar ("I heard") then makes it look like an "I" that pre-existed and did the hearing.</p>
+<h4>One refinement</h4>
+<p>The fusion makes the "I" feel like the <i>doer / subject</i>. But truly <b>both</b> the sound and the "I" are just objects that arose — neither is a real subject behind it. So "the sound is heard" is closer to the truth than "I heard it," and most accurate: <b>"there is hearing."</b> No hearer needed.</p>
+<h4>The payoff (what meditation trains)</h4>
+<p>You can catch the seam — notice the "I" as a <i>separate</i> arising that gets added, and sometimes catch a flash of bare hearing <b>before</b> the "I" glues on. That's Bāhiya's instruction: "in the heard, only the heard — no 'you' in it."</p>
+<div class="cue">"I heard it" = a bare hearing + an auto-added "I", fused so fast they look like one. Pull them apart and there's just hearing.</div>`,
+
+c10: `<h3>Is this just my inference? No — both traditions converge on it</h3>
+<h4>Cognitive science — it maps onto a named theory</h4>
+<p><b>Thomas Metzinger's self-model theory</b> ("Being No One") says the self is a <b>model</b> the brain builds, with the exact three ingredients from card 5: <b>mineness</b> (the "mine" tag), <b>perspectivalness</b> ("the immovable center of perception" = centeredness), and <b>selfhood</b> (continuity over time). He uses <b>transparency</b> in the same sense — we're "naïve realists" who can't see the model <i>as</i> a model. His thesis is literally a self-model with <b>no self behind it</b>.</p>
+<h4>And "mine / I" is a separable add-on — clinically shown</h4>
+<p>The <b>sense of agency</b> vs <b>sense of ownership</b> (Shaun Gallagher) <b>dissociate</b> in real conditions: in schizophrenia's thought-insertion a thought is <i>owned but not authored</i>; in alien-hand syndrome a movement is <i>owned but not willed</i>. The <b>rubber-hand illusion</b> (Botvinick &amp; Cohen, 1998) shows "this is mine" is a <b>manipulable inference</b> — a fake hand can feel like yours in seconds. That's the mine-tag caught being applied.</p>
+<h4>Contemplative — the same, 2,500 years earlier</h4>
+<p>The Buddha dismantles "I am / this is mine" <b>at each moment of sense-contact</b> (Chachakka Sutta, MN 148), names the mechanism as <b>I-making &amp; mine-making</b> — ahaṃkāra / mamaṃkāra (Rādha Sutta, SN 22.71), and gives the exact practice: <b>add nothing — "in the seen just the seen, in the heard just the heard"</b> (Bāhiya Sutta, Ud 1.10).</p>
+<h4>Honest tiering</h4>
+<p>🟢 <b>Established:</b> ownership/agency are constructed, separable features (rubber-hand; agency/ownership dissociation) &amp; the Buddhist texts. 🔵 <b>Theory, not proof:</b> Metzinger's full "no self" (leading but debated). 🟡 <b>Mine:</b> only the metaphors — film-frame, GPS auto-tag, glue.</p>
+<h4>Sources (all checked live)</h4>
+<ul class="src">
+<li><a href="https://en.wikipedia.org/wiki/Self-model" target="_blank" rel="noopener">Self-model theory — mineness · perspectivalness · selfhood · transparency (Metzinger) ↗</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Sense_of_agency" target="_blank" rel="noopener">Sense of agency vs ownership — they dissociate (Gallagher) ↗</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Rubber_hand_illusion" target="_blank" rel="noopener">Rubber-hand illusion — "mine" is a manipulable inference (Botvinick &amp; Cohen 1998) ↗</a></li>
+<li><a href="https://plato.stanford.edu/entries/self-consciousness-phenomenological/" target="_blank" rel="noopener">Phenomenology — "for-me-ness" &amp; the minimal self (Stanford Encyclopedia) ↗</a></li>
+<li><a href="https://suttacentral.net/mn148/en/sujato" target="_blank" rel="noopener">MN 148 Chachakka — "this is mine / I am this" refuted at each contact ↗</a></li>
+<li><a href="https://suttacentral.net/sn22.71/en/sujato" target="_blank" rel="noopener">SN 22.71 Rādha — I-making &amp; mine-making (ahaṃkāra / mamaṃkāra) ↗</a></li>
+<li><a href="https://suttacentral.net/ud1.10/en/sujato" target="_blank" rel="noopener">Ud 1.10 Bāhiya — "in the seen, just the seen…" ↗</a></li>
+<li><a href="https://en.wikipedia.org/wiki/Anatt%C4%81" target="_blank" rel="noopener">Anattā — not-self ↗</a></li>
+</ul>
+<div class="cue">Both heads, independently: the self is a built model, and "I / mine" is an added feature — not an entity behind experience.</div>`,
+
+"w-fixed": `<h3>The fixed self = witness + continuity, welded together</h3>
+<h4>Not one illusion — two</h4>
+<p>The "fixed self" is the felt sense of a <b>permanent, unchanging owner</b> behind experience. But it's built from <b>two separate constructions</b> that get fused so smoothly they seem like one solid thing:</p>
+<p><b>1 · The felt witness</b> — an owner / experiencer <i>right now</i> (the "one behind the eyes"). Built from four ingredients — see cards 1–4.</p>
+<p><b>2 · Continuity</b> — the sense of being <i>the same</i> one across time. Built from memory.</p>
+<h4>Why the welding matters</h4>
+<p>The witness gives you "there is a someone here"; continuity gives you "and it's the same someone as yesterday." Together they manufacture "a permanent me." Pull the two apart and each is revealed as a process, not a thing — and the "permanence" was never observed, only assumed.</p>
+<div class="cue">Fixed self = "a someone is here" (witness) + "it's always been the same someone" (continuity). Two constructions, mistaken for one entity.</div>`,
+
+"w-witness": `<h3>The felt witness = four ingredients, fused</h3>
+<h4>The confluence</h4>
+<p>The "witness behind the eyes" is not a thing that watches. It's a <b>sense</b> that appears when four ordinary features of experience combine and get misread as a single entity:</p>
+<p><b>1 · Centeredness</b> — experience has a center to look <i>from</i>.<br>
+<b>2 · The "mine" tag</b> — every moment is stamped "for me."<br>
+<b>3 · The subject-pole</b> — a "see-er" is posited to complete "seeing."<br>
+<b>4 · Never appears</b> — it's never an object, so it feels permanent.</p>
+<h4>Fusion</h4>
+<p>Fused fast enough, these produce the vivid feeling of "one who is here, now, to whom all this is happening, and who owns it." Real as a feeling; empty as an entity. Each of the four is examined in its own card.</p>
+<div class="cue">Four features, none of them a self, fuse into the feeling of a single someone at the center. Take them apart and no one is found.</div>`,
+
+"w-center": `<h3>1 &#183; Centeredness — the camera analogy, in pictures</h3>
+<p>Every moment of experience is &#8220;shot from a viewpoint.&#8221; Here is the whole idea, one picture at a time.</p>
+
+<h4>&#9312; A movie filmed from the driver&#8217;s seat</h4>
+<svg class="mini" viewBox="0 0 620 200">
+  <rect x="50" y="14" width="520" height="150" rx="10" fill="#e9eff9" stroke="#c8ccf5"/>
+  <polygon points="250,164 370,164 322,60 298,60" fill="#c4ccd8"/>
+  <line x1="310" y1="150" x2="310" y2="72" stroke="#fff" stroke-width="2" stroke-dasharray="8 8"/>
+  <rect x="60" y="60" width="70" height="104" fill="#aeb9c8"/><rect x="490" y="60" width="70" height="104" fill="#aeb9c8"/>
+  <text x="310" y="52" text-anchor="middle" font-size="9.5" fill="#5b6572">road ahead</text>
+  <text x="95" y="116" text-anchor="middle" font-size="8.5" fill="#f4f6fa">bldg</text><text x="525" y="116" text-anchor="middle" font-size="8.5" fill="#f4f6fa">bldg</text>
+  <rect x="50" y="140" width="520" height="24" fill="#3a4252"/>
+  <rect x="286" y="20" width="48" height="15" rx="3" fill="#2a2f3a"/><text x="310" y="31" text-anchor="middle" font-size="7.5" fill="#c9d2df">mirror</text>
+  <circle cx="310" cy="152" r="6" fill="#4f46e5"/>
+  <text x="310" y="184" text-anchor="middle" font-size="10.5" font-weight="800" fill="#4f46e5">&#128247; camera = the driver&#8217;s seat = &#8220;here&#8221;</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 10px">Everything in the shot is arranged around one &#8220;here&#8221; — the camera position.</p>
+
+<h4>&#9313; Is anyone actually AT the camera? No.</h4>
+<svg class="mini" viewBox="0 0 620 150">
+  <rect x="278" y="52" width="64" height="72" rx="14" fill="#c3ccd8"/><rect x="292" y="34" width="36" height="24" rx="9" fill="#c3ccd8"/>
+  <text x="310" y="142" text-anchor="middle" font-size="10.5" font-weight="800" fill="#a13b3b">&#10060; no one is in the film at the camera</text>
+  <text x="470" y="72" font-size="10" fill="#5b6572">the seat is empty —</text>
+  <text x="470" y="88" font-size="10" fill="#5b6572">the viewpoint is real,</text>
+  <text x="470" y="104" font-size="10" fill="#5b6572">nobody sits at it</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 10px">The point of view is real; there is nobody there.</p>
+
+<h4>&#9314; Your mind inserts a &#8220;me&#8221; anyway</h4>
+<svg class="mini" viewBox="0 0 620 150">
+  <rect x="278" y="52" width="64" height="72" rx="14" fill="#c3ccd8"/><rect x="292" y="34" width="36" height="24" rx="9" fill="#c3ccd8"/>
+  <circle cx="310" cy="66" r="12" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-dasharray="4 3"/>
+  <path d="M296,114 C296,90 324,90 324,114 Z" fill="none" stroke="#4f46e5" stroke-width="1.8" stroke-dasharray="4 3"/>
+  <path d="M130,84 C180,84 210,84 250,86" fill="none" stroke="#8a93a3" stroke-width="1.8" marker-end="url(#mkA)"/>
+  <defs><marker id="mkA" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#8a93a3"/></marker></defs>
+  <text x="128" y="76" font-size="9.5" font-style="italic" fill="#9aa4b2">you supply this &#8594;</text>
+  <text x="310" y="142" text-anchor="middle" font-size="10.5" font-weight="800" fill="#4f46e5">the watcher is added by you, not filmed</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 10px">You flinch when a car swerves at &#8220;you&#8221; — your mind puts a self in the empty seat.</p>
+
+<h4>&#9315; Your own experience is filmed the same way</h4>
+<svg class="mini" viewBox="0 0 620 200">
+  <ellipse cx="310" cy="158" rx="30" ry="18" fill="#eef0ff" stroke="#4f46e5"/><circle cx="310" cy="158" r="7" fill="#1c2431"/>
+  <text x="310" y="190" text-anchor="middle" font-size="10" font-weight="800" fill="#4f46e5">&#8220;here&#8221; (behind your eyes)</text>
+  <rect x="468" y="50" width="72" height="32" rx="7" fill="#fff" stroke="#bfe0d8"/><text x="504" y="70" text-anchor="middle" font-size="10" fill="#3d8f84">cup</text>
+  <rect x="96" y="52" width="96" height="26" rx="7" fill="#fff" stroke="#bfe0d8"/><text x="144" y="69" text-anchor="middle" font-size="9.5" fill="#3d8f84">a sound</text>
+  <rect x="248" y="34" width="124" height="24" rx="7" fill="#fff" stroke="#bfe0d8"/><text x="310" y="50" text-anchor="middle" font-size="9.5" fill="#3d8f84">wall (further)</text>
+  <g fill="none" stroke="#9aa1ac" stroke-width="1.6" marker-end="url(#mkB)">
+    <defs><marker id="mkB" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+    <path d="M500,84 C444,120 384,140 338,150"/>
+    <path d="M160,80 C214,120 268,140 286,152"/>
+    <path d="M310,60 L310,136"/>
+  </g>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 10px">Cup &#8220;over there,&#8221; wall &#8220;further,&#8221; everything framed from a viewpoint behind your eyes.</p>
+
+<h4>&#9316; The three parts, on one image</h4>
+<svg class="mini" viewBox="0 0 620 205">
+  <rect x="30" y="34" width="560" height="150" rx="16" fill="#f4f6ff" stroke="#c8ccf5" stroke-width="1.6"/>
+  <text x="46" y="54" font-size="10.5" font-weight="800" fill="#5158b8">SCREEN = AWARENESS (the whole field)&#160;&#160;&#10003; real</text>
+  <text x="300" y="90" text-anchor="middle" font-size="9.5" font-weight="800" fill="#a13b3b">the one &#8220;sitting here&#8221; = FIXED SELF&#160;&#10007; imagined</text>
+  <circle cx="300" cy="126" r="20" fill="none" stroke="#a13b3b" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <line x1="286" y1="112" x2="314" y2="140" stroke="#a13b3b" stroke-width="1.8"/>
+  <circle cx="300" cy="126" r="7" fill="#4f46e5"/>
+  <text x="300" y="170" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4f46e5">camera-spot = &#8220;here&#8221; (egocenter)&#160;&#10003; real</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 10px">Screen (awareness) real &#183; camera-spot (&#8220;here&#8221;) real &#183; the viewer sitting at it was never in the film.</p>
+
+<h4>&#9317; Why the viewpoint exists at all</h4>
+<svg class="mini" viewBox="0 0 620 150">
+  <rect x="56" y="64" width="92" height="46" rx="10" fill="#e6f4f1" stroke="#0f766e"/><text x="102" y="85" text-anchor="middle" font-size="10" font-weight="800" fill="#0f766e">car</text><text x="102" y="99" text-anchor="middle" font-size="8" fill="#3d8f84">(0,0) &#183; no driver</text>
+  <path d="M150,87 L460,87" fill="none" stroke="#c8892a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#mkC)"/>
+  <defs><marker id="mkC" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#c8892a"/></marker></defs>
+  <text x="300" y="77" text-anchor="middle" font-size="10" fill="#9c5f1e">obstacle 10&#8239;m ahead of me</text>
+  <polygon points="486,68 510,104 462,104" fill="#f7ecd8" stroke="#c8892a"/><text x="486" y="122" text-anchor="middle" font-size="8.5" fill="#9c5f1e">obstacle</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 10px">To act you need an origin to measure from — but no one need sit at it (a self-driving car has none).</p>
+
+<h4>&#9733; The anatomy — where each thing sits in the mind</h4>
+<svg class="mini" viewBox="0 0 620 250">
+  <rect x="8" y="8" width="604" height="234" rx="18" fill="#fbfbfe" stroke="#e7e9ee"/>
+  <text x="22" y="28" font-size="9.5" font-weight="800" letter-spacing=".05em" fill="#9aa4b2">YOUR MIND</text>
+  <rect x="40" y="44" width="540" height="176" rx="20" fill="#eef0ff" stroke="#c8ccf5" stroke-width="1.4"/>
+  <text x="310" y="70" text-anchor="middle" font-size="11" font-weight="800" fill="#5158b8">CONSCIOUSNESS = the field (where all appears)</text>
+  <text x="310" y="86" text-anchor="middle" font-size="9" font-style="italic" fill="#7278c9">the whole area &#183; NOT a point &#183; NOT the viewpoint</text>
+  <circle cx="150" cy="150" r="16" fill="#fff" stroke="#bfe0d8"/><text x="150" y="153" text-anchor="middle" font-size="8.5" fill="#3d8f84">a sound</text>
+  <circle cx="470" cy="165" r="16" fill="#fff" stroke="#bfe0d8"/><text x="470" y="168" text-anchor="middle" font-size="8.5" fill="#3d8f84">a sight</text>
+  <circle cx="310" cy="150" r="20" fill="none" stroke="#a13b3b" stroke-width="1.6" stroke-dasharray="4 3"/>
+  <line x1="297" y1="137" x2="323" y2="163" stroke="#a13b3b" stroke-width="1.7"/>
+  <circle cx="310" cy="150" r="7" fill="#4f46e5"/>
+  <path d="M304,157 L210,196" stroke="#4f46e5" stroke-width="1.2" fill="none"/>
+  <rect x="60" y="198" width="216" height="30" rx="7" fill="#eef0ff" stroke="#4f46e5"/><text x="168" y="217" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4f46e5">EGOCENTER = the VIEWPOINT (&#8220;here&#8221;) &#10003;</text>
+  <path d="M330,142 L408,118" stroke="#a13b3b" stroke-width="1.2" fill="none"/>
+  <rect x="402" y="104" width="190" height="30" rx="7" fill="#fdecec" stroke="#a13b3b"/><text x="497" y="123" text-anchor="middle" font-size="9.5" font-weight="800" fill="#a13b3b">WATCHER = fixed self &#10007; imagined</text>
+</svg>
+<p style="font-size:13px;line-height:1.7;color:#2c3550;margin:6px 2px 4px">&#8226; <b>Is consciousness the viewpoint?</b> No — consciousness is the <b>field</b> (the whole space where things appear).<br>&#8226; <b>What is the viewpoint, then?</b> The <b>egocenter</b> — a point <i>inside</i> the field, the &#8220;here&#8221; it is all framed from.<br>&#8226; <b>And the watcher?</b> An imagined self placed <i>at</i> that point. There is a viewpoint; <b>no one is at it.</b></p>
+<hr style="border:0;border-top:1px solid #e7e9ee;margin:20px 0 8px">
+<h4>&#9673; Where is the &#8220;here&#8221; physically — and can it move?</h4>
+<p>A key clarification: the <b>felt</b> location and the <b>physical machinery</b> are two different things.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">A &#183; A represented place is a mark, not where the marking is made</h5>
+<svg class="mini" viewBox="0 0 620 160">
+  <rect x="40" y="20" width="540" height="120" rx="10" fill="#eef7f0" stroke="#bfe0c7"/>
+  <g stroke="#d3e7d9" stroke-width="1">
+    <line x1="40" y1="60" x2="580" y2="60"/><line x1="40" y1="100" x2="580" y2="100"/>
+    <line x1="180" y1="20" x2="180" y2="140"/><line x1="320" y1="20" x2="320" y2="140"/><line x1="440" y1="20" x2="440" y2="140"/>
+  </g>
+  <circle cx="110" cy="52" r="7" fill="#a13b3b"/><text x="110" y="40" text-anchor="middle" font-size="9" font-weight="800" fill="#a13b3b">you are here</text>
+  <text x="380" y="70" font-size="10.5" fill="#2c3550">the DOT marks a place —</text>
+  <text x="380" y="90" font-size="10.5" fill="#2c3550">but the paper &amp; ink (the machinery)</text>
+  <text x="380" y="110" font-size="10.5" font-weight="800" fill="#2e7d32">is the WHOLE sheet</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">&#8220;Behind the eyes&#8221; is a <b>represented</b> location the brain points to — not the spot where the representing happens.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">B &#183; The felt spot is at the front; the machinery is spread out (vision is at the BACK)</h5>
+<svg class="mini" viewBox="0 0 620 190">
+  <ellipse cx="300" cy="100" rx="185" ry="66" fill="#f4f6ff" stroke="#c8ccf5" stroke-width="1.4"/>
+  <path d="M118,84 q-14,16 0,32" fill="none" stroke="#c8ccf5" stroke-width="1.4"/>
+  <circle cx="150" cy="100" r="9" fill="#fff" stroke="#4f46e5"/><circle cx="150" cy="100" r="4" fill="#1c2431"/>
+  <text x="150" y="150" text-anchor="middle" font-size="9" fill="#5b6572">eye (front)</text>
+  <circle cx="190" cy="100" r="6" fill="#4f46e5"/><text x="196" y="82" font-size="9.5" font-weight="800" fill="#4f46e5">felt &#8220;here&#8221;</text>
+  <ellipse cx="432" cy="100" rx="46" ry="40" fill="#dfe4f5" stroke="#b9c2e6"/><text x="432" y="98" text-anchor="middle" font-size="9" font-weight="800" fill="#5158b8">visual cortex</text><text x="432" y="112" text-anchor="middle" font-size="8" fill="#7278c9">(occipital, back)</text>
+  <path d="M162,100 C240,150 340,150 396,110" fill="none" stroke="#9aa1ac" stroke-width="1.6" stroke-dasharray="4 3" marker-end="url(#loc2)"/>
+  <defs><marker id="loc2" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+  <text x="300" y="176" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">signals travel to the back to be processed</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">The felt &#8220;here&#8221; sits at the front, yet the visual processing that feeds it is at the <b>back</b>, spread across the brain. Represented &#8800; located.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">C &#183; Why behind the eyes: the senses converge there, and vision rules depth</h5>
+<svg class="mini" viewBox="0 0 620 190">
+  <circle cx="310" cy="100" r="30" fill="#eef0ff" stroke="#4f46e5"/><text x="310" y="98" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4f46e5">&#8220;here&#8221;</text><text x="310" y="112" text-anchor="middle" font-size="7.5" fill="#5158b8">origin</text>
+  <g font-size="10" font-weight="700" text-anchor="middle">
+    <text x="120" y="46" fill="#8c1d3f">VISION (eyes)</text><text x="120" y="60" font-size="8" font-weight="400" fill="#a86a6a">dominant &#183; depth</text>
+    <text x="500" y="50" fill="#5b6572">hearing</text>
+    <text x="120" y="160" fill="#5b6572">balance</text>
+    <text x="500" y="160" fill="#5b6572">smell &#183; taste</text>
+  </g>
+  <g fill="none" stroke="#9aa1ac" stroke-width="1.5" marker-end="url(#loc3)">
+    <defs><marker id="loc3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+    <path d="M150,54 C210,72 250,84 284,92"/>
+    <path d="M478,56 C420,74 370,86 340,92"/>
+    <path d="M150,150 C210,138 255,122 286,110"/>
+    <path d="M470,152 C420,138 360,120 336,110"/>
+  </g>
+  <text x="310" y="182" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">the sensor hub of the head is the optimal place to put the origin</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">Your hypothesis is right: vision dominates spatial depth, and the head is where the senses converge — so the origin is set there. Efficient, not arbitrary.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">D &#183; The BRAIN models it &#8212; not consciousness (consciousness does nothing)</h5>
+<svg class="mini" viewBox="0 0 620 160">
+  <rect x="40" y="34" width="240" height="92" rx="12" fill="#eef0ff" stroke="#c8ccf5"/>
+  <text x="160" y="60" text-anchor="middle" font-size="11" font-weight="800" fill="#5158b8">CONSCIOUSNESS</text>
+  <text x="160" y="78" text-anchor="middle" font-size="9.5" fill="#7278c9">the field where it appears</text>
+  <text x="160" y="98" text-anchor="middle" font-size="9.5" font-style="italic" fill="#a13b3b">does nothing (not an agent)</text>
+  <circle cx="160" cy="114" r="5" fill="#4f46e5"/>
+  <rect x="360" y="34" width="220" height="92" rx="12" fill="#e6f4f1" stroke="#bfe0d8"/>
+  <text x="470" y="60" text-anchor="middle" font-size="11" font-weight="800" fill="#0f766e">BRAIN</text>
+  <text x="470" y="78" text-anchor="middle" font-size="9.5" fill="#3d8f84">computes &amp; places the &#8220;here&#8221;</text>
+  <text x="470" y="98" text-anchor="middle" font-size="9.5" font-weight="800" fill="#0f766e">does the work</text>
+  <path d="M358,100 C320,116 250,120 172,114" fill="none" stroke="#0f766e" stroke-width="1.8" marker-end="url(#loc4)"/>
+  <defs><marker id="loc4" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#0f766e"/></marker></defs>
+  <text x="300" y="150" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">the brain places the dot in the field &#8212; consciousness is just where it shows up</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">Say &#8220;the brain models it,&#8221; never &#8220;consciousness chooses it.&#8221; Consciousness is the screen; the brain is what draws on it.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">E &#183; The &#8220;here&#8221; is a computed variable &#8212; so it can move</h5>
+<svg class="mini" viewBox="0 0 620 180">
+  <circle cx="120" cy="70" r="16" fill="#eef0ff" stroke="#4f46e5"/><circle cx="120" cy="70" r="6" fill="#4f46e5"/>
+  <text x="120" y="104" text-anchor="middle" font-size="9" font-weight="800" fill="#4f46e5">default: head</text>
+  <path d="M138,74 C230,96 300,120 360,128" fill="none" stroke="#c8892a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#loc5)"/>
+  <defs><marker id="loc5" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#c8892a"/></marker></defs>
+  <rect x="366" y="112" width="120" height="34" rx="8" fill="#f7ecd8" stroke="#c8892a"/><text x="426" y="127" text-anchor="middle" font-size="9" font-weight="800" fill="#9c5f1e">onto a rubber hand</text><text x="426" y="139" text-anchor="middle" font-size="7.5" fill="#b07a2e">(rubber-hand illusion)</text>
+  <path d="M136,64 C260,20 420,20 520,40" fill="none" stroke="#c8892a" stroke-width="1.6" stroke-dasharray="5 4" marker-end="url(#loc5)"/>
+  <rect x="470" y="26" width="120" height="34" rx="8" fill="#f7ecd8" stroke="#c8892a"/><text x="530" y="41" text-anchor="middle" font-size="9" font-weight="800" fill="#9c5f1e">outside the body</text><text x="530" y="53" text-anchor="middle" font-size="7.5" fill="#b07a2e">(out-of-body, TPJ)</text>
+  <text x="310" y="172" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">relocated when the sensory evidence is changed &#8212; proof it is not a fixed anatomical fact</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">Rubber-hand and out-of-body experiments <b>move</b> the felt &#8220;here.&#8221; The location is plastic — a computed estimate, not a permanent spot.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">F &#183; But no one chooses it &#8212; it is an automatic best-fit</h5>
+<svg class="mini" viewBox="0 0 620 170">
+  <g font-size="9.5" text-anchor="middle" font-weight="700" fill="#5b6572">
+    <rect x="30" y="30" width="120" height="30" rx="8" fill="#eef1f5" stroke="#d5dbe4"/><text x="90" y="49">vision</text>
+    <rect x="30" y="72" width="120" height="30" rx="8" fill="#eef1f5" stroke="#d5dbe4"/><text x="90" y="91">touch</text>
+    <rect x="30" y="114" width="120" height="30" rx="8" fill="#eef1f5" stroke="#d5dbe4"/><text x="90" y="133">balance</text>
+  </g>
+  <rect x="250" y="60" width="150" height="54" rx="11" fill="#1c2431"/><text x="325" y="84" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff">brain&#8217;s best-fit</text><text x="325" y="100" text-anchor="middle" font-size="8.5" fill="#c9d2df">estimate of &#8220;where am I?&#8221;</text>
+  <rect x="470" y="66" width="120" height="42" rx="10" fill="#eef0ff" stroke="#4f46e5"/><text x="530" y="92" text-anchor="middle" font-size="11" font-weight="800" fill="#4f46e5">&#8220;here&#8221;</text>
+  <g fill="none" stroke="#9aa1ac" stroke-width="1.6" marker-end="url(#loc6)">
+    <defs><marker id="loc6" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+    <path d="M150,45 C200,55 210,78 248,82"/><path d="M150,87 L246,87"/><path d="M150,129 C200,120 210,98 248,92"/>
+    <path d="M400,87 L466,87"/>
+  </g>
+  <text x="325" y="150" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">no chooser inside &#8212; the &#8220;here&#8221; is inferred, not decided</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">Even when it moves, <b>no one</b> is placing it. It is the brain&#8217;s automatic best-fit from the inputs — constrained plasticity, not free choice.</p>
+
+<div class="cue" style="border-left-color:#0f766e">Big picture: the &#8220;here&#8221; is a <b>represented</b> point (a mark, not a place in the brain), set <b>behind the eyes</b> because that is the sensor hub, <b>modeled by the brain</b> (not chosen by consciousness), and <b>movable</b> when the evidence changes — but always by automatic inference, never by a chooser.</div>
+<h4>Sources for this section</h4>
+<ul class="src"><li><a href="https://en.wikipedia.org/wiki/Rubber_hand_illusion" target="_blank" rel="noopener">Rubber-hand / body-transfer illusion — felt location is movable &#8599;</a></li><li><a href="https://en.wikipedia.org/wiki/Sense_of_agency" target="_blank" rel="noopener">TPJ &amp; out-of-body experience — self-location shifts outside the body &#8599;</a></li></ul>
+<hr style="border:0;border-top:1px solid #e7e9ee;margin:20px 0 8px">
+<h4>&#9673; Why it can feel in the MIDDLE of the head — the cyclopean eye</h4>
+<p>Feeling the &#8220;here&#8221; toward the <b>centre</b> of your head (not right at one eyeball) is normal — arguably more accurate. Here is why.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">A &#183; Two eyes fuse into ONE viewpoint at the centre</h5>
+<svg class="mini" viewBox="0 0 620 190">
+  <ellipse cx="310" cy="108" rx="150" ry="82" fill="#f4f6ff" stroke="#c8ccf5" stroke-width="1.4"/>
+  <text x="310" y="26" text-anchor="middle" font-size="9" fill="#9aa4b2">head from above &#183; front at top</text>
+  <circle cx="268" cy="52" r="10" fill="#fff" stroke="#4f46e5"/><circle cx="268" cy="52" r="4" fill="#1c2431"/>
+  <circle cx="352" cy="52" r="10" fill="#fff" stroke="#4f46e5"/><circle cx="352" cy="52" r="4" fill="#1c2431"/>
+  <text x="250" y="42" text-anchor="end" font-size="8.5" fill="#5b6572">left eye</text><text x="370" y="42" font-size="8.5" fill="#5b6572">right eye</text>
+  <circle cx="176" cy="108" r="8" fill="#e6ebf3" stroke="#c8ccf5"/><text x="156" y="111" text-anchor="end" font-size="8" fill="#9aa4b2">ear</text>
+  <circle cx="444" cy="108" r="8" fill="#e6ebf3" stroke="#c8ccf5"/><text x="464" y="111" font-size="8" fill="#9aa4b2">ear</text>
+  <g stroke="#9aa1ac" stroke-width="1.4" stroke-dasharray="4 3">
+    <line x1="268" y1="62" x2="306" y2="116"/><line x1="352" y1="62" x2="314" y2="116"/>
+    <line x1="184" y1="108" x2="302" y2="120"/><line x1="436" y1="108" x2="318" y2="120"/>
+  </g>
+  <circle cx="310" cy="120" r="7" fill="#4f46e5"/>
+  <text x="310" y="152" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4f46e5">the &#8220;cyclopean eye&#8221; — one merged viewpoint</text>
+  <text x="310" y="166" text-anchor="middle" font-size="8.5" fill="#5158b8">between the eyes, toward the centre of the head</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">Two eyes (and two ears) are fused into a single vantage point that the brain places <b>between</b> them — so &#8220;behind the eyes&#8221; and &#8220;middle of the head&#8221; are the same neighbourhood.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">B &#183; And it slides — which is why you feel it there only sometimes</h5>
+<svg class="mini" viewBox="0 0 620 150">
+  <g>
+    <circle cx="85" cy="56" r="30" fill="#f4f6ff" stroke="#c8ccf5"/><circle cx="85" cy="40" r="6" fill="#4f46e5"/>
+    <text x="85" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#5b6572">looking</text><text x="85" y="118" text-anchor="middle" font-size="8" fill="#9aa4b2">&#8594; forward</text>
+    <circle cx="235" cy="56" r="30" fill="#f4f6ff" stroke="#c8ccf5"/><circle cx="235" cy="56" r="6" fill="#4f46e5"/>
+    <text x="235" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#5b6572">thinking</text><text x="235" y="118" text-anchor="middle" font-size="8" fill="#9aa4b2">&#8594; central</text>
+    <circle cx="385" cy="44" r="24" fill="#f4f6ff" stroke="#c8ccf5"/><rect x="369" y="70" width="32" height="30" rx="7" fill="#f4f6ff" stroke="#c8ccf5"/><circle cx="385" cy="86" r="6" fill="#4f46e5"/>
+    <text x="385" y="118" text-anchor="middle" font-size="9" font-weight="700" fill="#5b6572">emotion &#8594; chest</text>
+    <circle cx="525" cy="56" r="30" fill="#f4f6ff" stroke="#e7e9ee" stroke-dasharray="4 3"/>
+    <text x="525" y="60" text-anchor="middle" font-size="14" fill="#c8ccf5">~</text>
+    <text x="525" y="104" text-anchor="middle" font-size="9" font-weight="700" fill="#5b6572">flow</text><text x="525" y="118" text-anchor="middle" font-size="8" fill="#9aa4b2">&#8594; no &#8220;here&#8221;</text>
+  </g>
+  <text x="310" y="144" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">the felt &#8220;here&#8221; slides with what you are doing — an estimate, not a home</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">Forward when you stare, central when you think, in the chest under emotion, gone in deep flow. That is the plasticity — so &#8220;sometimes mid-head&#8221; fits perfectly.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">C &#183; A felt centre &#8212; but no tenant (the pineal-gland mistake)</h5>
+<svg class="mini" viewBox="0 0 620 170">
+  <ellipse cx="168" cy="84" rx="118" ry="64" fill="#eef7f0" stroke="#bfe0c7"/>
+  <circle cx="168" cy="84" r="7" fill="#4f46e5"/>
+  <text x="168" y="30" text-anchor="middle" font-size="9" fill="#5b6572">real &amp; useful</text>
+  <text x="168" y="118" text-anchor="middle" font-size="9.5" font-weight="800" fill="#2e7d32">a felt centre (a mark) &#10003;</text>
+  <ellipse cx="452" cy="84" rx="118" ry="64" fill="#fdecec" stroke="#e6b8b8"/>
+  <text x="452" y="30" text-anchor="middle" font-size="9" fill="#a86a6a">Descartes&#8217; error</text>
+  <circle cx="452" cy="70" r="10" fill="none" stroke="#a13b3b" stroke-width="1.6"/>
+  <path d="M440,112 C440,88 464,88 464,112 Z" fill="none" stroke="#a13b3b" stroke-width="1.6"/>
+  <line x1="428" y1="56" x2="476" y2="104" stroke="#a13b3b" stroke-width="2.4"/><line x1="476" y1="56" x2="428" y2="104" stroke="#a13b3b" stroke-width="2.4"/>
+  <text x="452" y="134" text-anchor="middle" font-size="9.5" font-weight="800" fill="#a13b3b">a self / soul sitting there &#10007;</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">Don&#8217;t let &#8220;I feel it mid-brain&#8221; harden into &#8220;a <i>thing</i> sits mid-brain.&#8221; That is exactly Descartes putting the soul in the pineal gland. There is a felt centre; no one occupies it.</p>
+
+<div class="cue" style="border-left-color:#0f766e">The felt &#8220;here&#8221; is central because two eyes fuse into one <b>cyclopean</b> viewpoint between them — and it <b>slides</b> and can <b>dissolve</b>. Try to pin the exact spot and it blurs: a felt centre, with no one in it.</div>
+<h4>Source</h4>
+<ul class="src"><li><a href="https://en.wikipedia.org/wiki/Cyclopean_image" target="_blank" rel="noopener">Cyclopean image — the fused viewpoint is perceived as lying <i>between</i> the two eyes &#8599;</a></li></ul>
+<hr style="border:0;border-top:1px solid #e7e9ee;margin:20px 0 8px">
+<h4>&#9673; So what IS the fixed self at the centre? (the whirlpool)</h4>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">A &#183; The brain MUST bind scattered parts into one vantage point</h5>
+<svg class="mini" viewBox="0 0 620 180">
+  <text x="80" y="16" text-anchor="middle" font-size="8.5" font-style="italic" fill="#9aa4b2">scattered processing</text>
+  <g font-size="8.5" text-anchor="middle" fill="#5b6572">
+    <rect x="20" y="24" width="120" height="26" rx="7" fill="#eef1f5" stroke="#d5dbe4"/><text x="80" y="41">vision (back)</text>
+    <rect x="20" y="77" width="120" height="26" rx="7" fill="#eef1f5" stroke="#d5dbe4"/><text x="80" y="94">hearing (sides)</text>
+    <rect x="20" y="130" width="120" height="26" rx="7" fill="#eef1f5" stroke="#d5dbe4"/><text x="80" y="147">touch (top)</text>
+  </g>
+  <rect x="240" y="66" width="150" height="50" rx="11" fill="#1c2431"/><text x="315" y="88" text-anchor="middle" font-size="10" font-weight="800" fill="#fff">BOUND into</text><text x="315" y="103" text-anchor="middle" font-size="9" fill="#c9d2df">one unified scene</text>
+  <circle cx="522" cy="90" r="28" fill="#eef0ff" stroke="#4f46e5"/><text x="522" y="88" text-anchor="middle" font-size="9.5" font-weight="800" fill="#4f46e5">one</text><text x="522" y="102" text-anchor="middle" font-size="8.5" fill="#5158b8">&#8220;here&#8221;</text>
+  <g fill="none" stroke="#9aa1ac" stroke-width="1.5" marker-end="url(#vp1)">
+    <defs><marker id="vp1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#9aa1ac"/></marker></defs>
+    <path d="M140,37 C190,50 200,72 238,82"/><path d="M140,90 L238,90"/><path d="M140,143 C190,128 200,108 238,100"/>
+    <path d="M390,91 L490,90"/>
+  </g>
+  <text x="310" y="172" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">a single agent needs one coherent world to act in (the &#8220;unity of consciousness&#8221;)</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">Your insight, confirmed: processing is scattered, so the brain <b>binds</b> it into one viewpoint. That vantage point is <b>real and necessary</b>.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">B &#183; The whirlpool: a real eye, with nothing in it</h5>
+<svg class="mini" viewBox="0 0 620 200">
+  <ellipse cx="310" cy="98" rx="132" ry="80" fill="#eef7fa" stroke="#bcdbe6"/>
+  <ellipse cx="310" cy="98" rx="96" ry="58" fill="none" stroke="#7fc4d6" stroke-width="2"/>
+  <ellipse cx="310" cy="98" rx="62" ry="37" fill="none" stroke="#7fc4d6" stroke-width="2"/>
+  <ellipse cx="310" cy="98" rx="32" ry="19" fill="none" stroke="#7fc4d6" stroke-width="2"/>
+  <path d="M428,98 a118,74 0 0 1 -34,58" fill="none" stroke="#3d8ba3" stroke-width="1.6" marker-end="url(#wpA)"/>
+  <defs><marker id="wpA" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#3d8ba3"/></marker></defs>
+  <circle cx="310" cy="98" r="10" fill="#fff" stroke="#a13b3b" stroke-width="1.6" stroke-dasharray="3 2"/>
+  <text x="310" y="101" text-anchor="middle" font-size="8.5" font-weight="800" fill="#a13b3b">empty</text>
+  <text x="310" y="164" text-anchor="middle" font-size="9.5" font-weight="800" fill="#3d8ba3">the whirlpool = the centred pattern of flowing</text>
+  <text x="310" y="180" text-anchor="middle" font-size="8.5" fill="#5b6572">a real &#8220;eye&#8221; &#8212; and nothing sits in it</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px"><b>centre = the real vantage point &#10003; &#183; resident = the fixed self &#10007; &#183; the self IS the reified centre.</b> No &#8220;centre + occupant&#8221; — just centred flowing, with an empty eye.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">C &#183; So (a) or (b)? Neither &#8212; a third option</h5>
+<svg class="mini" viewBox="0 0 620 160">
+  <defs><marker id="n3" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#a13b3b"/></marker></defs>
+  <rect x="10" y="18" width="190" height="112" rx="10" fill="#fdecec" stroke="#e6b8b8"/>
+  <circle cx="150" cy="76" r="6" fill="#4f46e5"/><circle cx="46" cy="76" r="8" fill="none" stroke="#a13b3b" stroke-width="1.4"/>
+  <path d="M58,76 L136,76" stroke="#a13b3b" stroke-width="1.5" fill="none" marker-end="url(#n3)"/>
+  <text x="105" y="40" text-anchor="middle" font-size="9" font-weight="800" fill="#a13b3b">(a) self travels in</text>
+  <text x="105" y="120" text-anchor="middle" font-size="15" fill="#a13b3b">&#10007;</text>
+  <rect x="216" y="18" width="190" height="112" rx="10" fill="#fdf3e8" stroke="#e6cfa8"/>
+  <circle cx="356" cy="76" r="6" fill="#4f46e5"/><circle cx="252" cy="76" r="8" fill="none" stroke="#c8892a" stroke-width="1.4"/>
+  <path d="M264,80 C300,94 322,86 342,78" stroke="#c8892a" stroke-width="1.5" fill="none" marker-end="url(#n3)"/>
+  <text x="311" y="40" text-anchor="middle" font-size="9" font-weight="800" fill="#9c5f1e">(b) swept in (closer)</text>
+  <text x="311" y="120" text-anchor="middle" font-size="15" fill="#c8892a">&#10007;</text>
+  <rect x="422" y="18" width="188" height="112" rx="10" fill="#eaf6ee" stroke="#bfe0c7"/>
+  <circle cx="516" cy="76" r="7" fill="#4f46e5"/>
+  <g stroke="#2e7d32" stroke-width="1.4"><line x1="516" y1="58" x2="516" y2="48"/><line x1="516" y1="94" x2="516" y2="104"/><line x1="497" y1="76" x2="487" y2="76"/><line x1="535" y1="76" x2="545" y2="76"/><line x1="503" y1="63" x2="496" y2="56"/><line x1="529" y1="63" x2="536" y2="56"/><line x1="503" y1="89" x2="496" y2="96"/><line x1="529" y1="89" x2="536" y2="96"/></g>
+  <text x="516" y="40" text-anchor="middle" font-size="9" font-weight="800" fill="#2e7d32">(c) made AT the centre</text>
+  <text x="516" y="120" text-anchor="middle" font-size="15" fill="#2e7d32">&#10003;</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">No pre-existing self travels in (a) or gets swept in (b). The self-sense is <b>manufactured at the centre</b>, by reifying it (c) — nothing arrives from elsewhere.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">D &#183; Why it&#8217;s so convincing: the fiction rides on a fact</h5>
+<svg class="mini" viewBox="0 0 620 150">
+  <rect x="130" y="72" width="360" height="50" rx="10" fill="#0f766e"/><text x="310" y="102" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff">REAL centre &#8212; the vantage point (solid &amp; necessary)</text>
+  <rect x="180" y="40" width="260" height="34" rx="10" fill="#a13b3b"/><text x="310" y="62" text-anchor="middle" font-size="10.5" font-weight="800" fill="#fff">FIXED SELF (illusion)</text>
+  <text x="310" y="140" text-anchor="middle" font-size="9.5" font-style="italic" fill="#9aa4b2">it borrows the centre&#8217;s solidity &#8212; the fiction rides on the fact, so it feels true</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">It is not <i>hiding</i> — it is <b>piggybacking</b> on something genuinely real and necessary. That is the camouflage, and why it is so hard to see through.</p>
+
+<h5 style="font-size:12.5px;color:#1c2431;margin:14px 0 2px">E &#183; The tell: move the centre, and the self moves with it</h5>
+<svg class="mini" viewBox="0 0 620 170">
+  <circle cx="130" cy="66" r="26" fill="#f4f6ff" stroke="#c8ccf5"/><circle cx="130" cy="66" r="7" fill="#4f46e5"/><text x="130" y="108" text-anchor="middle" font-size="9" font-weight="700" fill="#4f46e5">centre + self</text>
+  <path d="M160,72 C280,110 360,120 430,122" fill="none" stroke="#c8892a" stroke-width="1.8" stroke-dasharray="5 4" marker-end="url(#tl1)"/>
+  <defs><marker id="tl1" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#c8892a"/></marker></defs>
+  <text x="300" y="92" text-anchor="middle" font-size="9" fill="#9c5f1e">move the centre (rubber-hand / out-of-body)</text>
+  <circle cx="470" cy="122" r="7" fill="#4f46e5"/><text x="470" y="146" text-anchor="middle" font-size="9" font-weight="700" fill="#4f46e5">self rides along</text>
+  <text x="310" y="164" text-anchor="middle" font-size="9" font-style="italic" fill="#9aa4b2">a separate thing would not follow &#8212; it follows because it IS the reified centre</text>
+</svg>
+<p style="font-size:12.5px;color:#5b6572;font-style:italic;margin:2px 2px 12px">When the felt centre relocates, the felt self relocates with it. That is the proof that the self <b>is</b> the reified centre, not a tenant sitting in it.</p>
+
+<div class="cue" style="border-left-color:#0f766e">There is a real, necessary centre; the fixed self is that centre <b>mistaken for a resident</b> — generated there, borrowing its solidity, arriving from nowhere. A whirlpool with an empty eye.</div>
+<div class="cue">There is a point of view; there is no one at the point of view. The camera position is real — the &#8220;someone at the camera&#8221; was never in the film.</div>
+<h4>Sources</h4>
+<ul class="src"><li><a href="https://en.wikipedia.org/wiki/Self-model" target="_blank" rel="noopener">Metzinger — &#8220;perspectivalness&#8221;: the modeled center of perception &#8599;</a></li><li><a href="https://en.wikipedia.org/wiki/Sense_of_agency" target="_blank" rel="noopener">TPJ &amp; out-of-body experience — the center is built &amp; can be moved &#8599;</a></li></ul>`,
+
+"w-mine": `<h3>2 · The "mine / for-me" tag — a stamp on every frame</h3>
+<h4>What it is</h4>
+<p>Experiences don't just occur — each comes with a faint quality of <b>"this is happening to me, this is mine, this matters to me."</b> Phenomenologists call it <b>for-me-ness</b> or <b>mineness</b>; it's the felt ownership woven into every moment.</p>
+<h4>The mechanism (and who applies it: no one)</h4>
+<p>The brain automatically <b>binds</b> each experience to the body/self-model and to the "does this concern me?" system. That binding <i>is</i> the felt "mine." It's an impersonal process, like a phone auto-tagging every photo with GPS — no one does it by hand.</p>
+<h4>The illusion</h4>
+<p>Because <b>every</b> frame carries the <b>same</b> stamp, the mind infers a single common <b>owner</b> they all belong to. But there's only the <b>recurring tagging</b> — no tagged-to entity. (Papers all marked "PROPERTY OF —" with the name smudged: you infer an owner; there's only the repeated stamp.)</p>
+<h4>Proof it's an added, separable feature</h4>
+<p>It can be <b>added</b> to what isn't you: in the <b>rubber-hand illusion</b> "mine" attaches to a fake hand in seconds. It can <b>drop off</b> what is you: in <b>depersonalization</b>, experiences feel "not mine," unreal, as if watched from outside. A feature that can be added and removed is <b>applied</b>, not intrinsic.</p>
+<div class="cue">"Mine" is a stamp on every frame, applied automatically. Seeing it everywhere, you invent an owner — but there is only the stamping.</div>
+<h4>Sources</h4>
+<ul class="src"><li><a href="https://en.wikipedia.org/wiki/Rubber_hand_illusion" target="_blank" rel="noopener">Rubber-hand illusion — "mine" attaches to a fake hand (Botvinick &amp; Cohen 1998) ↗</a></li><li><a href="https://plato.stanford.edu/entries/self-consciousness-phenomenological/" target="_blank" rel="noopener">Phenomenology — "for-me-ness" / mineness ↗</a></li><li><a href="https://en.wikipedia.org/wiki/Self-model" target="_blank" rel="noopener">Metzinger — "mineness" as a property of the self-model ↗</a></li></ul>`,
+
+"w-subject": `<h3>3 · The subject-pole — a grammatical ghost</h3>
+<h4>What it is</h4>
+<p>Experience seems to come split into two poles: a <b>subject</b> (the knower) and an <b>object</b> (the known). "I see the tree" = an <i>I</i> + a <i>tree</i>. The subject-pole is the felt "one who is doing the experiencing."</p>
+<h4>The mechanism</h4>
+<p>Consciousness doesn't arrive <b>pre-split</b> into knower and known — the brain constructs the split, and language cements it. Any representation of "seeing" structurally implies a "see-er," and grammar <b>demands a subject slot</b>: you can't form the sentence without filling it.</p>
+<h4>The illusion — the dummy subject</h4>
+<p>Consider <b>"it is raining."</b> There is no <i>it</i> that rains — the "it" is an empty grammatical placeholder; there is just <b>raining</b>. The "<b>I</b>" in "I am seeing" may be exactly the same: a placeholder the sentence requires, mistaken for a real entity. (Philosophers from Lichtenberg — "one should say <i>it thinks</i>, as one says <i>it lightnings</i>" — to Nietzsche made precisely this point.) The subject is a <b>posited pole</b> to complete the structure, not a discovered thing.</p>
+<svg class="mini" viewBox="0 0 620 120">
+  <rect x="30" y="40" width="150" height="44" rx="9" fill="#eef1f5" stroke="#d5dbe4"/><text x="105" y="67" text-anchor="middle" font-size="12" font-weight="800" fill="#a13b3b">[ subject ]</text>
+  <rect x="200" y="40" width="150" height="44" rx="9" fill="#e6f4f1" stroke="#bfe0d8"/><text x="275" y="67" text-anchor="middle" font-size="12" font-weight="800" fill="#0f766e">verb (seeing)</text>
+  <rect x="370" y="40" width="150" height="44" rx="9" fill="#eef0ff" stroke="#c8ccf5"/><text x="445" y="67" text-anchor="middle" font-size="12" font-weight="800" fill="#4f46e5">object (tree)</text>
+  <text x="105" y="30" text-anchor="middle" font-size="9.5" font-style="italic" fill="#a13b3b">grammar demands this slot be filled</text>
+  <text x="560" y="67" font-size="11" font-style="italic" fill="#9aa4b2">…so it is</text>
+</svg>
+<div class="cue">"I see" is grammar, not evidence — like the "it" in "it's raining." Seeing happens; the "I" is a slot the sentence demands, not a thing that was found.</div>
+<h4>Sources</h4>
+<ul class="src"><li><a href="https://suttacentral.net/ud1.10/en/sujato" target="_blank" rel="noopener">Ud 1.10 Bāhiya — "in the seen, just the seen… no you in that" ↗</a></li><li><a href="https://suttacentral.net/mn148/en/sujato" target="_blank" rel="noopener">MN 148 Chachakka — the "I am" is dismantled at each contact ↗</a></li></ul>`,
+
+"w-never": `<h3>4 · It never appears as an object — so it feels permanent</h3>
+<h4>What it is</h4>
+<p>The witness is felt as the one everything appears <b>to</b>. So it itself never shows up as <i>content</i> — a thing you could observe wobble, change, or stop. That permanent absence-of-appearance gets read as "a constant background presence."</p>
+<h4>Two mechanisms</h4>
+<p><b>(a) Transparency</b> (Metzinger) — the self-model is never experienced <i>as</i> a model. You look <b>through</b> it, like glass so clean you don't notice it. The "looker" is the transparent medium — invisible by construction.</p>
+<p><b>(b) The reflexivity trap</b> — whenever you turn to look for the witness, the <i>looking</i> is itself happening, so the witness always seems "one step behind." You can't catch it because the catcher is what you're chasing. "Always behind" masquerades as "always there."</p>
+<h4>The illusion</h4>
+<p>It never appears <b>not</b> because it's a hidden permanent subject, but because <b>there's nothing there to appear</b>. Turn awareness onto the witness and you find only more <i>content</i>: a subtle thought "I", a tightness behind the eyes, a felt locatedness. The witness you catch is always itself an <b>object</b>; the pure subject is never found. (The eye can't see itself; the fingertip can't touch itself; a flashlight can't shine on its own beam.)</p>
+<h4>Why "permanent" is a bad inference</h4>
+<p>"I never saw it change" is not evidence it's unchanging — it's evidence it <b>never appeared at all</b>. Like never seeing the back of your own head and concluding your head has no back.</p>
+<svg class="mini" viewBox="0 0 620 120">
+  <circle cx="150" cy="60" r="26" fill="#fff" stroke="#4f46e5" stroke-width="1.6"/><circle cx="150" cy="60" r="10" fill="#1c2431"/>
+  <path d="M182,60 C240,20 240,100 182,62" fill="none" stroke="#a13b3b" stroke-width="2.2" marker-end="url(#nv)"/>
+  <defs><marker id="nv" markerWidth="9" markerHeight="9" refX="6" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="#a13b3b"/></marker></defs>
+  <text x="330" y="50" text-anchor="middle" font-size="11" fill="#5b6572">the eye can't see itself</text>
+  <text x="330" y="72" text-anchor="middle" font-size="11" fill="#5b6572">the knife can't cut itself</text>
+  <text x="330" y="94" text-anchor="middle" font-size="11" font-weight="700" fill="#a13b3b">→ absence ≠ a hidden permanent thing</text>
+</svg>
+<div class="cue">It never appears because there's nothing there to appear — like never seeing the back of your head and concluding it has none. Look for the seer, find only more seen.</div>
+<h4>Sources</h4>
+<ul class="src"><li><a href="https://en.wikipedia.org/wiki/Self-model" target="_blank" rel="noopener">Metzinger — transparency; "naïve realists" who can't see the model as a model ↗</a></li><li><a href="https://plato.stanford.edu/entries/self-consciousness-phenomenological/" target="_blank" rel="noopener">Phenomenology — the self is not given as an object (pre-reflective) ↗</a></li></ul>`,
+
+"w-cont": `<h3>Continuity — the "same me" across time (from memory)</h3>
+<h4>What it is</h4>
+<p>The second component of the fixed self: the sense of being <b>the same one</b> from your earliest memory until now — a single continuous character threading through the years.</p>
+<h4>The mechanism</h4>
+<p>This comes from <b>autobiographical memory</b> binding separate moments into one story. It's what makes "5-year-old me" and "now me" feel like the same subject despite the body, beliefs, and cells having wholly changed.</p>
+<h4>The illusion</h4>
+<p>Memory is <b>reconstructive, not a recording</b>. Each time you recall an event you <b>rewrite</b> it (reconsolidation), and you experience the freshest rewrite as "what actually happened." Suggested or distorted details get folded in and then feel original. So the "continuous, fixed" autobiography is really the <b>latest reconstruction wearing a mask of permanence</b> — the current edit backfilled as "how it always was."</p>
+<div class="cue">"The same me across time" is memory stitching moments into a story — and it's the latest rewrite, felt as if it were always so.</div>`,
+
+"n-contact": `<h3>Contact — the doorway (phassa)</h3>
+<h4>What it is</h4><p>A sense organ + an object + the matching consciousness meet. That meeting is <b>contact</b>. Every experience starts here.</p>
+<h4>Its place in the chain</h4><p>It's the <b>upstream root</b>, but not usually a cut-point — you can't (and shouldn't) stop sensing. The leverage is not here; it's in what the mind <i>adds after</i> contact. Contact is where you <b>watch from</b>, not where you cut.</p>
+<div class="cue">Contact is unavoidable. Freedom isn't in stopping the senses — it's in not adding the self to what they deliver.</div>`,
+
+"n-feeling": `<h3>Feeling-tone — the hinge (vedanā) <span class="chip" style="background:#c8892a">key</span></h3>
+<h4>What it is</h4><p>With contact, a bare <b>tone</b> auto-arises: pleasant, unpleasant, or neutral. Not emotion yet — just the raw "like / dislike" stamp.</p>
+<h4>Why it's the crucial link</h4><p>The Buddha singled out <b>"with feeling as condition, craving arises"</b> as <i>the</i> place to break the chain. Pleasant tone pulls grasping; unpleasant pulls pushing-away — and that reaction is where I-making ignites. Catch the tone <b>before</b> the reaction and the chain doesn't propagate. This is also the "first arrow vs second arrow" seam (SN 36.6).</p>
+<h4>Neuro</h4><p>Hedonic tone / valence tracks to the <b>insula</b> and affective circuitry.</p>
+<div class="cue">Feeling-tone is the fork in the road. Everything downstream — craving, I-making, the fixed self — waits on what you do here.</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://en.wikipedia.org/wiki/Vedan%C4%81" target="_blank" rel="noopener">Vedanā — feeling conditions craving (12 links) ↗</a></li><li><a href="https://suttacentral.net/sn36.6/en/sujato" target="_blank" rel="noopener">SN 36.6 — the two arrows ↗</a></li></ul>`,
+
+"n-perception": `<h3>Perception — labelling (saññā)</h3>
+<h4>What it is</h4><p>The mind matches the raw sensation to a concept: "red," "threat," "my name," "failure." Recognition and naming.</p>
+<h4>Its place in the chain</h4><p>It builds the <b>categories the self-story is written in</b>. Comparison, "not-enough," "impostor" — all are perception laying labels over bare experience. Seeing that perception <i>interprets</i> rather than <i>reports</i> loosens the grip of every judgement.</p>
+<div class="cue">The label is a construction, not the thing. Between sensation and story sits saññā — and it can be caught in the act.</div>`,
+
+"n-formations": `<h3>Formations — the construction site (saṅkhāra / I-making)</h3>
+<h4>What it is</h4><p>The reactive push — wanting, judging, intending — <b>and</b> the manufacture of "<b>I / me / mine</b>" (ahaṃkāra / mamaṃkāra). The "mine"-tag and the "subject-pole" are stamped on <b>here</b>.</p>
+<h4>Why it's the core cut-point</h4><p>This is where the <b>witness is actually built</b>. It's not a fixed self <i>doing</i> the formation — the formation <i>produces</i> the sense of a self. So it's the most direct place to intervene: dismantle the I-making, and the witness has no builder.</p>
+<h4>Neuro</h4><p>Volition/agency signals involve <b>supplementary motor area &amp; parietal</b> networks; the ownership tag, premotor/insular integration.</p>
+<div class="cue">The self is assembled here, moment to moment. Cut the I-making and the "one behind the eyes" is never built.</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://suttacentral.net/sn22.71/en/sujato" target="_blank" rel="noopener">SN 22.71 — I-making &amp; mine-making ↗</a></li><li><a href="https://suttacentral.net/mn148/en/sujato" target="_blank" rel="noopener">MN 148 — dismantled at each contact ↗</a></li></ul>`,
+
+"n-witness": `<h3>Felt witness — four ingredients fused</h3>
+<h4>What it is</h4><p>The vivid sense of "one who is here, now, to whom this happens, and who owns it." Built from <b>centeredness</b> + <b>the mine-tag</b> + <b>the subject-pole</b> + <b>never-appears</b> (see the four cards above).</p>
+<h4>Its place in the chain</h4><p>The present-moment half of the fixed self. Real as a feeling, <b>empty as an entity</b> — when looked for, only more content is found.</p>
+<h4>Neuro</h4><p>Self-location &amp; ownership: <b>temporo-parietal junction</b> and parietal cortex (stimulation there can move or split the self / trigger out-of-body experiences).</p>
+<div class="cue">The witness is a confluence, not a thing. Expose any of its four feeders and the felt "someone" thins.</div>`,
+
+"n-memory": `<h3>Memory — reconstructive, not a recording</h3>
+<h4>What it is</h4><p>Autobiographical memory binds separate moments into one story. But each recall <b>rewrites</b> the event (reconsolidation); the freshest edit feels like "what really happened."</p>
+<h4>Its role</h4><p>It's the raw material of <b>continuity</b>. The "unchanging me across time" is really the latest reconstruction wearing a mask of permanence.</p>
+<h4>Neuro</h4><p><b>Hippocampus</b> &amp; the default mode network (autobiographical retrieval).</p>
+<div class="cue">The continuous past is the current rewrite, felt as if it were always so.</div>`,
+
+"n-continuity": `<h3>Continuity — "the same me over time"</h3>
+<h4>What it is</h4><p>The second half of the fixed self: the sense of being one continuous character from your first memory to now.</p>
+<h4>Its place in the chain</h4><p>Built from memory. Fuse it with the felt witness (the "now" owner) and you get "a <b>permanent</b> me." Quiet the narrative (deep samādhi) and this half falls silent — proof it's produced, not fundamental.</p>
+<div class="cue">Continuity is a story, not a substance. It can go quiet — and a permanent thing can't.</div>`,
+
+"n-fixed": `<h3>The fixed self — the effect at the end of the chain</h3>
+<h4>What it is</h4><p>The felt <b>witness</b> (owner-now) + <b>continuity</b> (same-over-time), fused and reified into "a permanent, unchanging ME behind everything."</p>
+<h4>The key move (your dependent-origination lens)</h4><p>It is an <b>effect</b> — it has no power of its own. It appears only while its causes are supplied. <b>Starve the causes</b> (feeling-reaction, I-making, the fusion, the narrative) and the fixed self has nothing to arise from. You never attack the self directly; you remove what feeds it.</p>
+<h4>Neuro</h4><p>Self-referential processing centres on the <b>default mode network</b> (medial PFC · posterior cingulate), which quiets in deep meditation.</p>
+<div class="cue">The fixed self is downstream of everything. It can't be fought — only un-fed.</div>`,
+
+"p-anchor": `<h3>Breath anchor (samatha) ${S}</h3>
+<h4>Where it acts</h4><p>Upstream, at attention itself — not a cut, a <b>prerequisite</b>. The fusion that builds the self happens in a fraction of a second; a scattered mind can't see it.</p>
+<h4>What it does</h4><p>Steadies and slows attention until the <b>seam becomes visible</b> — so the sharper tools (bare attention, not-self, noting) have something stable to work from.</p>
+<div class="cue">You can't dismantle what you can't see. The anchor is the microscope, not the scalpel.</div>`,
+
+"p-feeling": `<h3>Mindfulness of feeling-tone ${R}</h3>
+<h4>Where it cuts</h4><p>At the <b>feeling → craving/reaction</b> link — the Buddha's single most emphasised break-point in the chain.</p>
+<h4>How</h4><p>Notice the bare pleasant/unpleasant tone <b>the instant it arises</b>, before the automatic grab or push. In that gap, feeling no longer <i>conditions</i> craving and I-making — it's met with equanimity instead. The chain simply doesn't propagate to the self.</p>
+<h4>On/off cushion</h4><p>On: sweep for tone in body sensations. Off: when a sting or pull hits (a comparison, a craving), name it — "unpleasant," "pleasant" — and let it be, un-acted. That's the re-route in daily life.</p>
+<div class="cue">Meet the tone, not the story. Feeling → calm, instead of feeling → craving → "me".</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://suttacentral.net/sn36.6/en/sujato" target="_blank" rel="noopener">SN 36.6 — don't add the second arrow ↗</a></li><li><a href="https://en.wikipedia.org/wiki/Vedan%C4%81" target="_blank" rel="noopener">Vedanā — the feeling→craving link ↗</a></li></ul>`,
+
+"p-notself": `<h3>Not-self contemplation — anattā ${C}</h3>
+<h4>Where it cuts</h4><p>At the <b>formations</b> — the I-making / mine-making itself.</p>
+<h4>How</h4><p>Take each aggregate (body, feeling, perception, formations, consciousness) in turn and see it clearly as <b>"not mine, not I, not my self."</b> Done experientially (not just as a belief), it <b>peels the ownership tag off</b> the contents — the mind stops appropriating them into a "me," so the self has nothing to be built from.</p>
+<h4>On/off cushion</h4><p>On: contemplate one aggregate at a time. Off: when a state grips you, ask "is this <i>mine</i>, or is it just arising?" — and watch the grip loosen.</p>
+<div class="cue">Stop appropriating the contents, and there's no owner left to assemble.</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://suttacentral.net/sn22.59/en/sujato" target="_blank" rel="noopener">SN 22.59 — each aggregate is not-self ↗</a></li><li><a href="https://suttacentral.net/sn22.71/en/sujato" target="_blank" rel="noopener">SN 22.71 — to let go of I-making ↗</a></li></ul>`,
+
+"p-bare": `<h3>Bare attention — "in the seen, just the seen" ${E}</h3>
+<h4>Where it acts</h4><p>Right at the <b>fusion point</b> — where the "I" glues onto the bare experience.</p>
+<h4>How</h4><p>The Bāhiya instruction: in the seen, only the seen; in the heard, only the heard — <b>"no you in that."</b> You catch the raw sense-event <i>before</i> the mine-tag and subject-pole attach. Repeatedly seeing the gap exposes that "I heard it" is a bare hearing + an added "I" — and the addition becomes optional.</p>
+<h4>On/off cushion</h4><p>Off: for a few seconds, let a sound be <i>just sound</i> — drop the "I'm hearing." Walking: <i>just</i> the stepping. The self-add briefly falls away.</p>
+<div class="cue">Catch the hearing before the hearer. The seam is where freedom lives.</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://suttacentral.net/ud1.10/en/sujato" target="_blank" rel="noopener">Ud 1.10 Bāhiya — "in the seen, just the seen" ↗</a></li></ul>`,
+
+"p-vipassana": `<h3>Vipassanā — noting arising &amp; passing (anicca) ${E}</h3>
+<h4>Where it acts</h4><p>On the <b>felt witness</b> — and on the permanence assumption behind continuity.</p>
+<h4>How</h4><p>Drop the self-arisings into the <b>same field</b> as sounds and sensations, and note everything arise and pass — including the sense of "I". Once the "witness" is caught <i>appearing as content and passing</i>, it loses its special status as the permanent watcher. It's just one more flicker.</p>
+<h4>On/off cushion</h4><p>On: label "hearing… thinking… wanting… 'me'…" and watch each dissolve. Off: notice the "me" flare and fade around events — catching its <b>impermanence</b> in the wild.</p>
+<div class="cue">Put the self in the same bin as a sound and watch it pass. The exception becomes just another event.</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://suttacentral.net/sn22.59/en/sujato" target="_blank" rel="noopener">SN 22.59 — impermanent, therefore not-self ↗</a></li></ul>`,
+
+"p-inquiry": `<h3>Find the watcher — turning to look ${E}</h3>
+<h4>Where it acts</h4><p>Directly on the <b>"never appears"</b> ingredient — the felt subject.</p>
+<h4>How</h4><p>Turn attention around to find the one who is aware. Each time, you find only <b>more content</b> — a thought "I", a tightness behind the eyes, a felt locatedness — never a witness. Repeated, this <b>exposes</b> that the subject was never there: its "permanence" was just never-appearing, mistaken for a hidden constant.</p>
+<h4>Caution</h4><p>Do this <i>lightly</i>, from a steady base — it's an exposure, not a forced search. Frustration means push less.</p>
+<div class="cue">Look for the looker; find only more looked-at. Absence isn't a hidden thing.</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://plato.stanford.edu/entries/self-consciousness-phenomenological/" target="_blank" rel="noopener">The self is not given as an object ↗</a></li></ul>`,
+
+"p-concentration": `<h3>Deep samādhi — quieting the narrative ${E}</h3>
+<h4>Where it acts</h4><p>On <b>continuity / the narrative self</b>.</p>
+<h4>How</h4><p>Sustained deep concentration (up to jhāna) collapses discursive, self-referential thought. Neuro: the <b>default mode network</b> — the seat of "me across time" — measurably <b>quiets</b>. Experiencing the narrative self fall silent <b>exposes</b> that it was a process running, not a fundamental fact. When it stops, you don't stop — proof it isn't you.</p>
+<div class="cue">When the story goes quiet and you're still here, you learn the story was never the self.</div>
+<h4>Sources</h4><ul class="src"><li><a href="https://en.wikipedia.org/wiki/Self-model" target="_blank" rel="noopener">The self-model &amp; its neural basis ↗</a></li></ul>`
+};
+
+(function(){
+  var pop=document.getElementById('pop'), bd=document.getElementById('backdrop');
+  function openPop(id){var d=DATA[id];if(!d)return;pop.innerHTML='<button id="popx" aria-label="close">×</button>'+d;bd.style.display='block';pop.style.display='block';document.getElementById('popx').onclick=closePop;pop.scrollTop=0;document.body.style.overflow='hidden';}
+  function closePop(){pop.style.display='none';bd.style.display='none';document.body.style.overflow='';}
+  bd.addEventListener('click',closePop);
+  document.querySelectorAll('[data-pop]').forEach(function(c){c.addEventListener('click',function(e){e.stopPropagation();openPop(c.getAttribute('data-pop'));});});
+  document.addEventListener('keydown',function(e){if(e.key==='Escape')closePop();});
+})();
+</script>
+</body>
+</html>

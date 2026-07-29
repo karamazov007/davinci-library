@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>My Learnings — Development &gt; Premise</title>
+<title>My Learnings</title>
 <style>
 :root{
   --bg:#f6f7f9; --ink:#1c2431; --dim:#6b7280; --line:#e7e9ee; --line2:#dcdfe6;
@@ -14,10 +14,6 @@
   --gold:#d97706; --gold-soft:rgba(217,119,6,.12);
   --bad:#e11d48; --bad-soft:rgba(225,29,72,.10);
 }
-@media (prefers-color-scheme: dark){
-  :root{ --bg:#0f1117; --ink:#e8eaf0; --dim:#9aa1ad; --line:#242835; --line2:#2e3444;
-    --soft:rgba(124,108,255,.12); --card:#161a23; --shadow:0 1px 2px rgba(0,0,0,.4),0 8px 24px rgba(0,0,0,.35); }
-}
 *{box-sizing:border-box}
 html,body{margin:0}
 body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
@@ -27,34 +23,50 @@ body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvet
     var(--bg);
   color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
 
-header.top{position:sticky;top:0;z-index:50;
-  background:color-mix(in srgb,var(--bg) 82%,transparent);
-  backdrop-filter:saturate(180%) blur(12px);-webkit-backdrop-filter:saturate(180%) blur(12px);
-  border-bottom:1px solid var(--line)}
-.top-in{max-width:1080px;margin:0 auto;display:flex;align-items:center;gap:16px;padding:11px 22px;flex-wrap:wrap}
-.brand{font-weight:800;font-size:14.5px;letter-spacing:-.01em;white-space:nowrap}
-.brand span{color:var(--accent)}
-nav.tabs{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
-nav.tabs a{font-size:13px;color:var(--dim);padding:6px 11px;border-radius:8px;font-weight:600;text-decoration:none;transition:.15s}
-nav.tabs a:hover{background:var(--soft);color:var(--ink)}
+/* ===== left panel layout ===== */
+.app{display:flex;align-items:flex-start;min-height:100vh}
+.side{flex:0 0 252px;width:252px;position:sticky;top:0;height:100vh;overflow:auto;
+  border-right:1px solid var(--line);padding:22px 14px;
+  background:color-mix(in srgb,var(--card) 60%, transparent);backdrop-filter:blur(6px)}
+.side .sbrand{font-weight:800;font-size:14.5px;letter-spacing:-.01em;padding:6px 10px 4px}
+.side .sbrand span{color:var(--accent)}
+.side .slabel{font-size:10.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);padding:18px 12px 7px}
+.side nav{display:flex;flex-direction:column;gap:4px}
+.side nav a{display:flex;gap:10px;align-items:flex-start;padding:11px 12px;border-radius:12px;font-size:14px;
+  font-weight:700;color:var(--dim);cursor:pointer;text-decoration:none;line-height:1.3;border:1px solid transparent}
+.side nav a:hover{background:var(--soft);color:var(--ink)}
+.side nav a.active{background:var(--soft);color:var(--accent);border-color:var(--line2)}
+.side nav a .si{font-size:16px;flex:0 0 auto;line-height:1.2}
+.main{flex:1;min-width:0}
+.view{display:none}
+.view.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+@media(max-width:820px){
+  .app{flex-direction:column}
+  .side{position:static;width:auto;flex:none;height:auto;border-right:0;border-bottom:1px solid var(--line);
+    padding:12px 14px}
+  .side .slabel{display:none}
+  .side nav{flex-direction:row;flex-wrap:wrap}
+  .side nav a{padding:8px 12px}
+}
 
 .wrap{max-width:1080px;margin:0 auto;padding:8px 22px 120px}
 
-.hero{padding:52px 0 8px;text-align:center}
+.hero{padding:48px 0 8px;text-align:center}
 .kick{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:800}
 h1{font-size:clamp(32px,5.2vw,56px);line-height:1.05;letter-spacing:-1.4px;margin:14px 0 0;font-weight:850;
   background:linear-gradient(115deg,var(--ink),var(--accent) 68%,var(--craft));
   -webkit-background-clip:text;background-clip:text;color:transparent}
-.thesis{font-size:clamp(16px,2.2vw,20px);color:var(--dim);max-width:680px;margin:20px auto 0;line-height:1.55}
+.thesis{font-size:clamp(16px,2.2vw,20px);color:var(--dim);max-width:700px;margin:20px auto 0;line-height:1.55}
 .thesis b{color:var(--ink)}
 
-.sect{margin:76px 0 0}
+.sect{margin:72px 0 0}
 .sect-h{display:flex;align-items:center;gap:14px;margin:0 0 6px}
 .sect-h .n{font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.14em;
   border:1px solid var(--line2);border-radius:20px;padding:4px 11px;background:var(--card);white-space:nowrap}
 .sect-h h2{font-size:clamp(20px,3vw,28px);margin:0;font-weight:800;letter-spacing:-.5px}
 .sect-h::after{content:"";flex:1;height:1px;background:var(--line)}
-.sect-sub{color:var(--dim);font-size:15px;margin:8px 0 0;max-width:660px}
+.sect-sub{color:var(--dim);font-size:15px;margin:8px 0 0;max-width:680px}
 
 .fig{margin:26px 0 0;background:var(--card);border:1px solid var(--line);border-radius:20px;
   box-shadow:var(--shadow);padding:18px;overflow:hidden}
@@ -81,21 +93,36 @@ h1{font-size:clamp(32px,5.2vw,56px);line-height:1.05;letter-spacing:-1.4px;margi
 @media(max-width:720px){.edges{grid-template-columns:1fr}}
 .edge{border:1px solid var(--line);border-left:4px solid var(--bad);border-radius:16px;
   background:var(--card);box-shadow:var(--shadow);padding:18px}
+.edge.good{border-left-color:var(--craft)}
 .edge .et{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--bad)}
+.edge.good .et{color:var(--craft)}
 .edge h4{margin:7px 0 8px;font-size:16px;font-weight:800;letter-spacing:-.2px}
 .edge p{margin:0;font-size:13.5px;color:var(--dim);line-height:1.55}
 .edge p b{color:var(--ink)}
 .edge .rule{margin-top:12px;font-size:12.5px;font-weight:700;color:var(--accent);
   background:var(--soft);padding:8px 12px;border-radius:12px;display:block;line-height:1.45}
 
-/* OS loop cards */
-.os{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:22px 0 0}
-.osc{border:1px solid var(--line);border-radius:16px;background:var(--card);box-shadow:var(--shadow);padding:16px}
-.osc .em{font-size:26px}
-.osc .st{font-size:11px;font-weight:800;color:var(--accent);letter-spacing:.08em;margin-top:8px}
-.osc .h{font-weight:800;font-size:15px;margin:2px 0 4px}
-.osc p{margin:0;font-size:12.5px;color:var(--dim);line-height:1.5}
+/* technique cards */
+.tech{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin:24px 0 0}
+@media(max-width:720px){.tech{grid-template-columns:1fr}}
+.tcard{border:1px solid var(--line);border-radius:18px;padding:18px 18px 16px;background:var(--card);box-shadow:var(--shadow)}
+.tcard .th{display:flex;align-items:center;gap:10px;margin:0 0 2px}
+.tcard .tn{width:26px;height:26px;border-radius:50%;background:var(--accent);color:#fff;font-size:13px;font-weight:800;
+  display:flex;align-items:center;justify-content:center;flex:0 0 auto}
+.tcard .tt{font-size:16px;font-weight:800;letter-spacing:-.2px}
+.tcard p{font-size:13px;color:var(--dim);line-height:1.55;margin:8px 0 0}
+.tcard p b{color:var(--ink)}
+.tcard svg{margin-top:12px;display:block;width:100%;height:auto}
 
+/* calibration question */
+.qbox{border:1px solid var(--accent);border-radius:16px;padding:20px 22px;
+  background:linear-gradient(160deg,var(--soft),var(--card) 70%);margin:26px 0 0}
+.qbox .ql{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin:0 0 8px}
+.qbox .qq{font-size:clamp(16px,2.3vw,20px);font-weight:800;line-height:1.4;margin:0}
+.qbox .qa{font-size:13.5px;color:var(--dim);margin:12px 0 0;line-height:1.55}
+.qbox .qa b{color:var(--ink)}
+
+/* finale */
 .finale{margin:70px 0 0;border-radius:22px;padding:34px 30px;text-align:center;
   background:linear-gradient(135deg,var(--accent),var(--accent2));color:#fff;box-shadow:var(--shadow)}
 .finale .lab{font-size:12px;letter-spacing:.16em;text-transform:uppercase;opacity:.85;font-weight:800}
@@ -104,263 +131,1146 @@ h1{font-size:clamp(32px,5.2vw,56px);line-height:1.05;letter-spacing:-1.4px;margi
 .finale .apply span{font-size:12px;font-weight:700;background:rgba(255,255,255,.16);padding:5px 12px;border-radius:20px}
 
 .foot{margin-top:60px;padding-top:20px;border-top:1px solid var(--line);font-size:12.5px;color:var(--dim);text-align:center}
+.embframe{width:100%;border:0;border-radius:0;background:transparent;min-height:200px;display:block;box-shadow:none}
+.vidlink{display:inline-flex;gap:7px;align-items:center;margin:16px 0 0;font-size:13px;font-weight:750;color:#c81e3a;background:rgba(225,29,72,.08);border:1px solid rgba(225,29,72,.28);padding:8px 14px;border-radius:22px;text-decoration:none;transition:.15s}
+.vidlink:hover{background:rgba(225,29,72,.14)}
 </style>
 </head>
 <body>
 
-<header class="top">
-  <div class="top-in">
-    <div class="brand">Da Vinci <span>· My Learnings</span></div>
-    <nav class="tabs">
-      <a href="#p1">Seed vs Growth</a>
-      <a href="#p2">Pointed Excellence</a>
-      <a href="#edges">The Edges</a>
-      <a href="#thesis">The Thesis</a>
-      <a href="#os">My OS</a>
+<div class="app">
+  <aside class="side">
+    <div class="sbrand">Da Vinci <span>· My Learnings</span></div>
+    <div class="slabel">Notes</div>
+    <nav id="snav">
+      <a data-view="v-craft" class="active"><span class="si">🌱</span><span>Craft over Premise</span></a>
+      <a data-view="v-notenough"><span class="si">🌗</span><span>Not Feeling Enough</span></a>
+      <a data-view="v-trap"><span class="si">🪤</span><span>Trap of Perfectionism</span></a>
+      
     </nav>
-  </div>
-</header>
+  </aside>
 
-<div class="wrap">
+  <main class="main">
 
-  <div class="hero">
-    <div class="kick">My Learnings · Craft &amp; Systems</div>
-    <h1>Development &gt; Premise</h1>
-    <p class="thesis">The seed is handed to you. <b>The growth is craft.</b> Excellence isn’t in the starting point — it’s in everything you build on top, and in being <b>pointedly great at a coherent few</b> things rather than evenly good at all.</p>
-  </div>
+  <!-- ============================ VIEW 1 : CRAFT OVER PREMISE ============================ -->
+  <section class="view active" id="v-craft">
+   <div class="wrap">
 
-  <!-- HERO: seed to tree -->
-  <div class="fig">
-    <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A weak seed grows into a mammoth through craft">
-      <defs>
-        <linearGradient id="trunk" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#4ade80"/></linearGradient>
-      </defs>
-      <!-- seed -->
-      <circle cx="110" cy="210" r="34" style="fill:var(--seed-soft)" stroke="#0ea5e9" stroke-width="2"/>
-      <text x="110" y="205" text-anchor="middle" font-size="24" font-family="sans-serif">🌱</text>
-      <text x="110" y="228" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0369a1" font-family="sans-serif">PREMISE</text>
-      <text x="110" y="268" text-anchor="middle" font-size="11.5" style="fill:var(--dim)" font-family="sans-serif">“people fight giants”</text>
-      <!-- arrow -->
-      <path d="M152 205 Q230 190 300 175" fill="none" stroke="#7c6cff" stroke-width="2.5" stroke-dasharray="6 6"/>
-      <text x="235" y="160" text-anchor="middle" font-size="12" style="fill:var(--dim)" font-family="sans-serif" font-style="italic">years of craft</text>
-      <!-- tree canopy -->
-      <rect x="470" y="200" width="26" height="70" rx="4" fill="url(#trunk)"/>
-      <circle cx="483" cy="150" r="72" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
-      <circle cx="430" cy="185" r="42" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
-      <circle cx="540" cy="185" r="42" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
-      <text x="483" y="150" text-anchor="middle" font-size="34" font-family="sans-serif">🌳</text>
-      <text x="483" y="255" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d" font-family="sans-serif">MAMMOTH</text>
-      <!-- examples -->
-      <g font-family="sans-serif">
-        <rect x="640" y="70" width="220" height="52" rx="12" style="fill:var(--card)" stroke="var(--line2)"/>
-        <text x="656" y="93" font-size="12.5" font-weight="800" style="fill:var(--ink)">Attack on Titan</text>
-        <text x="656" y="110" font-size="11" style="fill:var(--dim)">one-line premise → epic system</text>
-        <rect x="640" y="132" width="220" height="52" rx="12" style="fill:var(--card)" stroke="var(--line2)"/>
-        <text x="656" y="155" font-size="12.5" font-weight="800" style="fill:var(--ink)">Hunter × Hunter</text>
-        <text x="656" y="172" font-size="11" style="fill:var(--dim)">generic shonen → sophisticated</text>
-        <rect x="640" y="194" width="220" height="52" rx="12" style="fill:var(--bad-soft)" stroke="#e11d48"/>
-        <text x="656" y="217" font-size="12.5" font-weight="800" fill="#be123c">Gifted premise, no craft</text>
-        <text x="656" y="234" font-size="11" fill="#be123c">→ never develops · forgettable</text>
-      </g>
-    </svg>
-    <div class="cap">The premise is just the seed. <b>The craft is everything that grows from it</b> — and it’s almost always the real variable.</div>
-  </div>
-
-  <!-- PRINCIPLE 1 -->
-  <section class="sect" id="p1">
-    <div class="sect-h"><span class="n">01</span><h2>The Start Is Given · The Build Is Yours</h2></div>
-    <p class="sect-sub">People fixate on the seed because it’s visible and fixed. The people who win understood the growth was the real variable — the opposite of the “I need the perfect premise to start” trap.</p>
-
-    <div class="gb">
-      <div class="gcard given">
-        <div class="lab">🎲 Given — the seed</div>
-        <h3>Not in your hands</h3>
-        <div class="tags">
-          <span class="tag">Where you're born</span>
-          <span class="tag">Natural talent</span>
-          <span class="tag">First job</span>
-          <span class="tag">Your face</span>
-          <span class="tag">The premise</span>
-        </div>
-      </div>
-      <div class="gcard built">
-        <div class="lab">🛠️ Built — the growth</div>
-        <h3>Almost always yours</h3>
-        <div class="tags">
-          <span class="tag">The framework you build</span>
-          <span class="tag">Deliberate practice</span>
-          <span class="tag">Craft over years</span>
-          <span class="tag">Development</span>
-          <span class="tag">What you turn it into</span>
-        </div>
-      </div>
+    <div class="hero">
+      <div class="kick">My Learnings · Craft &amp; Systems</div>
+      <h1>Development &gt; Premise</h1>
+      <p class="thesis">The seed is handed to you. <b>The growth is craft.</b> Excellence isn’t in the starting point — it’s in everything you build on top, and in being <b>pointedly great at a coherent few</b> things rather than evenly good at all.</p>
     </div>
-  </section>
-
-  <!-- PRINCIPLE 2 -->
-  <section class="sect" id="p2">
-    <div class="sect-h"><span class="n">02</span><h2>Pointed Excellence Beats Even Adequacy</h2></div>
-    <p class="sect-sub">You don’t need every channel. Be outstanding on the ones your audience weights highest — a few loud knobs, coherently aimed — and you win the people who value them.</p>
 
     <div class="fig">
-      <svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Equalizer: a few knobs turned up beats everything flat">
-        <!-- WINNER board -->
-        <text x="230" y="34" text-anchor="middle" font-size="14" font-weight="800" fill="#16a34a" font-family="sans-serif">✅ POINTEDLY GREAT</text>
-        <g font-family="sans-serif">
-          <!-- tracks -->
-          <!-- 5 sliders, some high -->
-          <g stroke="var(--line2)" stroke-width="6" stroke-linecap="round">
-            <line x1="70" y1="60" x2="70" y2="230"/><line x1="150" y1="60" x2="150" y2="230"/>
-            <line x1="230" y1="60" x2="230" y2="230"/><line x1="310" y1="60" x2="310" y2="230"/>
-            <line x1="390" y1="60" x2="390" y2="230"/>
-          </g>
-          <!-- fills (high = design/experience) -->
-          <g stroke="#16a34a" stroke-width="6" stroke-linecap="round">
-            <line x1="70" y1="70" x2="70" y2="230"/>
-            <line x1="150" y1="80" x2="150" y2="230"/>
-            <line x1="230" y1="185" x2="230" y2="230"/>
-            <line x1="310" y1="200" x2="310" y2="230"/>
-            <line x1="390" y1="75" x2="390" y2="230"/>
-          </g>
-          <!-- knobs -->
-          <g fill="#16a34a">
-            <circle cx="70" cy="70" r="9"/><circle cx="150" cy="80" r="9"/>
-            <circle cx="230" cy="185" r="9"/><circle cx="310" cy="200" r="9"/><circle cx="390" cy="75" r="9"/>
-          </g>
-          <text x="70" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Design</text>
-          <text x="150" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Experience</text>
-          <text x="230" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Price</text>
-          <text x="310" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Features</text>
-          <text x="390" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Story</text>
-          <text x="230" y="274" text-anchor="middle" font-size="11.5" font-weight="700" fill="#15803d">Apple: loved for a few loud knobs</text>
-        </g>
-        <!-- divider -->
-        <line x1="470" y1="50" x2="470" y2="255" stroke="var(--line)" stroke-width="1.5"/>
-        <!-- LOSER board -->
-        <text x="690" y="34" text-anchor="middle" font-size="14" font-weight="800" style="fill:var(--dim)" font-family="sans-serif">😐 EVENLY ADEQUATE</text>
-        <g font-family="sans-serif">
-          <g stroke="var(--line2)" stroke-width="6" stroke-linecap="round">
-            <line x1="530" y1="60" x2="530" y2="230"/><line x1="610" y1="60" x2="610" y2="230"/>
-            <line x1="690" y1="60" x2="690" y2="230"/><line x1="770" y1="60" x2="770" y2="230"/>
-            <line x1="850" y1="60" x2="850" y2="230"/>
-          </g>
-          <g stroke="#9aa1ad" stroke-width="6" stroke-linecap="round">
-            <line x1="530" y1="150" x2="530" y2="230"/><line x1="610" y1="145" x2="610" y2="230"/>
-            <line x1="690" y1="150" x2="690" y2="230"/><line x1="770" y1="148" x2="770" y2="230"/>
-            <line x1="850" y1="150" x2="850" y2="230"/>
-          </g>
-          <g fill="#9aa1ad">
-            <circle cx="530" cy="150" r="9"/><circle cx="610" cy="145" r="9"/>
-            <circle cx="690" cy="150" r="9"/><circle cx="770" cy="148" r="9"/><circle cx="850" cy="150" r="9"/>
-          </g>
-          <text x="690" y="274" text-anchor="middle" font-size="11.5" font-weight="700" style="fill:var(--dim)">No knob loud enough to be loved for</text>
-        </g>
-      </svg>
-      <div class="cap">Adequate-at-everything is <b>forgettable</b>. That’s why Witch Hat bounced off — nothing turned up loud enough to be <i>for</i> someone specifically.</div>
-    </div>
-  </section>
-
-  <!-- EDGES -->
-  <section class="sect" id="edges">
-    <div class="sect-h"><span class="n">03</span><h2>Two Edges — Where the Real Skill Lives</h2></div>
-    <p class="sect-sub">The thesis is true, but not unconditionally. These two edges keep it honest.</p>
-
-    <div class="edges">
-      <div class="edge">
-        <div class="et">Edge 01 — Floors still exist</div>
-        <h4>Craft isn’t free, and some seeds are salted ground</h4>
-        <p>Some premises carry a structural flaw no development overcomes. And craft is the thing you <b>spend years building</b> — the person with a dull premise <i>and</i> no craft isn’t saved by this principle, they’re indicted by it.</p>
-        <span class="rule">Any start is good enough — for someone who did the work to earn the craft. Don’t let “the start doesn’t matter” become permission to skip the part that does.</span>
-      </div>
-      <div class="edge">
-        <div class="et">Edge 02 — Coherence is required</div>
-        <h4>Strong knobs one way · weak knobs kept quiet</h4>
-        <p>JoJo’s weak realism doesn’t hurt — nothing was trying to be realistic, so the weak channel is <b>silent, not fighting</b>. But a weak channel that <i>contradicts</i> the strong one — gorgeous visuals on a confusing story, charisma undercut by visible dishonesty — is corrosive.</p>
-        <span class="rule">Be great at a coherent few, and keep the rest at least non-sabotaging.</span>
-      </div>
-    </div>
-
-    <!-- coherence vectors diagram -->
-    <div class="fig">
-      <svg viewBox="0 0 900 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coherent vectors versus a sabotaging vector">
+      <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="A weak seed grows into a mammoth through craft">
         <defs>
-          <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#16a34a"/></marker>
-          <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#e11d48"/></marker>
+          <linearGradient id="trunk" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#4ade80"/></linearGradient>
         </defs>
-        <!-- coherent -->
-        <rect x="40" y="30" width="380" height="150" rx="16" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
-        <text x="230" y="58" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15803d" font-family="sans-serif">COHERENT — arrows aligned</text>
-        <g stroke="#16a34a" stroke-width="4" stroke-linecap="round">
-          <line x1="90" y1="120" x2="230" y2="95" marker-end="url(#ag)"/>
-          <line x1="90" y1="140" x2="230" y2="120" marker-end="url(#ag)"/>
-          <line x1="90" y1="160" x2="200" y2="150" marker-end="url(#ag)"/>
-        </g>
-        <text x="330" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d" font-family="sans-serif">force adds up</text>
-        <!-- sabotage -->
-        <rect x="480" y="30" width="380" height="150" rx="16" style="fill:var(--bad-soft)" stroke="#e11d48" stroke-width="2"/>
-        <text x="670" y="58" text-anchor="middle" font-size="13.5" font-weight="800" fill="#be123c" font-family="sans-serif">SABOTAGE — weak fights strong</text>
-        <g stroke="#16a34a" stroke-width="4" stroke-linecap="round">
-          <line x1="530" y1="110" x2="670" y2="90" marker-end="url(#ag)"/>
-          <line x1="530" y1="130" x2="670" y2="112" marker-end="url(#ag)"/>
-        </g>
-        <line x1="700" y1="150" x2="560" y2="165" stroke="#e11d48" stroke-width="4" stroke-linecap="round" marker-end="url(#ab)"/>
-        <text x="760" y="135" text-anchor="middle" font-size="12" font-weight="700" fill="#be123c" font-family="sans-serif">force cancels</text>
-      </svg>
-      <div class="cap">A silent weakness is neutral. A weakness pulling <b>against</b> your strength is corrosive.</div>
-    </div>
-  </section>
-
-  <!-- THESIS -->
-  <section class="sect" id="thesis">
-    <div class="sect-h"><span class="n">04</span><h2>The Fully-Loaded Thesis</h2></div>
-  </section>
-  <div class="finale">
-    <div class="lab">The version worth signing</div>
-    <p>Excellence is built in <b style="color:#fff">development</b>, not handed to you in the premise — and it comes from being <b style="color:#fff">pointedly great at a coherent few</b> things while keeping your weak points from actively working against you. Not from being evenly good at everything.</p>
-    <div class="apply">
-      <span>📖 Stories</span><span>📦 Products</span><span>❤️ Dating</span><span>🧗 Self-development</span>
-    </div>
-  </div>
-
-  <!-- PERSONAL OS -->
-  <section class="sect" id="os">
-    <div class="sect-h"><span class="n">05</span><h2>This Is Literally My Operating System</h2></div>
-    <p class="sect-sub">Enter a domain late, build the framework, automate through practice. I’ve run this for years — and I’m drawn to stories that dramatize the exact thesis I live by: a late, unpromising start plus relentless craft beats a gifted premise that never develops.</p>
-
-    <div class="fig">
-      <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Enter late, build framework, automate — a loop">
-        <defs><marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f46e5"/></marker></defs>
+        <circle cx="110" cy="210" r="34" style="fill:var(--seed-soft)" stroke="#0ea5e9" stroke-width="2"/>
+        <text x="110" y="205" text-anchor="middle" font-size="24" font-family="sans-serif">🌱</text>
+        <text x="110" y="228" text-anchor="middle" font-size="10.5" font-weight="800" fill="#0369a1" font-family="sans-serif">PREMISE</text>
+        <text x="110" y="268" text-anchor="middle" font-size="11.5" style="fill:var(--dim)" font-family="sans-serif">“people fight giants”</text>
+        <path d="M152 205 Q230 190 300 175" fill="none" stroke="#7c6cff" stroke-width="2.5" stroke-dasharray="6 6"/>
+        <text x="235" y="160" text-anchor="middle" font-size="12" style="fill:var(--dim)" font-family="sans-serif" font-style="italic">years of craft</text>
+        <rect x="470" y="200" width="26" height="70" rx="4" fill="url(#trunk)"/>
+        <circle cx="483" cy="150" r="72" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+        <circle cx="430" cy="185" r="42" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+        <circle cx="540" cy="185" r="42" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+        <text x="483" y="150" text-anchor="middle" font-size="34" font-family="sans-serif">🌳</text>
+        <text x="483" y="255" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d" font-family="sans-serif">MAMMOTH</text>
         <g font-family="sans-serif">
-          <circle cx="150" cy="100" r="60" style="fill:var(--seed-soft)" stroke="#0ea5e9" stroke-width="2"/>
-          <text x="150" y="90" text-anchor="middle" font-size="26">🕗</text>
-          <text x="150" y="118" text-anchor="middle" font-size="12" font-weight="800" fill="#0369a1">ENTER LATE</text>
-          <circle cx="450" cy="100" r="60" style="fill:var(--soft)" stroke="#4f46e5" stroke-width="2"/>
-          <text x="450" y="90" text-anchor="middle" font-size="26">🧩</text>
-          <text x="450" y="114" text-anchor="middle" font-size="11.5" font-weight="800" fill="#4f46e5">BUILD THE</text>
-          <text x="450" y="129" text-anchor="middle" font-size="11.5" font-weight="800" fill="#4f46e5">FRAMEWORK</text>
-          <circle cx="750" cy="100" r="60" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
-          <text x="750" y="90" text-anchor="middle" font-size="26">⚙️</text>
-          <text x="750" y="114" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d">AUTOMATE VIA</text>
-          <text x="750" y="129" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d">PRACTICE</text>
-          <path d="M212 100 L385 100" fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ao)"/>
-          <path d="M512 100 L685 100" fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ao)"/>
+          <rect x="640" y="70" width="220" height="52" rx="12" style="fill:var(--card)" stroke="var(--line2)"/>
+          <text x="656" y="93" font-size="12.5" font-weight="800" style="fill:var(--ink)">Attack on Titan</text>
+          <text x="656" y="110" font-size="11" style="fill:var(--dim)">one-line premise → epic system</text>
+          <rect x="640" y="132" width="220" height="52" rx="12" style="fill:var(--card)" stroke="var(--line2)"/>
+          <text x="656" y="155" font-size="12.5" font-weight="800" style="fill:var(--ink)">Hunter × Hunter</text>
+          <text x="656" y="172" font-size="11" style="fill:var(--dim)">generic shonen → sophisticated</text>
+          <rect x="640" y="194" width="220" height="52" rx="12" style="fill:var(--bad-soft)" stroke="#e11d48"/>
+          <text x="656" y="217" font-size="12.5" font-weight="800" fill="#be123c">Gifted premise, no craft</text>
+          <text x="656" y="234" font-size="11" fill="#be123c">→ never develops · forgettable</text>
         </g>
       </svg>
-      <div class="cap">Proven across <b>fitness</b>, <b>racket sports</b>, and <b>data science</b> — the development, not the premise, decided it every time.</div>
+      <div class="cap">The premise is just the seed. <b>The craft is everything that grows from it</b> — and it’s almost always the real variable.</div>
     </div>
+
+    <section class="sect" id="p1">
+      <div class="sect-h"><span class="n">01</span><h2>The Start Is Given · The Build Is Yours</h2></div>
+      <p class="sect-sub">People fixate on the seed because it’s visible and fixed. The people who win understood the growth was the real variable — the opposite of the “I need the perfect premise to start” trap.</p>
+      <div class="gb">
+        <div class="gcard given">
+          <div class="lab">🎲 Given — the seed</div>
+          <h3>Not in your hands</h3>
+          <div class="tags">
+            <span class="tag">Where you're born</span><span class="tag">Natural talent</span><span class="tag">First job</span><span class="tag">Your face</span><span class="tag">The premise</span>
+          </div>
+        </div>
+        <div class="gcard built">
+          <div class="lab">🛠️ Built — the growth</div>
+          <h3>Almost always yours</h3>
+          <div class="tags">
+            <span class="tag">The framework you build</span><span class="tag">Deliberate practice</span><span class="tag">Craft over years</span><span class="tag">Development</span><span class="tag">What you turn it into</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect" id="p2">
+      <div class="sect-h"><span class="n">02</span><h2>Pointed Excellence Beats Even Adequacy</h2></div>
+      <p class="sect-sub">You don’t need every channel. Be outstanding on the ones your audience weights highest — a few loud knobs, coherently aimed — and you win the people who value them.</p>
+      <div class="fig">
+        <svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Equalizer: a few knobs turned up beats everything flat">
+          <text x="230" y="34" text-anchor="middle" font-size="14" font-weight="800" fill="#16a34a" font-family="sans-serif">✅ POINTEDLY GREAT</text>
+          <g font-family="sans-serif">
+            <g stroke="var(--line2)" stroke-width="6" stroke-linecap="round">
+              <line x1="70" y1="60" x2="70" y2="230"/><line x1="150" y1="60" x2="150" y2="230"/>
+              <line x1="230" y1="60" x2="230" y2="230"/><line x1="310" y1="60" x2="310" y2="230"/>
+              <line x1="390" y1="60" x2="390" y2="230"/>
+            </g>
+            <g stroke="#16a34a" stroke-width="6" stroke-linecap="round">
+              <line x1="70" y1="70" x2="70" y2="230"/><line x1="150" y1="80" x2="150" y2="230"/>
+              <line x1="230" y1="185" x2="230" y2="230"/><line x1="310" y1="200" x2="310" y2="230"/><line x1="390" y1="75" x2="390" y2="230"/>
+            </g>
+            <g fill="#16a34a">
+              <circle cx="70" cy="70" r="9"/><circle cx="150" cy="80" r="9"/><circle cx="230" cy="185" r="9"/><circle cx="310" cy="200" r="9"/><circle cx="390" cy="75" r="9"/>
+            </g>
+            <text x="70" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Design</text>
+            <text x="150" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Experience</text>
+            <text x="230" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Price</text>
+            <text x="310" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Features</text>
+            <text x="390" y="252" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">Story</text>
+            <text x="230" y="274" text-anchor="middle" font-size="11.5" font-weight="700" fill="#15803d">Apple: loved for a few loud knobs</text>
+          </g>
+          <line x1="470" y1="50" x2="470" y2="255" stroke="var(--line)" stroke-width="1.5"/>
+          <text x="690" y="34" text-anchor="middle" font-size="14" font-weight="800" style="fill:var(--dim)" font-family="sans-serif">😐 EVENLY ADEQUATE</text>
+          <g font-family="sans-serif">
+            <g stroke="var(--line2)" stroke-width="6" stroke-linecap="round">
+              <line x1="530" y1="60" x2="530" y2="230"/><line x1="610" y1="60" x2="610" y2="230"/>
+              <line x1="690" y1="60" x2="690" y2="230"/><line x1="770" y1="60" x2="770" y2="230"/>
+              <line x1="850" y1="60" x2="850" y2="230"/>
+            </g>
+            <g stroke="#9aa1ad" stroke-width="6" stroke-linecap="round">
+              <line x1="530" y1="150" x2="530" y2="230"/><line x1="610" y1="145" x2="610" y2="230"/>
+              <line x1="690" y1="150" x2="690" y2="230"/><line x1="770" y1="148" x2="770" y2="230"/>
+              <line x1="850" y1="150" x2="850" y2="230"/>
+            </g>
+            <g fill="#9aa1ad">
+              <circle cx="530" cy="150" r="9"/><circle cx="610" cy="145" r="9"/><circle cx="690" cy="150" r="9"/><circle cx="770" cy="148" r="9"/><circle cx="850" cy="150" r="9"/>
+            </g>
+            <text x="690" y="274" text-anchor="middle" font-size="11.5" font-weight="700" style="fill:var(--dim)">No knob loud enough to be loved for</text>
+          </g>
+        </svg>
+        <div class="cap">Adequate-at-everything is <b>forgettable</b>. That’s why Witch Hat bounced off — nothing turned up loud enough to be <i>for</i> someone specifically.</div>
+      </div>
+    </section>
+
+    <section class="sect" id="edges">
+      <div class="sect-h"><span class="n">03</span><h2>Two Edges — Where the Real Skill Lives</h2></div>
+      <p class="sect-sub">The thesis is true, but not unconditionally. These two edges keep it honest.</p>
+      <div class="edges">
+        <div class="edge">
+          <div class="et">Edge 01 — Floors still exist</div>
+          <h4>Craft isn’t free, and some seeds are salted ground</h4>
+          <p>Some premises carry a structural flaw no development overcomes. And craft is the thing you <b>spend years building</b> — the person with a dull premise <i>and</i> no craft isn’t saved by this principle, they’re indicted by it.</p>
+          <span class="rule">Any start is good enough — for someone who did the work to earn the craft. Don’t let “the start doesn’t matter” become permission to skip the part that does.</span>
+        </div>
+        <div class="edge">
+          <div class="et">Edge 02 — Coherence is required</div>
+          <h4>Strong knobs one way · weak knobs kept quiet</h4>
+          <p>JoJo’s weak realism doesn’t hurt — nothing was trying to be realistic, so the weak channel is <b>silent, not fighting</b>. But a weak channel that <i>contradicts</i> the strong one — gorgeous visuals on a confusing story, charisma undercut by visible dishonesty — is corrosive.</p>
+          <span class="rule">Be great at a coherent few, and keep the rest at least non-sabotaging.</span>
+        </div>
+      </div>
+      <div class="fig">
+        <svg viewBox="0 0 900 210" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Coherent vectors versus a sabotaging vector">
+          <defs>
+            <marker id="ag" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#16a34a"/></marker>
+            <marker id="ab" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#e11d48"/></marker>
+          </defs>
+          <rect x="40" y="30" width="380" height="150" rx="16" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+          <text x="230" y="58" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15803d" font-family="sans-serif">COHERENT — arrows aligned</text>
+          <g stroke="#16a34a" stroke-width="4" stroke-linecap="round">
+            <line x1="90" y1="120" x2="230" y2="95" marker-end="url(#ag)"/>
+            <line x1="90" y1="140" x2="230" y2="120" marker-end="url(#ag)"/>
+            <line x1="90" y1="160" x2="200" y2="150" marker-end="url(#ag)"/>
+          </g>
+          <text x="330" y="130" text-anchor="middle" font-size="12" font-weight="700" fill="#15803d" font-family="sans-serif">force adds up</text>
+          <rect x="480" y="30" width="380" height="150" rx="16" style="fill:var(--bad-soft)" stroke="#e11d48" stroke-width="2"/>
+          <text x="670" y="58" text-anchor="middle" font-size="13.5" font-weight="800" fill="#be123c" font-family="sans-serif">SABOTAGE — weak fights strong</text>
+          <g stroke="#16a34a" stroke-width="4" stroke-linecap="round">
+            <line x1="530" y1="110" x2="670" y2="90" marker-end="url(#ag)"/>
+            <line x1="530" y1="130" x2="670" y2="112" marker-end="url(#ag)"/>
+          </g>
+          <line x1="700" y1="150" x2="560" y2="165" stroke="#e11d48" stroke-width="4" stroke-linecap="round" marker-end="url(#ab)"/>
+          <text x="760" y="135" text-anchor="middle" font-size="12" font-weight="700" fill="#be123c" font-family="sans-serif">force cancels</text>
+        </svg>
+        <div class="cap">A silent weakness is neutral. A weakness pulling <b>against</b> your strength is corrosive.</div>
+      </div>
+    </section>
+
+    <section class="sect" id="thesis">
+      <div class="sect-h"><span class="n">04</span><h2>The Fully-Loaded Thesis</h2></div>
+    </section>
+    <div class="finale">
+      <div class="lab">The version worth signing</div>
+      <p>Excellence is built in <b style="color:#fff">development</b>, not handed to you in the premise — and it comes from being <b style="color:#fff">pointedly great at a coherent few</b> things while keeping your weak points from actively working against you. Not from being evenly good at everything.</p>
+      <div class="apply"><span>📖 Stories</span><span>📦 Products</span><span>❤️ Dating</span><span>🧗 Self-development</span></div>
+    </div>
+
+    <section class="sect" id="os">
+      <div class="sect-h"><span class="n">05</span><h2>This Is Literally My Operating System</h2></div>
+      <p class="sect-sub">Enter a domain late, build the framework, automate through practice. I’ve run this for years — and I’m drawn to stories that dramatize the exact thesis I live by: a late, unpromising start plus relentless craft beats a gifted premise that never develops.</p>
+      <div class="fig">
+        <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Enter late, build framework, automate — a loop">
+          <defs><marker id="ao" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f46e5"/></marker></defs>
+          <g font-family="sans-serif">
+            <circle cx="150" cy="100" r="60" style="fill:var(--seed-soft)" stroke="#0ea5e9" stroke-width="2"/>
+            <text x="150" y="90" text-anchor="middle" font-size="26">🕗</text>
+            <text x="150" y="118" text-anchor="middle" font-size="12" font-weight="800" fill="#0369a1">ENTER LATE</text>
+            <circle cx="450" cy="100" r="60" style="fill:var(--soft)" stroke="#4f46e5" stroke-width="2"/>
+            <text x="450" y="90" text-anchor="middle" font-size="26">🧩</text>
+            <text x="450" y="114" text-anchor="middle" font-size="11.5" font-weight="800" fill="#4f46e5">BUILD THE</text>
+            <text x="450" y="129" text-anchor="middle" font-size="11.5" font-weight="800" fill="#4f46e5">FRAMEWORK</text>
+            <circle cx="750" cy="100" r="60" style="fill:var(--craft-soft)" stroke="#16a34a" stroke-width="2"/>
+            <text x="750" y="90" text-anchor="middle" font-size="26">⚙️</text>
+            <text x="750" y="114" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d">AUTOMATE VIA</text>
+            <text x="750" y="129" text-anchor="middle" font-size="11" font-weight="800" fill="#15803d">PRACTICE</text>
+            <path d="M212 100 L385 100" fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ao)"/>
+            <path d="M512 100 L685 100" fill="none" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#ao)"/>
+          </g>
+        </svg>
+        <div class="cap">Proven across <b>fitness</b>, <b>racket sports</b>, and <b>data science</b> — the development, not the premise, decided it every time.</div>
+      </div>
+    </section>
+
+    <div class="foot">Da Vinci · Personal Library — My Learnings. A first-principles note on craft over premise.</div>
+   </div>
   </section>
 
-  <div class="foot">Da Vinci · Personal Library — My Learnings. A first-principles note on craft over premise: development beats the starting point; pointed, coherent excellence beats even adequacy; floors and coherence are the edges that keep it honest.</div>
+  <!-- ============================ VIEW 2 : MODELLING → EXPERIMENTATION ============================ -->
+  <section class="view" id="v-notenough"><div class="wrap"><div class="hero"><div class="kick">My Learnings · A note for practice</div><h1>Not Feeling Enough</h1><p class="thesis">Where the “I’m not enough” feeling comes from, the traps it sets, the evidence-based ways out — and why it’s the very thing practice dissolves.</p></div><div style="margin-top:8px"><iframe id="nfeFrame" class="embframe" title="Not Feeling Enough" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;en&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;UTF-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width,initial-scale=1&quot;&gt;&lt;style&gt;
+:root{
+  --bg:#f6f7f9;--surface:#fff;--ink:#1c2431;--dim:#5b6572;--line:#e7e9ee;--line2:#dcdfe6;
+  --accent:#0f766e;--accent2:#1c2431;--soft:#e4f1ef;--gold:#c8892a;--gold-soft:#f7ecd8;
+  --indigo:#4f46e5;--indigo-soft:#e9e7fb;--teal:#0f766e;--teal-soft:#e4f1ef;
+  --good:#16a34a;--warn:#b45309;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,&quot;Segoe UI&quot;,Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.happ{display:flex;flex-direction:column;height:100vh}
+.hbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--surface);
+  border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;flex-wrap:wrap}
+.hbrand{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;white-space:nowrap;margin-right:6px}
+.htabs{display:flex;gap:3px;flex-wrap:wrap}
+.htabs button{border:0;background:none;color:var(--dim);font:inherit;font-size:13px;font-weight:650;
+  padding:8px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.htabs button:hover{background:var(--soft);color:var(--ink)}
+.htabs button.active{background:var(--accent);color:#fff}
+.stage{flex:1;min-height:0;overflow:auto;position:relative}
+.view{display:none}.view.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.mlayout{display:flex;gap:30px;align-items:flex-start;max-width:1180px;margin:0 auto;padding:30px 34px 90px}
+.mmain{flex:1;min-width:0}
+.mtoc{flex:0 0 214px;position:sticky;top:16px;align-self:flex-start;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;padding:10px 8px;max-height:calc(100vh - 90px);overflow:auto;
+  box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.mtoc .tl{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);padding:7px 10px 9px}
+.mtoc a{display:block;padding:6px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.3}
+.mtoc a:hover,.mtoc a.on{background:var(--soft);color:var(--accent)}
+@media(max-width:900px){.mtoc{display:none}.mlayout{padding:24px 18px 80px}}
 
+.hero{margin:4px 0 10px}
+.hero .kick{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:33px;font-weight:850;letter-spacing:-.02em;margin:8px 0 6px;line-height:1.08}
+.hero p.sub{font-size:16.5px;color:var(--dim);line-height:1.6;max-width:780px;margin:0}
+
+.sec{scroll-margin-top:16px;margin-top:44px}
+.sec&gt;.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.sec h2{font-size:23px;font-weight:800;letter-spacing:-.01em;margin:2px 0 10px;line-height:1.2}
+.sec h3{font-size:16px;font-weight:750;margin:22px 0 6px}
+.sec p{font-size:15px;line-height:1.72;color:var(--ink);max-width:760px;margin:12px 0}
+.sec p .dimtxt{color:var(--dim)}
+.dimtxt a,a.cite{color:var(--indigo);text-decoration:none;font-weight:600;border-bottom:1px dotted currentColor}
+.dimtxt a:hover,a.cite:hover{border-bottom-style:solid}
+b{font-weight:700}
+.pali{font-style:italic;color:var(--accent);font-weight:600}
+
+.quote{margin:22px 0;padding:16px 22px;border-left:3px solid var(--accent);background:var(--surface);
+  border-radius:0 12px 12px 0;box-shadow:0 1px 2px rgba(20,25,40,.05)}
+.quote p{margin:0;font-size:16px;font-style:italic;color:var(--ink);line-height:1.55;max-width:none}
+.callout{margin:18px 0;padding:14px 18px;background:var(--soft);border:1px solid var(--line);border-radius:12px;
+  font-size:14.5px;line-height:1.6;color:var(--ink)}
+.callout b{color:var(--accent)}
+
+.cardrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px;
+  box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.gcard .gh{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.gcard b{font-size:15px}
+.gcard .pl{font-size:12.5px}
+.gcard p{font-size:13.5px;line-height:1.55;color:var(--dim);margin:6px 0 0;max-width:none}
+
+/* numbered truth blocks */
+.truth{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:start;margin:16px 0;
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:0 1px 2px rgba(20,25,40,.05)}
+.truth .num{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:850;color:#fff;background:linear-gradient(135deg,var(--accent),#0b5c55)}
+.truth h3{margin:0 0 2px;font-size:18px}
+.truth .pl{font-size:13px;margin:0 0 8px}
+.truth p{margin:6px 0;font-size:14.5px;max-width:none}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:750;letter-spacing:.03em;
+  padding:4px 10px;border-radius:999px;background:var(--gold-soft);color:var(--gold);text-transform:uppercase}
+.tag.task{background:var(--indigo-soft);color:var(--indigo)}
+
+/* physician diagnosis flow */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:20px 0;border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;background:var(--surface)}
+.flow .step{padding:16px 14px;position:relative;border-right:1px solid var(--line)}
+.flow .step:last-child{border-right:0}
+.flow .step .med{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gold)}
+.flow .step .t{font-size:15px;font-weight:800;margin:6px 0 4px}
+.flow .step .d{font-size:12.5px;color:var(--dim);line-height:1.5}
+@media(max-width:760px){.flow{grid-template-columns:1fr 1fr}.flow .step:nth-child(2){border-right:0}}
+
+/* twelve aspects grid */
+.twelve{display:grid;grid-template-columns:160px repeat(3,1fr);gap:8px;margin:18px 0;font-size:12.5px}
+.twelve .hd{font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;
+  display:flex;align-items:center;padding:6px 4px}
+.twelve .rw{font-weight:750;display:flex;align-items:center;padding:10px 10px;background:var(--soft);border-radius:10px}
+.twelve .cel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 10px;line-height:1.4;color:var(--dim)}
+.twelve .cel b{color:var(--ink);display:block;font-size:12px;margin-bottom:2px}
+@media(max-width:760px){.twelve{grid-template-columns:1fr;}.twelve .hd:not(:first-child){display:none}}
+
+/* eightfold wheel */
+.wheelwrap{display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin:20px 0}
+.wheelwrap svg{flex:0 0 auto}
+.legend{flex:1;min-width:250px}
+.leg-group{margin:0 0 14px}
+.leg-group .lgh{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:6px}
+.leg-dot{width:12px;height:12px;border-radius:4px;flex:0 0 12px}
+.leg-group ol{margin:2px 0 0;padding-left:22px}
+.leg-group li{font-size:13px;line-height:1.5;margin:3px 0;color:var(--ink)}
+.leg-group li span{color:var(--dim)}
+
+.trainband{display:flex;align-items:center;gap:10px;margin:30px 0 6px}
+.trainband .bd{width:14px;height:14px;border-radius:5px}
+.trainband h3{margin:0;font-size:17px}
+.trainband .pl{font-size:12.5px;margin-left:auto;color:var(--dim);font-style:italic}
+
+/* reference / canon */
+.reflist{margin:16px 0;display:grid;gap:8px}
+.ref{display:grid;grid-template-columns:96px 1fr;gap:12px;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;align-items:start}
+.ref .code{font-weight:800;font-size:12.5px;color:var(--accent);font-variant-numeric:tabular-nums}
+.ref .rt{font-size:13.5px;line-height:1.5}
+.ref .rt b{display:block;font-size:13.5px}
+.ref .rt a{color:var(--indigo);text-decoration:none;font-size:12.5px;font-weight:600}
+.ref .rt a:hover{text-decoration:underline}
+.ref .rt .pl{font-size:12px}
+
+.basket{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.bk{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface)}
+.bk .bh{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px}
+.bk .pl{font-size:12px;margin:2px 0 8px}
+.bk ul{margin:8px 0 0;padding-left:18px}
+.bk li{font-size:12.5px;line-height:1.5;color:var(--dim);margin:3px 0}
+.bk li b{color:var(--ink)}
+@media(max-width:760px){.basket{grid-template-columns:1fr}.twelve{grid-template-columns:1fr}}
+
+.ladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:18px 0}
+.rung{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.rung .wk{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--gold)}
+.rung .mn{font-size:22px;font-weight:850;margin:4px 0 0}
+.rung .mn span{font-size:12px;font-weight:600;color:var(--dim)}
+
+.note{font-size:12.5px;color:var(--dim);font-style:italic;margin-top:8px}
+hr.soft{border:0;border-top:1px solid var(--line);margin:34px 0}
+
+/* ===== extra diagram styles for deep-dive tabs ===== */
+.chain{display:flex;align-items:stretch;flex-wrap:wrap;margin:18px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.chain .ln{flex:1 1 0;min-width:120px;padding:14px 12px;border-right:1px solid var(--line)}
+.chain .ln:last-child{border-right:0}
+.chain .ln .pl2{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.chain .ln .t2{font-size:14px;font-weight:800;margin:4px 0 2px}
+.chain .ln .d2{font-size:12px;color:var(--dim);line-height:1.45}
+.chain .gap{background:var(--gold-soft)}
+.marks3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.mk{border-radius:16px;padding:18px;color:#fff}
+.mk h3{margin:0 0 2px;font-size:18px;color:#fff}
+.mk .pl{color:rgba(255,255,255,.85);font-style:italic;font-size:12.5px}
+.mk p{margin:8px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,.95);max-width:none}
+.agg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0}
+.aggc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.aggc .n{font-size:13px;font-weight:800}
+.aggc .pl{font-size:11px;color:var(--accent);font-style:italic}
+.aggc .d{font-size:11.5px;color:var(--dim);line-height:1.4;margin-top:4px}
+.fork{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+.forkc{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface)}
+.forkc.pali-side{border-top:4px solid var(--accent)}
+.forkc.maha-side{border-top:4px solid #94409c}
+.forkc h3{margin:0 0 6px;font-size:16px}
+@media(max-width:760px){.marks3{grid-template-columns:1fr}.agg{grid-template-columns:1fr 1fr}.fork{grid-template-columns:1fr}}
+
+/* ===== interactive living tree map (Home) ===== */
+#view-home{height:100%}
+.tm-app{position:relative;display:flex;flex-direction:column;height:100%;
+  background:radial-gradient(circle at center,rgba(120,140,180,.05) 1px,transparent 1px) 0 0/32px 32px}
+.tm-toolbar{display:flex;flex-wrap:wrap;gap:8px;align-items:center;padding:10px 16px;
+  background:rgba(255,255,255,.8);border-bottom:1px solid var(--line);backdrop-filter:blur(6px);position:relative;z-index:3}
+.tm-title{font-weight:800;font-size:14px;color:var(--ink);margin-right:6px;display:flex;align-items:center;gap:7px}
+.tm-grp{display:flex;gap:6px;align-items:center;background:#fff;border:1px solid var(--line2);border-radius:10px;padding:5px 9px}
+.tm-btn{background:#fff;color:var(--dim);border:1px solid var(--line2);border-radius:8px;min-width:32px;height:32px;
+  font-size:14px;cursor:pointer;padding:0 10px;font-weight:650}
+.tm-btn:hover{background:var(--soft);color:var(--accent);border-color:var(--accent)}
+.tm-btn.sm{font-size:12px}
+#tm-slider{width:132px;height:5px;cursor:pointer;accent-color:var(--accent)}
+#tm-zlabel{font-size:12.5px;color:var(--dim);min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+.tm-scroller{flex:1;overflow:auto;cursor:grab;position:relative;min-height:0}
+.tm-scroller.grabbing{cursor:grabbing}
+#tm-map{display:block}
+.tm-node{cursor:pointer}
+.tm-node:hover{opacity:.93}
+.tm-detail{position:absolute;left:16px;bottom:50px;width:min(330px,78%);background:rgba(255,255,255,.98);
+  border:1px solid var(--line);border-radius:14px;box-shadow:0 12px 34px rgba(20,25,40,.16);padding:14px 16px;display:none;z-index:4}
+.tm-detail.show{display:block}
+.tm-detail .dt{font-size:15px;font-weight:800;color:var(--ink)}
+.tm-detail .dp{font-size:12px;font-style:italic;color:var(--accent);font-weight:600;margin-left:6px}
+.tm-detail .dd{font-size:13px;line-height:1.55;color:var(--ink);margin:7px 0 0}
+.tm-detail .dsrc{margin-top:9px;font-size:12px}
+.tm-detail .dsrc a{color:var(--indigo);text-decoration:none;font-weight:600;border-bottom:1px dotted currentColor;margin-right:10px}
+.tm-detail .dsrc a:hover{border-bottom-style:solid}
+.tm-detail .dx{position:absolute;top:7px;right:10px;border:0;background:none;font-size:17px;color:var(--dim);cursor:pointer;font-weight:800;line-height:1}
+.tm-legend{display:flex;flex-wrap:wrap;gap:10px 15px;padding:9px 16px;background:rgba(255,255,255,.8);
+  border-top:1px solid var(--line);font-size:11.5px;color:var(--dim)}
+.tm-legend .li{display:flex;align-items:center;gap:6px}
+.tm-legend .sw{width:11px;height:11px;border-radius:3px}
+
+
+/* ===== reading path tab ===== */
+.rp-key{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.rp-key .kc{border:1px solid var(--line);border-radius:12px;padding:12px;background:var(--surface)}
+.rp-key .kc b{font-size:14px}
+.rp-key .kc span{font-size:11px;color:var(--accent);font-style:italic}
+.rp-key .kc p{font-size:12px;color:var(--dim);line-height:1.45;margin:5px 0 0;max-width:none}
+.rp-weekband{display:flex;align-items:center;gap:10px;margin:28px 0 8px;flex-wrap:wrap}
+.rp-weekband .wk{font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.rp-weekband .st{font-size:12px;color:var(--dim);font-style:italic;margin-left:auto}
+.rp-day{display:grid;grid-template-columns:98px 1fr;gap:14px;padding:12px 14px;border:1px solid var(--line);border-radius:12px;background:var(--surface);margin:8px 0;align-items:start;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.rp-day .rc .day{display:block;font-size:10px;font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
+.rp-day .rc a{display:inline-block;font-weight:800;font-size:12.5px;color:var(--indigo);text-decoration:none;background:var(--indigo-soft);border-radius:8px;padding:4px 9px}
+.rp-day .rc a:hover{text-decoration:underline}
+.rp-day .rc .rev{font-size:12px;color:var(--dim);font-weight:800}
+.rp-day .rb .nm{font-weight:750;font-size:14px;color:var(--ink)}
+.rp-day .rb .wh{font-size:12.5px;color:var(--dim);line-height:1.5;margin-top:3px}
+.rp-day .rb .sit{font-size:11.5px;color:var(--accent);font-weight:700;margin-top:7px}
+
+/* ===== doubts tab ===== */
+.dcat{margin:28px 0 6px;font-size:12px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent);display:flex;align-items:center;gap:10px}
+.dcat::after{content:&quot;&quot;;flex:1;height:1px;background:var(--line)}
+.dq{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:16px 18px;margin:12px 0;box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.dq .qq{font-size:15px;font-weight:800;color:var(--ink);display:flex;gap:9px;align-items:flex-start;line-height:1.4}
+.dq .qq .qm{color:var(--accent);flex:0 0 auto}
+.dq .aa{margin-top:6px}
+.dq .aa p{margin:10px 0;max-width:none;font-size:13.5px;line-height:1.65}
+.dempty{font-size:12.5px;color:var(--dim);font-style:italic;padding:8px 0 2px}
+
+/* ===== schools tree — clickable ===== */
+.sh-node{cursor:pointer}
+.sh-node:hover{opacity:.86}
+.sh-elabel{cursor:pointer}
+.sh-elabel:hover{opacity:.7}
+.sh-hint{font-size:12px;color:var(--accent);font-weight:700;text-align:center;margin:4px 0 8px}
+.sh-overlay{position:fixed;inset:0;background:rgba(15,20,32,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+.sh-overlay.show{display:flex}
+.sh-modal{background:var(--surface);border-radius:16px;width:min(560px,94vw);max-height:88vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3);padding:22px 24px;position:relative}
+.sh-modal .sh-kind{font-size:11px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+.sh-modal h3{margin:6px 0 2px;font-size:20px;color:var(--ink)}
+.sh-modal .sh-pl{font-size:12.5px;font-style:italic;color:var(--dim);margin:0 0 6px}
+.sh-modal .sh-row{margin:12px 0;padding:12px 14px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.sh-modal .sh-row h4{margin:0 0 4px;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim)}
+.sh-modal .sh-row p{margin:0;font-size:13.5px;line-height:1.6;color:var(--ink)}
+.sh-modal .sh-row a{color:var(--indigo);text-decoration:none;font-weight:600;border-bottom:1px dotted currentColor}
+.sh-modal .sh-x{position:absolute;top:14px;right:16px;border:0;background:var(--line);width:30px;height:30px;border-radius:8px;font-size:16px;font-weight:800;cursor:pointer;color:var(--ink)}
+
+
+/* ===== scriptures: two-canon diagram ===== */
+.canonwrap{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:16px 0}
+.canonbox{border-radius:16px;padding:14px 14px 16px}
+.canonbox.pali{background:#fbe9d6;border:1px solid #e2a366}
+.canonbox.chinese{background:#f6dad3;border:1px solid #d68a7b}
+.canonbox .cbh{font-size:16px;font-weight:850;margin:2px 0 0}
+.canonbox .cbsub{font-size:11px;color:#7a6a5c;margin:0 0 10px;font-weight:600}
+.pitgrid{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px}
+.pit{background:#fff;border:1px solid var(--line);border-radius:10px;padding:9px}
+.pit .ph{font-size:11.5px;font-weight:800;line-height:1.2}
+.pit .psub{font-size:9px;color:var(--dim);margin:2px 0 6px}
+.pit ul{margin:0;padding:0;list-style:none}
+.pit li{font-size:10.5px;padding:3px 0;border-bottom:1px solid #f1f3f7;line-height:1.25;color:var(--ink)}
+.pit li:last-child{border-bottom:0}
+.pit li.hl{background:#fff6b8;border-radius:5px;padding:3px 5px;font-weight:700}
+@media(max-width:820px){.canonwrap{grid-template-columns:1fr}.pitgrid{grid-template-columns:1fr}}
+/* three paths */
+.paths3{display:grid;grid-template-columns:repeat(3,1fr);gap:12px;margin:16px 0}
+.pathc{border:1px solid var(--line);border-radius:14px;background:var(--surface);padding:15px;text-align:center}
+.pathc .pt{font-size:14px;font-weight:800}
+.pathc .py{font-size:11px;font-style:italic;color:var(--accent);margin:2px 0 8px}
+.pathc p{font-size:12px;color:var(--dim);line-height:1.5;margin:0;max-width:none}
+@media(max-width:760px){.paths3{grid-template-columns:1fr}}
+
+
+/* ===== theravada — fetters ladder ===== */
+.fetters{display:flex;flex-wrap:wrap;gap:8px;margin:14px 0}
+.fet{font-size:11.5px;font-weight:700;padding:7px 12px;border-radius:999px;color:#fff;display:flex;align-items:center;gap:6px}
+.fet .fn{opacity:.7;font-weight:800}
+.fetleg{display:flex;flex-wrap:wrap;gap:14px;font-size:11.5px;color:var(--dim);margin-top:10px}
+.fetleg .li{display:flex;align-items:center;gap:6px}
+.fetleg .sw{width:12px;height:12px;border-radius:4px}
+.tvkey{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:10px;margin:14px 0}
+.tvkey .kc{border:1px solid var(--line);border-radius:12px;padding:11px 12px;background:var(--surface)}
+.tvkey .kc b{font-size:13px}
+.tvkey .kc .pl{font-size:11px;font-style:italic;color:var(--accent);font-weight:600;display:block;margin:1px 0 4px}
+.tvkey .kc p{font-size:11.5px;color:var(--dim);line-height:1.45;margin:0;max-width:none}
+
+
+/* ===== theravada interactive map ===== */
+#thm-slider{width:132px;height:5px;cursor:pointer;accent-color:var(--accent)}
+#thm-zlabel{font-size:12.5px;color:var(--dim);min-width:44px;text-align:center;font-variant-numeric:tabular-nums}
+
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+   &lt;div class=&quot;mlayout&quot;&gt;
+    &lt;nav class=&quot;mtoc&quot;&gt;
+      &lt;div class=&quot;tl&quot;&gt;On this page&lt;/div&gt;
+      &lt;a data-goto=&quot;ne-what&quot;&gt;A belief, not a fact&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-roots&quot;&gt;Where it comes from&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-romance&quot;&gt;The romance trap&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-reject&quot;&gt;The rejection loop&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-goal&quot;&gt;The double goalpost&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-social&quot;&gt;Self-consciousness &amp;amp; humor&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-fuel&quot;&gt;Two fuels&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-deep&quot;&gt;The deepest cut&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-out&quot;&gt;The way out&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-proper&quot;&gt;Worthy &amp;amp; becoming&lt;/a&gt;
+      &lt;a data-goto=&quot;ne-src&quot;&gt;Sources&lt;/a&gt;
+      &lt;a data-goto=&quot;fe-full-intro&quot;&gt;▸ The full picture&lt;/a&gt;
+    &lt;/nav&gt;
+    &lt;div class=&quot;mmain&quot;&gt;
+     &lt;div class=&quot;hero&quot;&gt;
+       &lt;div class=&quot;kick&quot;&gt;The anatomy of &quot;I'm not enough&quot;&lt;/div&gt;
+       &lt;h1&gt;Not Feeling Enough&lt;/h1&gt;
+       &lt;p class=&quot;sub&quot;&gt;Where the feeling comes from, the traps it sets, and the evidence-based ways out — and why the practice you're building is aimed straight at it.&lt;/p&gt;
+     &lt;/div&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-what&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;First, the reframe&lt;/div&gt;
+       &lt;h2&gt;It's a belief, not a fact&lt;/h2&gt;
+       &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;&quot;I'm not enough&quot; is not a truth about you — it's a learned &lt;i&gt;core belief&lt;/i&gt;&lt;/b&gt; (in schema terms, a &quot;defectiveness&quot; schema): a deep, early-formed lens that filters everything. Nobody is born with it. And a learned belief is a &lt;b&gt;changeable&lt;/b&gt; one.&lt;/div&gt;
+       &lt;div class=&quot;chain&quot;&gt;
+         &lt;div class=&quot;ln&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;early on&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;Experiences install it&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;Conditional approval, criticism, comparison.&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ln&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;it becomes&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;A core belief&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;&quot;I'm not enough&quot; — felt as fact.&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ln gap&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;then&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;It filters everything&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;Every event is read as more evidence for it.&lt;/div&gt;&lt;/div&gt;
+       &lt;/div&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-roots&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;Common roots&lt;/div&gt;
+       &lt;h2&gt;Where it comes from&lt;/h2&gt;
+       &lt;div class=&quot;cardrow&quot;&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Conditional approval&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Valued for what you achieved, not for simply existing.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Criticism &amp;amp; comparison&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Measured against siblings, peers, an ideal.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Not feeling seen&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Your inner world went unmirrored.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Temperament + culture&lt;/b&gt;&lt;/div&gt;&lt;p&gt;A sensitive mind that internalizes, in a world that ranks everyone.&lt;/p&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;p class=&quot;note&quot;&gt;I won't presume &lt;i&gt;your&lt;/i&gt; specific childhood — but this is very often where the root sits. Excavating that is exactly what a good therapist is for; wanting that help is no more a flaw than an athlete hiring a coach.&lt;/p&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-romance&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;Perfectionism in disguise&lt;/div&gt;
+       &lt;h2&gt;The romance trap&lt;/h2&gt;
+       &lt;div class=&quot;chain&quot;&gt;
+         &lt;div class=&quot;ln&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;the demand&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;&quot;Master it first&quot;&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;Know the whole &quot;life-cycle of romance&quot; before approaching.&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ln&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;so&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;Never approach&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;Study forever; never risk a real no.&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ln&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;therefore&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;No reps, no data&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;The one thing that builds the skill never happens.&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ln gap&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;↺&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;Feels more &quot;not enough&quot;&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;…which justifies more studying. The loop tightens.&lt;/div&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;The catch your own swimming analogy already knows:&lt;/b&gt; social &amp;amp; romantic skill is acquired by &lt;b&gt;reps with feedback&lt;/b&gt;, not from the manual. There is no life-cycle to study your way into competence — &lt;b&gt;the studying is the avoidance.&lt;/b&gt;&lt;/div&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-reject&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;How past rejection turned inward&lt;/div&gt;
+       &lt;h2&gt;The rejection loop&lt;/h2&gt;
+       &lt;div class=&quot;fork&quot;&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #b45319&quot;&gt;&lt;h3&gt;Pessimistic reading&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;&lt;b&gt;Internal · stable · global:&lt;/b&gt; &quot;it's &lt;i&gt;me&lt;/i&gt;, it's &lt;i&gt;permanent&lt;/i&gt;, it's &lt;i&gt;all&lt;/i&gt; of me.&quot; The attribution style most linked to depression &amp;amp; helplessness.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #45a34a&quot;&gt;&lt;h3&gt;Accurate reading&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;&lt;b&gt;External · specific · temporary:&lt;/b&gt; &quot;a mismatch, this time, this one thing.&quot; Not a verdict on your worth.&lt;/p&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;callout&quot;&gt;Rejection is near-&lt;b&gt;universal&lt;/b&gt; and mostly about &lt;b&gt;fit&lt;/b&gt;, not defect. The task is to re-attribute — catch the internal/stable/global story and correct it.&lt;/div&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-goal&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;Your own sharp insight&lt;/div&gt;
+       &lt;h2&gt;The double goalpost&lt;/h2&gt;
+       &lt;svg viewBox=&quot;0 0 640 170&quot; style=&quot;width:100%;height:auto;max-width:600px;display:block;margin:8px auto&quot; role=&quot;img&quot; aria-label=&quot;You stand still while your goal drifts forward and your remembered starting point drifts back.&quot;&gt;
+         &lt;defs&gt;&lt;marker id=&quot;ne-ar&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;8&quot; refY=&quot;5&quot; markerWidth=&quot;7&quot; markerHeight=&quot;7&quot; orient=&quot;auto-start-reverse&quot;&gt;&lt;path d=&quot;M0,0 L10,5 L0,10 z&quot; fill=&quot;#8a93a3&quot;/&gt;&lt;/marker&gt;&lt;/defs&gt;
+         &lt;line x1=&quot;40&quot; y1=&quot;98&quot; x2=&quot;600&quot; y2=&quot;98&quot; stroke=&quot;#dcdfe6&quot; stroke-width=&quot;2&quot;/&gt;
+         &lt;circle cx=&quot;320&quot; cy=&quot;98&quot; r=&quot;11&quot; fill=&quot;#1c2431&quot;/&gt;
+         &lt;text x=&quot;320&quot; y=&quot;130&quot; text-anchor=&quot;middle&quot; font-size=&quot;12&quot; font-weight=&quot;800&quot; fill=&quot;#1c2431&quot;&gt;YOU (standing still)&lt;/text&gt;
+         &lt;path d=&quot;M300,98 L110,98&quot; fill=&quot;none&quot; stroke=&quot;#b45319&quot; stroke-width=&quot;2.4&quot; stroke-dasharray=&quot;6 5&quot; marker-end=&quot;url(#ne-ar)&quot;/&gt;
+         &lt;text x=&quot;150&quot; y=&quot;80&quot; text-anchor=&quot;middle&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;#b45319&quot;&gt;remembered start&lt;/text&gt;
+         &lt;text x=&quot;150&quot; y=&quot;66&quot; text-anchor=&quot;middle&quot; font-size=&quot;10&quot; fill=&quot;#7f8aa4&quot;&gt;drifts back ←&lt;/text&gt;
+         &lt;path d=&quot;M340,98 L560,98&quot; fill=&quot;none&quot; stroke=&quot;#4f46e5&quot; stroke-width=&quot;2.4&quot; marker-end=&quot;url(#ne-ar)&quot;/&gt;
+         &lt;text x=&quot;470&quot; y=&quot;80&quot; text-anchor=&quot;middle&quot; font-size=&quot;11&quot; font-weight=&quot;700&quot; fill=&quot;#4f46e5&quot;&gt;goalpost&lt;/text&gt;
+         &lt;text x=&quot;470&quot; y=&quot;66&quot; text-anchor=&quot;middle&quot; font-size=&quot;10&quot; fill=&quot;#7f8aa4&quot;&gt;→ drifts forward&lt;/text&gt;
+         &lt;text x=&quot;320&quot; y=&quot;156&quot; text-anchor=&quot;middle&quot; font-size=&quot;11.5&quot; font-style=&quot;italic&quot; fill=&quot;#5b6572&quot;&gt;both ends move away — the gap widens both ways&lt;/text&gt;
+       &lt;/svg&gt;
+       &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;You move the goalpost forward &lt;i&gt;and&lt;/i&gt; revise your starting line backward&lt;/b&gt; — so you feel farther from the goal &lt;i&gt;and&lt;/i&gt; back near zero at once. That's the hedonic treadmill fused with &quot;discounting the positive&quot;. It's an &lt;b&gt;unwinnable game — that you rigged.&lt;/b&gt; Which means you can un-rig it.&lt;/div&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-social&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;Why the wit won't come&lt;/div&gt;
+       &lt;h2&gt;Self-consciousness &amp;amp; humor&lt;/h2&gt;
+       &lt;div class=&quot;fork&quot;&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #b45319&quot;&gt;&lt;h3&gt;Attention inward&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;Monitoring and grading yourself in real time. The self-monitor &lt;b&gt;jams&lt;/b&gt; spontaneity — the wit can't surface.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #45a34a&quot;&gt;&lt;h3&gt;Attention outward&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;Resting on the other person &amp;amp; the moment. Humor and ease flow when the spotlight is &lt;i&gt;off&lt;/i&gt; you.&lt;/p&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;callout&quot;&gt;The fix isn't more study — it's &lt;b&gt;less self-watching&lt;/b&gt;, which is exactly what mindfulness trains. And a reframe: connection isn't combat. Studying &quot;the game&quot; to &quot;get back at people&quot; keeps you armored — the opposite of ease.&lt;/div&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-fuel&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;Keep the ambition, change the fuel&lt;/div&gt;
+       &lt;h2&gt;Two fuels for the same striving&lt;/h2&gt;
+       &lt;div class=&quot;fork&quot;&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #b45319&quot;&gt;&lt;h3&gt;Deficiency fuel&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;&quot;I'm not enough, so I must &lt;i&gt;become&lt;/i&gt; enough to be acceptable.&quot; Corrosive, never satisfied — the deficit just relabels a new goal.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #45a34a&quot;&gt;&lt;h3&gt;Growth fuel&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;&quot;I'm okay as I am — and I'd love to grow and contribute.&quot; Same actions, sustainable, and it actually feels good.&lt;/p&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;callout&quot;&gt;Your aims — social mastery, understanding power, changing society — are &lt;b&gt;good&lt;/b&gt;. The problem was never the ambition; it's the fuel (Maslow: deficiency needs vs growth needs).&lt;/div&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-deep&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;The Buddhist cut&lt;/div&gt;
+       &lt;h2&gt;The deepest exit&lt;/h2&gt;
+       &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;&quot;I'm not enough&quot; smuggles in a hidden assumption:&lt;/b&gt; that there's a fixed &lt;i&gt;you&lt;/i&gt; with a fixed worth-level that's currently insufficient. That's precisely the fixed self &lt;b&gt;anattā&lt;/b&gt; dissolves. The &quot;not enough&quot; is a mental formation with an unpleasant feeling-tone — a &lt;b&gt;second arrow&lt;/b&gt;, and &lt;i&gt;bhava-taṇhā&lt;/i&gt; (the craving to become) — not a fact about a permanent entity.&lt;/div&gt;
+       &lt;div class=&quot;callout&quot; style=&quot;background:var(--gold-soft);border-color:#f0dfc0&quot;&gt;&lt;b&gt;The antidote isn't proving you're enough — it's &lt;i&gt;mettā&lt;/i&gt;:&lt;/b&gt; extending goodwill to yourself as you would to a friend. And the real exit from the validation-trap is not &lt;i&gt;getting&lt;/i&gt; the verdict &quot;you are enough&quot; from anyone — it's &lt;b&gt;ceasing to need the verdict at all&lt;/b&gt;, which the practice can actually do, because it dismantles the self that's asking.&lt;/div&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-out&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;Evidence-based handles&lt;/div&gt;
+       &lt;h2&gt;The way out&lt;/h2&gt;
+       &lt;div class=&quot;cardrow&quot;&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Self-compassion&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Neff's best-evidenced antidote — kindness, common humanity, mindfulness. It &lt;i&gt;raises&lt;/i&gt; motivation, doesn't soften it.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Re-attribute rejection&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Specific / external / temporary, not internal / stable / global.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Graded action&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Small real approaches; each a data-point, not a verdict. Reality disconfirms the catastrophe.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Drop reassurance-seeking&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Notice the loop; asking for &quot;you're enough&quot; soothes briefly, then must be re-sought.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Outward attention&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Off the self-monitor — frees humor and presence.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Therapy for the roots&lt;/b&gt;&lt;/div&gt;&lt;p&gt;For the childhood layer specifically — the right tool for that job.&lt;/p&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;Common humanity:&lt;/b&gt; the feeling of being alone in your inadequacy is the most &lt;i&gt;shared&lt;/i&gt; feeling there is. You are not uniquely deficient — and the whole hub you've built is aimed, at its heart, right here.&lt;/div&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-proper&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;Worthy AND becoming&lt;/div&gt;
+       &lt;h2&gt;The proper fuel&lt;/h2&gt;
+       &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;Two traps, not one:&lt;/b&gt; &quot;I'm not enough → fix my defective self&quot; — &lt;i&gt;and&lt;/i&gt; its opposite, &quot;I'm enough → so I never examine or grow&quot; (complacent self-acceptance, spiritual bypassing). The exit from both is a single move ↓&lt;/div&gt;
+       &lt;p&gt;&lt;b&gt;Separate your worth from your behaviour:&lt;/b&gt;&lt;/p&gt;
+       &lt;div class=&quot;fork&quot;&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #45a34a&quot;&gt;&lt;h3&gt;Worth — the floor&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;Unconditional; you don't earn it; &lt;i&gt;mettā&lt;/i&gt; &amp;amp; self-compassion protect it. Not at stake in any success or failure.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #4f46e5&quot;&gt;&lt;h3&gt;Skill &amp;amp; behaviour — no ceiling&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;Always improvable: humor, kindness, not hurting people, giving credit. Work on these forever.&lt;/p&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;callout&quot;&gt;Self-acceptance is the &lt;b&gt;floor, not the couch.&lt;/b&gt; &quot;I am worthy as I am, &lt;b&gt;and&lt;/b&gt; I am always becoming.&quot;&lt;/div&gt;
+
+       &lt;p&gt;&lt;b&gt;To change behaviour that hurts others — run on guilt, not shame (Brené Brown):&lt;/b&gt;&lt;/p&gt;
+       &lt;div class=&quot;fork&quot;&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #b45319&quot;&gt;&lt;h3&gt;Shame&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;&quot;I &lt;i&gt;am&lt;/i&gt; bad&quot; → hide, defend, keep harming. Too fragile to even look at the flaw.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;forkc&quot; style=&quot;border-top:4px solid #45a34a&quot;&gt;&lt;h3&gt;Guilt&lt;/h3&gt;&lt;p style=&quot;font-size:13px;line-height:1.6;color:var(--ink);max-width:none&quot;&gt;&quot;I &lt;i&gt;did&lt;/i&gt; something that hurt&quot; → repair &amp;amp; change. Points at the behaviour, motivates growth.&lt;/p&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;callout&quot; style=&quot;background:var(--gold-soft);border-color:#f0dfc0&quot;&gt;This is &lt;i&gt;sīla&lt;/i&gt; — right speech, non-harming — the base of the whole path. Compassion is what lets you face the harm &lt;b&gt;without collapsing&lt;/b&gt;, so you can actually fix it. Accepting yourself is never a licence to keep hurting people.&lt;/div&gt;
+
+       &lt;p&gt;&lt;b&gt;Why a secure base grows you &lt;i&gt;faster&lt;/i&gt;:&lt;/b&gt;&lt;/p&gt;
+       &lt;div class=&quot;chain&quot;&gt;
+         &lt;div class=&quot;ln&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;shame&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;Defense &amp;amp; paralysis&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;Too fragile to look → the flaw never gets fixed.&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ln&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;security&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;Look clearly · take feedback · risk it&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;No threat to defend against, so you can examine yourself.&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ln gap&quot;&gt;&lt;div class=&quot;pl2&quot;&gt;result&lt;/div&gt;&lt;div class=&quot;t2&quot;&gt;Recover fast, improve&lt;/div&gt;&lt;div class=&quot;d2&quot;&gt;Failure is data, not a verdict.&lt;/div&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;p class=&quot;note&quot;&gt;Neff's research is blunt on this: self-compassionate people take &lt;b&gt;more&lt;/b&gt; responsibility for mistakes and are &lt;b&gt;more&lt;/b&gt; motivated to improve — the opposite of complacency.&lt;/p&gt;
+
+       &lt;p&gt;&lt;b&gt;The fuels to run on instead of &quot;not enough&quot;:&lt;/b&gt;&lt;/p&gt;
+       &lt;div class=&quot;cardrow&quot;&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Intrinsic motivation&lt;/b&gt;&lt;/div&gt;&lt;div class=&quot;pali pl&quot;&gt;Self-Determination Theory&lt;/div&gt;&lt;p&gt;Autonomy · competence · relatedness — grow because you love it and want to connect.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Growth mindset&lt;/b&gt;&lt;/div&gt;&lt;div class=&quot;pali pl&quot;&gt;Dweck&lt;/div&gt;&lt;p&gt;Abilities develop; the point is learning, not proving worth.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Values-based action&lt;/b&gt;&lt;/div&gt;&lt;div class=&quot;pali pl&quot;&gt;ACT&lt;/div&gt;&lt;p&gt;Accept yourself &lt;i&gt;and&lt;/i&gt; move toward who you want to be.&lt;/p&gt;&lt;/div&gt;
+         &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Aspiration&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Move &lt;b&gt;toward&lt;/b&gt; what you love, not &lt;b&gt;away&lt;/b&gt; from what you fear.&lt;/p&gt;&lt;/div&gt;
+       &lt;/div&gt;
+       &lt;div class=&quot;callout&quot; style=&quot;background:var(--gold-soft);border-color:#f0dfc0&quot;&gt;&lt;b&gt;Applied to humor, flirtation, bonding, complimenting:&lt;/b&gt; the fuel is genuine &lt;b&gt;curiosity about &amp;amp; care for the person in front of you&lt;/b&gt; — &lt;i&gt;muditā&lt;/i&gt;, joy in others — not &quot;acquiring humor to become acceptable&quot;. Read the books as a curious person &lt;b&gt;expanding&lt;/b&gt;, not a deficient one patching. Same books, opposite spirit, completely different result.&lt;/div&gt;
+       &lt;div class=&quot;callout&quot;&gt;&lt;b&gt;The formula:&lt;/b&gt; grow relentlessly — from love, curiosity and care for others — &lt;i&gt;not&lt;/i&gt; from the ache of not-being-enough. &lt;b&gt;Worthy AND becoming.&lt;/b&gt;&lt;/div&gt;
+       &lt;p class=&quot;note&quot;&gt;Learn more: &lt;a class=&quot;cite&quot; href=&quot;https://self-compassion.org/the-research/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Neff — self-compassion &amp;amp; motivation&lt;/a&gt; · &lt;a class=&quot;cite&quot; href=&quot;https://brenebrown.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Brené Brown — shame vs guilt&lt;/a&gt; · &lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Carol_Dweck&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Dweck — growth mindset&lt;/a&gt; · &lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Self-determination_theory&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Self-Determination Theory&lt;/a&gt; · &lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Acceptance_and_commitment_therapy&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;ACT&lt;/a&gt; · &lt;a class=&quot;cite&quot; href=&quot;https://www.tarabrach.com/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Tara Brach — Radical Acceptance&lt;/a&gt; — alongside the Buddhist &lt;i&gt;sīla&lt;/i&gt; + brahmavihāras (&lt;a class=&quot;cite&quot; href=&quot;https://suttacentral.net/snp1.8/en/sujato&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;mettā&lt;/a&gt; · karuṇā · muditā).&lt;/p&gt;
+     &lt;/section&gt;
+
+     &lt;section class=&quot;sec&quot; id=&quot;ne-src&quot;&gt;
+       &lt;div class=&quot;eyebrow&quot;&gt;Read further&lt;/div&gt;
+       &lt;h2&gt;Sources&lt;/h2&gt;
+       &lt;div class=&quot;reflist&quot;&gt;
+         &lt;div class=&quot;ref&quot;&gt;&lt;div class=&quot;code&quot;&gt;Self-comp.&lt;/div&gt;&lt;div class=&quot;rt&quot;&gt;&lt;b&gt;Kristin Neff — Self-Compassion&lt;/b&gt;&lt;span class=&quot;pali pl&quot;&gt;research + practices&lt;/span&gt; &lt;a href=&quot;https://self-compassion.org/the-research/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;self-compassion.org ↗&lt;/a&gt; · &lt;a href=&quot;https://greatergood.berkeley.edu/topic/compassion&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Greater Good (Berkeley) ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ref&quot;&gt;&lt;div class=&quot;code&quot;&gt;CBT&lt;/div&gt;&lt;div class=&quot;rt&quot;&gt;&lt;b&gt;Cognitive distortions&lt;/b&gt;&lt;span class=&quot;pali pl&quot;&gt;all-or-nothing, discounting the positive&lt;/span&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Cognitive_distortion&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;overview ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ref&quot;&gt;&lt;div class=&quot;code&quot;&gt;Belief&lt;/div&gt;&lt;div class=&quot;rt&quot;&gt;&lt;b&gt;Schema therapy&lt;/b&gt;&lt;span class=&quot;pali pl&quot;&gt;the &quot;defectiveness / shame&quot; schema&lt;/span&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Schema_therapy&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;overview ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ref&quot;&gt;&lt;div class=&quot;code&quot;&gt;Attribution&lt;/div&gt;&lt;div class=&quot;rt&quot;&gt;&lt;b&gt;Explanatory style &amp;amp; learned helplessness&lt;/b&gt;&lt;span class=&quot;pali pl&quot;&gt;Seligman — internal/stable/global&lt;/span&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Explanatory_style&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;explanatory style ↗&lt;/a&gt; · &lt;a href=&quot;https://en.wikipedia.org/wiki/Learned_helplessness&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;learned helplessness ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ref&quot;&gt;&lt;div class=&quot;code&quot;&gt;Perfect.&lt;/div&gt;&lt;div class=&quot;rt&quot;&gt;&lt;b&gt;Perfectionism (psychology)&lt;/b&gt;&lt;span class=&quot;pali pl&quot;&gt;maladaptive perfectionism&lt;/span&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Perfectionism_(psychology)&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;overview ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ref&quot;&gt;&lt;div class=&quot;code&quot;&gt;Treadmill&lt;/div&gt;&lt;div class=&quot;rt&quot;&gt;&lt;b&gt;Hedonic treadmill&lt;/b&gt;&lt;span class=&quot;pali pl&quot;&gt;the moving goalpost&lt;/span&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Hedonic_treadmill&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;overview ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ref&quot;&gt;&lt;div class=&quot;code&quot;&gt;Fuel&lt;/div&gt;&lt;div class=&quot;rt&quot;&gt;&lt;b&gt;Maslow — deficiency vs growth needs&lt;/b&gt; &lt;a href=&quot;https://en.wikipedia.org/wiki/Maslow%27s_hierarchy_of_needs&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;overview ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+         &lt;div class=&quot;ref&quot;&gt;&lt;div class=&quot;code&quot;&gt;Snp 1.8&lt;/div&gt;&lt;div class=&quot;rt&quot;&gt;&lt;b&gt;Karaṇīya Mettā Sutta&lt;/b&gt;&lt;span class=&quot;pali pl&quot;&gt;loving-kindness — including toward yourself&lt;/span&gt; &lt;a href=&quot;https://suttacentral.net/snp1.8/en/sujato&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SuttaCentral ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+       &lt;/div&gt;
+     &lt;/section&gt;
+&lt;div id=&quot;nfe-full&quot;&gt;
+ &lt;style&gt;
+ #nfe-full{margin-top:52px;border-top:2px dashed var(--line2);padding-top:8px}
+ #nfe-full .nfig{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:16px;margin:18px 0 0;box-shadow:0 1px 2px rgba(20,25,40,.05)}
+ #nfe-full .nfig svg{display:block;width:100%;height:auto}
+ #nfe-full .ncap{font-size:12.5px;color:var(--dim);text-align:center;margin:11px 6px 2px;line-height:1.5}
+ #nfe-full .ncap b{color:var(--ink)}
+ #nfe-full .gcard a.cite{color:var(--indigo);text-decoration:none;border-bottom:1px dotted currentColor;font-weight:700}
+ #nfe-full .gcard a:hover{border-bottom-style:solid}
+ #nfe-full .nmap{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 0}
+ @media(max-width:760px){#nfe-full .nmap{grid-template-columns:1fr}}
+ #nfe-full .nrow{border:1px solid var(--line);border-left:4px solid var(--accent);border-radius:12px;background:var(--surface);padding:13px 15px;box-shadow:0 1px 2px rgba(20,25,40,.05)}
+ #nfe-full .nrow .from{font-weight:750;font-size:14px;color:var(--ink)}
+ #nfe-full .nrow .to{font-size:12.5px;color:var(--dim);margin-top:5px;line-height:1.5}
+ #nfe-full .nrow .to b{color:var(--accent)}
+ #nfe-full .nrow a.cite{color:var(--indigo);text-decoration:none;border-bottom:1px dotted currentColor;font-weight:700}
+ &lt;/style&gt;
+
+ &lt;section class=&quot;sec&quot; id=&quot;fe-full-intro&quot;&gt;
+   &lt;div class=&quot;eyebrow&quot;&gt;The full picture&lt;/div&gt;
+   &lt;h2&gt;Named, explained, and the way out&lt;/h2&gt;
+   &lt;p&gt;The same idea, taken apart completely — every label it hides behind, why the mind reaches for it, exactly how it plays you, the science-backed exits, and why the practice itself is the cure.&lt;/p&gt;
+ &lt;/section&gt;
+
+ &lt;section class=&quot;sec&quot; id=&quot;fe-names&quot;&gt;
+   &lt;div class=&quot;eyebrow&quot;&gt;Name it&lt;/div&gt;
+   &lt;h2&gt;One error, four names&lt;/h2&gt;
+   &lt;p&gt;It wears several names, each catching it from a different angle. Underneath, one shape: &lt;b&gt;a switch with only two positions — perfect or worthless — and no middle.&lt;/b&gt;&lt;/p&gt;
+   &lt;div class=&quot;nfig&quot;&gt;
+     &lt;svg viewBox=&quot;0 0 900 150&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; role=&quot;img&quot; aria-label=&quot;A switch with only two positions and no middle&quot;&gt;
+       &lt;text x=&quot;450&quot; y=&quot;28&quot; text-anchor=&quot;middle&quot; font-size=&quot;13&quot; font-weight=&quot;800&quot; fill=&quot;#5b6572&quot; font-family=&quot;sans-serif&quot;&gt;THE SHARED SHAPE — a two-position switch&lt;/text&gt;
+       &lt;rect x=&quot;120&quot; y=&quot;55&quot; width=&quot;660&quot; height=&quot;44&quot; rx=&quot;22&quot; fill=&quot;#f2f4f6&quot; stroke=&quot;#dcdfe6&quot;/&gt;
+       &lt;circle cx=&quot;160&quot; cy=&quot;77&quot; r=&quot;15&quot; fill=&quot;#b91c1c&quot;/&gt;&lt;text x=&quot;205&quot; y=&quot;82&quot; font-size=&quot;14&quot; font-weight=&quot;800&quot; fill=&quot;#b91c1c&quot; font-family=&quot;sans-serif&quot;&gt;WORTHLESS (0)&lt;/text&gt;
+       &lt;circle cx=&quot;740&quot; cy=&quot;77&quot; r=&quot;15&quot; fill=&quot;#0f766e&quot;/&gt;&lt;text x=&quot;695&quot; y=&quot;82&quot; text-anchor=&quot;end&quot; font-size=&quot;14&quot; font-weight=&quot;800&quot; fill=&quot;#0f766e&quot; font-family=&quot;sans-serif&quot;&gt;PERFECT (100)&lt;/text&gt;
+       &lt;path d=&quot;M360 120 L540 120&quot; stroke=&quot;#c8892a&quot; stroke-width=&quot;2&quot; stroke-dasharray=&quot;4 5&quot;/&gt;
+       &lt;text x=&quot;450&quot; y=&quot;138&quot; text-anchor=&quot;middle&quot; font-size=&quot;12&quot; fill=&quot;#b45309&quot; font-style=&quot;italic&quot; font-family=&quot;sans-serif&quot;&gt;the entire middle — where real practice lives — is deleted&lt;/text&gt;
+     &lt;/svg&gt;
+   &lt;/div&gt;
+   &lt;div class=&quot;cardrow&quot;&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;&lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Cognitive_distortion&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;All-or-nothing thinking ↗&lt;/a&gt;&lt;/b&gt;&lt;/div&gt;&lt;p&gt;CBT’s core distortion (also black-and-white / dichotomous): two bins, perfect or worthless, no gradient. The primary label.&lt;/p&gt;&lt;/div&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;&lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Perfectionism_(psychology)&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Maladaptive perfectionism ↗&lt;/a&gt;&lt;/b&gt;&lt;/div&gt;&lt;p&gt;The belief that anything short of the ultimate equals failure. “Can’t reach the absolute, so don’t begin” is textbook.&lt;/p&gt;&lt;/div&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;&lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Nirvana_fallacy&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Nirvana fallacy ↗&lt;/a&gt;&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Almost too on-the-nose: rejecting a real option because it isn’t a perfect solution — judging reality against an imaginary ideal.&lt;/p&gt;&lt;/div&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;&lt;a class=&quot;cite&quot; href=&quot;https://www.ncbi.nlm.nih.gov/pmc/articles/PMC6760427/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;What-the-hell effect ↗&lt;/a&gt;&lt;/b&gt;&lt;/div&gt;&lt;p&gt;The behaviour-change version (abstinence-violation effect): fall short once → abandon the whole effort. “Broke the diet, might as well eat the box.”&lt;/p&gt;&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/section&gt;
+
+ &lt;section class=&quot;sec&quot; id=&quot;fe-know&quot;&gt;
+   &lt;div class=&quot;eyebrow&quot;&gt;The proof you know better&lt;/div&gt;
+   &lt;h2&gt;Strip the costume and it’s the same fallacy&lt;/h2&gt;
+   &lt;p&gt;You’d never apply this logic elsewhere. The meditation version is the identical error — just wearing a spiritual costume, which makes it harder to spot.&lt;/p&gt;
+   &lt;div class=&quot;nfig&quot;&gt;
+     &lt;svg viewBox=&quot;0 0 900 250&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; role=&quot;img&quot; aria-label=&quot;Analogies you accept versus the meditation version&quot;&gt;
+       &lt;defs&gt;&lt;marker id=&quot;nf2arr&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;8&quot; refY=&quot;5&quot; markerWidth=&quot;7&quot; markerHeight=&quot;7&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0 0 L10 5 L0 10 z&quot; fill=&quot;#5b6572&quot;/&gt;&lt;/marker&gt;&lt;/defs&gt;
+       &lt;g font-family=&quot;sans-serif&quot;&gt;
+         &lt;rect x=&quot;30&quot; y=&quot;26&quot; width=&quot;500&quot; height=&quot;40&quot; rx=&quot;10&quot; fill=&quot;#e4f1ef&quot; stroke=&quot;#0f766e&quot;/&gt;&lt;text x=&quot;46&quot; y=&quot;51&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot; fill=&quot;#1c2431&quot;&gt;Won’t be CEO → &lt;tspan font-weight=&quot;800&quot; fill=&quot;#0f766e&quot;&gt;still earn a living&lt;/tspan&gt;&lt;/text&gt;&lt;text x=&quot;512&quot; y=&quot;51&quot; text-anchor=&quot;end&quot; font-size=&quot;16&quot;&gt;✅&lt;/text&gt;
+         &lt;rect x=&quot;30&quot; y=&quot;76&quot; width=&quot;500&quot; height=&quot;40&quot; rx=&quot;10&quot; fill=&quot;#e4f1ef&quot; stroke=&quot;#0f766e&quot;/&gt;&lt;text x=&quot;46&quot; y=&quot;101&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot; fill=&quot;#1c2431&quot;&gt;Won’t be a best-seller → &lt;tspan font-weight=&quot;800&quot; fill=&quot;#0f766e&quot;&gt;still write&lt;/tspan&gt;&lt;/text&gt;&lt;text x=&quot;512&quot; y=&quot;101&quot; text-anchor=&quot;end&quot; font-size=&quot;16&quot;&gt;✅&lt;/text&gt;
+         &lt;rect x=&quot;30&quot; y=&quot;126&quot; width=&quot;500&quot; height=&quot;40&quot; rx=&quot;10&quot; fill=&quot;#e4f1ef&quot; stroke=&quot;#0f766e&quot;/&gt;&lt;text x=&quot;46&quot; y=&quot;151&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot; fill=&quot;#1c2431&quot;&gt;Won’t win → &lt;tspan font-weight=&quot;800&quot; fill=&quot;#0f766e&quot;&gt;still play the game&lt;/tspan&gt;&lt;/text&gt;&lt;text x=&quot;512&quot; y=&quot;151&quot; text-anchor=&quot;end&quot; font-size=&quot;16&quot;&gt;✅&lt;/text&gt;
+         &lt;rect x=&quot;30&quot; y=&quot;188&quot; width=&quot;500&quot; height=&quot;44&quot; rx=&quot;10&quot; fill=&quot;#fdecea&quot; stroke=&quot;#b91c1c&quot;/&gt;&lt;text x=&quot;46&quot; y=&quot;207&quot; font-size=&quot;13&quot; font-weight=&quot;700&quot; fill=&quot;#1c2431&quot;&gt;Won’t reach enlightenment →&lt;/text&gt;&lt;text x=&quot;46&quot; y=&quot;225&quot; font-size=&quot;13&quot; font-weight=&quot;800&quot; fill=&quot;#b91c1c&quot;&gt;“so why practise at all?”&lt;/text&gt;&lt;text x=&quot;512&quot; y=&quot;214&quot; text-anchor=&quot;end&quot; font-size=&quot;16&quot;&gt;⛔&lt;/text&gt;
+         &lt;path d=&quot;M560 120 L620 120&quot; stroke=&quot;#5b6572&quot; stroke-width=&quot;2&quot; marker-end=&quot;url(#nf2arr)&quot;/&gt;
+         &lt;rect x=&quot;628&quot; y=&quot;70&quot; width=&quot;250&quot; height=&quot;110&quot; rx=&quot;14&quot; fill=&quot;#f7ecd8&quot; stroke=&quot;#c8892a&quot;/&gt;
+         &lt;text x=&quot;753&quot; y=&quot;108&quot; text-anchor=&quot;middle&quot; font-size=&quot;13.5&quot; font-weight=&quot;800&quot; fill=&quot;#b45309&quot;&gt;Same error —&lt;/text&gt;
+         &lt;text x=&quot;753&quot; y=&quot;130&quot; text-anchor=&quot;middle&quot; font-size=&quot;13.5&quot; font-weight=&quot;800&quot; fill=&quot;#b45309&quot;&gt;spiritual costume&lt;/text&gt;
+         &lt;text x=&quot;753&quot; y=&quot;156&quot; text-anchor=&quot;middle&quot; font-size=&quot;11.5&quot; fill=&quot;#5b6572&quot;&gt;value is in the doing,&lt;/text&gt;
+         &lt;text x=&quot;753&quot; y=&quot;171&quot; text-anchor=&quot;middle&quot; font-size=&quot;11.5&quot; fill=&quot;#5b6572&quot;&gt;not only the summit&lt;/text&gt;
+       &lt;/g&gt;
+     &lt;/svg&gt;
+     &lt;div class=&quot;ncap&quot;&gt;Value lives in the doing and the incremental good. The meditation case is identical — &lt;b&gt;strip the costume&lt;/b&gt;.&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/section&gt;
+
+ &lt;section class=&quot;sec&quot; id=&quot;fe-why&quot;&gt;
+   &lt;div class=&quot;eyebrow&quot;&gt;Mechanism&lt;/div&gt;
+   &lt;h2&gt;Why the mind does this — the forces stack&lt;/h2&gt;
+   &lt;div class=&quot;nfig&quot;&gt;
+     &lt;svg viewBox=&quot;0 0 900 300&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; role=&quot;img&quot; aria-label=&quot;Four stacked forces&quot;&gt;
+       &lt;g font-family=&quot;sans-serif&quot;&gt;
+         &lt;rect x=&quot;120&quot; y=&quot;20&quot; width=&quot;660&quot; height=&quot;58&quot; rx=&quot;12&quot; fill=&quot;#eef0fe&quot; stroke=&quot;#4f46e5&quot;/&gt;&lt;text x=&quot;140&quot; y=&quot;44&quot; font-size=&quot;14&quot; font-weight=&quot;800&quot; fill=&quot;#4f46e5&quot;&gt;① Cognitive economy&lt;/text&gt;&lt;text x=&quot;140&quot; y=&quot;64&quot; font-size=&quot;12&quot; fill=&quot;#5b6572&quot;&gt;Binary bins are cheap; gradations are expensive to hold. We over-apply fast either/or to real continua.&lt;/text&gt;
+         &lt;rect x=&quot;120&quot; y=&quot;86&quot; width=&quot;660&quot; height=&quot;58&quot; rx=&quot;12&quot; fill=&quot;#e4f1ef&quot; stroke=&quot;#0f766e&quot;/&gt;&lt;text x=&quot;140&quot; y=&quot;110&quot; font-size=&quot;14&quot; font-weight=&quot;800&quot; fill=&quot;#0f766e&quot;&gt;② Contingent self-worth&lt;/text&gt;&lt;text x=&quot;140&quot; y=&quot;130&quot; font-size=&quot;12&quot; fill=&quot;#5b6572&quot;&gt;Tie your worth to the outcome and a middling result feels like a verdict on &lt;tspan font-style=&quot;italic&quot;&gt;you&lt;/tspan&gt;, not the task.&lt;/text&gt;
+         &lt;rect x=&quot;120&quot; y=&quot;152&quot; width=&quot;660&quot; height=&quot;58&quot; rx=&quot;12&quot; fill=&quot;#fdecea&quot; stroke=&quot;#b91c1c&quot;/&gt;&lt;text x=&quot;140&quot; y=&quot;176&quot; font-size=&quot;14&quot; font-weight=&quot;800&quot; fill=&quot;#b91c1c&quot;&gt;③ Fear of failure → self-handicapping&lt;/text&gt;&lt;text x=&quot;140&quot; y=&quot;196&quot; font-size=&quot;12&quot; fill=&quot;#5b6572&quot;&gt;The sneaky one: an impossible bar is secretly protective — never enter the contest, never “fail”.&lt;/text&gt;
+         &lt;rect x=&quot;120&quot; y=&quot;218&quot; width=&quot;660&quot; height=&quot;58&quot; rx=&quot;12&quot; fill=&quot;#f7ecd8&quot; stroke=&quot;#c8892a&quot;/&gt;&lt;text x=&quot;140&quot; y=&quot;242&quot; font-size=&quot;14&quot; font-weight=&quot;800&quot; fill=&quot;#b45309&quot;&gt;④ Defense against the messy middle&lt;/text&gt;&lt;text x=&quot;140&quot; y=&quot;262&quot; font-size=&quot;12&quot; fill=&quot;#5b6572&quot;&gt;All-or-nothing spares the slow, ambiguous “am I even progressing?” zone — exactly where practice lives.&lt;/text&gt;
+       &lt;/g&gt;
+     &lt;/svg&gt;
+     &lt;div class=&quot;ncap&quot;&gt;The third is the trap: the unreachable standard is a &lt;b&gt;shield against the risk of trying and falling short&lt;/b&gt;.&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/section&gt;
+
+ &lt;section class=&quot;sec&quot; id=&quot;fe-costs&quot;&gt;
+   &lt;div class=&quot;eyebrow&quot;&gt;The hidden costs&lt;/div&gt;
+   &lt;h2&gt;How it plays you — and the cruel irony&lt;/h2&gt;
+   &lt;div class=&quot;nfig&quot;&gt;
+     &lt;svg viewBox=&quot;0 0 900 320&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; role=&quot;img&quot; aria-label=&quot;The vicious loop&quot;&gt;
+       &lt;defs&gt;&lt;marker id=&quot;nf2l&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;8&quot; refY=&quot;5&quot; markerWidth=&quot;7&quot; markerHeight=&quot;7&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0 0 L10 5 L0 10 z&quot; fill=&quot;#b91c1c&quot;/&gt;&lt;/marker&gt;&lt;/defs&gt;
+       &lt;g font-family=&quot;sans-serif&quot;&gt;
+         &lt;circle cx=&quot;450&quot; cy=&quot;160&quot; r=&quot;70&quot; fill=&quot;#fdecea&quot; stroke=&quot;#b91c1c&quot; stroke-width=&quot;2&quot;/&gt;
+         &lt;text x=&quot;450&quot; y=&quot;150&quot; text-anchor=&quot;middle&quot; font-size=&quot;13&quot; font-weight=&quot;800&quot; fill=&quot;#b91c1c&quot;&gt;All-or-nothing&lt;/text&gt;&lt;text x=&quot;450&quot; y=&quot;168&quot; text-anchor=&quot;middle&quot; font-size=&quot;13&quot; font-weight=&quot;800&quot; fill=&quot;#b91c1c&quot;&gt;standard&lt;/text&gt;&lt;text x=&quot;450&quot; y=&quot;186&quot; text-anchor=&quot;middle&quot; font-size=&quot;10.5&quot; fill=&quot;#5b6572&quot;&gt;“only the absolute counts”&lt;/text&gt;
+         &lt;rect x=&quot;150&quot; y=&quot;30&quot; width=&quot;220&quot; height=&quot;46&quot; rx=&quot;11&quot; fill=&quot;#fff&quot; stroke=&quot;#dcdfe6&quot;/&gt;&lt;text x=&quot;260&quot; y=&quot;52&quot; text-anchor=&quot;middle&quot; font-size=&quot;12.5&quot; font-weight=&quot;700&quot; fill=&quot;#1c2431&quot;&gt;Paralysis&lt;/text&gt;&lt;text x=&quot;260&quot; y=&quot;68&quot; text-anchor=&quot;middle&quot; font-size=&quot;10.5&quot; fill=&quot;#5b6572&quot;&gt;won’t start without a guarantee&lt;/text&gt;
+         &lt;rect x=&quot;530&quot; y=&quot;30&quot; width=&quot;220&quot; height=&quot;46&quot; rx=&quot;11&quot; fill=&quot;#fff&quot; stroke=&quot;#dcdfe6&quot;/&gt;&lt;text x=&quot;640&quot; y=&quot;52&quot; text-anchor=&quot;middle&quot; font-size=&quot;12.5&quot; font-weight=&quot;700&quot; fill=&quot;#1c2431&quot;&gt;Premature quitting&lt;/text&gt;&lt;text x=&quot;640&quot; y=&quot;68&quot; text-anchor=&quot;middle&quot; font-size=&quot;10.5&quot; fill=&quot;#5b6572&quot;&gt;one slip → the what-the-hell effect&lt;/text&gt;
+         &lt;rect x=&quot;150&quot; y=&quot;250&quot; width=&quot;220&quot; height=&quot;46&quot; rx=&quot;11&quot; fill=&quot;#fff&quot; stroke=&quot;#dcdfe6&quot;/&gt;&lt;text x=&quot;260&quot; y=&quot;272&quot; text-anchor=&quot;middle&quot; font-size=&quot;12.5&quot; font-weight=&quot;700&quot; fill=&quot;#1c2431&quot;&gt;Gains don’t “count”&lt;/text&gt;&lt;text x=&quot;260&quot; y=&quot;288&quot; text-anchor=&quot;middle&quot; font-size=&quot;10.5&quot; fill=&quot;#5b6572&quot;&gt;real progress devalued&lt;/text&gt;
+         &lt;rect x=&quot;530&quot; y=&quot;250&quot; width=&quot;220&quot; height=&quot;46&quot; rx=&quot;11&quot; fill=&quot;#fff&quot; stroke=&quot;#dcdfe6&quot;/&gt;&lt;text x=&quot;640&quot; y=&quot;270&quot; text-anchor=&quot;middle&quot; font-size=&quot;12.5&quot; font-weight=&quot;700&quot; fill=&quot;#1c2431&quot;&gt;Chronic dissatisfaction&lt;/text&gt;&lt;text x=&quot;640&quot; y=&quot;286&quot; text-anchor=&quot;middle&quot; font-size=&quot;10.5&quot; fill=&quot;#5b6572&quot;&gt;goalposts move — the arrival fallacy&lt;/text&gt;
+         &lt;g stroke=&quot;#b91c1c&quot; stroke-width=&quot;2&quot; fill=&quot;none&quot; opacity=&quot;0.7&quot;&gt;
+           &lt;path d=&quot;M383 128 Q320 90 335 78&quot; marker-end=&quot;url(#nf2l)&quot;/&gt;&lt;path d=&quot;M517 128 Q580 90 565 78&quot; marker-end=&quot;url(#nf2l)&quot;/&gt;
+           &lt;path d=&quot;M383 192 Q320 240 335 250&quot; marker-end=&quot;url(#nf2l)&quot;/&gt;&lt;path d=&quot;M517 192 Q580 240 565 250&quot; marker-end=&quot;url(#nf2l)&quot;/&gt;
+         &lt;/g&gt;
+       &lt;/g&gt;
+     &lt;/svg&gt;
+     &lt;div class=&quot;ncap&quot;&gt;&lt;b&gt;The cruel irony:&lt;/b&gt; the standard &lt;b&gt;lowers the odds of the very excellence it demands&lt;/b&gt; — you never begin or bail early — and it steals the joy, turning every step into an unpaid toll.&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/section&gt;
+
+ &lt;section class=&quot;sec&quot; id=&quot;fe-out&quot;&gt;
+   &lt;div class=&quot;eyebrow&quot;&gt;Science-based ways out&lt;/div&gt;
+   &lt;h2&gt;Progress is a slope, not a switch&lt;/h2&gt;
+   &lt;div class=&quot;nfig&quot;&gt;
+     &lt;svg viewBox=&quot;0 0 900 170&quot; xmlns=&quot;http://www.w3.org/2000/svg&quot; role=&quot;img&quot; aria-label=&quot;Pass-fail switch to a 0 to 100 slope&quot;&gt;
+       &lt;defs&gt;&lt;marker id=&quot;nf2w&quot; viewBox=&quot;0 0 10 10&quot; refX=&quot;8&quot; refY=&quot;5&quot; markerWidth=&quot;7&quot; markerHeight=&quot;7&quot; orient=&quot;auto&quot;&gt;&lt;path d=&quot;M0 0 L10 5 L0 10 z&quot; fill=&quot;#5b6572&quot;/&gt;&lt;/marker&gt;&lt;/defs&gt;
+       &lt;g font-family=&quot;sans-serif&quot;&gt;
+         &lt;text x=&quot;215&quot; y=&quot;26&quot; text-anchor=&quot;middle&quot; font-size=&quot;12.5&quot; font-weight=&quot;800&quot; fill=&quot;#b91c1c&quot;&gt;OLD · pass / fail&lt;/text&gt;
+         &lt;rect x=&quot;150&quot; y=&quot;42&quot; width=&quot;130&quot; height=&quot;40&quot; rx=&quot;20&quot; fill=&quot;#fdecea&quot; stroke=&quot;#b91c1c&quot;/&gt;&lt;circle cx=&quot;170&quot; cy=&quot;62&quot; r=&quot;12&quot; fill=&quot;#b91c1c&quot;/&gt;&lt;text x=&quot;240&quot; y=&quot;66&quot; text-anchor=&quot;middle&quot; font-size=&quot;11&quot; fill=&quot;#b91c1c&quot; font-weight=&quot;700&quot;&gt;yes / no&lt;/text&gt;
+         &lt;path d=&quot;M320 62 L400 62&quot; stroke=&quot;#5b6572&quot; stroke-width=&quot;2&quot; marker-end=&quot;url(#nf2w)&quot;/&gt;
+         &lt;text x=&quot;640&quot; y=&quot;26&quot; text-anchor=&quot;middle&quot; font-size=&quot;12.5&quot; font-weight=&quot;800&quot; fill=&quot;#0f766e&quot;&gt;NEW · rate it 0–100&lt;/text&gt;
+         &lt;line x1=&quot;440&quot; y1=&quot;120&quot; x2=&quot;860&quot; y2=&quot;55&quot; stroke=&quot;#0f766e&quot; stroke-width=&quot;3&quot;/&gt;
+         &lt;circle cx=&quot;440&quot; cy=&quot;120&quot; r=&quot;5&quot; fill=&quot;#0f766e&quot;/&gt;&lt;circle cx=&quot;580&quot; cy=&quot;98&quot; r=&quot;5&quot; fill=&quot;#0f766e&quot;/&gt;&lt;circle cx=&quot;720&quot; cy=&quot;76&quot; r=&quot;5&quot; fill=&quot;#0f766e&quot;/&gt;&lt;circle cx=&quot;860&quot; cy=&quot;55&quot; r=&quot;5&quot; fill=&quot;#0f766e&quot;/&gt;
+         &lt;text x=&quot;440&quot; y=&quot;142&quot; text-anchor=&quot;middle&quot; font-size=&quot;10.5&quot; fill=&quot;#5b6572&quot;&gt;0&lt;/text&gt;&lt;text x=&quot;860&quot; y=&quot;142&quot; text-anchor=&quot;middle&quot; font-size=&quot;10.5&quot; fill=&quot;#5b6572&quot;&gt;100&lt;/text&gt;
+       &lt;/g&gt;
+     &lt;/svg&gt;
+     &lt;div class=&quot;ncap&quot;&gt;Every catch of “worthless unless total” → &lt;b&gt;rate it 0–100 instead of yes/no.&lt;/b&gt;&lt;/div&gt;
+   &lt;/div&gt;
+   &lt;div class=&quot;cardrow&quot;&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Continuum / scaling&lt;/b&gt;&lt;/div&gt;&lt;p&gt;&lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Cognitive_restructuring&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Cognitive restructuring ↗&lt;/a&gt; — hit a pass/fail thought, rate it on a scale. Progress is a slope.&lt;/p&gt;&lt;/div&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Process &amp;gt; outcome goals&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Commit to the doing (sit daily), not the summit. You control the process; you don’t control the summit.&lt;/p&gt;&lt;/div&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Self-compassion&lt;/b&gt;&lt;/div&gt;&lt;p&gt;&lt;a class=&quot;cite&quot; href=&quot;https://self-compassion.org/the-research/&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Neff’s research ↗&lt;/a&gt; — treat yourself as a friend. It &lt;b&gt;raises&lt;/b&gt; motivation; self-criticism breeds avoidance.&lt;/p&gt;&lt;/div&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Growth mindset&lt;/b&gt;&lt;/div&gt;&lt;p&gt;&lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Carol_Dweck&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Dweck ↗&lt;/a&gt; — orient to learning, not a fixed “I am a success / failure.”&lt;/p&gt;&lt;/div&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;Satisfice, don’t maximize&lt;/b&gt;&lt;/div&gt;&lt;p&gt;&lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Satisficing&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;Simon ↗&lt;/a&gt; — &lt;a class=&quot;cite&quot; href=&quot;https://en.wikipedia.org/wiki/Maximization_(psychology)&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;maximizers ↗&lt;/a&gt; are measurably less happy and more paralysed than satisficers.&lt;/p&gt;&lt;/div&gt;
+     &lt;div class=&quot;gcard&quot;&gt;&lt;div class=&quot;gh&quot;&gt;&lt;b&gt;A lapse = one data point&lt;/b&gt;&lt;/div&gt;&lt;p&gt;Not a verdict. Resume immediately — the same “miss a day, just sit the next” rule.&lt;/p&gt;&lt;/div&gt;
+   &lt;/div&gt;
+ &lt;/section&gt;
+
+ &lt;section class=&quot;sec&quot; id=&quot;fe-dharma&quot;&gt;
+   &lt;div class=&quot;eyebrow&quot;&gt;The part you’ll appreciate most&lt;/div&gt;
+   &lt;h2&gt;The very thing you fear is what practice dissolves&lt;/h2&gt;
+   &lt;p&gt;This isn’t only a psychological glitch to patch — in Buddhist terms it’s a specimen of exactly what the practice is designed to cure.&lt;/p&gt;
+   &lt;div class=&quot;nmap&quot;&gt;
+     &lt;div class=&quot;nrow&quot;&gt;&lt;div class=&quot;from&quot;&gt;“Reach the absolute or it’s pointless”&lt;/div&gt;&lt;div class=&quot;to&quot;&gt;= &lt;b&gt;bhava-taṇhā&lt;/b&gt;, the craving-to-become. &lt;a class=&quot;cite&quot; href=&quot;https://suttacentral.net/sn56.11/en/sujato&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SN 56.11 ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+     &lt;div class=&quot;nrow&quot;&gt;&lt;div class=&quot;from&quot;&gt;The self-judgment riding on it&lt;/div&gt;&lt;div class=&quot;to&quot;&gt;= the &lt;b&gt;second arrow&lt;/b&gt; — suffering added on top of pain. &lt;a class=&quot;cite&quot; href=&quot;https://suttacentral.net/sn36.6/en/sujato&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SN 36.6 ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+     &lt;div class=&quot;nrow&quot;&gt;&lt;div class=&quot;from&quot;&gt;Assumes a fixed “me” who could be a permanent “failure”&lt;/div&gt;&lt;div class=&quot;to&quot;&gt;= precisely the &lt;b&gt;anattā&lt;/b&gt; the practice loosens. &lt;a class=&quot;cite&quot; href=&quot;https://suttacentral.net/sn22.59/en/sujato&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;SN 22.59 ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+     &lt;div class=&quot;nrow&quot;&gt;&lt;div class=&quot;from&quot;&gt;Clinging to enlightenment as a shiny prize&lt;/div&gt;&lt;div class=&quot;to&quot;&gt;= the &lt;b&gt;raft-clinging&lt;/b&gt; the Buddha warned against; the fruits accrue all along the way. &lt;a class=&quot;cite&quot; href=&quot;https://suttacentral.net/mn22/en/sujato&quot; target=&quot;_blank&quot; rel=&quot;noopener&quot;&gt;MN 22 ↗&lt;/a&gt;&lt;/div&gt;&lt;/div&gt;
+   &lt;/div&gt;
+   &lt;div class=&quot;callout&quot; style=&quot;margin-top:16px&quot;&gt;&lt;b&gt;Even doctrinally it’s self-defeating:&lt;/b&gt; grasping at the goal is itself the obstacle. You reach it partly by &lt;b&gt;letting go of needing to reach it.&lt;/b&gt;&lt;/div&gt;
+ &lt;/section&gt;
+
+ &lt;blockquote class=&quot;quote&quot;&gt;&lt;p&gt;The value is real at every stage — a calmer, less reactive, more present you is worth having whether or not you ever touch the “absolute.” Chasing the absolute as the only thing that counts is the one attitude guaranteed to poison the practice.&lt;/p&gt;&lt;/blockquote&gt;
+&lt;/div&gt;
+
+    &lt;/div&gt;
+   &lt;/div&gt;
+  &lt;script&gt;(function(){var W=document.querySelector(&quot;.wrap&quot;)||document.querySelector(&quot;.mlayout&quot;)||document.body;function ph(){try{var h=Math.ceil(W.getBoundingClientRect().bottom+28);parent.postMessage({__embH:h,__embId:&quot;nfeFrame&quot;},&quot;*&quot;);}catch(e){}}if(window.ResizeObserver){try{new ResizeObserver(ph).observe(W);}catch(e){}}window.addEventListener(&quot;load&quot;,ph);window.addEventListener(&quot;resize&quot;,ph);document.addEventListener(&quot;click&quot;,function(ev){var g=ev.target.closest&amp;&amp;ev.target.closest(&quot;[data-goto]&quot;);if(g){var t=document.getElementById(g.getAttribute(&quot;data-goto&quot;));if(t)t.scrollIntoView({behavior:&quot;smooth&quot;});}setTimeout(ph,80);setTimeout(ph,350);});setTimeout(ph,160);setTimeout(ph,760);})();&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;"></iframe></div></div></section>
+  <section class="view" id="v-trap"><div class="wrap">
+    <div class="hero">
+      <div class="kick">My Learnings · The School of Life</div>
+      <h1>The Trap of Perfectionism</h1>
+      <p class="thesis">Perfectionism is the unreasonable, self-defeating ambition of getting something <b>absolutely right</b> — which makes us hard to be around and punishing to live within. The fault isn’t aiming high. It’s <b>under-budgeting for how hard high actually is.</b></p>
+      <a class="vidlink" href="https://www.youtube.com/watch?v=g8pti-Swh_E&t=17s" target="_blank" rel="noopener">▶ Watch · School of Life: premature perfectionism <span style="opacity:.7">↗</span></a>
+    </div>
+
+    <section class="sect" id="tp-gap">
+      <div class="sect-h"><span class="n">01</span><h2>It’s born in the imagination</h2></div>
+      <p class="sect-sub">The ease of picturing an ideal, set against the monstrous difficulty of building it. The sickness stagnates in that fertile gap.</p>
+      <div class="fig">
+        <svg viewBox="0 0 900 220" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The gap between easy-to-imagine ideal and hard-to-build reality">
+          <g font-family="sans-serif">
+            <rect x="30" y="60" width="300" height="100" rx="16" style="fill:var(--seed-soft)" stroke="#0ea5e9"/>
+            <text x="180" y="96" text-anchor="middle" font-size="14.5" font-weight="800" fill="#0369a1">The ideal state</text>
+            <text x="180" y="120" text-anchor="middle" font-size="12" style="fill:var(--dim)">conjured in a second —</text>
+            <text x="180" y="138" text-anchor="middle" font-size="12" style="fill:var(--dim)">effortless, complete, perfect</text>
+            <rect x="570" y="60" width="300" height="100" rx="16" style="fill:var(--bad-soft)" stroke="#e11d48"/>
+            <text x="720" y="96" text-anchor="middle" font-size="14.5" font-weight="800" fill="#be123c">Bringing it into being</text>
+            <text x="720" y="120" text-anchor="middle" font-size="12" style="fill:var(--dim)">monstrously hard, slow,</text>
+            <text x="720" y="138" text-anchor="middle" font-size="12" style="fill:var(--dim)">by yourself, from scratch</text>
+            <text x="450" y="70" text-anchor="middle" font-size="12" font-weight="800" fill="#b45309" letter-spacing=".06em">THE FERTILE GAP</text>
+            <path d="M340 110 L560 110" stroke="#c8892a" stroke-width="2.5" stroke-dasharray="5 6"/>
+            <text x="450" y="150" text-anchor="middle" font-size="11.5" font-style="italic" style="fill:var(--dim)">noble vision ⟷ mediocre reality — where the sickness lives</text>
+          </g>
+        </svg>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-budget">
+      <div class="sect-h"><span class="n">02</span><h2>The real fault: under-budgeting for difficulty</h2></div>
+      <p class="sect-sub">Our problems don’t arise from loving perfection — but from the reckless tendency to under-budget for what it costs. How well we budget depends on grasping the true, inherent difficulty of the task.</p>
+      <div class="gb">
+        <div class="gcard built">
+          <div class="lab">✅ Accurately budgeted</div>
+          <h3>“It’s difficult — but I knew it would be.”</h3>
+          <div class="tags"><span class="tag">weak first efforts expected</span><span class="tag">slow progress ≠ alarm</span><span class="tag">no panic</span><span class="tag">patience holds</span></div>
+        </div>
+        <div class="gcard given" style="border-top-color:#e11d48">
+          <div class="lab" style="color:#e11d48">⛔ Under-budgeted</div>
+          <h3>“It should be easier than this.”</h3>
+          <div class="tags"><span class="tag" style="background:var(--bad-soft);color:#be123c">first efforts feel like failure</span><span class="tag" style="background:var(--bad-soft);color:#be123c">panic at slow progress</span><span class="tag" style="background:var(--bad-soft);color:#be123c">struggle read as ineptitude</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-premature">
+      <div class="sect-h"><span class="n">03</span><h2>Premature perfectionism — the thing to criticise</h2></div>
+      <p class="sect-sub">High standards only turn toxic at one precise moment: when we expect something to be substantially easier than it is, and misread the struggle.</p>
+      <div class="fig">
+        <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Two readings of the same struggle">
+          <defs><marker id="tpar" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9aa1ad"/></marker></defs>
+          <g font-family="sans-serif">
+            <rect x="320" y="24" width="260" height="46" rx="12" style="fill:var(--card)" stroke="var(--line2)"/>
+            <text x="450" y="52" text-anchor="middle" font-size="13.5" font-weight="800" style="fill:var(--ink)">The same struggle</text>
+            <path d="M420 74 L300 108" stroke="#9aa1ad" stroke-width="2" marker-end="url(#tpar)"/>
+            <path d="M480 74 L600 108" stroke="#9aa1ad" stroke-width="2" marker-end="url(#tpar)"/>
+            <rect x="40" y="112" width="380" height="70" rx="14" style="fill:var(--bad-soft)" stroke="#e11d48"/>
+            <text x="230" y="140" text-anchor="middle" font-size="13" font-weight="800" fill="#be123c">“A mark of my ineptitude”</text>
+            <text x="230" y="162" text-anchor="middle" font-size="11.5" style="fill:var(--dim)">→ shame, panic, quitting</text>
+            <rect x="480" y="112" width="380" height="70" rx="14" style="fill:var(--craft-soft)" stroke="#16a34a"/>
+            <text x="670" y="140" text-anchor="middle" font-size="13" font-weight="800" fill="#15803d">“An inevitable part of a</text>
+            <text x="670" y="158" text-anchor="middle" font-size="13" font-weight="800" fill="#15803d">legitimately lengthy journey”</text>
+          </g>
+        </svg>
+        <div class="cap">Same reality, two labels. The perfectionist picks the left — and pays for it.</div>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-examples">
+      <div class="sect-h"><span class="n">04</span><h2>Where it strikes — the under-budgeted timelines</h2></div>
+      <p class="sect-sub">Torture arrives when we imagine the summit is near, because we lack information on how hard others worked and how much they suffered to reach it.</p>
+      <div class="edges" style="grid-template-columns:1fr 1fr 1fr">
+        <div class="edge"><div class="et">Under-budgeted</div><h4>A good novel in 6 months</h4><p>The first draft is meant to be bad. Nobody told you.</p></div>
+        <div class="edge"><div class="et">Under-budgeted</div><h4>A good career by 30</h4><p>Measured against summaries, never against the years of grind behind them.</p></div>
+        <div class="edge"><div class="et">Under-budgeted</div><h4>A good marriage, spontaneously</h4><p>Worked out on the fly, with no model of how much it actually asks.</p></div>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-fix">
+      <div class="sect-h"><span class="n">05</span><h2>The cure: see the hidden labour</h2></div>
+      <p class="sect-sub">A better culture would endlessly show us the first drafts and hidden labours of others — and the true horrors exacted by anything worth doing.</p>
+      <div class="fig">
+        <svg viewBox="0 0 900 170" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Seeing hidden labour turns a sickly perfectionist into a patient quester">
+          <defs><marker id="tpb" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#4f46e5"/></marker></defs>
+          <g font-family="sans-serif">
+            <rect x="30" y="55" width="300" height="60" rx="14" style="fill:var(--bad-soft)" stroke="#e11d48"/>
+            <text x="180" y="82" text-anchor="middle" font-size="13.5" font-weight="800" fill="#be123c">Sickly perfectionist</text>
+            <text x="180" y="102" text-anchor="middle" font-size="11" style="fill:var(--dim)">impatient · self-punishing</text>
+            <path d="M334 85 L430 85" stroke="#4f46e5" stroke-width="2.5" marker-end="url(#tpb)"/>
+            <rect x="352" y="30" width="196" height="34" rx="10" style="fill:var(--soft)"/><text x="450" y="52" text-anchor="middle" font-size="11.5" font-weight="700" fill="#4f46e5">see first drafts + hidden labour</text>
+            <rect x="570" y="55" width="300" height="60" rx="14" style="fill:var(--craft-soft)" stroke="#16a34a"/>
+            <text x="720" y="82" text-anchor="middle" font-size="13.5" font-weight="800" fill="#15803d">Patient, resilient quester</text>
+            <text x="720" y="102" text-anchor="middle" font-size="11" style="fill:var(--dim)">for excellence</text>
+          </g>
+        </svg>
+      </div>
+      <div class="qbox">
+        <div class="ql">The reframe worth keeping</div>
+        <p class="qq">The problem isn’t that we aim for perfection. It’s that we don’t have an accurate, redemptive idea of what perfection really demands.</p>
+        <p class="qa">Budget honestly for the difficulty → the weak beginning stops meaning anything about you. It’s difficult. You knew it would be.</p>
+      </div>
+    </section>
+
+    
+    <section class="sect" id="tp-trap">
+      <div class="sect-h"><span class="n">06</span><h2>The Perfectionist Trap</h2></div>
+      <p class="sect-sub">We aim at a career by admiring its masters — the airport architect, the star fund manager, the prize-winning novelist, the acclaimed chef. We form our plans on <b>perfection</b>. Then we take our first steps, and the trouble begins.</p>
+      <a class="vidlink" href="https://www.youtube.com/watch?v=BY6bGhcnDDs" target="_blank" rel="noopener">▶ Watch · School of Life: The Perfectionist Trap <span style="opacity:.7">↗</span></a>
+      <div class="fig">
+        <svg viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="From admiring masters to the paradox">
+          <defs><marker id="tt1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9aa1ad"/></marker></defs>
+          <g font-family="sans-serif">
+            <rect x="20" y="30" width="200" height="52" rx="12" style="fill:var(--seed-soft)" stroke="#0ea5e9"/><text x="120" y="52" text-anchor="middle" font-size="12.5" font-weight="800" fill="#0369a1">Admire the masters</text><text x="120" y="70" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">their finished, dazzling work</text>
+            <rect x="250" y="30" width="200" height="52" rx="12" style="fill:var(--soft)" stroke="#4f46e5"/><text x="350" y="52" text-anchor="middle" font-size="12.5" font-weight="800" fill="#4f46e5">Plan on perfection</text><text x="350" y="70" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">ambition ignited by greatness</text>
+            <rect x="480" y="30" width="200" height="52" rx="12" style="fill:var(--card)" stroke="var(--line2)"/><text x="580" y="52" text-anchor="middle" font-size="12.5" font-weight="800" style="fill:var(--ink)">Take first steps</text><text x="580" y="70" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">the first month, the early draft</text>
+            <rect x="700" y="30" width="185" height="52" rx="12" style="fill:var(--bad-soft)" stroke="#e11d48"/><text x="792" y="52" text-anchor="middle" font-size="12.5" font-weight="800" fill="#be123c">Absurdly short</text><text x="792" y="70" text-anchor="middle" font-size="10.5" style="fill:var(--dim)">beneath the standard that lit it</text>
+            <path d="M220 56 L248 56" stroke="#9aa1ad" stroke-width="2" marker-end="url(#tt1)"/><path d="M450 56 L478 56" stroke="#9aa1ad" stroke-width="2" marker-end="url(#tt1)"/><path d="M680 56 L698 56" stroke="#9aa1ad" stroke-width="2" marker-end="url(#tt1)"/>
+            <rect x="150" y="130" width="600" height="92" rx="16" style="fill:var(--bad-soft)" stroke="#e11d48"/>
+            <text x="450" y="160" text-anchor="middle" font-size="13.5" font-weight="800" fill="#be123c">THE PARADOX</text>
+            <text x="450" y="184" text-anchor="middle" font-size="12.5" style="fill:var(--ink)">Ambition ignited by greatness  ·  self-knowledge screaming “ineptitude.”</text>
+            <text x="450" y="206" text-anchor="middle" font-size="12" style="fill:var(--dim)">Those most aware of excellence least tolerate mediocrity — their own.</text>
+          </g>
+        </svg>
+      </div>
+      <div class="qbox">
+        <div class="ql">Definition</div>
+        <p class="qq">The perfectionist trap: a powerful attraction to perfection <b>shorn of any mature understanding of what is actually required to attain it.</b></p>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-reel">
+      <div class="sect-h"><span class="n">07</span><h2>It isn’t your fault — the edited-out failure</h2></div>
+      <p class="sect-sub">The media quietly edits out billions of unremarkable lives, and the years of failure, rejection and frustration behind even the achievers — serving a curated reel of peak moments that then seems like the <b>baseline</b>, not the violent exception it really is.</p>
+      <div class="fig">
+        <svg viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Reality filtered into a highlight reel">
+          <defs><marker id="tr1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9aa1ad"/></marker></defs>
+          <g font-family="sans-serif">
+            <rect x="20" y="40" width="250" height="150" rx="14" style="fill:var(--bad-soft)" stroke="#e11d48"/>
+            <text x="145" y="66" text-anchor="middle" font-size="12.5" font-weight="800" fill="#be123c">REALITY</text>
+            <text x="145" y="92" text-anchor="middle" font-size="11" style="fill:var(--dim)">billions of unremarkable lives</text>
+            <text x="145" y="112" text-anchor="middle" font-size="11" style="fill:var(--dim)">years of failure &amp; rejection</text>
+            <text x="145" y="132" text-anchor="middle" font-size="11" style="fill:var(--dim)">— even inside the achievers</text>
+            <text x="145" y="164" text-anchor="middle" font-size="11" font-style="italic" style="fill:var(--dim)">“oceans of tears &amp; despair”</text>
+            <path d="M280 115 L360 115" stroke="#9aa1ad" stroke-width="2" marker-end="url(#tr1)"/>
+            <polygon points="365,70 500,105 500,125 365,160" style="fill:var(--soft)" stroke="#4f46e5"/>
+            <text x="432" y="112" text-anchor="middle" font-size="11" font-weight="800" fill="#4f46e5">media filter</text>
+            <path d="M505 115 L585 115" stroke="#9aa1ad" stroke-width="2" marker-end="url(#tr1)"/>
+            <rect x="590" y="60" width="290" height="110" rx="14" style="fill:var(--craft-soft)" stroke="#16a34a"/>
+            <text x="735" y="90" text-anchor="middle" font-size="12.5" font-weight="800" fill="#15803d">WHAT WE SEE</text>
+            <text x="735" y="114" text-anchor="middle" font-size="11" style="fill:var(--ink)">a daily reel of peak moments</text>
+            <text x="735" y="138" text-anchor="middle" font-size="11" style="fill:var(--dim)">misread as the normal baseline</text>
+            <text x="450" y="222" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">The asymmetry: we know our own struggle <tspan fill="#be123c">from the inside</tspan> — and see only others’ <tspan fill="#15803d">pain-free outside.</tspan></text>
+          </g>
+        </svg>
+        <div class="cap">We can’t forgive our early drafts — largely because <b>we’ve never seen the early drafts of those we admire.</b></div>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-studio">
+      <div class="sect-h"><span class="n">08</span><h2>Don’t visit the museum — go to the studio</h2></div>
+      <p class="sect-sub">We need a saner picture of how many difficulties lie behind everything we’d wish to emulate.</p>
+      <div class="gb">
+        <div class="gcard given" style="border-top-color:#7c3aed">
+          <div class="lab" style="color:#7c3aed">🏛️ The museum</div>
+          <h3>The finished masterpiece</h3>
+          <div class="tags"><span class="tag" style="background:var(--soft);color:#4f46e5">flawless</span><span class="tag" style="background:var(--soft);color:#4f46e5">effortless-looking</span><span class="tag" style="background:var(--soft);color:#4f46e5">what ignites the trap</span></div>
+        </div>
+        <div class="gcard built">
+          <div class="lab">🎨 The studio</div>
+          <h3>The anguished early versions</h3>
+          <div class="tags"><span class="tag">wrecked first drafts</span><span class="tag">watermarks where they wept</span><span class="tag">the truth of the work</span></div>
+        </div>
+      </div>
+      <div class="edges" style="grid-template-columns:1fr 1fr 1fr;margin-top:16px">
+        <div class="edge good"><div class="et">Look closer</div><h4>The architect</h4><p>Received their first proper commission <b>after 50.</b></p></div>
+        <div class="edge good"><div class="et">Look closer</div><h4>The prize-winning writer</h4><p>Dig out the early stories — a long trail of failures.</p></div>
+        <div class="edge good"><div class="et">Look closer</div><h4>The entrepreneur</h4><p>Examine how many failures they had to endure.</p></div>
+      </div>
+      <div class="qbox">
+        <div class="ql">The price you can’t avoid</div>
+        <p class="qq">Allow yourself to do things quite imperfectly for a very long time — the toll for an opportunity one day, perhaps in decades, to do something others will call a <b>“spontaneous success.”</b></p>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-root">
+      <div class="sect-h"><span class="n">09</span><h2>The deeper root: it isn’t about the work</h2></div>
+      <p class="sect-sub">There’s a person we admire — up at dawn, rarely on holiday, always another hour of work, constantly promoted, never a late or sub-stellar piece. “High standards,” we say. But the concern isn’t their work — its recipients are privileged. It’s the <b>state of their soul.</b></p>
+      <a class="vidlink" href="https://www.youtube.com/watch?v=hK6mdoxXrIc" target="_blank" rel="noopener">▶ Watch · School of Life: perfectionism & self-worth <span style="opacity:.7">↗</span></a>
+      <div class="fig">
+        <svg viewBox="0 0 900 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The iceberg of perfectionism: admired surface, painful root">
+          <g font-family="sans-serif">
+            <line x1="30" y1="120" x2="870" y2="120" stroke="#0ea5e9" stroke-width="2" stroke-dasharray="6 5"/>
+            <text x="855" y="112" text-anchor="end" font-size="10.5" font-style="italic" fill="#0369a1">the waterline</text>
+            <text x="450" y="40" text-anchor="middle" font-size="12.5" font-weight="800" fill="#15803d">WHAT THE WORLD SEES</text>
+            <text x="450" y="66" text-anchor="middle" font-size="12" style="fill:var(--ink)">dawn starts · no holidays · promotions · stellar grades</text>
+            <text x="450" y="88" text-anchor="middle" font-size="11.5" font-weight="700" style="fill:var(--dim)">“admirable drive · high standards · a perfectionist”</text>
+            <polygon points="450,110 700,270 200,270" style="fill:var(--bad-soft)" stroke="#e11d48" stroke-width="1.5"/>
+            <text x="450" y="150" text-anchor="middle" font-size="12.5" font-weight="800" fill="#be123c">THE ROOT (hidden)</text>
+            <text x="450" y="178" text-anchor="middle" font-size="11.5" style="fill:var(--ink)">a feeling of never being good enough</text>
+            <text x="450" y="200" text-anchor="middle" font-size="11.5" style="fill:var(--ink)">self-hatred · childhood disapproval / neglect</text>
+            <text x="450" y="222" text-anchor="middle" font-size="11" style="fill:var(--dim)">“I’m unworthy · a disappointment · a nuisance”</text>
+            <text x="450" y="252" text-anchor="middle" font-size="11" font-style="italic" style="fill:var(--dim)">not a love of perfection — a wound</text>
+          </g>
+        </svg>
+        <div class="cap">Perfectionism doesn’t spring from loving perfection. It springs from a <b>deficit of early love.</b></div>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-sisyphus">
+      <div class="sect-h"><span class="n">10</span><h2>The Sisyphean engine — ill, not driven</h2></div>
+      <p class="sect-sub">To expunge the feeling, we’ll do almost anything: work all hours, curry favour, do twice the next person. One part of the mind keeps promising the other that the <b>next</b> achievement will finally bring peace.</p>
+      <div class="fig">
+        <svg viewBox="0 0 900 280" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="The Sisyphean loop of perfectionist striving">
+          <defs><marker id="ts1" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#b45309"/></marker></defs>
+          <g font-family="sans-serif">
+            <circle cx="450" cy="150" r="66" style="fill:var(--gold-soft)" stroke="#d97706" stroke-width="2"/>
+            <text x="450" y="144" text-anchor="middle" font-size="12.5" font-weight="800" fill="#b45309">“I’m awful /</text>
+            <text x="450" y="162" text-anchor="middle" font-size="12.5" font-weight="800" fill="#b45309">undeserving”</text>
+            <rect x="150" y="26" width="230" height="44" rx="11" style="fill:var(--card)" stroke="var(--line2)"/><text x="265" y="53" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">Do anything to expunge it</text>
+            <rect x="520" y="26" width="230" height="44" rx="11" style="fill:var(--card)" stroke="var(--line2)"/><text x="635" y="47" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">“Next win = peace”</text><text x="635" y="63" text-anchor="middle" font-size="10" style="fill:var(--dim)">the mind’s promise</text>
+            <rect x="520" y="232" width="230" height="44" rx="11" style="fill:var(--card)" stroke="var(--line2)"/><text x="635" y="253" text-anchor="middle" font-size="12" font-weight="700" style="fill:var(--ink)">Brief summit</text><text x="635" y="269" text-anchor="middle" font-size="10" style="fill:var(--dim)">no rest, no completion</text>
+            <rect x="150" y="232" width="230" height="44" rx="11" style="fill:var(--bad-soft)" stroke="#e11d48"/><text x="265" y="259" text-anchor="middle" font-size="12" font-weight="800" fill="#be123c">Boulder rolls back ↺</text>
+            <g stroke="#d97706" stroke-width="2.2" fill="none" opacity=".8">
+              <path d="M384 120 Q300 70 300 72" marker-end="url(#ts1)"/>
+              <path d="M516 120 Q600 70 600 72" marker-end="url(#ts1)"/>
+              <path d="M516 180 Q600 232 600 230" marker-end="url(#ts1)"/>
+              <path d="M384 180 Q300 232 300 230" marker-end="url(#ts1)"/>
+            </g>
+          </g>
+        </svg>
+        <div class="cap">We’re <b>ill, not driven.</b> We don’t want perfect work — we’re escaping a feeling. Work is only the medium in which we strive to grow tolerable to ourselves.</div>
+      </div>
+      <div class="edges">
+        <div class="edge"><div class="et">Why work can’t fix it</div><h4>The problem didn’t begin with work</h4><p>So work can never be its solution. The real goal isn’t to be the ideal employee — it’s to <b>feel acceptable.</b></p></div>
+        <div class="edge"><div class="et">Why you can’t outsource it</div><h4>Bosses · customers · capitalism will never let you rest</h4><p>By their nature — no evil intent — they always demand <b>more.</b> Acceptance handed to them is never granted.</p></div>
+      </div>
+    </section>
+
+    <section class="sect" id="tp-shift">
+      <div class="sect-h"><span class="n">11</span><h2>The shift: acceptance from the start</h2></div>
+      <p class="sect-sub">We need to move our sense of where the drive comes from. Not an unnatural love of working perfectly — an unusually intense impression that we are dreadful people. Working harder cannot be the answer.</p>
+      <div class="fig">
+        <svg viewBox="0 0 900 200" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="From a referendum on legitimacy to acceptance from the start">
+          <defs><marker id="tsh" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#16a34a"/></marker></defs>
+          <g font-family="sans-serif">
+            <rect x="20" y="50" width="360" height="100" rx="16" style="fill:var(--bad-soft)" stroke="#e11d48"/>
+            <text x="200" y="80" text-anchor="middle" font-size="13" font-weight="800" fill="#be123c">FROM</text>
+            <text x="200" y="104" text-anchor="middle" font-size="11.5" style="fill:var(--ink)">“I must prove I deserve to exist” —</text>
+            <text x="200" y="124" text-anchor="middle" font-size="11.5" style="fill:var(--ink)">a referendum on my legitimacy at</text>
+            <text x="200" y="142" text-anchor="middle" font-size="11" style="fill:var(--dim)">every report, exam, customer</text>
+            <path d="M392 100 L468 100" stroke="#16a34a" stroke-width="2.5" marker-end="url(#tsh)"/>
+            <rect x="480" y="50" width="400" height="100" rx="16" style="fill:var(--craft-soft)" stroke="#16a34a"/>
+            <text x="680" y="80" text-anchor="middle" font-size="13" font-weight="800" fill="#15803d">TO</text>
+            <text x="680" y="104" text-anchor="middle" font-size="11.5" style="fill:var(--ink)">“I deserve to be accepted from the start —</text>
+            <text x="680" y="124" text-anchor="middle" font-size="11.5" style="fill:var(--ink)">and it isn’t forever my fault that I wasn’t.”</text>
+            <text x="680" y="142" text-anchor="middle" font-size="11" style="fill:var(--dim)">worth is not up for election</text>
+          </g>
+        </svg>
+      </div>
+      <div class="edges">
+        <div class="edge good"><div class="et">A welcome sign</div><h4>Being able to tolerate a little laziness</h4><p>Not because you’re idle — but because you’ve learnt to <b>speak more kindly to yourself.</b></p></div>
+        <div class="edge good"><div class="et">A fair anger</div><h4>Aim it where it belongs</h4><p>At those who couldn’t, at the outset, accept you for who you were — <b>without a surfeit of trophies and prizes.</b></p></div>
+      </div>
+      <div class="qbox">
+        <div class="ql">The line to keep</div>
+        <p class="qq">Working well is an admirable goal — but it becomes a <b>symptom</b> the moment it turns into cover for a secret aspiration to correct a deficit of early love.</p>
+        <p class="qa">You deserved acceptance from the start. It was never your job to earn the right to exist.</p>
+      </div>
+    </section>
+
+    <div class="finale">
+      <div class="lab">In one line</div>
+      <p>Aim as high as you like — but <b style="color:#fff">budget for the true cost</b>, and read your early struggle as the price of a long road, not a verdict on your worth.</p>
+      <div class="apply"><span>✍️ Writing</span><span>💼 Career</span><span>❤️ Relationships</span><span>🧘 Practice</span></div>
+    </div>
+
+    <div class="foot">Da Vinci · My Learnings — after The School of Life on perfectionism. Under-budgeting for difficulty, not high standards, is the disease.</div>
+</div></section>
+  </main>
 </div>
 
 <script>
-  document.querySelectorAll('nav.tabs a').forEach(function(a){
-    a.addEventListener('click',function(e){
-      var t=document.querySelector(a.getAttribute('href'));
-      if(t){e.preventDefault();t.scrollIntoView({behavior:'smooth',block:'start'});}
-    });
-  });
+  (function(){
+    var navs=document.querySelectorAll('#snav a');
+    function go(id){
+      navs.forEach(function(x){x.classList.toggle('active',x.getAttribute('data-view')===id);});
+      document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v.id===id);});
+      try{localStorage.setItem('mylearn.view',id);}catch(e){}
+      window.scrollTo(0,0);
+    }
+    navs.forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();go(a.getAttribute('data-view'));});});
+    try{var s=localStorage.getItem('mylearn.view');if(s&&document.getElementById(s))go(s);}catch(e){}
+  })();
 </script>
+<script>window.addEventListener("message",function(e){try{var d=e.data;if(d&&d.__embH&&d.__embId){var f=document.getElementById(d.__embId);if(f){f.style.height=d.__embH+"px";f.style.minHeight="0";}}}catch(_){}});</script>
 </body>
 </html>

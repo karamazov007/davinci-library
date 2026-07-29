@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meditation — Concept Map</title>
+<style>
+:root{--bg:#f6f7f9;--surface:#fff;--ink:#1c2431;--dim:#5b6572;--line:#e7e9ee;--line2:#dcdfe6;--indigo:#4f46e5}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.sr-only{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+.wrap{max-width:1240px;margin:0 auto;padding:22px 20px 60px}
+.head h1{font-size:24px;font-weight:850;letter-spacing:-.02em;margin:0}
+.head p{font-size:14px;color:var(--dim);margin:6px 0 0;max-width:760px;line-height:1.55}
+.head .hint{margin-top:10px;font-size:12.5px;color:var(--indigo);font-weight:650}
+.mapbox{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:18px;
+  box-shadow:0 1px 2px rgba(20,25,40,.05),0 8px 30px rgba(20,25,40,.05);overflow:hidden}
+svg{display:block;width:100%;height:auto}
+.node-circle{cursor:pointer;transition:transform .12s}
+.node-g:hover .node-circle{transform:scale(1.05);transform-box:fill-box;transform-origin:center}
+.node-g:focus{outline:none}
+.node-g:focus .node-circle{stroke:#1c2431;stroke-width:3}
+.elabel{font-size:12.5px;font-weight:700}
+.nlabel{font-weight:800;fill:#fff;pointer-events:none}
+.nsub{font-weight:600;fill:rgba(255,255,255,.85);pointer-events:none}
+
+/* modal */
+.overlay{position:fixed;inset:0;background:rgba(15,20,32,.55);display:none;align-items:center;justify-content:center;
+  padding:20px;z-index:50}
+.overlay.show{display:flex}
+.modal{background:var(--surface);border-radius:18px;width:min(760px,96vw);max-height:92vh;overflow:auto;
+  box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.mhead{display:flex;align-items:center;gap:10px;padding:14px 18px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
+.mhead .back{border:1px solid var(--line2);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;font-size:13px;
+  padding:6px 11px;border-radius:9px;cursor:pointer}
+.mhead .back[disabled]{opacity:.35;cursor:default}
+.mhead .crumbs{flex:1;font-size:12.5px;color:var(--dim);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mhead .crumbs b{color:var(--ink)}
+.mhead .x{border:0;background:var(--line);color:var(--ink);width:30px;height:30px;border-radius:8px;font-size:16px;cursor:pointer;font-weight:800}
+.mbody{padding:6px 18px 18px}
+.detail{padding:12px 14px;margin:8px 0 4px;background:#f4f6fb;border:1px solid var(--line);border-radius:12px}
+.detail .t{font-size:16px;font-weight:800}
+.detail .p{font-size:12.5px;font-style:italic;color:var(--indigo);font-weight:600;margin-left:6px}
+.detail .d{font-size:13.5px;color:var(--ink);line-height:1.55;margin:6px 0 0}
+.detail .src{margin-top:8px;font-size:12px}
+.detail .src a{color:var(--indigo);text-decoration:none;font-weight:600;border-bottom:1px dotted currentColor;margin-right:10px}
+.detail .src a:hover{border-bottom-style:solid}
+.leafinfo{display:none;padding:11px 14px;margin:2px 0 4px;background:#fff7ea;border:1px solid #f0dfc0;border-radius:12px;font-size:13.5px;line-height:1.5}
+.leafinfo.show{display:block}
+.leafinfo b{font-weight:800}
+.leafinfo .pl{font-style:italic;color:#b07d1e;font-weight:600}
+.leafinfo a{color:var(--indigo);text-decoration:none;font-weight:600;border-bottom:1px dotted currentColor;margin-right:10px}
+.mhint{font-size:12px;color:var(--dim);text-align:center;margin:4px 0 0}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h2 class="sr-only">An interactive concept map of Buddhist meditation. Nine domains — the Four Noble Truths, the Eightfold Path, the Three Marks, the Five Aggregates, Dependent Origination, Craving and Ignorance, Emptiness, Meditation practice, and Nibbāna — are connected by labelled relationships. Click any circle to open a nested concept map of its sub-concepts, which can be explored further.</h2>
+  <div class="head">
+    <h1>🧘 Meditation — a living concept map</h1>
+    <p>The whole territory in one web. Every circle is clickable — it opens a nested map of its sub-concepts, and many of those drill deeper still. Sources link straight to the Pāli Canon on SuttaCentral.</p>
+    <div class="hint">Click any circle to explore ↓</div>
+  </div>
+  <div class="mapbox">
+    <svg id="mainmap" viewBox="0 0 1220 760" role="img" aria-labelledby="mm-t mm-d">
+      <title id="mm-t">Meditation concept map</title>
+      <desc id="mm-d">Nine connected domains of Buddhist meditation; each circle opens a nested map.</desc>
+      <defs>
+        <marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#5b6572"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+</div>
+
+<div class="overlay" id="overlay" role="dialog" aria-modal="true" aria-labelledby="modaltitle">
+  <div class="modal">
+    <div class="mhead">
+      <button class="back" id="backbtn">‹ Back</button>
+      <div class="crumbs" id="crumbs"></div>
+      <button class="x" id="closebtn" aria-label="Close">×</button>
+    </div>
+    <div class="mbody">
+      <svg id="submap" viewBox="0 0 680 470" role="img"><defs>
+        <marker id="arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+          <path d="M0,0 L10,5 L0,10 z" fill="#8a93a3"/>
+        </marker></defs></svg>
+      <div class="mhint">Circles with a ring drill deeper · click a plain circle for its detail</div>
+      <div class="detail" id="detail"></div>
+      <div class="leafinfo" id="leafinfo"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ---------------- MAIN MAP DATA ---------------- */
+var MAIN={
+ nodes:[
+  {id:'fnt',x:600,y:120,r:62,c:'#45a34a',t:'Four Noble',t2:'Truths'},
+  {id:'engine',x:355,y:170,r:56,c:'#b45319',t:'Craving &',t2:'Ignorance'},
+  {id:'do',x:170,y:350,r:60,c:'#e8701a',t:'Dependent',t2:'Origination'},
+  {id:'aggregates',x:300,y:585,r:60,c:'#3d8ba3',t:'Five',t2:'Aggregates'},
+  {id:'marks',x:585,y:550,r:60,c:'#9b30bf',t:'Three',t2:'Marks'},
+  {id:'empty',x:800,y:660,r:56,c:'#7d34d6',t:'Emptiness'},
+  {id:'practice',x:870,y:460,r:64,c:'#3b5bd0',t:'Meditation',sub:'practice'},
+  {id:'path',x:910,y:190,r:62,c:'#4f46e5',t:'Eightfold',t2:'Path'},
+  {id:'nibbana',x:1090,y:345,r:58,c:'#8c1d3f',t:'Nibbāna'}
+ ],
+ edges:[
+  {a:'fnt',b:'path',l:'prescribes',lc:'#45a34a'},
+  {a:'path',b:'practice',l:'trains',lc:'#4f46e5'},
+  {a:'path',b:'nibbana',l:'leads to',lc:'#4f46e5'},
+  {a:'practice',b:'nibbana',l:'realises',lc:'#3b5bd0'},
+  {a:'practice',b:'marks',l:'reveals',lc:'#3b5bd0'},
+  {a:'marks',b:'aggregates',l:'seen in',lc:'#9b30bf'},
+  {a:'engine',b:'fnt',l:'origin of dukkha',lc:'#b45319'},
+  {a:'do',b:'engine',l:'traces',lc:'#e8701a'},
+  {a:'empty',b:'marks',l:'deepens anattā',lc:'#7d34d6'},
+  {a:'aggregates',b:'empty',l:'empty of self',lc:'#3d8ba3',dashed:true}
+ ]
+};
+
+/* ---------------- NESTED CONCEPT DICTIONARY ---------------- */
+var SC='#64748b';
+var N={
+ fnt:{t:'Four Noble Truths',p:'Cattāri Ariyasaccāni',c:'#45a34a',d:"The Buddha's diagnosis: there is suffering, it has a cause, it can end, and there is a path.",s:[['SN 56.11','https://suttacentral.net/sn56.11/en/sujato']],k:[['dukkha','1 · symptom'],['samudaya','2 · cause'],['nirodha','3 · prognosis'],['magga','4 · cure']]},
+ dukkha:{t:'Dukkha',p:'unsatisfactoriness',c:'#8c1d3f',d:'The first truth — to be understood, not fled.',k:[['dd3','has three kinds']]},
+ dd3:{t:'Three kinds of Dukkha',c:'#8c1d3f',d:'',k:[['dd_ord','ordinary'],['dd_chg','of change'],['dd_cond','of conditioning']]},
+ dd_ord:{t:'Dukkha-dukkha',c:SC,d:'Plain pain: sickness, ageing, loss, death.'},
+ dd_chg:{t:'Vipariṇāma-dukkha',c:SC,d:'Even pleasures hurt, because they end.'},
+ dd_cond:{t:'Saṅkhāra-dukkha',c:SC,d:'The subtle unease of all conditioned things.'},
+ samudaya:{t:'Samudaya',p:'the origin',c:'#b45319',d:'Craving (taṇhā) is the cause — to be abandoned.',k:[['engine','the craving engine']]},
+ nirodha:{t:'Nirodha',p:'cessation',c:'#3d8ba3',d:'Craving can cease — to be realised.',k:[['nibbana','i.e. Nibbāna']]},
+ magga:{t:'Magga',p:'the path',c:'#4f46e5',d:'The Middle Way — to be developed.',k:[['path','the Eightfold Path']]},
+
+ path:{t:'Eightfold Path',p:'Ariya Aṭṭhaṅgika Magga',c:'#4f46e5',d:'Eight factors in three trainings, developed together.',s:[['SN 45.8','https://suttacentral.net/sn45.8/en/sujato']],k:[['t_panna','wisdom · paññā'],['t_sila','ethics · sīla'],['t_samadhi','discipline · samādhi']]},
+ t_panna:{t:'Wisdom',p:'paññā',c:'#c8892a',d:'The orientation that aims the path.',k:[['rv','Right View'],['ri','Right Intention']]},
+ rv:{t:'Right View',p:'sammā diṭṭhi',c:'#c8892a',d:'Seeing the four truths and the three marks.'},
+ ri:{t:'Right Intention',p:'sammā saṅkappa',c:'#c8892a',d:'Renunciation, goodwill, harmlessness.'},
+ t_sila:{t:'Ethical conduct',p:'sīla',c:'#3d8ba3',d:'The foundation that steadies the mind.',k:[['rs','Right Speech'],['ra','Right Action'],['rl','Right Livelihood']]},
+ rs:{t:'Right Speech',p:'sammā vācā',c:'#3d8ba3',d:'True, beneficial, kind and timely.'},
+ ra:{t:'Right Action',p:'sammā kammanta',c:'#3d8ba3',d:'Non-harm, honesty, respect.'},
+ rl:{t:'Right Livelihood',p:'sammā ājīva',c:'#3d8ba3',d:'Earning without causing harm.'},
+ t_samadhi:{t:'Mental discipline',p:'samādhi',c:'#4f46e5',d:'The engine room — your two practices live here.',k:[['re','Right Effort'],['rm','Right Mindfulness'],['rc','Right Concentration']]},
+ re:{t:'Right Effort',p:'sammā vāyāma',c:'#4f46e5',d:'Balanced energy — the lute-string.',s:[['AN 6.55','https://suttacentral.net/an6.55/en/sujato']]},
+ rm:{t:'Right Mindfulness',p:'sammā sati',c:'#4f46e5',d:'The four foundations — all-day presence.',s:[['MN 10','https://suttacentral.net/mn10/en/sujato']]},
+ rc:{t:'Right Concentration',p:'sammā samādhi',c:'#4f46e5',d:'The gathered mind — the morning sit.',s:[['MN 118','https://suttacentral.net/mn118/en/sujato']]},
+
+ marks:{t:'Three Marks',p:'tilakkhaṇa',c:'#9b30bf',d:'The three characteristics of conditioned existence.',s:[['Dhp 277–279','https://suttacentral.net/dhp273-289/en/sujato']],k:[['anicca','impermanence'],['dukkha_m','unsatisfactoriness'],['anatta','not-self']]},
+ anicca:{t:'Anicca',p:'impermanence',c:'#9b30bf',d:'Everything arises and passes away.'},
+ dukkha_m:{t:'Dukkha',p:'unsatisfactoriness',c:'#9b30bf',d:'The changing cannot fully satisfy.'},
+ anatta:{t:'Anattā',p:'not-self',c:'#9b30bf',d:'No fixed, controlling self is found.',s:[['SN 22.59','https://suttacentral.net/sn22.59/en/sujato']],k:[['empty','extends into emptiness']]},
+
+ aggregates:{t:'Five Aggregates',p:'pañcakkhandhā',c:'#3d8ba3',d:'The five processes the mind mistakes for a self.',s:[['SN 22','https://suttacentral.net/sn22/en/sujato']],k:[['rupa','form'],['vedana','feeling'],['sanna','perception'],['sankhara','formations'],['vinnana','consciousness']]},
+ rupa:{t:'Rūpa',p:'form',c:'#3d8ba3',d:'The body and material experience.'},
+ vedana:{t:'Vedanā',p:'feeling-tone',c:'#3d8ba3',d:'Pleasant / unpleasant / neutral — the key hinge.'},
+ sanna:{t:'Saññā',p:'perception',c:'#3d8ba3',d:'Recognition and labelling.'},
+ sankhara:{t:'Saṅkhārā',p:'formations',c:'#3d8ba3',d:'Volitions, habits, mental constructions.'},
+ vinnana:{t:'Viññāṇa',p:'consciousness',c:'#3d8ba3',d:'Bare knowing of an object.'},
+
+ do:{t:'Dependent Origination',p:'paṭiccasamuppāda',c:'#e8701a',d:'How suffering assembles itself, link by link.',s:[['SN 12.2','https://suttacentral.net/sn12.2/en/sujato']],k:[['contact','contact'],['do_vedana','feeling'],['do_tanha','craving'],['upadana','clinging'],['do_dukkha','suffering']]},
+ contact:{t:'Phassa',p:'contact',c:'#e8701a',d:'Sense meets object.'},
+ do_vedana:{t:'Vedanā',p:'feeling-tone',c:'#e8701a',d:'The tone arising from contact.',k:[['thegap','the crucial gap']]},
+ thegap:{t:'The Gap',c:'#16a34a',d:'Between feeling and craving — where freedom lives. Widen it and you are free.'},
+ do_tanha:{t:'Taṇhā',p:'craving',c:'#b45319',d:'The automatic grab at the tone.',k:[['engine','the craving engine']]},
+ upadana:{t:'Upādāna',p:'clinging',c:'#e8701a',d:'Craving hardening into holding on.'},
+ do_dukkha:{t:'Dukkha',c:'#8c1d3f',d:'The suffering that results.'},
+
+ engine:{t:'Craving & Ignorance',p:'taṇhā & avijjā',c:'#b45319',d:'The engine that manufactures suffering.',k:[['tanha3','three cravings'],['avijja','ignorance'],['poisons','three poisons'],['kamma','kamma & intention']]},
+ tanha3:{t:'Three Cravings',p:'taṇhā',c:'#b45319',d:'',k:[['kama','for pleasure'],['bhava','for becoming'],['vibhava','for non-becoming']]},
+ kama:{t:'Kāma-taṇhā',c:SC,d:'Craving for sensual pleasure.'},
+ bhava:{t:'Bhava-taṇhā',c:SC,d:'Craving to be, to continue, to become.'},
+ vibhava:{t:'Vibhava-taṇhā',c:SC,d:'Craving to get rid of, to not be.'},
+ avijja:{t:'Avijjā',p:'ignorance',c:'#b45319',d:'Mistaking the impermanent for lasting satisfaction.'},
+ poisons:{t:'Three Poisons',c:'#b45319',d:'',k:[['raga','greed'],['dosa','hatred'],['moha','delusion']]},
+ raga:{t:'Rāga / Lobha',p:'greed',c:SC,d:'Grasping and want.'},
+ dosa:{t:'Dosa',p:'hatred',c:SC,d:'Aversion and ill-will.'},
+ moha:{t:'Moha',p:'delusion',c:SC,d:'Confusion, not seeing clearly.'},
+ kamma:{t:'Kamma & Cetanā',c:'#b45319',d:'"It is intention that I call kamma." Action keeps volition central.',s:[['AN 6.63','https://suttacentral.net/an6.63/en/sujato']]},
+
+ empty:{t:'Emptiness',p:'suññatā',c:'#7d34d6',d:'Empty of self — and, in Mahāyāna, of intrinsic existence.',k:[['sunnata_pali','Pali: empty of self'],['sunnata_dwell','a meditative dwelling'],['sunyata_maha','Mahāyāna śūnyatā']]},
+ sunnata_pali:{t:'Suññatā (Pali)',c:'#7d34d6',d:'The world is empty of self or what pertains to self.',s:[['SN 35.85','https://suttacentral.net/sn35.85/en/sujato']]},
+ sunnata_dwell:{t:'Emptiness as dwelling',c:'#7d34d6',d:'A meditative abiding — noticing the absence of disturbance.',s:[['MN 121','https://suttacentral.net/mn121/en/sujato'],['MN 122','https://suttacentral.net/mn122/en/sujato']]},
+ sunyata_maha:{t:'Śūnyatā (Mahāyāna)',c:'#94409c',d:'All phenomena lack intrinsic existence — a later development by Nāgārjuna. NOT Pāli Canon.'},
+
+ practice:{t:'Meditation',p:'bhāvanā',c:'#3b5bd0',d:'Cultivating the mind — calm plus insight, on and off the cushion.',k:[['wings','two wings'],['methods','anchors & methods'],['mind','mindfulness'],['hindrances','five hindrances'],['awaken','awakening factors'],['brahma','brahmavihāras']]},
+ wings:{t:'Two Wings',c:'#3b5bd0',d:'',k:[['samatha','calm'],['vipassana','insight']]},
+ samatha:{t:'Samatha',p:'calm',c:SC,d:'Concentration that steadies the mind.'},
+ vipassana:{t:'Vipassanā',p:'insight',c:SC,d:'Seeing the three marks directly.'},
+ methods:{t:'Anchors & Methods',c:'#3b5bd0',d:'',k:[['anapana','breath'],['samadhi_j','concentration & jhāna']]},
+ anapana:{t:'Ānāpānasati',p:'breath',c:SC,d:'Mindfulness of breathing, sixteen steps.',s:[['MN 118','https://suttacentral.net/mn118/en/sujato']]},
+ samadhi_j:{t:'Samādhi & Jhāna',c:SC,d:'Collectedness deepening into absorption.'},
+ mind:{t:'Mindfulness',p:'sati',c:'#3b5bd0',d:'',k:[['satipatthana','four foundations'],['sampajanna','clear comprehension']]},
+ satipatthana:{t:'Satipaṭṭhāna',c:SC,d:'Body, feeling, mind, phenomena.',s:[['MN 10','https://suttacentral.net/mn10/en/sujato']]},
+ sampajanna:{t:'Sampajañña',c:SC,d:'Clear awareness in ordinary activity.'},
+ hindrances:{t:'Five Hindrances',p:'nīvaraṇa',c:'#b45319',d:'',k:[['h1','sensual desire'],['h2','ill-will'],['h3','sloth & torpor'],['h4','restlessness'],['h5','doubt']]},
+ h1:{t:'Kāmacchanda',c:SC,d:'Sensual desire.'},
+ h2:{t:'Byāpāda',c:SC,d:'Ill-will, aversion.'},
+ h3:{t:'Thīna-middha',c:SC,d:'Sloth and torpor.'},
+ h4:{t:'Uddhacca-kukkucca',c:SC,d:'Restlessness and worry — likely yours.'},
+ h5:{t:'Vicikicchā',c:SC,d:'Doubt.'},
+ awaken:{t:'Awakening Factors',p:'bojjhaṅga',c:'#c8892a',d:'Mindfulness, investigation, energy, joy, tranquillity, concentration, equanimity.'},
+ brahma:{t:'Brahmavihāras',p:'divine abidings',c:'#c8892a',d:'',k:[['metta','loving-kindness'],['karuna','compassion'],['mudita','joy'],['upekkha','equanimity']]},
+ metta:{t:'Mettā',c:SC,d:'Loving-kindness — antidote to "I\'m not enough".'},
+ karuna:{t:'Karuṇā',c:SC,d:'Compassion for suffering.'},
+ mudita:{t:'Muditā',c:SC,d:'Joy in others\' good fortune.'},
+ upekkha:{t:'Upekkhā',c:SC,d:'Equanimity — the open hand.'},
+
+ nibbana:{t:'Nibbāna',p:'the "blowing out"',c:'#8c1d3f',d:'The peace when the three fires go out. Not annihilation, not a place.',k:[['nb_greed','end of greed'],['nb_hate','end of hatred'],['nb_delu','end of delusion']]},
+ nb_greed:{t:'End of greed',c:SC,d:'Rāga extinguished.'},
+ nb_hate:{t:'End of hatred',c:SC,d:'Dosa extinguished.'},
+ nb_delu:{t:'End of delusion',c:SC,d:'Moha extinguished — clear seeing.'}
+};
+
+/* ---------------- HELPERS ---------------- */
+var SVGNS='http://www.w3.org/2000/svg';
+function el(name,attrs,text){var e=document.createElementNS(SVGNS,name);for(var k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;return e;}
+function byId(k){return MAIN.nodes.filter(function(n){return n.id===k;})[0];}
+function trim(x1,y1,x2,y2,r1,r2){var dx=x2-x1,dy=y2-y1,L=Math.sqrt(dx*dx+dy*dy)||1;var ux=dx/L,uy=dy/L;
+  return {x1:x1+ux*r1,y1:y1+uy*r1,x2:x2-ux*(r2+7),y2:y2-uy*(r2+7)};}
+
+function chip(svg,x,y,text,color){
+  var pad=6,w=text.length*6.6+pad*2,h=18;
+  svg.appendChild(el('rect',{x:x-w/2,y:y-h/2,width:w,height:h,rx:5,fill:'#ffffff',stroke:'#eef0f3'}));
+  svg.appendChild(el('text',{x:x,y:y+4,'text-anchor':'middle','class':'elabel',fill:color}, text));
+}
+function circleLabel(g,n,cx,cy){
+  var lines= n.t2?[n.t,n.t2]:[n.t];
+  var fs=n.r>=60?15:14, start=cy-(lines.length-1)*fs*0.6 + (n.sub?-3:0);
+  lines.forEach(function(ln,i){ g.appendChild(el('text',{x:cx,y:start+i*fs*1.15+5,'text-anchor':'middle','class':'nlabel','font-size':fs},ln)); });
+  if(n.sub) g.appendChild(el('text',{x:cx,y:start+lines.length*fs*1.15+4,'text-anchor':'middle','class':'nsub','font-size':11},n.sub));
+}
+
+/* ---------------- RENDER MAIN MAP ---------------- */
+function renderMain(){
+  var svg=document.getElementById('mainmap');
+  // edges first
+  MAIN.edges.forEach(function(e){
+    var a=byId(e.a),b=byId(e.b);var t=trim(a.x,a.y,b.x,b.y,a.r,b.r);
+    var line=el('path',{d:'M'+t.x1+','+t.y1+' L'+t.x2+','+t.y2,stroke:e.lc,'stroke-width':e.dashed?2.4:2.6,
+      fill:'none','marker-end':'url(#arrow)','opacity':.85});
+    if(e.dashed) line.setAttribute('stroke-dasharray','2 7'),line.setAttribute('stroke-linecap','round');
+    svg.appendChild(line);
+    chip(svg,(t.x1+t.x2)/2,(t.y1+t.y2)/2,e.l,e.lc);
+  });
+  // nodes
+  MAIN.nodes.forEach(function(n){
+    var g=el('g',{'class':'node-g',tabindex:0,role:'button','aria-label':n.t+' '+(n.t2||'')});
+    g.setAttribute('data-nid',n.id);
+    g.appendChild(el('circle',{cx:n.x,cy:n.y,r:n.r,fill:n.c,'class':'node-circle'}));
+    circleLabel(g,n,n.x,n.y);
+    svg.appendChild(g);
+  });
+  svg.addEventListener('click',function(ev){var g=ev.target.closest('[data-nid]');if(g)openModal(g.getAttribute('data-nid'));});
+  svg.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){var g=ev.target.closest('[data-nid]');if(g){ev.preventDefault();openModal(g.getAttribute('data-nid'));}}});
+}
+
+/* ---------------- MODAL / NESTED MAP ---------------- */
+var stack=[];
+function openModal(id){ stack=[id]; document.getElementById('overlay').classList.add('show'); drawSub(); }
+function drill(id){ stack.push(id); drawSub(); }
+function back(){ if(stack.length>1){stack.pop();drawSub();} }
+function closeModal(){ document.getElementById('overlay').classList.remove('show'); }
+
+function srcHTML(s){ if(!s)return ''; return s.map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener">'+x[0]+' ↗</a>';}).join(''); }
+
+function drawSub(){
+  var id=stack[stack.length-1], node=N[id];
+  var svg=document.getElementById('submap');
+  // clear (keep defs)
+  var defs=svg.querySelector('defs'); svg.innerHTML=''; svg.appendChild(defs);
+  document.getElementById('modaltitle');
+  // breadcrumb
+  document.getElementById('crumbs').innerHTML=stack.map(function(s,i){var nm=N[s].t;return i===stack.length-1?'<b>'+nm+'</b>':nm;}).join(' › ');
+  document.getElementById('backbtn').disabled=stack.length<=1;
+  // detail card
+  document.getElementById('detail').innerHTML='<span class="t">'+node.t+'</span>'+(node.p?'<span class="p">'+node.p+'</span>':'')
+    +(node.d?'<div class="d">'+node.d+'</div>':'')+(node.s?'<div class="src">'+srcHTML(node.s)+'</div>':'');
+  document.getElementById('leafinfo').classList.remove('show');
+
+  var kids=node.k||[];
+  var cx=340,cy=222;
+  // center node
+  var cg=el('g',{}); cg.appendChild(el('circle',{cx:cx,cy:cy,r:48,fill:node.c}));
+  wrapText(cg,node.t,cx,cy,48,15,'#fff');
+  // edges + children
+  var nk=kids.length, R = nk<=4?150: (nk<=5?158:166);
+  kids.forEach(function(kd,i){
+    var childId=kd[0], rel=kd[1], child=N[childId];
+    var ang=(-90 + i*360/nk)*Math.PI/180;
+    var x=cx+R*Math.cos(ang), y=cy+R*Math.sin(ang);
+    var t=trim(cx,cy,x,y,48,36);
+    svg.appendChild(el('line',{x1:t.x1,y1:t.y1,x2:t.x2,y2:t.y2,stroke:'#c3c9d4','stroke-width':2,'marker-end':'url(#arrow2)'}));
+    if(rel) chip(svg, cx+(x-cx)*0.56, cy+(y-cy)*0.56, rel, '#8a93a3');
+    var deeper = child.k && child.k.length;
+    var g=el('g',{'class':'node-g',tabindex:0,role:'button','aria-label':child.t}); g.setAttribute('data-cid',childId); g.style.cursor='pointer';
+    if(deeper) g.appendChild(el('circle',{cx:x,cy:y,r:41,fill:'none',stroke:child.c,'stroke-width':2,opacity:.45}));
+    g.appendChild(el('circle',{cx:x,cy:y,r:36,fill:child.c,'class':'node-circle'}));
+    wrapText(g,child.t,x,y,36,12,'#fff');
+    svg.appendChild(g);
+  });
+  svg.appendChild(cg);
+}
+
+function wrapText(g,text,cx,cy,r,fs,fill){
+  var words=text.split(' '),lines=[],cur='';var max=Math.floor(r*2/(fs*0.6));
+  words.forEach(function(w){ if((cur+' '+w).trim().length<=max) cur=(cur+' '+w).trim(); else {if(cur)lines.push(cur);cur=w;} });
+  if(cur)lines.push(cur); if(lines.length>3)lines=[lines[0],lines[1],lines[2]];
+  var start=cy-(lines.length-1)*fs*0.58;
+  lines.forEach(function(ln,i){ g.appendChild(el('text',{x:cx,y:start+i*fs*1.1+fs*0.35,'text-anchor':'middle','font-weight':800,'font-size':fs,fill:fill,'pointer-events':'none'},ln)); });
+}
+
+document.getElementById('submap').addEventListener('click',function(ev){
+  var g=ev.target.closest('[data-cid]'); if(!g)return;
+  var id=g.getAttribute('data-cid'), node=N[id];
+  if(node.k&&node.k.length){ drill(id); }
+  else{
+    var li=document.getElementById('leafinfo');
+    li.innerHTML='▸ <b>'+node.t+'</b> '+(node.p?'<span class="pl">'+node.p+'</span>':'')+' — '+(node.d||'')+(node.s?'<div style="margin-top:6px">'+srcHTML(node.s)+'</div>':'');
+    li.classList.add('show');
+  }
+});
+document.getElementById('submap').addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){var g=ev.target.closest('[data-cid]');if(g){ev.preventDefault();g.click();}}});
+document.getElementById('backbtn').addEventListener('click',back);
+document.getElementById('closebtn').addEventListener('click',closeModal);
+document.getElementById('overlay').addEventListener('click',function(ev){if(ev.target.id==='overlay')closeModal();});
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape')closeModal();});
+
+renderMain();
+</script>
+</body>
+</html>

@@ -1,0 +1,307 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Claude — Capability Guide</title><style>
+:root{--bg:#f7f8fc;--ink:#1c2431;--dim:#6b7280;--line:#e6e9f1;--line2:#dcdfe6;--accent:#4f46e5;--accent2:#7c6cff;
+ --soft:rgba(79,70,229,.08);--card:#fff;--shadow:0 1px 2px rgba(20,25,40,.05),0 8px 24px rgba(20,25,40,.06);
+ --green:#16a34a;--green-soft:rgba(22,163,74,.12);--amber:#d97706;--sky:#0ea5e9;--violet:#7c3aed;--pink:#db2777;
+ --mono:ui-monospace,"SF Mono",Menlo,Consolas,monospace}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+.topbar{position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--bg) 86%,transparent);backdrop-filter:saturate(180%) blur(12px);border-bottom:1px solid var(--line)}
+.tb-in{max-width:1160px;margin:0 auto;display:flex;align-items:center;gap:10px;padding:9px 20px;flex-wrap:wrap}
+.tb-brand{font-weight:800;font-size:14px;white-space:nowrap}.tb-brand span{color:var(--accent)}
+.ttabs{display:flex;gap:3px;flex-wrap:wrap;margin-left:6px}
+.ttab{border:0;background:none;font:inherit;font-size:13px;font-weight:700;color:var(--dim);padding:8px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.ttab:hover{background:var(--soft);color:var(--ink)}.ttab.active{background:var(--accent);color:#fff}
+.prog{margin-left:auto;display:flex;align-items:center;gap:8px;font-size:12px;color:var(--dim);font-weight:700}
+.prog .bar{width:90px;height:6px;border-radius:5px;background:var(--soft);overflow:hidden}.prog .bar i{display:block;height:100%;background:var(--accent);width:0;transition:width .3s}
+.prog .rst{border:1px solid var(--line2);background:var(--card);color:var(--dim);border-radius:8px;padding:3px 8px;font:inherit;font-size:11px;font-weight:700;cursor:pointer}
+.view{display:none}.view.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.wrap{max-width:1160px;margin:0 auto;padding:6px 22px 110px}
+.hero{padding:40px 0 4px}.kick{font-size:12px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1{font-size:clamp(28px,4.6vw,46px);line-height:1.05;letter-spacing:-1.2px;margin:12px 0 0;font-weight:850;background:linear-gradient(115deg,var(--ink),var(--accent) 70%,var(--sky));-webkit-background-clip:text;background-clip:text;color:transparent}
+.thesis{font-size:clamp(15px,2vw,18px);color:var(--dim);max-width:760px;margin:16px 0 0;line-height:1.55}.thesis b{color:var(--ink)}
+.fig{margin:26px 0 0;background:var(--card);border:1px solid var(--line);border-radius:20px;box-shadow:var(--shadow);padding:18px;overflow:hidden}
+.fig svg{display:block;width:100%;height:auto}.cap{font-size:12.5px;color:var(--dim);text-align:center;margin:12px 4px 2px}.cap b{color:var(--ink)}
+.sect{margin:56px 0 0}.sect-h{display:flex;align-items:center;gap:12px;margin:0 0 4px}.sect-h .e{font-size:21px}
+.sect-h h2{font-size:clamp(18px,2.5vw,24px);margin:0;font-weight:800;letter-spacing:-.4px}.sect-h::after{content:"";flex:1;height:1px;background:var(--line)}
+.sect-sub{color:var(--dim);font-size:14px;margin:6px 0 0;max-width:720px}
+/* problem cards */
+.prob-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:13px;margin:20px 0 0}
+.pcard{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:15px 15px 13px;border-top:3px solid var(--accent)}
+.pcard .nm{font-weight:800;font-size:14.5px;display:flex;gap:8px;align-items:center}
+.pcard .pr{font-size:12.5px;color:var(--dim);margin:8px 0 0;line-height:1.5}
+.pcard .pr b{color:var(--ink)}.pcard .arm{font-size:11px;font-weight:800;color:var(--accent);margin-top:9px;display:block}
+/* capability three-pane */
+.capwrap{display:flex;gap:22px;align-items:flex-start;margin-top:8px}
+.caplist{flex:0 0 254px;position:sticky;top:64px;max-height:calc(100vh - 80px);overflow:auto;padding-right:4px}
+.cglab{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--dim);padding:14px 8px 6px}
+.citem{display:flex;align-items:center;gap:9px;padding:9px 11px;border-radius:11px;cursor:pointer;font-size:13.5px;font-weight:650;color:var(--ink);border:1px solid transparent;line-height:1.2}
+.citem:hover{background:var(--soft)}.citem.active{background:var(--soft);border-color:var(--line2)}
+.citem .cdone{margin-left:auto;color:var(--green);font-weight:800;opacity:0}.citem.done .cdone{opacity:1}
+.capdetail{flex:1;min-width:0}
+@media(max-width:840px){.capwrap{flex-direction:column}.caplist{position:static;flex:none;width:100%;max-height:none;display:flex;flex-wrap:wrap;gap:6px}.cglab{width:100%}}
+.dhead{display:flex;align-items:center;gap:12px;flex-wrap:wrap}
+.dhead .dic{font-size:30px}.dhead h2{margin:0;font-size:24px;font-weight:850;letter-spacing:-.4px}
+.dhead .av{font-size:11px;font-weight:700;color:var(--dim);background:var(--soft);border-radius:20px;padding:4px 11px}
+.dtick{margin-left:auto;border:1.5px solid var(--line2);background:var(--card);color:var(--dim);border-radius:20px;padding:6px 13px;font:inherit;font-size:12.5px;font-weight:700;cursor:pointer}
+.dtick.on{background:var(--green);border-color:var(--green);color:#fff}
+.dwhy{margin:16px 0 0;border-left:4px solid var(--accent);background:var(--soft);border-radius:0 14px 14px 0;padding:14px 16px}
+.dwhy .l{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.dwhy p{margin:5px 0 0;font-size:14px;color:var(--ink);line-height:1.5}
+.dwhat{font-size:15px;margin:16px 0 0;color:var(--ink);line-height:1.6}
+.d2{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0 0}
+@media(max-width:640px){.d2{grid-template-columns:1fr}}
+.dbox{border:1px solid var(--line);border-radius:14px;padding:14px 15px;background:var(--card);box-shadow:var(--shadow)}
+.dbox h4{margin:0 0 8px;font-size:12px;font-weight:800;letter-spacing:.05em;text-transform:uppercase}
+.dbox.use h4{color:var(--green)}.dbox.dont h4{color:#e11d48}.dbox.pros h4{color:var(--green)}.dbox.cons h4{color:#e11d48}.dbox.trade h4{color:var(--amber)}.dbox.ex h4{color:var(--accent)}.dbox.cheat h4{color:var(--violet)}
+.dbox ul{margin:0;padding-left:17px}.dbox li{font-size:13px;line-height:1.5;margin:5px 0;color:var(--ink)}
+.dbox.cheat{border-color:#e6ddff;background:#faf8ff}
+/* prompt / trade / permission grids */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:13px;margin:20px 0 0}
+.pcell{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:14px 15px;border-left:4px solid var(--accent)}
+.pcell .t{font-weight:800;font-size:14px}.pcell .d{font-size:12.5px;color:var(--ink);margin:6px 0 0;line-height:1.5}
+.pcell .w{font-size:11.5px;color:var(--dim);margin:7px 0 0;font-style:italic}
+.tgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:13px;margin:20px 0 0}
+.tg{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:14px 15px}
+.tg .th2{font-weight:800;font-size:13.5px;color:var(--accent)}.tg p{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.5}
+.pc2{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);padding:14px 15px}
+.pc2 .ph{font-weight:800;font-size:14px;display:flex;align-items:center;gap:8px}.pc2 .pdot{width:11px;height:11px;border-radius:50%}
+.pc2 p{font-size:12.5px;color:var(--dim);margin:6px 0 0;line-height:1.5}
+.warns{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin:18px 0 0}
+@media(max-width:640px){.warns{grid-template-columns:1fr}}
+.warn{background:#fff8ec;border:1px solid #f3d9a4;border-radius:13px;padding:12px 14px;font-size:12.5px;line-height:1.5;color:#7c4a03}
+.warn b{color:#b45309}/* map table */
+.mtable{margin:18px 0 0;border:1px solid var(--line);border-radius:16px;overflow:hidden;box-shadow:var(--shadow)}
+.mtable table{width:100%;border-collapse:collapse;font-size:13.5px;background:var(--card)}
+.mtable th{text-align:left;font-size:11px;text-transform:uppercase;letter-spacing:.06em;color:var(--dim);padding:11px 16px;background:var(--soft)}
+.mtable td{padding:11px 16px;border-top:1px solid var(--line)}.mtable td:first-child{font-weight:700}
+/* playbook */
+.play{border:1px solid var(--line);border-radius:18px;background:var(--card);box-shadow:var(--shadow);padding:18px 20px;margin:16px 0 0;border-left:5px solid var(--accent)}
+.play .pt{font-weight:800;font-size:16.5px;display:flex;gap:10px;align-items:center;letter-spacing:-.2px}
+.play .chain{display:flex;flex-wrap:wrap;align-items:center;gap:8px;margin:14px 0 0}
+.play .step{background:var(--soft);border:1px solid var(--line2);border-radius:11px;padding:8px 12px;font-size:12.5px;font-weight:650;color:var(--ink)}
+.play .arr{color:var(--dim);font-weight:800}
+.play .eg{font-size:12.5px;color:var(--dim);margin:12px 0 0;font-style:italic}
+.foot{margin-top:56px;padding-top:18px;border-top:1px solid var(--line);font-size:12px;color:var(--dim);text-align:center}
+</style></head><body><header class="topbar"><div class="tb-in"><div class="tb-brand">Da Vinci <span>· Claude Guide</span></div><div class="ttabs" id="ttabs"><button class="ttab active" data-tab="fp">🧭 First Principles</button><button class="ttab" data-tab="map">🗺️ The Map</button><button class="ttab" data-tab="caps">🧰 Capabilities</button><button class="ttab" data-tab="play">🎯 Task Playbook</button><button class="ttab" data-tab="cheat">⚡ Cheat Codes</button></div><div class="prog"><span id="pnum">0 / 0</span><span class="bar"><i id="pbar"></i></span><button class="rst" id="reset">reset</button></div></div></header><main><section class="view active" id="v-fp"><div class="wrap">
+<div class="hero">
+  <div class="kick">Reason from the task down</div>
+  <h1>First Principles</h1>
+  <p class="thesis">Every tool here exists because a real workflow hit a wall. Start from <b>a task you want done</b>, break it into parts, and each part points at the capability built to solve it. The map isn't a feature list — it's a <b>decomposition</b>.</p>
+</div>
+
+<div class="fig">
+  <svg viewBox="0 0 980 300" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Task decomposes into components, each maps to a capability, then scales">
+    <defs><marker id="fa" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9aa1b2"/></marker></defs>
+    <g font-family="sans-serif">
+      <rect x="24" y="120" width="150" height="60" rx="14" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="99" y="146" text-anchor="middle" font-size="13.5" font-weight="800" fill="#4f46e5">A task you</text>
+      <text x="99" y="165" text-anchor="middle" font-size="13.5" font-weight="800" fill="#4f46e5">want done</text>
+      <path d="M176 150 L214 150" stroke="#9aa1b2" stroke-width="2" marker-end="url(#fa)"/>
+      <text x="250" y="40" text-anchor="middle" font-size="11" font-weight="800" fill="#6b7280" letter-spacing=".06em">DECOMPOSE</text>
+      <g>
+        <rect x="216" y="60" width="200" height="40" rx="10" fill="#fff" stroke="#dcdfe6"/><text x="316" y="85" text-anchor="middle" font-size="12" style="fill:#1c2431">① reach the data</text>
+        <rect x="216" y="110" width="200" height="40" rx="10" fill="#fff" stroke="#dcdfe6"/><text x="316" y="135" text-anchor="middle" font-size="12" style="fill:#1c2431">② do the work</text>
+        <rect x="216" y="160" width="200" height="40" rx="10" fill="#fff" stroke="#dcdfe6"/><text x="316" y="185" text-anchor="middle" font-size="12" style="fill:#1c2431">③ produce the output</text>
+        <rect x="216" y="210" width="200" height="40" rx="10" fill="#fff" stroke="#dcdfe6"/><text x="316" y="235" text-anchor="middle" font-size="12" style="fill:#1c2431">④ keep / repeat it</text>
+      </g>
+      <path d="M420 80 L470 80" stroke="#9aa1b2" stroke-width="2" marker-end="url(#fa)"/>
+      <path d="M420 130 L470 130" stroke="#9aa1b2" stroke-width="2" marker-end="url(#fa)"/>
+      <path d="M420 180 L470 180" stroke="#9aa1b2" stroke-width="2" marker-end="url(#fa)"/>
+      <path d="M420 230 L470 230" stroke="#9aa1b2" stroke-width="2" marker-end="url(#fa)"/>
+      <g font-size="12" font-weight="700">
+        <rect x="472" y="62" width="230" height="36" rx="9" fill="#f3ecff" stroke="#7c3aed"/><text x="587" y="85" text-anchor="middle" fill="#6d28d9">Connectors · files · web</text>
+        <rect x="472" y="112" width="230" height="36" rx="9" fill="#eef0ff" stroke="#4f46e5"/><text x="587" y="135" text-anchor="middle" fill="#4f46e5">Cowork · Claude Code</text>
+        <rect x="472" y="162" width="230" height="36" rx="9" fill="#fef3c7" stroke="#d97706"/><text x="587" y="185" text-anchor="middle" fill="#b45309">Skills · artifacts · viz</text>
+        <rect x="472" y="212" width="230" height="36" rx="9" fill="#fde7f1" stroke="#db2777"/><text x="587" y="235" text-anchor="middle" fill="#be185d">Projects · schedules</text>
+      </g>
+      <path d="M706 130 Q760 130 760 150 Q760 170 810 170" stroke="#9aa1b2" stroke-width="2" fill="none" marker-end="url(#fa)"/>
+      <rect x="812" y="120" width="150" height="60" rx="14" fill="#dcfce7" stroke="#16a34a" stroke-width="2"/>
+      <text x="887" y="146" text-anchor="middle" font-size="13" font-weight="800" fill="#15803d">Delivered ·</text>
+      <text x="887" y="165" text-anchor="middle" font-size="13" font-weight="800" fill="#15803d">and it scales</text>
+    </g>
+  </svg>
+  <div class="cap">The four questions every task decomposes into — <b>reach, do, produce, repeat</b> — and the capability class each one summons.</div>
+</div>
+
+<div class="sect"><div class="sect-h"><span class="e">🏛️</span><h2>Why each tool was built — the problem statement behind it</h2></div>
+<p class="sect-sub">Read like an Anthropic PM: every capability is an answer to a first-principles pain. Remove the pain and the tool is obvious.</p>
+<div class="prob-grid" id="fp-probs"></div>
+</div>
+</div></section><section class="view" id="v-map"><div class="wrap">
+<div class="hero"><div class="kick">The whole thing at a glance</div><h1>The Map</h1>
+<p class="thesis">One app, two everyday modes plus Claude Code, powered by six families of capability, ending in real output. Availability differs — the matrix keeps you honest.</p></div>
+
+<div class="fig">
+  <svg viewBox="0 0 980 430" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Claude ecosystem overview">
+    <defs><marker id="mr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0 L10 5 L0 10 z" fill="#9aa1b2"/></marker></defs>
+    <g font-family="sans-serif">
+      <rect x="400" y="16" width="180" height="52" rx="14" fill="#eef0ff" stroke="#4f46e5" stroke-width="2"/>
+      <text x="490" y="40" text-anchor="middle" font-size="14" font-weight="800" fill="#4f46e5">The Claude app</text>
+      <text x="490" y="57" text-anchor="middle" font-size="10.5" fill="#6b7280">one home · pick a mode</text>
+      <g stroke="#9aa1b2" stroke-width="2" fill="none"><path d="M470 68 L250 108" marker-end="url(#mr)"/><path d="M490 68 L490 108" marker-end="url(#mr)"/><path d="M510 68 L730 108" marker-end="url(#mr)"/></g>
+      <rect x="120" y="110" width="230" height="58" rx="13" fill="#e0f2fe" stroke="#0ea5e9" stroke-width="1.6"/><text x="235" y="134" text-anchor="middle" font-size="13.5" font-weight="800" fill="#0369a1">💬 Chat</text><text x="235" y="153" text-anchor="middle" font-size="10.5" fill="#6b7280">ask · think · write</text>
+      <rect x="375" y="110" width="230" height="58" rx="13" fill="#eef0ff" stroke="#4f46e5" stroke-width="1.8"/><text x="490" y="134" text-anchor="middle" font-size="13.5" font-weight="800" fill="#4f46e5">🤝 Cowork</text><text x="490" y="153" text-anchor="middle" font-size="10.5" fill="#6b7280">agentic · does the work</text>
+      <rect x="630" y="110" width="230" height="58" rx="13" fill="#f1f5f9" stroke="#64748b" stroke-width="1.6"/><text x="745" y="134" text-anchor="middle" font-size="13.5" font-weight="800" fill="#475569">⌨️ Claude Code</text><text x="745" y="153" text-anchor="middle" font-size="10.5" fill="#6b7280">deep coding</text>
+      <path d="M490 168 L490 204" stroke="#9aa1b2" stroke-width="2" fill="none" marker-end="url(#mr)"/>
+      <text x="490" y="224" text-anchor="middle" font-size="11" font-weight="800" fill="#4f46e5" letter-spacing=".08em">POWERED BY</text>
+      <g font-size="11.5" font-weight="700">
+        <rect x="40" y="244" width="140" height="66" rx="13" fill="#fff" stroke="#dcdfe6"/><text x="110" y="274" text-anchor="middle" font-size="19">📁</text><text x="110" y="298" text-anchor="middle" fill="#1c2431">Containers</text>
+        <rect x="195" y="244" width="140" height="66" rx="13" fill="#fff" stroke="#dcdfe6"/><text x="265" y="274" text-anchor="middle" font-size="19">🔌</text><text x="265" y="298" text-anchor="middle" fill="#1c2431">Reach</text>
+        <rect x="350" y="244" width="140" height="66" rx="13" fill="#fff" stroke="#dcdfe6"/><text x="420" y="274" text-anchor="middle" font-size="19">🧩</text><text x="420" y="298" text-anchor="middle" fill="#1c2431">Amplifiers</text>
+        <rect x="505" y="244" width="140" height="66" rx="13" fill="#fff" stroke="#dcdfe6"/><text x="575" y="274" text-anchor="middle" font-size="19">🖥️</text><text x="575" y="298" text-anchor="middle" fill="#1c2431">Computer use</text>
+        <rect x="660" y="244" width="140" height="66" rx="13" fill="#fff" stroke="#dcdfe6"/><text x="730" y="274" text-anchor="middle" font-size="19">📊</text><text x="730" y="298" text-anchor="middle" fill="#1c2431">Output</text>
+        <rect x="815" y="244" width="125" height="66" rx="13" fill="#fff" stroke="#dcdfe6"/><text x="877" y="274" text-anchor="middle" font-size="19">⏰</text><text x="877" y="298" text-anchor="middle" fill="#1c2431">Automation</text>
+      </g>
+      <path d="M490 310 L490 348" stroke="#9aa1b2" stroke-width="2" fill="none" marker-end="url(#mr)"/>
+      <rect x="250" y="350" width="480" height="52" rx="13" fill="#dcfce7" stroke="#16a34a" stroke-width="1.6"/>
+      <text x="490" y="374" text-anchor="middle" font-size="13" font-weight="800" fill="#15803d">Real output</text>
+      <text x="490" y="391" text-anchor="middle" font-size="10.5" fill="#6b7280">docs · sheets · slides · pages · code · live dashboards</text>
+    </g>
+  </svg>
+  <div class="cap">Chat &amp; Cowork share one box; Claude Code is the coder's surface. Everything below the modes is what makes Cowork powerful.</div>
+</div>
+
+<div class="sect"><div class="sect-h"><span class="e">📋</span><h2>Availability — who gets what</h2></div>
+<p class="sect-sub">A rough guide; plans and betas shift, so verify in-app.</p>
+<div class="mtable">
+  <table>
+    <tr><th>Capability</th><th>Where / who</th></tr>
+    <tr><td>Chat · Web search · Visualisations</td><td>All plans</td></tr>
+    <tr><td>Cowork · Scheduled tasks</td><td>Pro · Max · Team · Enterprise</td></tr>
+    <tr><td>Claude Code</td><td>Pro · Max · Team · Enterprise</td></tr>
+    <tr><td>Projects · Memory · Live artifacts</td><td>Desktop · stored locally</td></tr>
+    <tr><td>Dispatch · Computer use</td><td>Pro · Max (beta / research preview)</td></tr>
+    <tr><td>Connectors (web) </td><td>All · custom MCP most plans (Free = 1)</td></tr>
+    <tr><td>Skills</td><td>All plans · needs code execution on</td></tr>
+    <tr><td>Live-artifact sharing</td><td>Team · Enterprise only</td></tr>
+  </table>
+</div>
+</div></section><section class="view" id="v-caps"><div class="wrap"><div class="hero"><div class="kick">Every tool · cue · example · trade-off</div><h1>Capabilities</h1><p class="thesis">Pick a capability on the left. Each answers: the <b>problem it was built for</b>, what it is, when to use it, when NOT to, examples, pros, cons, trade-offs and cheat codes. Tick ones you've tried.</p></div><div class="capwrap"><nav class="caplist" id="caplist"></nav><div class="capdetail" id="capdetail"></div></div></div></section><section class="view" id="v-play"><div class="wrap">
+<div class="hero"><div class="kick">Task → components → capabilities</div><h1>The Task Playbook</h1>
+<p class="thesis">Five archetypes that cover most of what you'll actually do. Find the shape of your task, follow the chain, and the capabilities are already chosen.</p></div>
+<div id="play-cards"></div>
+</div></section><section class="view" id="v-cheat"><div class="wrap">
+<div class="hero"><div class="kick">Optimal use · from the docs</div><h1>Cheat Codes &amp; Trade-offs</h1>
+<p class="thesis">The levers that decide speed, cost, length and quality — and the safety gotchas worth memorising.</p></div>
+
+<div class="sect"><div class="sect-h"><span class="e">✍️</span><h2>Prompting — biggest levers first</h2></div>
+<p class="sect-sub">Roughly ordered by impact. Reach for the top ones before anything fancy.</p>
+<div class="pgrid" id="prompt-cards"></div>
+</div>
+
+<div class="sect"><div class="sect-h"><span class="e">⚖️</span><h2>Speed vs depth — models &amp; effort</h2></div>
+<div class="fig">
+  <svg viewBox="0 0 900 250" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Model and effort speed versus depth">
+    <defs><linearGradient id="sd" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#16a34a"/><stop offset="1" stop-color="#7c3aed"/></linearGradient></defs>
+    <g font-family="sans-serif">
+      <text x="60" y="36" font-size="12.5" font-weight="800" fill="#15803d">FASTER · CHEAPER</text>
+      <text x="840" y="36" text-anchor="end" font-size="12.5" font-weight="800" fill="#6d28d9">DEEPER · SLOWER</text>
+      <rect x="60" y="46" width="780" height="14" rx="7" fill="url(#sd)"/>
+      <rect x="60" y="80" width="240" height="70" rx="13" fill="#dcfce7" stroke="#16a34a"/><text x="180" y="108" text-anchor="middle" font-size="14" font-weight="800" fill="#15803d">Haiku</text><text x="180" y="130" text-anchor="middle" font-size="11" fill="#4a5568">fastest · cheapest · snappy tasks</text>
+      <rect x="330" y="80" width="240" height="70" rx="13" fill="#eef0ff" stroke="#4f46e5"/><text x="450" y="108" text-anchor="middle" font-size="14" font-weight="800" fill="#4f46e5">Sonnet</text><text x="450" y="130" text-anchor="middle" font-size="11" fill="#4a5568">balanced · agentic · long-context</text>
+      <rect x="600" y="80" width="240" height="70" rx="13" fill="#f3ecff" stroke="#7c3aed"/><text x="720" y="108" text-anchor="middle" font-size="14" font-weight="800" fill="#6d28d9">Opus</text><text x="720" y="130" text-anchor="middle" font-size="11" fill="#4a5568">max reasoning · architecture</text>
+      <text x="60" y="188" font-size="12.5" font-weight="800" style="fill:var(--ink)">Effort (Claude Code):</text>
+      <g font-size="11.5" font-weight="700">
+        <rect x="60" y="200" width="150" height="34" rx="9" fill="#dcfce7"/><text x="135" y="222" text-anchor="middle" fill="#15803d">low → fewer tokens</text>
+        <rect x="220" y="200" width="150" height="34" rx="9" fill="#eef0ff"/><text x="295" y="222" text-anchor="middle" fill="#4f46e5">high → default</text>
+        <rect x="380" y="200" width="180" height="34" rx="9" fill="#f3ecff"/><text x="470" y="222" text-anchor="middle" fill="#6d28d9">max → hard problems only</text>
+      </g>
+      <text x="600" y="222" font-size="11.5" font-style="italic" style="fill:var(--dim)">Opus often faster overall — less steering</text>
+    </g>
+  </svg>
+  <div class="cap">Counterintuitive doc tip: a bigger model can finish sooner because it needs less correcting and uses tools better.</div>
+</div>
+</div>
+
+<div class="sect"><div class="sect-h"><span class="e">📏</span><h2>Length, time &amp; cost — what to expect</h2></div>
+<div class="tgrid">
+  <div class="tg"><div class="th2">Want a short answer?</div><p>Say so — “in 3 bullets,” “one line.” There's no magic toggle; length is set by your prompt.</p></div>
+  <div class="tg"><div class="th2">Deep reasoning costs time</div><p>Chain-of-thought &amp; extended thinking lengthen output and latency. Use them for hard tasks, not every task.</p></div>
+  <div class="tg"><div class="th2">Cowork &gt; Chat in cost</div><p>The agentic loop burns more usage. Batch related work into one session; use Chat for the trivial.</p></div>
+  <div class="tg"><div class="th2">Auto mode costs more</div><p>Per-action safety screening in Auto mode uses more usage than Manual or Skip.</p></div>
+</div>
+</div>
+
+<div class="sect"><div class="sect-h"><span class="e">🔐</span><h2>Permission modes &amp; safety gotchas</h2></div>
+<div class="pgrid">
+  <div class="pc2"><div class="ph"><span class="pdot" style="background:#16a34a"></span>Manual</div><p>Asks before each action. Most oversight, slowest.</p></div>
+  <div class="pc2"><div class="ph"><span class="pdot" style="background:#d97706"></span>Auto</div><p>Screens each action, blocks unsafe ones — costs more usage.</p></div>
+  <div class="pc2"><div class="ph"><span class="pdot" style="background:#e11d48"></span>Skip</div><p>No checks. Only when you fully trust every step.</p></div>
+</div>
+<div class="warns">
+  <div class="warn">⚡ <b>Live artifacts use your approved connectors WITHOUT asking</b> — even in a mode that would normally require approval. Careful with connectors that can change data.</div>
+  <div class="warn">⚡ <b>Computer use has no sandbox</b> between Claude and your screen. Use a dedicated folder, blocklist sensitive apps, close them first.</div>
+  <div class="warn">⚡ <b>Deleting a file always needs explicit permission</b> — in every mode. That one is never skipped.</div>
+  <div class="warn">⚡ <b>Egress doesn't gate web search/fetch or MCP</b> — those run outside your network policy. Team/Ent owners can disable web search &amp; Chrome.</div>
+</div>
+</div>
+</div></section><div class="wrap"><div class="foot">Da Vinci · Personal Library — a living, first-principles guide to using Claude. Built from Anthropic's help docs; verify betas & plans in-app.</div></div></main><script>
+var CAPS=[{"id": "chat", "grp": "Surfaces", "ic": "💬", "name": "Chat", "avail": "All plans", "problem": "Running a full agentic loop for a one-line question wastes usage and adds nothing. Most requests are just Q&A.", "what": "The standard turn-by-turn conversation — it answers, thinks and writes, but does not reach into your files or apps.", "use": ["A quick question or a short draft", "You want to conserve usage", "No files/tools/long execution needed"], "dont": ["The task is multi-step or needs your files", "You want an outcome delivered, not an answer"], "ex": ["“Explain the bias-variance trade-off.”", "“Draft a 3-line reply to this email.”"], "pros": ["Fastest, cheapest", "Simplest interaction"], "cons": ["No agentic execution", "No file read/write", "Chat memory does NOT carry into Cowork"], "trade": ["Cheapest · fastest · smallest scope", "Docs steer simple tasks here to save usage"], "cheats": ["Switch to “Chat” in the same box to leave an agentic session", "Reserve Chat for the simple stuff to stay under limits"]}, {"id": "cowork", "grp": "Surfaces", "ic": "🤝", "name": "Cowork", "avail": "Pro · Max · Team · Ent", "problem": "Prompt-at-a-time chat can't own an outcome end-to-end. Knowledge workers wanted Claude Code's power without a terminal.", "what": "An agentic mode (same engine as Claude Code) that plans and executes complex, multi-step tasks on your behalf — no terminal.", "use": ["Complex / multi-step work", "Work that needs files or long execution", "You want to delegate and walk away"], "dont": ["The task is trivial (use Chat)", "You're tightly usage-constrained for trivial work"], "ex": ["“Organise my Downloads by type and date.”", "Turn scattered notes + a transcript into a polished deck."], "pros": ["No conversation timeouts on long tasks", "Parallel sub-agents", "Professional outputs (working Excel, PPTX, docs)"], "cons": ["Uses more usage than Chat", "Agentic + internet = unique risks", "Some features desktop-only"], "trade": ["Higher cost / slower, far larger scope", "3 permission modes trade oversight vs speed"], "cheats": ["Modes: Manual (asks each action) · Auto (screens each, costs MORE) · Skip (no checks — full trust only)", "Batch related work into one session to save usage", "Deleting a file always needs explicit permission, in every mode"]}, {"id": "code", "grp": "Surfaces", "ic": "⌨️", "name": "Claude Code", "avail": "Pro · Max · Team · Ent", "problem": "Serious engineering needs to read/edit many files, run commands and verify — a chat box can't drive a real codebase.", "what": "Anthropic's agentic coding tool in the terminal (also Desktop, VS Code, web, mobile): edits files, runs bash, uses MCP, with a permission system.", "use": ["Multi-file migrations, refactors, features, debugging", "Work with a verification loop (tests, browser, logs)", "Parallelisable work across git worktrees"], "dont": ["A one-shot question (chat is cheaper)", "There's no way to verify the output — quality drops"], "ex": ["“/batch migrate src/ from Solid to React.”", "Paste a Slack bug thread and say “fix.”"], "pros": ["Native parallelism (worktrees, subagents, /batch)", "Self-verification tooling", "Customisation checked into git & shared"], "cons": ["Features fragmented across plans; many off by default", "Ships fast — details drift", "Powerful modes carry real risk"], "trade": ["Opus+thinking slower per token but often faster overall (less steering)", "Effort low→max trades tokens for intelligence"], "cheats": ["Verification is tip #1 — give it a way to check its own work", "Plan mode first, then one-shot the build", "End fixes with “update your CLAUDE.md so you don't repeat this”", "“use subagents” to add compute & keep context clean"]}, {"id": "projects", "grp": "Containers", "ic": "📁", "name": "Projects", "avail": "Desktop · local", "problem": "Related tasks scatter across sessions with no shared files, instructions or memory — so Claude re-learns context every time.", "what": "A persistent, self-contained workspace grouping related tasks with their own files, connected folder, standing instructions and memory.", "use": ["Ongoing work on one body (your hub!)", "You want project-scoped instructions/memory", "You want project-specific scheduled tasks"], "dont": ["One-off tasks", "You need cloud-synced / shareable project data (not supported)"], "ex": ["Create a project from your davinci-library folder + add instructions.", "Import an existing Claude chat project."], "pros": ["Per-project instructions, memory & schedules", "Memory scoped so projects don't cross-contaminate", "Fixes the reconnect-every-chat friction"], "cons": ["Desktop-only, stored locally (no cloud sync)", "Not in Claude Code yet", "No sharing on Team/Ent"], "trade": ["Persistence vs locked to one machine", "Archiving removes UI metadata but leaves local files"], "cheats": ["THE fix for “it keeps asking me to reconnect the folder” — connect it once in a Project", "Cowork won't change a project's files — add what you want kept yourself"]}, {"id": "memory", "grp": "Containers", "ic": "🧠", "name": "Memory", "avail": "Desktop (in projects)", "problem": "Re-explaining your preferences and decisions every session is pure friction.", "what": "Claude retains context across sessions; in Cowork it currently works inside projects only, scoped per project.", "use": ["Working inside a project where continuity matters", "You want Claude to build on prior decisions"], "dont": ["You expect chat memory to cross into Cowork (it doesn't yet)", "You're outside a project and expect recall"], "ex": ["Recalls a project's conventions and applies them later.", "Via Dispatch, remembers your preferences."], "pros": ["Kills repetitive re-briefing", "Scoped per project — no leakage", "Sensitive data (passwords, health, finance) auto-excluded"], "cons": ["In Cowork: projects only", "Chat memory doesn't cross in", "Not global across projects"], "trade": ["Convenience vs limited scope", "Fully reversible — view/edit/delete anytime"], "cheats": ["Inspect and prune what it remembers", "Don't rely on it outside a project (yet)"]}, {"id": "remote", "grp": "Containers", "ic": "☁️", "name": "Remote sessions", "avail": "Beta · roams devices", "problem": "Sessions tied to your laptop stop when you close it and don't follow you across devices.", "what": "The default execution model: the agent loop runs in an isolated cloud sandbox; sessions & files live with your account.", "use": ["You want work to continue after closing the laptop", "Start on desktop, steer from phone", "Scheduled jobs that run with the machine off"], "dont": ["The task needs live local files and the desktop app can't stay open", "Org policy disables remote sessions (Ent)"], "ex": ["Kick off a long synthesis, check it from your phone.", "An overnight scheduled task with the computer off."], "pros": ["Work continues in the background", "Same files across desktop/web/mobile", "Strong isolation; connector tokens never enter the sandbox"], "cons": ["Local files reachable only while desktop app is open", "Not in audit logs / EDR can't inspect"], "trade": ["Unattended continuity vs local reach depends on the desktop app", "Network follows your egress policy"], "cheats": ["Local files opened via the desktop app are processed server-side", "Enterprise: monitor via OpenTelemetry, not audit logs"]}, {"id": "dispatch", "grp": "Containers", "ic": "📲", "name": "Dispatch", "avail": "Beta · Pro · Max", "problem": "Your phone can't open your desktop's local files and apps — but you're often away from the machine.", "what": "One continuous, persistent thread; tasks you assign (phone or desktop) run on your desktop via the Claude app.", "use": ["You're away but need desktop-local files/apps", "You want one non-resetting thread with context", "You want a push when it's done or needs input"], "dont": ["Work must continue with the computer off (use a cloud session)", "You need multiple separate threads"], "ex": ["From your phone: pull a local spreadsheet and compile a summary.", "Search Slack + email and draft a brief on your desktop."], "pros": ["Single persistent thread keeps context", "Auto-routes work (dev→Code, knowledge→Cowork)", "Reuses your connectors & file access"], "cons": ["Desktop must be awake & app open", "Only one thread"], "trade": ["Remote control convenience vs an active desktop", "A bad instruction can trigger hard-to-undo real actions"], "cheats": ["Toggle file access + “keep computer awake” in setup", "Dispatch = runs on your desktop; cloud session = runs on Anthropic servers"]}, {"id": "connectors", "grp": "Reach", "ic": "🔌", "name": "Connectors (MCP)", "avail": "Web: all · Custom: most", "problem": "Claude can't reach your live apps or private data, so you end up copy-pasting content in by hand.", "what": "Integrations (built on MCP) that let Claude read your data and take actions in the tools where your work already lives.", "use": ["Claude needs live/current data from a service", "You want Claude to act in another tool (create issue, send msg)", "You want an app available across web, Desktop, Code"], "dont": ["You only need a repeatable procedure Claude already knows (use a Skill)", "You want static always-on context (use a Project)"], "ex": ["Linear: “create an issue for the login bug.”", "Slack send · Google Drive search · Gmail read/summarise · Microsoft 365 write."], "pros": ["Auto-suggests the right app — no need to name it", "Inherits your existing per-user permissions", "Some render live dashboards in-chat (Interactive)"], "cons": ["Third parties process data on their terms", "Custom servers behind a firewall need IP allowlisting", "Team/Ent: only in private projects"], "trade": ["Web connectors free to all; custom on all plans (Free = 1)", "Per-user OAuth each time"], "cheats": ["Owners set per-tool Always/Approve/Blocked and split read-only vs write/delete", "With 10+ connectors switch Tool access Auto→On-demand to save context", "Only connect trusted services — custom ones are unverified"]}, {"id": "computer", "grp": "Reach", "ic": "🖥️", "name": "Computer & file access", "avail": "Computer use: Pro/Max preview", "problem": "When no connector exists, and to touch local files, Claude otherwise can't act at all.", "what": "Local file read/write in folders you connect, plus computer use (research preview) where Claude clicks/types/navigates your screen.", "use": ["The task needs local files without manual upload", "You need an app with no connector", "You can supervise, especially early"], "dont": ["Sensitive apps (banking, health, gov, legal) — some blocked", "Long multi-step screen workflows (error-prone)", "Team/Ent (no computer use)"], "ex": ["Open a phone simulator and find UX issues.", "Fill a spreadsheet from many sources and save to a folder."], "pros": ["No-setup reach to any app/file", "Keeps working while you step away", "Picks the fastest path automatically"], "cons": ["Computer use has NO sandbox to your screen", "Slower & more error-prone than connectors", "Screenshots capture whatever's on screen"], "trade": ["Tool priority: Connector → Browser → Screen (fastest→riskiest)", "Broad reach vs weaker safety envelope"], "cheats": ["Make a dedicated working folder — don't grant broad access", "Use the app blocklist; close sensitive apps first", "Watch cross-app spillover (an email link can open Chrome)"]}, {"id": "web", "grp": "Reach", "ic": "🌐", "name": "Web search & fetch", "avail": "All plans", "problem": "Training data goes stale and can't know today's facts or a specific page you care about.", "what": "Live web search plus fetching specific URLs for current information.", "use": ["Anything newer than the model's training", "Prices, people, news, docs that change", "You referenced a specific link"], "dont": ["The answer is timeless / conceptual", "You need private data (that's a connector)"], "ex": ["“What's the latest on X?”", "“Read this article and summarise it.”"], "pros": ["Current, verifiable facts", "Reads specific pages"], "cons": ["Server-side fetch limited to search results & URLs you shared", "JS-heavy pages may need the browser tool"], "trade": ["Egress policy does NOT gate web search/fetch", "Team/Ent owners can disable web search"], "cheats": ["Ask Claude to search before trusting a confident-sounding claim about the present", "Give the exact URL when you have it"]}, {"id": "directory", "grp": "Reach", "ic": "🗂️", "name": "The Directory", "avail": "All plans", "problem": "Skills, connectors and plugins used to live in separate menus — hard to discover what's even possible.", "what": "One browsable catalog (tabs for Skills, Connectors, Plugins) to find and install everything that customises Claude.", "use": ["Discovering what can extend Claude", "Installing a skill/connector/plugin", "Team/Ent: finding org-shared skills"], "dont": ["A colleague shared a skill directly (it bypasses the directory)"], "ex": ["Browse the Connectors tab; each page shows read/write scopes.", "Install a partner skill that pairs with its connector."], "pros": ["One place for all three extension types", "Each connector page documents scopes before you commit"], "cons": ["Directory-installed skills are view-only", "Directly-shared skills don't appear here"], "trade": ["Reached via Customize in the sidebar → tab → + → Browse", "Org owners must flip sharing on (off by default)"], "cheats": ["Ask “is there a connector/skill/plugin for X?” before grinding it by hand", "Connectors Directory lives at claude.ai/connectors"]}, {"id": "skills", "grp": "Amplifiers", "ic": "🧩", "name": "Skills", "avail": "All plans (needs code exec)", "problem": "General knowledge isn't enough for specialised, repeatable tasks done YOUR way (brand, templates, workflow).", "what": "Folders of instructions/scripts Claude loads only when relevant (progressive disclosure) to nail a specific task.", "use": ["You want a repeatable procedure or output format", "Producing Office/PDF deliverables", "Teaching Claude team conventions (Jira/Asana tasks)"], "dont": ["You just need external data/tools (that's a connector)", "You want broad guidance (custom instructions)"], "ex": ["Built-ins: enhanced Excel, Word, PowerPoint, PDF.", "Partner skills from Notion, Figma, Atlassian."], "pros": ["Consistency & speed on specific tasks", "Captures org knowledge reusably", "Authorable in Markdown, no code needed"], "cons": ["Requires code execution enabled", "Prompt-injection risk from untrusted skills", "Directory skills are view-only"], "trade": ["Free→Ent; pairs with connectors", "One skill per purpose — don't build a mega-skill"], "cheats": ["Write a SPECIFIC description — that's what triggers it", "If it won't fire: toggle on, sharpen desc, or say “use my X skill”", "Only install skills from trusted sources"]}, {"id": "plugins", "grp": "Amplifiers", "ic": "📦", "name": "Plugins & marketplaces", "avail": "Via directory", "problem": "Individual skills and connectors are scattered; orgs need to distribute bundled capabilities in one install.", "what": "Installable bundles (skills + tools) surfaced in the directory; once installed, their skills work in chat and Cowork.", "use": ["You want a packaged set at once, not piecemeal", "Your org distributes via a marketplace", "You want bundled skills in chat & Cowork"], "dont": ["You need just one skill or one connection"], "ex": ["Install an org marketplace plugin.", "A financial-services plugin bundle."], "pros": ["One-click install of a bundle", "Org marketplace distribution"], "cons": ["Docs are thin — boundaries/permissions uncertain", "Community plugins may be unreviewed"], "trade": ["Installed from the directory's Plugins tab"], "cheats": ["Customize → Plugins → + → Browse", "Review what a bundle contains before installing"]}, {"id": "office", "grp": "Output", "ic": "📄", "name": "Office files", "avail": "Needs skills", "problem": "People need real, openable deliverables — not markdown pretending to be a document.", "what": "Properly formatted Word, Excel, PowerPoint and PDF files, produced via the matching skill.", "use": ["Deliverables someone opens in Office", "Spreadsheets with working formulas", "Decks, reports, filled PDFs"], "dont": ["A quick internal note (markdown is fine)"], "ex": ["“Build a Q3 results PPTX.”", "“Turn this data into an .xlsx with formulas.”"], "pros": ["Genuinely formatted, editable files", "Working spreadsheet formulas, real slide layouts"], "cons": ["Needs the skill + code execution", "Heavier than plain text"], "trade": ["Takes longer than a text answer, but it's a usable artifact", "Ask for the format explicitly"], "cheats": ["Say the format you want (“as a .docx / .xlsx / .pptx”)", "Combine with a connector to pull the source data first"]}, {"id": "artifacts", "grp": "Output", "ic": "📊", "name": "Artifacts & live artifacts", "avail": "Desktop (live)", "problem": "A normal chat artifact is a static snapshot buried in the thread that goes stale the next day.", "what": "Standalone interactive pages in their own window; live ones re-pull current data from your connectors each time you open them.", "use": ["A dashboard/tracker you'll re-open", "The view must show current data", "You want version history to restore"], "dont": ["You switch devices and need it to travel (it's local)", "On Pro/Max where you need to publish/share"], "ex": ["A morning brief: Slack mentions + calendar + open PRs.", "A competitor tracker that updates from any thread."], "pros": ["Live-refreshing & independent of the origin chat", "Versioned with restore"], "cons": ["Desktop-only, device-bound", "Pro/Max can't share/publish"], "trade": ["Persistence & freshness vs locality", "Convenience vs a real safety gap"], "cheats": ["Say which connectors/files to use when describing it", "SAFETY: live artifacts use approved connectors WITHOUT asking — careful with ones that change data"]}, {"id": "viz", "grp": "Output", "ic": "🕸️", "name": "Visualisations & diagrams", "avail": "All plans", "problem": "Dense prose is hard to retain; structure is easier seen than read.", "what": "Charts, concept maps and interactive SVG — exactly what this whole knowledge hub is built from.", "use": ["You need to SEE structure or relationships", "Explaining a system, process or comparison", "Retention/recall matters"], "dont": ["A single number or a one-line fact"], "ex": ["A causal concept map of a mechanism.", "An interactive filterable explorer."], "pros": ["Massively aids retention & recall", "Reveals structure text hides"], "cons": ["Takes longer to build than prose", "Overkill for trivial facts"], "trade": ["Slower to produce, far higher retention", "One diagram = one relationship type"], "cheats": ["Ask for a diagram explicitly when learning something structural", "Layer several clean views for complex topics — don't cram one"]}, {"id": "codeout", "grp": "Output", "ic": "💻", "name": "Code & scripts", "avail": "All plans", "problem": "Repetitive manual chores and bespoke tools don't exist until someone writes them.", "what": "Runnable scripts, components and full apps you can keep and re-use.", "use": ["A small program would kill a repeated chore", "You need a custom tool/component", "Automating data wrangling"], "dont": ["A one-time transformation you can eyeball"], "ex": ["A script to rename 500 files by rule.", "A React component for a login form."], "pros": ["Automates the repetitive", "Reusable and inspectable"], "cons": ["You must be able to verify it", "Needs a runtime to execute"], "trade": ["Cheap once written, pays back every run", "Pair with Claude Code for anything multi-file"], "cheats": ["Ask it to test/verify its own code", "Save the script so the next run is free"]}, {"id": "scheduled", "grp": "Automation", "ic": "⏰", "name": "Scheduled tasks", "avail": "Cowork", "problem": "Recurring work shouldn't need you to re-ask each time or keep a machine awake.", "what": "Saved tasks Claude runs on-demand or on a cadence, remotely — no computer awake needed.", "use": ["Genuinely repetitive, low-risk work", "Automation on a set cadence", "The task doesn't need live local files"], "dont": ["It touches sensitive files/accounts", "It takes consequential, hard-to-undo actions", "You can't review outputs regularly"], "ex": ["“Check my email each morning” → a brief.", "A weekly metrics pull / Friday report."], "pros": ["Runs unattended with the computer off", "On-demand or recurring", "Managed from the Scheduled sidebar; runs reviewable"], "cons": ["No real-time monitoring (latent risk)", "Still consumes usage"], "trade": ["Hands-off vs reduced oversight — start low-risk & review every run"], "cheats": ["Create with /schedule in any Cowork task", "Pause/delete tasks you're not using", "Auto mode won't auto-approve creating schedules"]}];
+var GROUPS=[["Surfaces", "#4f46e5", "🧭 Surfaces — where you work"], ["Containers", "#0ea5e9", "📁 Containers — where work lives"], ["Reach", "#7c3aed", "🔌 Reach — touch your world"], ["Amplifiers", "#16a34a", "🧩 Amplifiers — more per task"], ["Output", "#d97706", "🛠️ Output — what you get"], ["Automation", "#db2777", "⏰ Automation — hands-off"]];
+var GCOL={"Surfaces": "#4f46e5", "Containers": "#0ea5e9", "Reach": "#7c3aed", "Amplifiers": "#16a34a", "Output": "#d97706", "Automation": "#db2777"};
+var PROMPTS=[["Be clear &amp; direct", "Give explicit, detailed instructions — treat Claude like a brilliant new hire with zero prior context.", "Everything. Try this first."], ["Specify length &amp; format", "State how long and in what shape you want the answer, not just the goal.", "Right-sizing verbosity; structured output."], ["Give context / the why", "Explain the motivation and audience — Claude performs better with more context.", "Nuanced or judgment-heavy tasks."], ["XML tags", "Wrap instructions / context / examples in tags (&lt;instructions&gt;, &lt;example&gt;).", "Multi-part prompts. “Highest-impact change,” per docs."], ["Multishot examples", "Include 3–5 diverse examples covering edge cases.", "Most reliable way to lock format, tone, structure."], ["Chain-of-thought", "Let it think step-by-step before answering (it must output the thinking).", "Math, logic, analysis, multi-step tasks."], ["Role / system prompt", "Give it a role (CFO, legal analyst) via the system prompt.", "Domain-specific work & setting voice."], ["Iterate", "Start simple; add techniques only if plain adjustments fail.", "When first output misses — tweak, don't over-engineer."]];
+var PLAYBOOK=[["🧪", "Turn messy inputs into a polished deliverable", ["Gather — Connectors / files / web", "Do — Cowork", "Shape — a Skill (docx · xlsx · pptx)", "Keep — save / an artifact if reusable"], "#4f46e5", "Notes + a transcript → a formatted report or deck."], ["📡", "Stay on top of something, automatically", ["Reach — a Connector to the source", "Schedule — a Scheduled task on a cadence", "See — a Live artifact you re-open"], "#db2777", "A 6am brief: inbox + calendar + open PRs."], ["🏗️", "Build or automate something technical", ["Plan — Chat / Plan mode", "Build — Claude Code (worktrees, subagents)", "Verify — tests / browser loop", "Reuse — a skill or scheduled job"], "#64748b", "Refactor a module; script a repetitive chore."], ["📚", "Understand or learn something deeply", ["Fetch — Web search for current truth", "Think — Chat / reasoning", "See — a Visualisation / concept map"], "#0ea5e9", "Map a mechanism into an interactive diagram."], ["♻️", "Recurring work on one body of work", ["Contain — a Project (folder + instructions)", "Remember — Memory carries context", "Act — Cowork sessions inside it"], "#16a34a", "Your knowledge hub: connect the folder once, in a project."]];
+var PROBS=[["💬", "Chat", "Running a full agentic loop for a one-line question wastes usage and adds nothing. Most requests are just Q&A.", "#4f46e5"], ["🤝", "Cowork", "Prompt-at-a-time chat can't own an outcome end-to-end. Knowledge workers wanted Claude Code's power without a terminal.", "#4f46e5"], ["⌨️", "Claude Code", "Serious engineering needs to read/edit many files, run commands and verify — a chat box can't drive a real codebase.", "#4f46e5"], ["📁", "Projects", "Related tasks scatter across sessions with no shared files, instructions or memory — so Claude re-learns context every time.", "#0ea5e9"], ["🧠", "Memory", "Re-explaining your preferences and decisions every session is pure friction.", "#0ea5e9"], ["☁️", "Remote sessions", "Sessions tied to your laptop stop when you close it and don't follow you across devices.", "#0ea5e9"], ["📲", "Dispatch", "Your phone can't open your desktop's local files and apps — but you're often away from the machine.", "#0ea5e9"], ["🔌", "Connectors (MCP)", "Claude can't reach your live apps or private data, so you end up copy-pasting content in by hand.", "#7c3aed"], ["🖥️", "Computer & file access", "When no connector exists, and to touch local files, Claude otherwise can't act at all.", "#7c3aed"], ["🌐", "Web search & fetch", "Training data goes stale and can't know today's facts or a specific page you care about.", "#7c3aed"], ["🗂️", "The Directory", "Skills, connectors and plugins used to live in separate menus — hard to discover what's even possible.", "#7c3aed"], ["🧩", "Skills", "General knowledge isn't enough for specialised, repeatable tasks done YOUR way (brand, templates, workflow).", "#16a34a"], ["📦", "Plugins & marketplaces", "Individual skills and connectors are scattered; orgs need to distribute bundled capabilities in one install.", "#16a34a"], ["📄", "Office files", "People need real, openable deliverables — not markdown pretending to be a document.", "#d97706"], ["📊", "Artifacts & live artifacts", "A normal chat artifact is a static snapshot buried in the thread that goes stale the next day.", "#d97706"], ["🕸️", "Visualisations & diagrams", "Dense prose is hard to retain; structure is easier seen than read.", "#d97706"], ["💻", "Code & scripts", "Repetitive manual chores and bespoke tools don't exist until someone writes them.", "#d97706"], ["⏰", "Scheduled tasks", "Recurring work shouldn't need you to re-ask each time or keep a machine awake.", "#db2777"]];
+
+(function(){
+ function esc(s){return (s==null?'':String(s)).replace(/[&<>]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;'}[c];});}
+ var KEY="claudeguide.v1", st={};
+ try{st=JSON.parse(localStorage.getItem(KEY)||"{}");}catch(e){}
+ st.tried=st.tried||{};
+ function save(){try{localStorage.setItem(KEY,JSON.stringify(st));}catch(e){}}
+ function showTab(t){
+   document.querySelectorAll('#ttabs .ttab').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-tab')===t);});
+   var map={fp:'v-fp',map:'v-map',caps:'v-caps',play:'v-play',cheat:'v-cheat'};
+   document.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v.id===map[t]);});
+   st.tab=t;save();window.scrollTo(0,0);
+ }
+ document.getElementById('ttabs').addEventListener('click',function(e){var b=e.target.closest('.ttab');if(b)showTab(b.getAttribute('data-tab'));});
+ document.getElementById('fp-probs').innerHTML=PROBS.map(function(p){
+   return '<div class="pcard" style="border-top-color:'+p[3]+'"><div class="nm">'+p[0]+' '+esc(p[1])+'</div><div class="pr"><b>Problem &rarr;</b> '+esc(p[2])+'</div><span class="arm">&rarr; built to solve exactly this</span></div>';
+ }).join('');
+ document.getElementById('play-cards').innerHTML=PLAYBOOK.map(function(p){
+   var steps=p[2].map(function(s,i){return '<span class="step">'+esc(s)+'</span>'+(i<p[2].length-1?'<span class="arr">&rarr;</span>':'');}).join('');
+   return '<div class="play" style="border-left-color:'+p[3]+'"><div class="pt">'+p[0]+' '+esc(p[1])+'</div><div class="chain">'+steps+'</div><div class="eg">e.g. '+esc(p[4])+'</div></div>';
+ }).join('');
+ document.getElementById('prompt-cards').innerHTML=PROMPTS.map(function(p){
+   return '<div class="pcell"><div class="t">'+p[0]+'</div><div class="d">'+p[1]+'</div><div class="w">&#8627; '+p[2]+'</div></div>';
+ }).join('');
+ var total=CAPS.length, cur=null;
+ function prog(){var n=Object.keys(st.tried).filter(function(k){return st.tried[k];}).length;
+   document.getElementById('pnum').textContent=n+' / '+total;document.getElementById('pbar').style.width=(total?Math.round(n/total*100):0)+'%';}
+ function renderList(){
+   var h='';
+   GROUPS.forEach(function(g){
+     h+='<div class="cglab">'+g[2]+'</div>';
+     CAPS.filter(function(c){return c.grp===g[0];}).forEach(function(c){
+       h+='<div class="citem'+(cur===c.id?' active':'')+(st.tried[c.id]?' done':'')+'" data-id="'+c.id+'"><span>'+c.ic+'</span><span>'+esc(c.name)+'</span><span class="cdone">&#10003;</span></div>';
+     });
+   });
+   document.getElementById('caplist').innerHTML=h;
+ }
+ function ul(arr){return '<ul>'+arr.map(function(x){return '<li>'+esc(x)+'</li>';}).join('')+'</ul>';}
+ function renderDetail(){
+   var c=CAPS.filter(function(x){return x.id===cur;})[0]; if(!c)return;
+   var on=!!st.tried[c.id];
+   var h='<div class="dhead"><span class="dic">'+c.ic+'</span><h2>'+esc(c.name)+'</h2><span class="av">'+esc(c.avail)+'</span>'
+    +'<button class="dtick'+(on?' on':'')+'" id="dtick">'+(on?'✓ tried':'mark tried')+'</button></div>'
+    +'<div class="dwhy"><div class="l">Problem it was built to solve</div><p>'+esc(c.problem)+'</p></div>'
+    +'<div class="dwhat">'+esc(c.what)+'</div>'
+    +'<div class="d2"><div class="dbox use"><h4>Use when</h4>'+ul(c.use)+'</div>'
+    +'<div class="dbox dont"><h4>Don’t use when</h4>'+ul(c.dont)+'</div></div>'
+    +'<div class="dbox ex" style="margin-top:14px"><h4>Examples</h4>'+ul(c.ex)+'</div>'
+    +'<div class="d2"><div class="dbox pros"><h4>Pros</h4>'+ul(c.pros)+'</div>'
+    +'<div class="dbox cons"><h4>Cons / limits</h4>'+ul(c.cons)+'</div></div>'
+    +'<div class="dbox trade" style="margin-top:14px"><h4>Trade-offs</h4>'+ul(c.trade)+'</div>'
+    +'<div class="dbox cheat" style="margin-top:14px"><h4>Cheat codes</h4>'+ul(c.cheats)+'</div>';
+   document.getElementById('capdetail').innerHTML=h;
+   document.getElementById('dtick').addEventListener('click',function(){st.tried[c.id]=!st.tried[c.id];save();renderList();renderDetail();prog();});
+ }
+ document.getElementById('caplist').addEventListener('click',function(e){var it=e.target.closest('.citem');if(!it)return;cur=it.getAttribute('data-id');st.cur=cur;save();renderList();renderDetail();});
+ document.getElementById('reset').addEventListener('click',function(){st.tried={};save();renderList();if(cur)renderDetail();prog();});
+ cur=st.cur||CAPS[0].id;
+ renderList();renderDetail();prog();
+ showTab(st.tab||'fp');
+})();
+</script></body></html>

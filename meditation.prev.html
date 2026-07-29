@@ -1,0 +1,1090 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Meditation</title>
+<style>
+:root{
+  --bg:#f6f7f9;--surface:#fff;--ink:#1c2431;--dim:#5b6572;--line:#e7e9ee;--line2:#dcdfe6;
+  --accent:#0f766e;--accent2:#1c2431;--soft:#e4f1ef;--gold:#c8892a;--gold-soft:#f7ecd8;
+  --indigo:#4f46e5;--indigo-soft:#e9e7fb;--teal:#0f766e;--teal-soft:#e4f1ef;
+  --good:#16a34a;--warn:#b45309;
+}
+*{box-sizing:border-box}
+html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased}
+.happ{display:flex;flex-direction:column;height:100vh}
+.hbar{flex:0 0 auto;display:flex;align-items:center;gap:10px;padding:10px 20px;background:var(--surface);
+  border-bottom:1px solid var(--line);position:sticky;top:0;z-index:20;flex-wrap:wrap}
+.hbrand{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px;white-space:nowrap;margin-right:6px}
+.htabs{display:flex;gap:3px;flex-wrap:wrap}
+.htabs button{border:0;background:none;color:var(--dim);font:inherit;font-size:13px;font-weight:650;
+  padding:8px 13px;border-radius:9px;cursor:pointer;white-space:nowrap}
+.htabs button:hover{background:var(--soft);color:var(--ink)}
+.htabs button.active{background:var(--accent);color:#fff}
+.stage{flex:1;min-height:0;overflow:auto;position:relative}
+.view{display:none}.view.active{display:block;animation:fade .25s ease}
+@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.mlayout{display:flex;gap:30px;align-items:flex-start;max-width:1180px;margin:0 auto;padding:30px 34px 90px}
+.mmain{flex:1;min-width:0}
+.mtoc{flex:0 0 214px;position:sticky;top:16px;align-self:flex-start;background:var(--surface);
+  border:1px solid var(--line);border-radius:14px;padding:10px 8px;max-height:calc(100vh - 90px);overflow:auto;
+  box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.mtoc .tl{font-size:10.5px;font-weight:800;letter-spacing:.09em;text-transform:uppercase;color:var(--dim);padding:7px 10px 9px}
+.mtoc a{display:block;padding:6px 10px;border-radius:8px;font-size:12.5px;font-weight:600;color:var(--ink);text-decoration:none;cursor:pointer;line-height:1.3}
+.mtoc a:hover,.mtoc a.on{background:var(--soft);color:var(--accent)}
+@media(max-width:900px){.mtoc{display:none}.mlayout{padding:24px 18px 80px}}
+
+.hero{margin:4px 0 10px}
+.hero .kick{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--accent)}
+.hero h1{font-size:33px;font-weight:850;letter-spacing:-.02em;margin:8px 0 6px;line-height:1.08}
+.hero p.sub{font-size:16.5px;color:var(--dim);line-height:1.6;max-width:780px;margin:0}
+
+.sec{scroll-margin-top:16px;margin-top:44px}
+.sec>.eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--accent);margin-bottom:4px}
+.sec h2{font-size:23px;font-weight:800;letter-spacing:-.01em;margin:2px 0 10px;line-height:1.2}
+.sec h3{font-size:16px;font-weight:750;margin:22px 0 6px}
+.sec p{font-size:15px;line-height:1.72;color:var(--ink);max-width:760px;margin:12px 0}
+.sec p .dimtxt{color:var(--dim)}
+.dimtxt a,a.cite{color:var(--indigo);text-decoration:none;font-weight:600;border-bottom:1px dotted currentColor}
+.dimtxt a:hover,a.cite:hover{border-bottom-style:solid}
+b{font-weight:700}
+.pali{font-style:italic;color:var(--accent);font-weight:600}
+
+.quote{margin:22px 0;padding:16px 22px;border-left:3px solid var(--accent);background:var(--surface);
+  border-radius:0 12px 12px 0;box-shadow:0 1px 2px rgba(20,25,40,.05)}
+.quote p{margin:0;font-size:16px;font-style:italic;color:var(--ink);line-height:1.55;max-width:none}
+.callout{margin:18px 0;padding:14px 18px;background:var(--soft);border:1px solid var(--line);border-radius:12px;
+  font-size:14.5px;line-height:1.6;color:var(--ink)}
+.callout b{color:var(--accent)}
+
+.cardrow{display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:14px;margin:18px 0}
+.gcard{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 16px;
+  box-shadow:0 1px 2px rgba(20,25,40,.04)}
+.gcard .gh{display:flex;align-items:baseline;gap:8px;margin-bottom:6px}
+.gcard b{font-size:15px}
+.gcard .pl{font-size:12.5px}
+.gcard p{font-size:13.5px;line-height:1.55;color:var(--dim);margin:6px 0 0;max-width:none}
+
+/* numbered truth blocks */
+.truth{display:grid;grid-template-columns:64px 1fr;gap:16px;align-items:start;margin:16px 0;
+  background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px 20px;box-shadow:0 1px 2px rgba(20,25,40,.05)}
+.truth .num{width:64px;height:64px;border-radius:16px;display:flex;align-items:center;justify-content:center;
+  font-size:26px;font-weight:850;color:#fff;background:linear-gradient(135deg,var(--accent),#0b5c55)}
+.truth h3{margin:0 0 2px;font-size:18px}
+.truth .pl{font-size:13px;margin:0 0 8px}
+.truth p{margin:6px 0;font-size:14.5px;max-width:none}
+.tag{display:inline-flex;align-items:center;gap:6px;font-size:11.5px;font-weight:750;letter-spacing:.03em;
+  padding:4px 10px;border-radius:999px;background:var(--gold-soft);color:var(--gold);text-transform:uppercase}
+.tag.task{background:var(--indigo-soft);color:var(--indigo)}
+
+/* physician diagnosis flow */
+.flow{display:grid;grid-template-columns:repeat(4,1fr);gap:0;margin:20px 0;border:1px solid var(--line);
+  border-radius:14px;overflow:hidden;background:var(--surface)}
+.flow .step{padding:16px 14px;position:relative;border-right:1px solid var(--line)}
+.flow .step:last-child{border-right:0}
+.flow .step .med{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.08em;color:var(--gold)}
+.flow .step .t{font-size:15px;font-weight:800;margin:6px 0 4px}
+.flow .step .d{font-size:12.5px;color:var(--dim);line-height:1.5}
+@media(max-width:760px){.flow{grid-template-columns:1fr 1fr}.flow .step:nth-child(2){border-right:0}}
+
+/* twelve aspects grid */
+.twelve{display:grid;grid-template-columns:160px repeat(3,1fr);gap:8px;margin:18px 0;font-size:12.5px}
+.twelve .hd{font-weight:800;color:var(--dim);text-transform:uppercase;letter-spacing:.06em;font-size:10.5px;
+  display:flex;align-items:center;padding:6px 4px}
+.twelve .rw{font-weight:750;display:flex;align-items:center;padding:10px 10px;background:var(--soft);border-radius:10px}
+.twelve .cel{background:var(--surface);border:1px solid var(--line);border-radius:10px;padding:10px 10px;line-height:1.4;color:var(--dim)}
+.twelve .cel b{color:var(--ink);display:block;font-size:12px;margin-bottom:2px}
+@media(max-width:760px){.twelve{grid-template-columns:1fr;}.twelve .hd:not(:first-child){display:none}}
+
+/* eightfold wheel */
+.wheelwrap{display:flex;gap:28px;flex-wrap:wrap;align-items:center;margin:20px 0}
+.wheelwrap svg{flex:0 0 auto}
+.legend{flex:1;min-width:250px}
+.leg-group{margin:0 0 14px}
+.leg-group .lgh{display:flex;align-items:center;gap:8px;font-weight:800;font-size:14px;margin-bottom:6px}
+.leg-dot{width:12px;height:12px;border-radius:4px;flex:0 0 12px}
+.leg-group ol{margin:2px 0 0;padding-left:22px}
+.leg-group li{font-size:13px;line-height:1.5;margin:3px 0;color:var(--ink)}
+.leg-group li span{color:var(--dim)}
+
+.trainband{display:flex;align-items:center;gap:10px;margin:30px 0 6px}
+.trainband .bd{width:14px;height:14px;border-radius:5px}
+.trainband h3{margin:0;font-size:17px}
+.trainband .pl{font-size:12.5px;margin-left:auto;color:var(--dim);font-style:italic}
+
+/* reference / canon */
+.reflist{margin:16px 0;display:grid;gap:8px}
+.ref{display:grid;grid-template-columns:96px 1fr;gap:12px;background:var(--surface);border:1px solid var(--line);
+  border-radius:12px;padding:12px 14px;align-items:start}
+.ref .code{font-weight:800;font-size:12.5px;color:var(--accent);font-variant-numeric:tabular-nums}
+.ref .rt{font-size:13.5px;line-height:1.5}
+.ref .rt b{display:block;font-size:13.5px}
+.ref .rt a{color:var(--indigo);text-decoration:none;font-size:12.5px;font-weight:600}
+.ref .rt a:hover{text-decoration:underline}
+.ref .rt .pl{font-size:12px}
+
+.basket{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.bk{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface)}
+.bk .bh{font-weight:800;font-size:15px;display:flex;align-items:center;gap:8px}
+.bk .pl{font-size:12px;margin:2px 0 8px}
+.bk ul{margin:8px 0 0;padding-left:18px}
+.bk li{font-size:12.5px;line-height:1.5;color:var(--dim);margin:3px 0}
+.bk li b{color:var(--ink)}
+@media(max-width:760px){.basket{grid-template-columns:1fr}.twelve{grid-template-columns:1fr}}
+
+.ladder{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:10px;margin:18px 0}
+.rung{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.rung .wk{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.06em;color:var(--gold)}
+.rung .mn{font-size:22px;font-weight:850;margin:4px 0 0}
+.rung .mn span{font-size:12px;font-weight:600;color:var(--dim)}
+
+.note{font-size:12.5px;color:var(--dim);font-style:italic;margin-top:8px}
+hr.soft{border:0;border-top:1px solid var(--line);margin:34px 0}
+
+/* ===== living concept map (Home tab) ===== */
+.cm-how{font-size:12.5px;color:var(--dim);line-height:1.5;padding:0 10px}
+.cm-legend{list-style:none;margin:6px 0 0;padding:0 10px}
+.cm-legend li{display:flex;align-items:center;gap:8px;font-size:12px;margin:6px 0;color:var(--ink)}
+.cm-legend .sw{width:12px;height:12px;border-radius:4px;flex:0 0 12px}
+.cm-mapbox{margin-top:8px;background:var(--surface);border:1px solid var(--line);border-radius:16px;box-shadow:0 1px 2px rgba(20,25,40,.05);overflow:hidden}
+.cm-mapbox svg{display:block;width:100%;height:auto}
+.cm-node-g{cursor:pointer}
+.cm-node-g:hover .cm-node-circle{filter:brightness(1.08)}
+.cm-node-g:focus{outline:none}
+.cm-node-g:focus .cm-node-circle{stroke:#1c2431;stroke-width:3}
+.cm-nlabel{font-weight:800;fill:#fff;pointer-events:none}
+.cm-nsub{font-weight:600;fill:rgba(255,255,255,.85);pointer-events:none}
+.cm-elabel{font-size:12.5px;font-weight:700}
+.cm-overlay{position:fixed;inset:0;background:rgba(15,20,32,.55);display:none;align-items:center;justify-content:center;padding:20px;z-index:60}
+.cm-overlay.show{display:flex}
+.cm-modal{background:var(--surface);border-radius:16px;width:min(760px,96vw);max-height:92vh;overflow:auto;box-shadow:0 20px 60px rgba(0,0,0,.3)}
+.cm-mhead{display:flex;align-items:center;gap:10px;padding:12px 16px;border-bottom:1px solid var(--line);position:sticky;top:0;background:var(--surface);z-index:2}
+.cm-back{border:1px solid var(--line2);background:var(--surface);color:var(--ink);font:inherit;font-weight:700;font-size:13px;padding:6px 11px;border-radius:9px;cursor:pointer}
+.cm-back[disabled]{opacity:.35;cursor:default}
+.cm-crumbs{flex:1;font-size:12.5px;color:var(--dim);font-weight:600;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.cm-crumbs b{color:var(--ink)}
+.cm-x{border:0;background:var(--line);color:var(--ink);width:30px;height:30px;border-radius:8px;font-size:16px;cursor:pointer;font-weight:800}
+.cm-mbody{padding:6px 16px 16px}
+.cm-mbody svg{display:block;width:100%;height:auto}
+.cm-detail{padding:12px 14px;margin:8px 0 4px;background:var(--soft);border:1px solid var(--line);border-radius:12px}
+.cm-detail .t{font-size:16px;font-weight:800}
+.cm-detail .p{font-size:12.5px;font-style:italic;color:var(--accent);font-weight:600;margin-left:6px}
+.cm-detail .d{font-size:13.5px;line-height:1.55;margin:6px 0 0}
+.cm-detail .src{margin-top:8px;font-size:12px}
+.cm-detail .src a,.cm-leafinfo a{color:var(--indigo);text-decoration:none;font-weight:600;border-bottom:1px dotted currentColor;margin-right:10px}
+.cm-detail .src a:hover,.cm-leafinfo a:hover{border-bottom-style:solid}
+.cm-leafinfo{display:none;padding:11px 14px;margin:2px 0 4px;background:var(--gold-soft);border:1px solid #f0dfc0;border-radius:12px;font-size:13.5px;line-height:1.5}
+.cm-leafinfo.show{display:block}
+.cm-leafinfo .pl{font-style:italic;color:#b07d1e;font-weight:600}
+.cm-mhint{font-size:12px;color:var(--dim);text-align:center;margin:4px 0 0}
+
+/* ===== extra diagram styles for deep-dive tabs ===== */
+.chain{display:flex;align-items:stretch;flex-wrap:wrap;margin:18px 0;border:1px solid var(--line);border-radius:14px;overflow:hidden;background:var(--surface)}
+.chain .ln{flex:1 1 0;min-width:120px;padding:14px 12px;border-right:1px solid var(--line)}
+.chain .ln:last-child{border-right:0}
+.chain .ln .pl2{font-size:11px;font-weight:800;text-transform:uppercase;letter-spacing:.05em;color:var(--accent)}
+.chain .ln .t2{font-size:14px;font-weight:800;margin:4px 0 2px}
+.chain .ln .d2{font-size:12px;color:var(--dim);line-height:1.45}
+.chain .gap{background:var(--gold-soft)}
+.marks3{display:grid;grid-template-columns:repeat(3,1fr);gap:14px;margin:18px 0}
+.mk{border-radius:16px;padding:18px;color:#fff}
+.mk h3{margin:0 0 2px;font-size:18px;color:#fff}
+.mk .pl{color:rgba(255,255,255,.85);font-style:italic;font-size:12.5px}
+.mk p{margin:8px 0 0;font-size:13px;line-height:1.5;color:rgba(255,255,255,.95);max-width:none}
+.agg{display:grid;grid-template-columns:repeat(5,1fr);gap:10px;margin:18px 0}
+.aggc{background:var(--surface);border:1px solid var(--line);border-radius:12px;padding:12px;text-align:center}
+.aggc .n{font-size:13px;font-weight:800}
+.aggc .pl{font-size:11px;color:var(--accent);font-style:italic}
+.aggc .d{font-size:11.5px;color:var(--dim);line-height:1.4;margin-top:4px}
+.fork{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin:18px 0}
+.forkc{border:1px solid var(--line);border-radius:14px;padding:16px;background:var(--surface)}
+.forkc.pali-side{border-top:4px solid var(--accent)}
+.forkc.maha-side{border-top:4px solid #94409c}
+.forkc h3{margin:0 0 6px;font-size:16px}
+@media(max-width:760px){.marks3{grid-template-columns:1fr}.agg{grid-template-columns:1fr 1fr}.fork{grid-template-columns:1fr}}
+</style>
+</head>
+<body>
+<div class="happ">
+ <header class="hbar">
+   <div class="hbrand">🧘 Meditation</div>
+   <nav class="htabs" id="htabs">
+     <button class="active" data-view="view-home">Home</button>
+     <button data-view="view-why">Why This</button>
+     <button data-view="view-fnt">Four Noble Truths</button>
+     <button data-view="view-path">The Eightfold Path</button>
+     <button data-view="view-marks">Three Marks &amp; the Self</button>
+     <button data-view="view-empty">Emptiness</button>
+     <button data-view="view-practice">Practice</button>
+     <button data-view="view-canon">Sources &amp; the Canon</button>
+   </nav>
+ </header>
+ <div class="stage" id="stage">
+
+  <!-- ============ VIEW 0 : HOME — living concept map ============ -->
+  <div class="view active" id="view-home">
+   <div class="mlayout">
+    <nav class="mtoc">
+      <div class="tl">How to use</div>
+      <p class="cm-how">Click any circle to open a <b>nested concept map</b> of its sub-ideas. Circles with a faint ring drill deeper still. Sources link to the Pāli Canon.</p>
+      <div class="tl" style="margin-top:12px">Legend</div>
+      <ul class="cm-legend">
+        <li><span class="sw" style="background:#45a34a"></span>Four Noble Truths</li>
+        <li><span class="sw" style="background:#4f46e5"></span>Eightfold Path</li>
+        <li><span class="sw" style="background:#3b5bd0"></span>Meditation</li>
+        <li><span class="sw" style="background:#9b30bf"></span>Three Marks</li>
+        <li><span class="sw" style="background:#3d8ba3"></span>Five Aggregates</li>
+        <li><span class="sw" style="background:#e8701a"></span>Dependent Origination</li>
+        <li><span class="sw" style="background:#b45319"></span>Craving &amp; Ignorance</li>
+        <li><span class="sw" style="background:#7d34d6"></span>Emptiness</li>
+        <li><span class="sw" style="background:#8c1d3f"></span>Nibbāna</li>
+      </ul>
+    </nav>
+    <div class="mmain">
+     <div class="hero">
+       <div class="kick">The whole territory, one web</div>
+       <h1>The living map</h1>
+       <p class="sub">Every core concept and how it connects. Click a circle to explore its inner map; use the deep-dive tabs above for the full written detail.</p>
+     </div>
+     <div class="cm-mapbox">
+       <svg id="cm-mainmap" viewBox="0 0 1220 760" role="img" aria-labelledby="cm-t cm-d">
+         <title id="cm-t">Meditation concept map</title>
+         <desc id="cm-d">Nine connected domains of Buddhist meditation; each circle opens a nested map.</desc>
+         <defs>
+           <marker id="cm-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#5b6572"/></marker>
+         </defs>
+       </svg>
+     </div>
+    </div>
+   </div>
+  </div>
+
+  <!-- concept-map drill-down modal (sibling of views so it is never hidden) -->
+  <div class="cm-overlay" id="cm-overlay" role="dialog" aria-modal="true" aria-label="Concept detail">
+    <div class="cm-modal">
+      <div class="cm-mhead">
+        <button class="cm-back" id="cm-backbtn">‹ Back</button>
+        <div class="cm-crumbs" id="cm-crumbs"></div>
+        <button class="cm-x" id="cm-closebtn" aria-label="Close">×</button>
+      </div>
+      <div class="cm-mbody">
+        <svg id="cm-submap" viewBox="0 0 680 470" role="img"><defs>
+          <marker id="cm-arrow2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="#8a93a3"/></marker></defs></svg>
+        <div class="cm-mhint">Circles with a ring drill deeper · click a plain circle for its detail</div>
+        <div class="cm-detail" id="cm-detail"></div>
+        <div class="cm-leafinfo" id="cm-leafinfo"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ============ VIEW 1 : WHY ============ -->
+  <div class="view" id="view-why">
+   <div class="mlayout">
+    <nav class="mtoc">
+      <div class="tl">On this page</div>
+      <a data-goto="w-vehicle">The vehicle, not the view</a>
+      <a data-goto="w-why">Why I'm actually here</a>
+      <a data-goto="w-depth">Breadth → depth</a>
+      <a data-goto="w-method">The method: theory-light</a>
+      <a data-goto="w-two">The two practices</a>
+      <a data-goto="w-ladder">Progressive overload</a>
+    </nav>
+    <div class="mmain">
+     <div class="hero">
+       <div class="kick">The starting point</div>
+       <h1>Why I'm doing this</h1>
+       <p class="sub">Meditation is not a way to feel calmer for twenty minutes a day. It's a vehicle toward seeing the nature of mind, feeling, and change directly — and being changed by that seeing. This page is the "why" I keep coming back to when the practice gets dull.</p>
+     </div>
+
+     <section class="sec" id="w-vehicle">
+       <div class="eyebrow">01 · The frame</div>
+       <h2>The vehicle, not the view from it</h2>
+       <p>You ride a bike to get from A to B. Feeling the wind on your face is real, and pleasant — but it's a <b>side effect</b>, not the reason you rode. Meditation is the same. Stress relief, better sleep, a quieter mind: all real, all side effects. The actual destination is insight — seeing, not merely believing, that experience is impermanent, that clinging to the changing is what hurts, and that there is no fixed self at the centre to defend.</p>
+       <div class="quote"><p>"If you meditate to feel calm, you've parked the bike and sat on it enjoying the breeze — without going anywhere."</p></div>
+       <p>Calm (<span class="pali">samatha</span>) still matters — but as the steadiness that lets insight (<span class="pali">vipassanā</span>) arise, not as the prize itself. The prize is <span class="pali">paññā</span>: wisdom that reorganises you at the root.</p>
+     </section>
+
+     <section class="sec" id="w-why">
+       <div class="eyebrow">02 · Honesty</div>
+       <h2>Why I'm actually here</h2>
+       <p>I'm restless. Anxious more often than I'd like. I don't feel that who I am is enough. Emotional weather knocks me around. I'm rarely <b>present</b> — I'm in the future I'm planning or the past I'm re-editing, almost never in the room I'm standing in. I want to detach from the churn without going cold — to stay fully engaged with my life while holding it in an open hand instead of a clenched fist.</p>
+       <div class="callout"><b>The gap I'm closing:</b> I already understand these ideas intellectually. That changes nothing — anxiety doesn't live in my conclusions, it lives below them. Which is exactly why this has to be <b>practised</b>, not just read. Understanding is the map; the territory only yields to walking it.</p></div>
+     </section>
+
+     <section class="sec" id="w-depth">
+       <div class="eyebrow">03 · The decision</div>
+       <h2>Stop building breadth. Build depth.</h2>
+       <p>I've sampled the buffet — Stoicism, Nietzsche, absurdism, Advaita, Zen, nihilism. Comparing the rims of many wells forever is its own kind of avoidance; you only find water by climbing into one and digging. The restlessness that pushes me to the next philosophy is itself the <span class="pali">taṇhā</span> the path is meant to cure — craving wearing the costume of curiosity.</p>
+       <p>I don't have to prove this tradition is "true" before committing. Depth is the only instrument that can test it — and the Buddha said as much: don't accept it on authority, test it in your own experience <span class="dimtxt">(<a href="https://suttacentral.net/an3.65/en/sujato" target="_blank" rel="noopener">Kālāma Sutta, AN 3.65</a>)</span>. I commit <b>so that</b> I can run the test.</p>
+     </section>
+
+     <section class="sec" id="w-method">
+       <div class="eyebrow">04 · How I'll work</div>
+       <h2>Just enough theory to practise — then practise</h2>
+       <p>My old failure mode: dive into theory because learning flatters me, and skip the doing that actually delivers consequences. So I'm inverting it. Surface theory → practise → hit a wall → bring back the specific doubt → learn only the theory that dissolves <i>that</i> wall → back to practice. The Buddha endorsed exactly this: the man shot with a poisoned arrow who refuses treatment until every question is answered simply dies <span class="dimtxt">(<a href="https://suttacentral.net/mn63/en/sujato" target="_blank" rel="noopener">Cūḷamālunkya Sutta, MN 63</a>)</span>. The teaching is a raft for crossing, not a load to carry <span class="dimtxt">(<a href="https://suttacentral.net/mn22/en/sujato" target="_blank" rel="noopener">Alagaddūpama Sutta, MN 22</a>)</span>.</p>
+       <div class="callout">The loop, in one line: <b>read a little → sit → notice what breaks → ask → refine → sit again.</b> The theory earns its place only by serving tomorrow's practice.</div>
+     </section>
+
+     <section class="sec" id="w-two">
+       <div class="eyebrow">05 · The build</div>
+       <h2>Two practices, one path</h2>
+       <div class="cardrow">
+         <div class="gcard">
+           <div class="gh"><b>1 · Training meditation</b></div>
+           <p>The morning sit. Breath as anchor (<span class="pali">ānāpānasati</span>). Feel the breath; the mind wanders; the instant I notice is the rep; return. This builds the muscle — the path factor of <b>Right Concentration</b>.</p>
+         </div>
+         <div class="gcard">
+           <div class="gh"><b>2 · Being present</b></div>
+           <p>The all-day practice. Anchor to the senses in ordinary acts, single-task on purpose, use transitions as bells, catch the feeling-tone in the wild, and note the mind's time-travel. This is <b>Right Mindfulness</b> off the cushion.</p>
+         </div>
+       </div>
+       <p class="note">The sit is the gym; life is the sport. The formal minutes aren't the mindfulness — they're the training <i>for</i> it. Goal isn't unbroken presence (chasing that is its own anxious project) — it's shrinking the interval between forgetting and remembering.</p>
+     </section>
+
+     <section class="sec" id="w-ladder">
+       <div class="eyebrow">06 · The ramp</div>
+       <h2>Progressive overload</h2>
+       <p>Consistency beats duration. Daily and short outperforms occasional and long. Hold each rung until it feels normal, then step up.</p>
+       <div class="ladder">
+         <div class="rung"><div class="wk">Wk 1–2</div><div class="mn">10<span> min</span></div></div>
+         <div class="rung"><div class="wk">Wk 3–4</div><div class="mn">15<span> min</span></div></div>
+         <div class="rung"><div class="wk">Wk 5–6</div><div class="mn">20<span> min</span></div></div>
+         <div class="rung"><div class="wk">Wk 7–9</div><div class="mn">30<span> min</span></div></div>
+         <div class="rung"><div class="wk">Wk 10+</div><div class="mn">45<span> min</span></div></div>
+         <div class="rung"><div class="wk">Goal</div><div class="mn">60<span> min</span></div></div>
+       </div>
+       <p class="note">Somewhere past 20–30 minutes the interesting terrain begins — restlessness, boredom, real resistance. That's where the good material for the next discussion comes from.</p>
+     </section>
+    </div>
+   </div>
+  </div>
+
+  <!-- ============ VIEW 2 : FOUR NOBLE TRUTHS ============ -->
+  <div class="view" id="view-fnt">
+   <div class="mlayout">
+    <nav class="mtoc">
+      <div class="tl">On this page</div>
+      <a data-goto="f-diag">A physician's diagnosis</a>
+      <a data-goto="f-truths">The four truths</a>
+      <a data-goto="f-dukkha">Three kinds of dukkha</a>
+      <a data-goto="f-craving">Three kinds of craving</a>
+      <a data-goto="f-twelve">Twelve aspects</a>
+      <a data-goto="f-src">References</a>
+    </nav>
+    <div class="mmain">
+     <div class="hero">
+       <div class="kick">Cattāri Ariyasaccāni · the four noble truths</div>
+       <h1>The Four Noble Truths</h1>
+       <p class="sub">The Buddha's first teaching after awakening, given at the Deer Park at Isipatana (Sarnath) to five ascetics. Not a creed — a diagnosis. Each truth carries a <b>task</b>: something to <i>do</i>, not merely believe.</p>
+     </div>
+
+     <section class="sec" id="f-diag">
+       <div class="eyebrow">The structure</div>
+       <h2>Read it as a doctor reads a case</h2>
+       <div class="flow">
+         <div class="step"><div class="med">Symptom</div><div class="t">Dukkha</div><div class="d">There is a pervasive unsatisfactoriness.</div></div>
+         <div class="step"><div class="med">Cause</div><div class="t">Samudaya</div><div class="d">It arises from craving.</div></div>
+         <div class="step"><div class="med">Prognosis</div><div class="t">Nirodha</div><div class="d">It can cease.</div></div>
+         <div class="step"><div class="med">Treatment</div><div class="t">Magga</div><div class="d">The Eightfold Path is the cure.</div></div>
+       </div>
+       <p>The whole architecture hangs off this diagnostic logic. Miss it and the truths read as gloomy claims; see it and they become a set of instructions.</p>
+     </section>
+
+     <section class="sec" id="f-truths">
+       <div class="eyebrow">The four</div>
+       <h2>Each truth and its task</h2>
+
+       <div class="truth">
+         <div class="num">1</div>
+         <div>
+           <h3>There is dukkha</h3>
+           <div class="pali pl">dukkha — unsatisfactoriness, unease</div>
+           <span class="tag task">Task · to be understood</span>
+           <p>"Suffering" is too strong; dukkha is closer to a wheel off its axle — a ride that judders. It runs from acute pain to the faint hum of "not quite enough" even in good moments. The task is to <b>look clearly</b>, the way a doctor looks at a symptom — not deny it, not flee it.</p>
+         </div>
+       </div>
+
+       <div class="truth">
+         <div class="num">2</div>
+         <div>
+           <h3>Dukkha has an origin</h3>
+           <div class="pali pl">samudaya — the arising, i.e. taṇhā (craving)</div>
+           <span class="tag task">Task · to be abandoned</span>
+           <p>The friction isn't caused by the world; it's caused by the <b>thirst</b> — the demand that this moment be other than it is. Beneath it sits <span class="pali">avijjā</span> (ignorance): the mistaken belief that grasping impermanent things can give lasting satisfaction.</p>
+         </div>
+       </div>
+
+       <div class="truth">
+         <div class="num">3</div>
+         <div>
+           <h3>Dukkha can cease</h3>
+           <div class="pali pl">nirodha — cessation; nibbāna, the "blowing out"</div>
+           <span class="tag task">Task · to be realised</span>
+           <p>Since the cause is craving and not the world, there's a real exit — available from the inside. Nibbāna is the extinguishing of the fires of greed, hatred and delusion. Not annihilation, not a place: the peace that remains when compulsive grasping stops. This can't be believed into being; it must be directly experienced.</p>
+         </div>
+       </div>
+
+       <div class="truth">
+         <div class="num">4</div>
+         <div>
+           <h3>There is a path to that cessation</h3>
+           <div class="pali pl">magga — the Noble Eightfold Path, the Middle Way</div>
+           <span class="tag task">Task · to be developed</span>
+           <p>The Middle Way, struck between sensual indulgence and harsh self-mortification — both dead ends the Buddha had personally tested. You don't believe the path; you <b>cultivate</b> it, repeatedly, until it matures. → see the next tab.</p>
+         </div>
+       </div>
+     </section>
+
+     <section class="sec" id="f-dukkha">
+       <div class="eyebrow">Zoom in · truth 1</div>
+       <h2>Three kinds of dukkha</h2>
+       <div class="cardrow">
+         <div class="gcard"><div class="gh"><b>Ordinary</b></div><div class="pali pl">dukkha-dukkha</div><p>Plain pain — sickness, ageing, injury, loss, death. The obvious layer.</p></div>
+         <div class="gcard"><div class="gh"><b>Of change</b></div><div class="pali pl">vipariṇāma-dukkha</div><p>Even pleasures hurt, because they end. The pleasant carries the seed of its own loss.</p></div>
+         <div class="gcard"><div class="gh"><b>Of conditioning</b></div><div class="pali pl">saṅkhāra-dukkha</div><p>The subtlest: nothing put-together and impermanent can deliver lasting satisfaction. The background hum — my restlessness at its root.</p></div>
+       </div>
+     </section>
+
+     <section class="sec" id="f-craving">
+       <div class="eyebrow">Zoom in · truth 2</div>
+       <h2>Three kinds of craving</h2>
+       <div class="cardrow">
+         <div class="gcard"><div class="gh"><b>For pleasure</b></div><div class="pali pl">kāma-taṇhā</div><p>Wanting more of the pleasant — the notification I hope contains something good.</p></div>
+         <div class="gcard"><div class="gh"><b>For becoming</b></div><div class="pali pl">bhava-taṇhā</div><p>Wanting to be, to continue, to become someone — the engine of my ambition and my "I need the result now."</p></div>
+         <div class="gcard"><div class="gh"><b>For non-becoming</b></div><div class="pali pl">vibhava-taṇhā</div><p>Wanting to get rid of, to make something stop — aversion pushed to the extreme; the wish to annihilate a feeling rather than meet it.</p></div>
+       </div>
+       <div class="callout">All three are the same move in different clothes: <b>refusing the present.</b></div>
+     </section>
+
+     <section class="sec" id="f-twelve">
+       <div class="eyebrow">The completeness claim</div>
+       <h2>Three phases × four truths = twelve aspects</h2>
+       <p>In the Dhammacakkappavattana Sutta, the Buddha said his knowledge of each truth was complete only when it had turned through three phases. Full awakening is knowing all twelve.</p>
+       <div class="twelve">
+         <div class="hd"></div><div class="hd">1 · This is the truth</div><div class="hd">2 · This is its task</div><div class="hd">3 · The task is done</div>
+         <div class="rw">Dukkha</div>
+           <div class="cel"><b>Recognise</b>there is dukkha</div>
+           <div class="cel"><b>Understand</b>it fully</div>
+           <div class="cel"><b>Understood</b>nothing left to grasp</div>
+         <div class="rw">Samudaya</div>
+           <div class="cel"><b>Recognise</b>craving is its origin</div>
+           <div class="cel"><b>Abandon</b>the craving</div>
+           <div class="cel"><b>Abandoned</b>craving let go</div>
+         <div class="rw">Nirodha</div>
+           <div class="cel"><b>Recognise</b>cessation is possible</div>
+           <div class="cel"><b>Realise</b>it directly</div>
+           <div class="cel"><b>Realised</b>cessation witnessed</div>
+         <div class="rw">Magga</div>
+           <div class="cel"><b>Recognise</b>there is a path</div>
+           <div class="cel"><b>Develop</b>the path</div>
+           <div class="cel"><b>Developed</b>path fully cultivated</div>
+       </div>
+     </section>
+
+     <section class="sec" id="f-src">
+       <div class="eyebrow">Primary sources</div>
+       <h2>Where this comes from in the Canon</h2>
+       <div class="reflist">
+         <div class="ref"><div class="code">SN 56.11</div><div class="rt"><b>Dhammacakkappavattana Sutta</b><span class="pali pl">Setting in Motion the Wheel of Dhamma</span>The four truths, the tasks, the twelve aspects, the Middle Way. <a href="https://suttacentral.net/sn56.11/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">AN 3.65</div><div class="rt"><b>Kālāma Sutta</b><span class="pali pl">Test it in your own experience</span>Don't accept teachings on authority alone. <a href="https://suttacentral.net/an3.65/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 63</div><div class="rt"><b>Cūḷamālunkya Sutta</b><span class="pali pl">The poisoned-arrow parable</span>Don't refuse treatment until every question is answered. <a href="https://suttacentral.net/mn63/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 22</div><div class="rt"><b>Alagaddūpama Sutta</b><span class="pali pl">The raft simile</span>The teaching is for crossing, not for carrying. <a href="https://suttacentral.net/mn22/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+       </div>
+     </section>
+    </div>
+   </div>
+  </div>
+
+  <!-- ============ VIEW 3 : EIGHTFOLD PATH ============ -->
+  <div class="view" id="view-path">
+   <div class="mlayout">
+    <nav class="mtoc">
+      <div class="tl">On this page</div>
+      <a data-goto="p-wheel">The wheel &amp; three trainings</a>
+      <a data-goto="p-panna">Wisdom · paññā</a>
+      <a data-goto="p-sila">Ethics · sīla</a>
+      <a data-goto="p-samadhi">Discipline · samādhi</a>
+      <a data-goto="p-src">References</a>
+    </nav>
+    <div class="mmain">
+     <div class="hero">
+       <div class="kick">Ariya Aṭṭhaṅgika Magga · the noble eightfold path</div>
+       <h1>The Eightfold Path</h1>
+       <p class="sub">Eight factors, not eight steps — developed together, each supporting the others. Bundled into three trainings. The prefix <span class="pali">sammā</span> means "right," better read as "complete" or "skilful."</p>
+     </div>
+
+     <section class="sec" id="p-wheel">
+       <div class="eyebrow">The map</div>
+       <h2>One wheel, three trainings</h2>
+       <div class="wheelwrap">
+         <svg width="300" height="300" viewBox="0 0 300 300" role="img" aria-label="Dharma wheel of eight spokes">
+           <circle cx="150" cy="150" r="120" fill="none" stroke="#dcdfe6" stroke-width="10"/>
+           <circle cx="150" cy="150" r="112" fill="none" stroke="#eef0f3" stroke-width="2"/>
+           <!-- spokes -->
+           <g stroke-width="6" stroke-linecap="round">
+             <line x1="150" y1="150" x2="150" y2="38"  stroke="#c8892a"/>
+             <line x1="150" y1="150" x2="229" y2="71"  stroke="#c8892a"/>
+             <line x1="150" y1="150" x2="262" y2="150" stroke="#0f766e"/>
+             <line x1="150" y1="150" x2="229" y2="229" stroke="#0f766e"/>
+             <line x1="150" y1="150" x2="150" y2="262" stroke="#0f766e"/>
+             <line x1="150" y1="150" x2="71"  y2="229" stroke="#4f46e5"/>
+             <line x1="150" y1="150" x2="38"  y2="150" stroke="#4f46e5"/>
+             <line x1="150" y1="150" x2="71"  y2="71"  stroke="#4f46e5"/>
+           </g>
+           <!-- numbered nodes -->
+           <g font-family="inherit" font-size="12" font-weight="800" text-anchor="middle">
+             <g><circle cx="150" cy="38"  r="13" fill="#c8892a"/><text x="150" y="42" fill="#fff">1</text></g>
+             <g><circle cx="229" cy="71"  r="13" fill="#c8892a"/><text x="229" y="75" fill="#fff">2</text></g>
+             <g><circle cx="262" cy="150" r="13" fill="#0f766e"/><text x="262" y="154" fill="#fff">3</text></g>
+             <g><circle cx="229" cy="229" r="13" fill="#0f766e"/><text x="229" y="233" fill="#fff">4</text></g>
+             <g><circle cx="150" cy="262" r="13" fill="#0f766e"/><text x="150" y="266" fill="#fff">5</text></g>
+             <g><circle cx="71"  cy="229" r="13" fill="#4f46e5"/><text x="71"  y="233" fill="#fff">6</text></g>
+             <g><circle cx="38"  cy="150" r="13" fill="#4f46e5"/><text x="38"  y="154" fill="#fff">7</text></g>
+             <g><circle cx="71"  cy="71"  r="13" fill="#4f46e5"/><text x="71"  y="75" fill="#fff">8</text></g>
+           </g>
+           <circle cx="150" cy="150" r="30" fill="#1c2431"/>
+           <text x="150" y="156" text-anchor="middle" font-size="22" fill="#fff">☸</text>
+         </svg>
+         <div class="legend">
+           <div class="leg-group">
+             <div class="lgh"><span class="leg-dot" style="background:#c8892a"></span>Wisdom · <span class="pali">paññā</span></div>
+             <ol start="1"><li>Right View <span>— seeing the four truths</span></li><li>Right Intention <span>— renunciation, goodwill, harmlessness</span></li></ol>
+           </div>
+           <div class="leg-group">
+             <div class="lgh"><span class="leg-dot" style="background:#0f766e"></span>Ethical conduct · <span class="pali">sīla</span></div>
+             <ol start="3"><li>Right Speech</li><li>Right Action</li><li>Right Livelihood</li></ol>
+           </div>
+           <div class="leg-group">
+             <div class="lgh"><span class="leg-dot" style="background:#4f46e5"></span>Mental discipline · <span class="pali">samādhi</span></div>
+             <ol start="6"><li>Right Effort</li><li>Right Mindfulness</li><li>Right Concentration</li></ol>
+           </div>
+         </div>
+       </div>
+       <div class="callout">My two practices live in the <b>samādhi</b> group: the morning sit is <b>Right Concentration</b> (8); all-day presence is <b>Right Mindfulness</b> (7). That's the engine room of the whole path.</div>
+     </section>
+
+     <section class="sec" id="p-panna">
+       <div class="trainband"><span class="bd" style="background:#c8892a"></span><h3>Wisdom — the orientation</h3><span class="pali pl">paññā</span></div>
+       <div class="truth"><div class="num" style="background:linear-gradient(135deg,#c8892a,#a06d18)">1</div><div>
+         <h3>Right View</h3><div class="pali pl">sammā diṭṭhi</div>
+         <p>Seeing things as they are: the four truths, cause and effect (karma), and the three marks (impermanence, unsatisfactoriness, not-self). Comes in two grades — a working, provisional view (enough to start walking) and a direct insight that <i>results</i> from the path. It's the forerunner that aims the other seven.</p>
+       </div></div>
+       <div class="truth"><div class="num" style="background:linear-gradient(135deg,#c8892a,#a06d18)">2</div><div>
+         <h3>Right Intention</h3><div class="pali pl">sammā saṅkappa</div>
+         <p>Where the heart is aimed — three strands: <b>renunciation</b> (inclining to let go, not grasp), <b>goodwill</b> (<span class="pali">mettā</span>, non-ill-will), and <b>harmlessness</b> (compassion, non-cruelty). Right view sees; right intention leans.</p>
+       </div></div>
+     </section>
+
+     <section class="sec" id="p-sila">
+       <div class="trainband"><span class="bd" style="background:#0f766e"></span><h3>Ethical conduct — the foundation</h3><span class="pali pl">sīla</span></div>
+       <p>Not commandments from above, but the conditions that keep the mind quiet enough to concentrate. A mind rattled by its own harm can't settle at dawn.</p>
+       <div class="truth"><div class="num" style="background:linear-gradient(135deg,#0f766e,#0b5c55)">3</div><div>
+         <h3>Right Speech</h3><div class="pali pl">sammā vācā</div>
+         <p>Abstaining from lying, divisive speech, harsh speech, and idle chatter. The positive bar: speak only what is <b>true, beneficial, and kind/timely</b>.</p>
+       </div></div>
+       <div class="truth"><div class="num" style="background:linear-gradient(135deg,#0f766e,#0b5c55)">4</div><div>
+         <h3>Right Action</h3><div class="pali pl">sammā kammanta</div>
+         <p>Abstaining from killing/harming, from taking what isn't given, and from sexual misconduct. Positively: non-harm, honesty, respect.</p>
+       </div></div>
+       <div class="truth"><div class="num" style="background:linear-gradient(135deg,#0f766e,#0b5c55)">5</div><div>
+         <h3>Right Livelihood</h3><div class="pali pl">sammā ājīva</div>
+         <p>Earning a living without causing harm. The principle: your work shouldn't require you to damage others to eat.</p>
+       </div></div>
+     </section>
+
+     <section class="sec" id="p-samadhi">
+       <div class="trainband"><span class="bd" style="background:#4f46e5"></span><h3>Mental discipline — the engine</h3><span class="pali pl">samādhi</span></div>
+       <div class="truth"><div class="num" style="background:linear-gradient(135deg,#4f46e5,#3730b5)">6</div><div>
+         <h3>Right Effort</h3><div class="pali pl">sammā vāyāma</div>
+         <p>Four moves: prevent unwholesome states not yet arisen, abandon those present, arouse wholesome states not yet arisen, maintain those present. The key is <b>balance</b> — the lute-string simile: too tight and it snaps, too slack and it won't sound <span class="dimtxt">(<a href="https://suttacentral.net/an6.55/en/sujato" target="_blank" rel="noopener">Soṇa Sutta, AN 6.55</a>)</span>.</p>
+       </div></div>
+       <div class="truth"><div class="num" style="background:linear-gradient(135deg,#4f46e5,#3730b5)">7</div><div>
+         <h3>Right Mindfulness</h3><div class="pali pl">sammā sati</div>
+         <p>The four foundations of mindfulness: body, feeling-tones, states of mind, and mental phenomena — held in clear, present awareness <span class="dimtxt">(<a href="https://suttacentral.net/mn10/en/sujato" target="_blank" rel="noopener">Satipaṭṭhāna Sutta, MN 10</a>)</span>. This is my all-day presence practice.</p>
+       </div></div>
+       <div class="truth"><div class="num" style="background:linear-gradient(135deg,#4f46e5,#3730b5)">8</div><div>
+         <h3>Right Concentration</h3><div class="pali pl">sammā samādhi</div>
+         <p>The gathered, unified mind — classically the four <span class="pali">jhānas</span>, progressively deeper states of collected attention, developed through mindfulness of breathing <span class="dimtxt">(<a href="https://suttacentral.net/mn118/en/sujato" target="_blank" rel="noopener">Ānāpānasati Sutta, MN 118</a>)</span>. This is my morning training sit.</p>
+       </div></div>
+       <div class="callout">Concentration and mindfulness are two hands washing each other: concentration steadies the beam; mindfulness knows what the beam lights up.</div>
+     </section>
+
+     <section class="sec" id="p-src">
+       <div class="eyebrow">Primary sources</div>
+       <h2>Where this comes from in the Canon</h2>
+       <div class="reflist">
+         <div class="ref"><div class="code">SN 45.8</div><div class="rt"><b>Magga-vibhaṅga Sutta</b><span class="pali pl">Analysis of the Path</span>The Buddha's own factor-by-factor definition of all eight. <a href="https://suttacentral.net/sn45.8/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 10</div><div class="rt"><b>Satipaṭṭhāna Sutta</b><span class="pali pl">The Four Foundations of Mindfulness</span>The core manual for Right Mindfulness. <a href="https://suttacentral.net/mn10/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 118</div><div class="rt"><b>Ānāpānasati Sutta</b><span class="pali pl">Mindfulness of Breathing (16 steps)</span>The most detailed meditation instructions in the Canon. <a href="https://suttacentral.net/mn118/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">AN 6.55</div><div class="rt"><b>Soṇa Sutta</b><span class="pali pl">The lute-string simile</span>Balanced effort — neither too tight nor too slack. <a href="https://suttacentral.net/an6.55/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+       </div>
+     </section>
+    </div>
+   </div>
+  </div>
+
+  <!-- ============ VIEW 4 : SOURCES & CANON ============ -->
+  <!-- ============ VIEW : THREE MARKS & THE SELF ============ -->
+  <div class="view" id="view-marks">
+   <div class="mlayout">
+    <nav class="mtoc">
+      <div class="tl">On this page</div>
+      <a data-goto="m-marks">The three marks</a>
+      <a data-goto="m-anatta">Not-self · the argument</a>
+      <a data-goto="m-agg">The five aggregates</a>
+      <a data-goto="m-do">Dependent origination</a>
+      <a data-goto="m-src">References</a>
+    </nav>
+    <div class="mmain">
+     <div class="hero">
+       <div class="kick">Tilakkhaṇa · the three characteristics</div>
+       <h1>Three Marks &amp; the Self</h1>
+       <p class="sub">What is actually true of all experience — and why the "self" you defend can't be found when you look for it.</p>
+     </div>
+     <section class="sec" id="m-marks">
+       <div class="eyebrow">Seen, not believed</div>
+       <h2>The three marks of existence</h2>
+       <div class="marks3">
+         <div class="mk" style="background:#9b30bf"><h3>Anicca</h3><div class="pl">impermanence</div><p>Everything arises and passes. A sensation appearing and dissolving on the cushion is anicca <i>felt</i>, not thought.</p></div>
+         <div class="mk" style="background:#7d34d6"><h3>Dukkha</h3><div class="pl">unsatisfactoriness</div><p>Because it's all in flux, nothing conditioned can give lasting satisfaction.</p></div>
+         <div class="mk" style="background:#5b3fbf"><h3>Anattā</h3><div class="pl">not-self</div><p>No fixed, independent, controlling self sits behind experience.</p></div>
+       </div>
+       <div class="callout">A precise detail most summaries miss: anicca and dukkha are said of <b>saṅkhārā</b> (conditioned things), but anattā is said of <b>sabbe dhammā</b> — <i>all</i> phenomena, including the unconditioned. Not-self reaches further than impermanence.</div>
+     </section>
+     <section class="sec" id="m-anatta">
+       <div class="eyebrow">The second sermon</div>
+       <h2>Not-self — the argument</h2>
+       <p>In the Anattalakkhana Sutta the Buddha reasons: if any part of you were truly "self," you could command it to be as you wish. But you can't fully control body, feeling, perception, thought, or awareness — and all of it changes against your wishes. Therefore none of it is fit to be grasped <i>as</i> self. This isn't nihilism; it's the removal of a mistaken grip, not the announcement of a void.</p>
+       <div class="callout"><b>The practical payoff:</b> the "I'm not enough" verdict assumes a fixed self to measure. Loosen the self and the verdict loses its object.</div>
+     </section>
+     <section class="sec" id="m-agg">
+       <div class="eyebrow">Where the illusion hides</div>
+       <h2>The five aggregates</h2>
+       <p>Look for a self and all you find are five bundles of process. "You" is a verb the mind mistakes for a noun.</p>
+       <div class="agg">
+         <div class="aggc"><div class="n">Rūpa</div><div class="pl">form</div><div class="d">Body &amp; material experience</div></div>
+         <div class="aggc"><div class="n">Vedanā</div><div class="pl">feeling-tone</div><div class="d">Pleasant / unpleasant / neutral</div></div>
+         <div class="aggc"><div class="n">Saññā</div><div class="pl">perception</div><div class="d">Recognition &amp; labelling</div></div>
+         <div class="aggc"><div class="n">Saṅkhārā</div><div class="pl">formations</div><div class="d">Volitions, habits</div></div>
+         <div class="aggc"><div class="n">Viññāṇa</div><div class="pl">consciousness</div><div class="d">Bare knowing</div></div>
+       </div>
+     </section>
+     <section class="sec" id="m-do">
+       <div class="eyebrow">The mechanism</div>
+       <h2>Dependent origination</h2>
+       <p>How suffering assembles itself, link by link — and the one spot where you can intervene.</p>
+       <div class="chain">
+         <div class="ln"><div class="pl2">phassa</div><div class="t2">Contact</div><div class="d2">Sense meets object.</div></div>
+         <div class="ln"><div class="pl2">vedanā</div><div class="t2">Feeling</div><div class="d2">A tone arises.</div></div>
+         <div class="ln gap"><div class="pl2" style="color:#16a34a">the gap</div><div class="t2">↔ freedom</div><div class="d2">Widen this and you're free.</div></div>
+         <div class="ln"><div class="pl2">taṇhā</div><div class="t2">Craving</div><div class="d2">The automatic grab.</div></div>
+         <div class="ln"><div class="pl2">upādāna</div><div class="t2">Clinging</div><div class="d2">Grab hardens into holding.</div></div>
+         <div class="ln"><div class="pl2">dukkha</div><div class="t2">Suffering</div><div class="d2">The result.</div></div>
+       </div>
+       <div class="callout">All insight practice aims at that gap between <b>feeling</b> and <b>craving</b> — normally automatic, until you can watch the tone arise without being dragged into the grab.</div>
+     </section>
+     <section class="sec" id="m-src">
+       <div class="eyebrow">Primary sources</div>
+       <h2>References</h2>
+       <div class="reflist">
+         <div class="ref"><div class="code">SN 22.59</div><div class="rt"><b>Anattalakkhana Sutta</b><span class="pali pl">The Not-Self Characteristic</span>The Buddha's second sermon. <a href="https://suttacentral.net/sn22.59/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">Dhp 277–279</div><div class="rt"><b>Dhammapada</b><span class="pali pl">The three marks in verse</span> <a href="https://suttacentral.net/dhp273-289/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">SN 22</div><div class="rt"><b>Khandhasaṃyutta</b><span class="pali pl">Connected discourses on the aggregates</span> <a href="https://suttacentral.net/sn22/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">SN 12.2</div><div class="rt"><b>Paṭiccasamuppāda-vibhaṅga</b><span class="pali pl">Analysis of dependent origination</span> <a href="https://suttacentral.net/sn12.2/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+       </div>
+     </section>
+    </div>
+   </div>
+  </div>
+
+  <!-- ============ VIEW : EMPTINESS ============ -->
+  <div class="view" id="view-empty">
+   <div class="mlayout">
+    <nav class="mtoc">
+      <div class="tl">On this page</div>
+      <a data-goto="e-pali">In the Pāli Canon</a>
+      <a data-goto="e-dwell">Emptiness as a dwelling</a>
+      <a data-goto="e-fork">The honest fork</a>
+      <a data-goto="e-src">References</a>
+    </nav>
+    <div class="mmain">
+     <div class="hero">
+       <div class="kick">Suññatā · emptiness</div>
+       <h1>Emptiness</h1>
+       <p class="sub">A word that means one thing in the early Canon and something larger in later Mahāyāna. Keeping them separate keeps your foundation clean.</p>
+     </div>
+     <section class="sec" id="e-pali">
+       <div class="eyebrow">Early Buddhism</div>
+       <h2>In the Pāli Canon: empty of self</h2>
+       <p>When Ānanda asks "how is the world empty?", the Buddha answers: it is empty of self and of anything belonging to a self. Here emptiness ≈ not-self, applied. It is not a claim that nothing exists.</p>
+       <div class="callout"><b>Suññatā (Pali)</b> = empty of self or what pertains to self. The same insight as anattā, turned toward all experience.</div>
+     </section>
+     <section class="sec" id="e-dwell">
+       <div class="eyebrow">Not only a view — a practice</div>
+       <h2>Emptiness as a meditative dwelling</h2>
+       <p>The emptiness suttas describe it as an <i>abiding</i>: resting the mind in a chosen mode of perception, then noticing the absence and presence of disturbance within it — progressively letting go of what troubles the mind until a very refined stillness remains.</p>
+     </section>
+     <section class="sec" id="e-fork">
+       <div class="eyebrow">Be precise about sources</div>
+       <h2>The honest fork</h2>
+       <div class="fork">
+         <div class="forkc pali-side"><h3>Pāli suññatā</h3><p style="font-size:13.5px;line-height:1.6;color:var(--ink);max-width:none">Empty <b>of self</b>. A meditative and liberating insight, fully in the Canon (SN 35.85, MN 121–122). This is your foundation.</p></div>
+         <div class="forkc maha-side"><h3>Mahāyāna śūnyatā</h3><p style="font-size:13.5px;line-height:1.6;color:var(--ink);max-width:none"><b>All phenomena</b> lack intrinsic, independent existence — a later development by Nāgārjuna and Madhyamaka. Profound and legitimate, but <b>not Pāli Canon</b>.</p></div>
+       </div>
+       <div class="callout">Recommendation: master the Pāli not-self first; the Mahāyāna elaboration lands far better once that's in your body.</div>
+     </section>
+     <section class="sec" id="e-src">
+       <div class="eyebrow">Primary sources</div>
+       <h2>References</h2>
+       <div class="reflist">
+         <div class="ref"><div class="code">SN 35.85</div><div class="rt"><b>Suñña Sutta</b><span class="pali pl">"Empty is the world"</span> <a href="https://suttacentral.net/sn35.85/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 121</div><div class="rt"><b>Cūḷasuññata Sutta</b><span class="pali pl">Shorter discourse on emptiness</span> <a href="https://suttacentral.net/mn121/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 122</div><div class="rt"><b>Mahāsuññata Sutta</b><span class="pali pl">Greater discourse on emptiness</span> <a href="https://suttacentral.net/mn122/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">Mahāyāna</div><div class="rt"><b>Nāgārjuna · Madhyamaka</b><span class="pali pl">Later tradition — not Pāli Canon</span> <a href="https://plato.stanford.edu/entries/nagarjuna/" target="_blank" rel="noopener">Stanford Encyclopedia ↗</a></div></div>
+       </div>
+     </section>
+    </div>
+   </div>
+  </div>
+
+  <!-- ============ VIEW : PRACTICE ============ -->
+  <div class="view" id="view-practice">
+   <div class="mlayout">
+    <nav class="mtoc">
+      <div class="tl">On this page</div>
+      <a data-goto="pr-wings">Two wings</a>
+      <a data-goto="pr-methods">Anchors &amp; methods</a>
+      <a data-goto="pr-hind">Five hindrances</a>
+      <a data-goto="pr-awaken">Awakening factors</a>
+      <a data-goto="pr-brahma">Brahmavihāras</a>
+      <a data-goto="pr-nibbana">Nibbāna</a>
+      <a data-goto="pr-src">References</a>
+    </nav>
+    <div class="mmain">
+     <div class="hero">
+       <div class="kick">Bhāvanā · cultivation</div>
+       <h1>Practice</h1>
+       <p class="sub">The tools — what steadies the mind, what obstructs it, and what carries it forward.</p>
+     </div>
+     <section class="sec" id="pr-wings">
+       <div class="eyebrow">The two wings</div>
+       <h2>Calm and insight</h2>
+       <div class="cardrow">
+         <div class="gcard"><div class="gh"><b>Samatha</b></div><div class="pali pl">calm</div><p>Concentration that gathers and steadies the mind — the still water.</p></div>
+         <div class="gcard"><div class="gh"><b>Vipassanā</b></div><div class="pali pl">insight</div><p>Using that steadiness to see the three marks directly — the clear seeing.</p></div>
+       </div>
+     </section>
+     <section class="sec" id="pr-methods">
+       <div class="eyebrow">How you actually sit</div>
+       <h2>Anchors &amp; methods</h2>
+       <div class="cardrow">
+         <div class="gcard"><div class="gh"><b>Ānāpānasati</b></div><div class="pali pl">breath, 16 steps</div><p>Mindfulness of breathing — the flagship anchor for the morning sit.</p></div>
+         <div class="gcard"><div class="gh"><b>Satipaṭṭhāna</b></div><div class="pali pl">four foundations</div><p>Body, feeling, mind, phenomena — the frame for all-day presence.</p></div>
+         <div class="gcard"><div class="gh"><b>Sampajañña</b></div><div class="pali pl">clear comprehension</div><p>Awareness carried into ordinary activity — walking, eating, working.</p></div>
+         <div class="gcard"><div class="gh"><b>Samādhi &amp; Jhāna</b></div><div class="pali pl">absorption</div><p>Collectedness deepening into progressively refined states.</p></div>
+       </div>
+     </section>
+     <section class="sec" id="pr-hind">
+       <div class="eyebrow">What blocks you</div>
+       <h2>The five hindrances</h2>
+       <div class="cardrow">
+         <div class="gcard"><div class="gh"><b>Sensual desire</b></div><div class="pali pl">kāmacchanda</div><p>Wanting to be elsewhere or have something else.</p></div>
+         <div class="gcard"><div class="gh"><b>Ill-will</b></div><div class="pali pl">byāpāda</div><p>Aversion, irritation, resistance.</p></div>
+         <div class="gcard"><div class="gh"><b>Sloth &amp; torpor</b></div><div class="pali pl">thīna-middha</div><p>Dullness, heaviness, sleepiness.</p></div>
+         <div class="gcard"><div class="gh"><b>Restlessness</b></div><div class="pali pl">uddhacca-kukkucca</div><p>Agitation and worry — likely your main one.</p></div>
+         <div class="gcard"><div class="gh"><b>Doubt</b></div><div class="pali pl">vicikicchā</div><p>"Is this working? Am I doing it right?"</p></div>
+       </div>
+     </section>
+     <section class="sec" id="pr-awaken">
+       <div class="eyebrow">What carries you</div>
+       <h2>Seven factors of awakening</h2>
+       <p>The supports that mature through practice, roughly in sequence: <b>mindfulness</b> (sati) → <b>investigation</b> (dhamma-vicaya) → <b>energy</b> (viriya) → <b>joy</b> (pīti) → <b>tranquillity</b> (passaddhi) → <b>concentration</b> (samādhi) → <b>equanimity</b> (upekkhā). The first three energise, the last three settle, and mindfulness balances the whole set.</p>
+     </section>
+     <section class="sec" id="pr-brahma">
+       <div class="eyebrow">The heart practices</div>
+       <h2>The four brahmavihāras</h2>
+       <div class="cardrow">
+         <div class="gcard"><div class="gh"><b>Mettā</b></div><div class="pali pl">loving-kindness</div><p>Direct antidote to the "I'm not enough" voice.</p></div>
+         <div class="gcard"><div class="gh"><b>Karuṇā</b></div><div class="pali pl">compassion</div><p>The heart's response to suffering.</p></div>
+         <div class="gcard"><div class="gh"><b>Muditā</b></div><div class="pali pl">sympathetic joy</div><p>Gladness at others' good fortune.</p></div>
+         <div class="gcard"><div class="gh"><b>Upekkhā</b></div><div class="pali pl">equanimity</div><p>The open hand — caring without clinging.</p></div>
+       </div>
+     </section>
+     <section class="sec" id="pr-nibbana">
+       <div class="eyebrow">The destination</div>
+       <h2>Nibbāna — the three fires go out</h2>
+       <div class="flow">
+         <div class="step"><div class="med">extinguish</div><div class="t">Rāga</div><div class="d">greed / grasping</div></div>
+         <div class="step"><div class="med">extinguish</div><div class="t">Dosa</div><div class="d">hatred / aversion</div></div>
+         <div class="step"><div class="med">extinguish</div><div class="t">Moha</div><div class="d">delusion</div></div>
+         <div class="step"><div class="med">what remains</div><div class="t">Peace</div><div class="d">not annihilation, not a place</div></div>
+       </div>
+     </section>
+     <section class="sec" id="pr-src">
+       <div class="eyebrow">Primary sources</div>
+       <h2>References</h2>
+       <div class="reflist">
+         <div class="ref"><div class="code">MN 118</div><div class="rt"><b>Ānāpānasati Sutta</b><span class="pali pl">Mindfulness of breathing</span> <a href="https://suttacentral.net/mn118/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 10</div><div class="rt"><b>Satipaṭṭhāna Sutta</b><span class="pali pl">Four foundations of mindfulness</span> <a href="https://suttacentral.net/mn10/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">AN 6.55</div><div class="rt"><b>Soṇa Sutta</b><span class="pali pl">Balanced effort — the lute-string</span> <a href="https://suttacentral.net/an6.55/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">AN 6.63</div><div class="rt"><b>Nibbedhika Sutta</b><span class="pali pl">Intention is kamma</span> <a href="https://suttacentral.net/an6.63/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+       </div>
+     </section>
+    </div>
+   </div>
+  </div>
+
+  <div class="view" id="view-canon">
+   <div class="mlayout">
+    <nav class="mtoc">
+      <div class="tl">On this page</div>
+      <a data-goto="c-map">The three baskets</a>
+      <a data-goto="c-nikayas">The five Nikāyas</a>
+      <a data-goto="c-cite">Master reference list</a>
+      <a data-goto="c-how">How to read the Canon</a>
+    </nav>
+    <div class="mmain">
+     <div class="hero">
+       <div class="kick">Tipiṭaka · the Pāli Canon</div>
+       <h1>Sources &amp; the Canon</h1>
+       <p class="sub">Everything above traces to the Tipiṭaka ("three baskets") — the earliest complete body of Buddhist scripture, preserved in Pāli. This is the map of where to find things, and the running list of every text cited in this hub.</p>
+     </div>
+
+     <section class="sec" id="c-map">
+       <div class="eyebrow">Structure</div>
+       <h2>The three baskets</h2>
+       <div class="basket">
+         <div class="bk"><div class="bh">🧭 Vinaya Piṭaka</div><div class="pali pl">The basket of discipline</div>
+           <ul><li>Rules and origin-stories of the monastic community (<b>Sangha</b>)</li><li>Least relevant to our practice — but the ethical spine (<span class="pali">sīla</span>) grows from the same soil</li></ul></div>
+         <div class="bk"><div class="bh">📜 Sutta Piṭaka</div><div class="pali pl">The basket of discourses</div>
+           <ul><li>The Buddha's talks — <b>where almost everything we use lives</b></li><li>Divided into five <b>Nikāyas</b> (collections) →</li></ul></div>
+         <div class="bk"><div class="bh">🧠 Abhidhamma Piṭaka</div><div class="pali pl">The basket of higher doctrine</div>
+           <ul><li>Systematic analysis of mind and matter</li><li>Advanced; a later map of the same territory the suttas describe experientially</li></ul></div>
+       </div>
+     </section>
+
+     <section class="sec" id="c-nikayas">
+       <div class="eyebrow">Inside the Sutta Piṭaka</div>
+       <h2>The five Nikāyas — and the citation codes</h2>
+       <p>Every reference in this hub uses a standard code: the Nikāya abbreviation + the discourse number. Learn these four and you can find anything.</p>
+       <div class="cardrow">
+         <div class="gcard"><div class="gh"><b>DN</b> · Dīgha Nikāya</div><p>The <b>long</b> discourses (34 suttas). e.g. the long Satipaṭṭhāna, DN 22.</p></div>
+         <div class="gcard"><div class="gh"><b>MN</b> · Majjhima Nikāya</div><p>The <b>middle-length</b> discourses (152). Home of MN 10, MN 22, MN 63, MN 118.</p></div>
+         <div class="gcard"><div class="gh"><b>SN</b> · Saṃyutta Nikāya</div><p>The <b>connected</b> discourses, grouped by theme. Home of SN 45.8 and SN 56.11.</p></div>
+         <div class="gcard"><div class="gh"><b>AN</b> · Aṅguttara Nikāya</div><p>The <b>numbered</b> discourses, grouped by count. Home of AN 3.65, AN 6.55.</p></div>
+       </div>
+       <p class="note">The fifth is the Khuddaka Nikāya ("minor collection") — which despite the name holds famous texts like the Dhammapada.</p>
+     </section>
+
+     <section class="sec" id="c-cite">
+       <div class="eyebrow">The running bibliography</div>
+       <h2>Master reference list</h2>
+       <div class="reflist">
+         <div class="ref"><div class="code">SN 56.11</div><div class="rt"><b>Dhammacakkappavattana Sutta</b> — Four Noble Truths, the tasks, twelve aspects, the Middle Way. <a href="https://suttacentral.net/sn56.11/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">SN 45.8</div><div class="rt"><b>Magga-vibhaṅga Sutta</b> — the eight path factors defined one by one. <a href="https://suttacentral.net/sn45.8/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">SN 12.2</div><div class="rt"><b>Paṭiccasamuppāda-vibhaṅga Sutta</b> — dependent origination: contact → feeling → craving → clinging. <a href="https://suttacentral.net/sn12.2/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 10</div><div class="rt"><b>Satipaṭṭhāna Sutta</b> — the four foundations of mindfulness. <a href="https://suttacentral.net/mn10/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">DN 22</div><div class="rt"><b>Mahāsatipaṭṭhāna Sutta</b> — the long version, with the four truths expanded. <a href="https://suttacentral.net/dn22/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 118</div><div class="rt"><b>Ānāpānasati Sutta</b> — mindfulness of breathing, 16 steps. <a href="https://suttacentral.net/mn118/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">AN 3.65</div><div class="rt"><b>Kālāma Sutta</b> — test the teaching in your own experience. <a href="https://suttacentral.net/an3.65/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">AN 6.55</div><div class="rt"><b>Soṇa Sutta</b> — the lute-string simile of balanced effort. <a href="https://suttacentral.net/an6.55/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 63</div><div class="rt"><b>Cūḷamālunkya Sutta</b> — the poisoned-arrow parable. <a href="https://suttacentral.net/mn63/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+         <div class="ref"><div class="code">MN 22</div><div class="rt"><b>Alagaddūpama Sutta</b> — the raft simile. <a href="https://suttacentral.net/mn22/en/sujato" target="_blank" rel="noopener">SuttaCentral ↗</a></div></div>
+       </div>
+       <p class="note">Reading portals: <a href="https://suttacentral.net" target="_blank" rel="noopener">suttacentral.net</a> (multiple translations + Pāli side-by-side), <a href="https://www.accesstoinsight.org" target="_blank" rel="noopener">accesstoinsight.org</a>, and <a href="https://www.dhammatalks.org" target="_blank" rel="noopener">dhammatalks.org</a> (Ṭhānissaro Bhikkhu).</p>
+     </section>
+
+     <section class="sec" id="c-how">
+       <div class="eyebrow">Orientation</div>
+       <h2>How to actually read the Canon</h2>
+       <p>Don't start at page one — the Canon isn't built to be read cover to cover. Start with the discourse behind whatever question is live on the cushion. For us that's a short spine: <b>SN 56.11</b> (the whole diagnosis), <b>SN 45.8</b> (the path), then <b>MN 118</b> and <b>MN 10</b> when the sitting itself raises questions. Everything else is looked up as doubts arise — the same practice-first loop from the "Why This" tab.</p>
+       <div class="callout">Translation note: comparing two translations of the same line (say Bhikkhu Sujato and Ṭhānissaro) often teaches more than a commentary — the gap between them is where the interpretive choices live.</div>
+     </section>
+    </div>
+   </div>
+  </div>
+
+ </div>
+</div>
+
+<script>
+(function(){
+  var tabs=document.getElementById('htabs');
+  var stage=document.getElementById('stage');
+  tabs.addEventListener('click',function(e){
+    var b=e.target.closest('button'); if(!b)return;
+    tabs.querySelectorAll('button').forEach(function(x){x.classList.remove('active');});
+    b.classList.add('active');
+    var id=b.getAttribute('data-view');
+    stage.querySelectorAll('.view').forEach(function(v){v.classList.toggle('active',v.id===id);});
+    stage.scrollTop=0;
+  });
+  // in-page TOC jump
+  document.querySelectorAll('.mtoc a[data-goto]').forEach(function(a){
+    a.addEventListener('click',function(){
+      var el=document.getElementById(a.getAttribute('data-goto'));
+      if(el) el.scrollIntoView({behavior:'smooth',block:'start'});
+    });
+  });
+})();
+
+/* ---------------- living concept map ---------------- */
+(function(){
+var MAIN={
+ nodes:[
+  {id:'fnt',x:600,y:120,r:62,c:'#45a34a',t:'Four Noble',t2:'Truths'},
+  {id:'engine',x:355,y:170,r:56,c:'#b45319',t:'Craving &',t2:'Ignorance'},
+  {id:'do',x:170,y:350,r:60,c:'#e8701a',t:'Dependent',t2:'Origination'},
+  {id:'aggregates',x:300,y:585,r:60,c:'#3d8ba3',t:'Five',t2:'Aggregates'},
+  {id:'marks',x:585,y:550,r:60,c:'#9b30bf',t:'Three',t2:'Marks'},
+  {id:'empty',x:800,y:660,r:56,c:'#7d34d6',t:'Emptiness'},
+  {id:'practice',x:870,y:460,r:64,c:'#3b5bd0',t:'Meditation',sub:'practice'},
+  {id:'path',x:910,y:190,r:62,c:'#4f46e5',t:'Eightfold',t2:'Path'},
+  {id:'nibbana',x:1090,y:345,r:58,c:'#8c1d3f',t:'Nibbāna'}
+ ],
+ edges:[
+  {a:'fnt',b:'path',l:'prescribes',lc:'#45a34a'},
+  {a:'path',b:'practice',l:'trains',lc:'#4f46e5'},
+  {a:'path',b:'nibbana',l:'leads to',lc:'#4f46e5'},
+  {a:'practice',b:'nibbana',l:'realises',lc:'#3b5bd0'},
+  {a:'practice',b:'marks',l:'reveals',lc:'#3b5bd0'},
+  {a:'marks',b:'aggregates',l:'seen in',lc:'#9b30bf'},
+  {a:'engine',b:'fnt',l:'origin of dukkha',lc:'#b45319'},
+  {a:'do',b:'engine',l:'traces',lc:'#e8701a'},
+  {a:'empty',b:'marks',l:'deepens anattā',lc:'#7d34d6'},
+  {a:'aggregates',b:'empty',l:'empty of self',lc:'#3d8ba3',dashed:true}
+ ]
+};
+var SC='#64748b';
+var N={
+ fnt:{t:'Four Noble Truths',p:'Cattāri Ariyasaccāni',c:'#45a34a',d:"The Buddha's diagnosis: there is suffering, it has a cause, it can end, and there is a path.",s:[['SN 56.11','https://suttacentral.net/sn56.11/en/sujato']],k:[['dukkha','1 · symptom'],['samudaya','2 · cause'],['nirodha','3 · prognosis'],['magga','4 · cure']]},
+ dukkha:{t:'Dukkha',p:'unsatisfactoriness',c:'#8c1d3f',d:'The first truth — to be understood, not fled.',k:[['dd3','has three kinds']]},
+ dd3:{t:'Three kinds of Dukkha',c:'#8c1d3f',d:'',k:[['dd_ord','ordinary'],['dd_chg','of change'],['dd_cond','of conditioning']]},
+ dd_ord:{t:'Dukkha-dukkha',c:SC,d:'Plain pain: sickness, ageing, loss, death.'},
+ dd_chg:{t:'Vipariṇāma-dukkha',c:SC,d:'Even pleasures hurt, because they end.'},
+ dd_cond:{t:'Saṅkhāra-dukkha',c:SC,d:'The subtle unease of all conditioned things.'},
+ samudaya:{t:'Samudaya',p:'the origin',c:'#b45319',d:'Craving (taṇhā) is the cause — to be abandoned.',k:[['engine','the craving engine']]},
+ nirodha:{t:'Nirodha',p:'cessation',c:'#3d8ba3',d:'Craving can cease — to be realised.',k:[['nibbana','i.e. Nibbāna']]},
+ magga:{t:'Magga',p:'the path',c:'#4f46e5',d:'The Middle Way — to be developed.',k:[['path','the Eightfold Path']]},
+ path:{t:'Eightfold Path',p:'Ariya Aṭṭhaṅgika Magga',c:'#4f46e5',d:'Eight factors in three trainings, developed together.',s:[['SN 45.8','https://suttacentral.net/sn45.8/en/sujato']],k:[['t_panna','wisdom · paññā'],['t_sila','ethics · sīla'],['t_samadhi','discipline · samādhi']]},
+ t_panna:{t:'Wisdom',p:'paññā',c:'#c8892a',d:'The orientation that aims the path.',k:[['rv','Right View'],['ri','Right Intention']]},
+ rv:{t:'Right View',p:'sammā diṭṭhi',c:'#c8892a',d:'Seeing the four truths and the three marks.'},
+ ri:{t:'Right Intention',p:'sammā saṅkappa',c:'#c8892a',d:'Renunciation, goodwill, harmlessness.'},
+ t_sila:{t:'Ethical conduct',p:'sīla',c:'#3d8ba3',d:'The foundation that steadies the mind.',k:[['rs','Right Speech'],['ra','Right Action'],['rl','Right Livelihood']]},
+ rs:{t:'Right Speech',p:'sammā vācā',c:'#3d8ba3',d:'True, beneficial, kind and timely.'},
+ ra:{t:'Right Action',p:'sammā kammanta',c:'#3d8ba3',d:'Non-harm, honesty, respect.'},
+ rl:{t:'Right Livelihood',p:'sammā ājīva',c:'#3d8ba3',d:'Earning without causing harm.'},
+ t_samadhi:{t:'Mental discipline',p:'samādhi',c:'#4f46e5',d:'The engine room — your two practices live here.',k:[['re','Right Effort'],['rm','Right Mindfulness'],['rc','Right Concentration']]},
+ re:{t:'Right Effort',p:'sammā vāyāma',c:'#4f46e5',d:'Balanced energy — the lute-string.',s:[['AN 6.55','https://suttacentral.net/an6.55/en/sujato']]},
+ rm:{t:'Right Mindfulness',p:'sammā sati',c:'#4f46e5',d:'The four foundations — all-day presence.',s:[['MN 10','https://suttacentral.net/mn10/en/sujato']]},
+ rc:{t:'Right Concentration',p:'sammā samādhi',c:'#4f46e5',d:'The gathered mind — the morning sit.',s:[['MN 118','https://suttacentral.net/mn118/en/sujato']]},
+ marks:{t:'Three Marks',p:'tilakkhaṇa',c:'#9b30bf',d:'The three characteristics of conditioned existence.',s:[['Dhp 277–279','https://suttacentral.net/dhp273-289/en/sujato']],k:[['anicca','impermanence'],['dukkha_m','unsatisfactoriness'],['anatta','not-self']]},
+ anicca:{t:'Anicca',p:'impermanence',c:'#9b30bf',d:'Everything arises and passes away.'},
+ dukkha_m:{t:'Dukkha',p:'unsatisfactoriness',c:'#9b30bf',d:'The changing cannot fully satisfy.'},
+ anatta:{t:'Anattā',p:'not-self',c:'#9b30bf',d:'No fixed, controlling self is found.',s:[['SN 22.59','https://suttacentral.net/sn22.59/en/sujato']],k:[['empty','extends into emptiness']]},
+ aggregates:{t:'Five Aggregates',p:'pañcakkhandhā',c:'#3d8ba3',d:'The five processes the mind mistakes for a self.',s:[['SN 22','https://suttacentral.net/sn22/en/sujato']],k:[['rupa','form'],['vedana','feeling'],['sanna','perception'],['sankhara','formations'],['vinnana','consciousness']]},
+ rupa:{t:'Rūpa',p:'form',c:'#3d8ba3',d:'The body and material experience.'},
+ vedana:{t:'Vedanā',p:'feeling-tone',c:'#3d8ba3',d:'Pleasant / unpleasant / neutral — the key hinge.'},
+ sanna:{t:'Saññā',p:'perception',c:'#3d8ba3',d:'Recognition and labelling.'},
+ sankhara:{t:'Saṅkhārā',p:'formations',c:'#3d8ba3',d:'Volitions, habits, mental constructions.'},
+ vinnana:{t:'Viññāṇa',p:'consciousness',c:'#3d8ba3',d:'Bare knowing of an object.'},
+ do:{t:'Dependent Origination',p:'paṭiccasamuppāda',c:'#e8701a',d:'How suffering assembles itself, link by link.',s:[['SN 12.2','https://suttacentral.net/sn12.2/en/sujato']],k:[['contact','contact'],['do_vedana','feeling'],['do_tanha','craving'],['upadana','clinging'],['do_dukkha','suffering']]},
+ contact:{t:'Phassa',p:'contact',c:'#e8701a',d:'Sense meets object.'},
+ do_vedana:{t:'Vedanā',p:'feeling-tone',c:'#e8701a',d:'The tone arising from contact.',k:[['thegap','the crucial gap']]},
+ thegap:{t:'The Gap',c:'#16a34a',d:'Between feeling and craving — where freedom lives. Widen it and you are free.'},
+ do_tanha:{t:'Taṇhā',p:'craving',c:'#b45319',d:'The automatic grab at the tone.',k:[['engine','the craving engine']]},
+ upadana:{t:'Upādāna',p:'clinging',c:'#e8701a',d:'Craving hardening into holding on.'},
+ do_dukkha:{t:'Dukkha',c:'#8c1d3f',d:'The suffering that results.'},
+ engine:{t:'Craving & Ignorance',p:'taṇhā & avijjā',c:'#b45319',d:'The engine that manufactures suffering.',k:[['tanha3','three cravings'],['avijja','ignorance'],['poisons','three poisons'],['kamma','kamma & intention']]},
+ tanha3:{t:'Three Cravings',p:'taṇhā',c:'#b45319',d:'',k:[['kama','for pleasure'],['bhava','for becoming'],['vibhava','for non-becoming']]},
+ kama:{t:'Kāma-taṇhā',c:SC,d:'Craving for sensual pleasure.'},
+ bhava:{t:'Bhava-taṇhā',c:SC,d:'Craving to be, to continue, to become.'},
+ vibhava:{t:'Vibhava-taṇhā',c:SC,d:'Craving to get rid of, to not be.'},
+ avijja:{t:'Avijjā',p:'ignorance',c:'#b45319',d:'Mistaking the impermanent for lasting satisfaction.'},
+ poisons:{t:'Three Poisons',c:'#b45319',d:'',k:[['raga','greed'],['dosa','hatred'],['moha','delusion']]},
+ raga:{t:'Rāga / Lobha',p:'greed',c:SC,d:'Grasping and want.'},
+ dosa:{t:'Dosa',p:'hatred',c:SC,d:'Aversion and ill-will.'},
+ moha:{t:'Moha',p:'delusion',c:SC,d:'Confusion, not seeing clearly.'},
+ kamma:{t:'Kamma & Cetanā',c:'#b45319',d:'"It is intention that I call kamma." Action keeps volition central.',s:[['AN 6.63','https://suttacentral.net/an6.63/en/sujato']]},
+ empty:{t:'Emptiness',p:'suññatā',c:'#7d34d6',d:'Empty of self — and, in Mahāyāna, of intrinsic existence.',k:[['sunnata_pali','Pali: empty of self'],['sunnata_dwell','a meditative dwelling'],['sunyata_maha','Mahāyāna śūnyatā']]},
+ sunnata_pali:{t:'Suññatā (Pali)',c:'#7d34d6',d:'The world is empty of self or what pertains to self.',s:[['SN 35.85','https://suttacentral.net/sn35.85/en/sujato']]},
+ sunnata_dwell:{t:'Emptiness as dwelling',c:'#7d34d6',d:'A meditative abiding — noticing the absence of disturbance.',s:[['MN 121','https://suttacentral.net/mn121/en/sujato'],['MN 122','https://suttacentral.net/mn122/en/sujato']]},
+ sunyata_maha:{t:'Śūnyatā (Mahāyāna)',c:'#94409c',d:'All phenomena lack intrinsic existence — a later development by Nāgārjuna. NOT Pāli Canon.'},
+ practice:{t:'Meditation',p:'bhāvanā',c:'#3b5bd0',d:'Cultivating the mind — calm plus insight, on and off the cushion.',k:[['wings','two wings'],['methods','anchors & methods'],['mind','mindfulness'],['hindrances','five hindrances'],['awaken','awakening factors'],['brahma','brahmavihāras']]},
+ wings:{t:'Two Wings',c:'#3b5bd0',d:'',k:[['samatha','calm'],['vipassana','insight']]},
+ samatha:{t:'Samatha',p:'calm',c:SC,d:'Concentration that steadies the mind.'},
+ vipassana:{t:'Vipassanā',p:'insight',c:SC,d:'Seeing the three marks directly.'},
+ methods:{t:'Anchors & Methods',c:'#3b5bd0',d:'',k:[['anapana','breath'],['samadhi_j','concentration & jhāna']]},
+ anapana:{t:'Ānāpānasati',p:'breath',c:SC,d:'Mindfulness of breathing, sixteen steps.',s:[['MN 118','https://suttacentral.net/mn118/en/sujato']]},
+ samadhi_j:{t:'Samādhi & Jhāna',c:SC,d:'Collectedness deepening into absorption.'},
+ mind:{t:'Mindfulness',p:'sati',c:'#3b5bd0',d:'',k:[['satipatthana','four foundations'],['sampajanna','clear comprehension']]},
+ satipatthana:{t:'Satipaṭṭhāna',c:SC,d:'Body, feeling, mind, phenomena.',s:[['MN 10','https://suttacentral.net/mn10/en/sujato']]},
+ sampajanna:{t:'Sampajañña',c:SC,d:'Clear awareness in ordinary activity.'},
+ hindrances:{t:'Five Hindrances',p:'nīvaraṇa',c:'#b45319',d:'',k:[['h1','sensual desire'],['h2','ill-will'],['h3','sloth & torpor'],['h4','restlessness'],['h5','doubt']]},
+ h1:{t:'Kāmacchanda',c:SC,d:'Sensual desire.'},
+ h2:{t:'Byāpāda',c:SC,d:'Ill-will, aversion.'},
+ h3:{t:'Thīna-middha',c:SC,d:'Sloth and torpor.'},
+ h4:{t:'Uddhacca-kukkucca',c:SC,d:'Restlessness and worry — likely yours.'},
+ h5:{t:'Vicikicchā',c:SC,d:'Doubt.'},
+ awaken:{t:'Awakening Factors',p:'bojjhaṅga',c:'#c8892a',d:'Mindfulness, investigation, energy, joy, tranquillity, concentration, equanimity.'},
+ brahma:{t:'Brahmavihāras',p:'divine abidings',c:'#c8892a',d:'',k:[['metta','loving-kindness'],['karuna','compassion'],['mudita','joy'],['upekkha','equanimity']]},
+ metta:{t:'Mettā',c:SC,d:'Loving-kindness — antidote to "I\'m not enough".'},
+ karuna:{t:'Karuṇā',c:SC,d:'Compassion for suffering.'},
+ mudita:{t:'Muditā',c:SC,d:'Joy in others\' good fortune.'},
+ upekkha:{t:'Upekkhā',c:SC,d:'Equanimity — the open hand.'},
+ nibbana:{t:'Nibbāna',p:'the "blowing out"',c:'#8c1d3f',d:'The peace when the three fires go out. Not annihilation, not a place.',k:[['nb_greed','end of greed'],['nb_hate','end of hatred'],['nb_delu','end of delusion']]},
+ nb_greed:{t:'End of greed',c:SC,d:'Rāga extinguished.'},
+ nb_hate:{t:'End of hatred',c:SC,d:'Dosa extinguished.'},
+ nb_delu:{t:'End of delusion',c:SC,d:'Moha extinguished — clear seeing.'}
+};
+var SVGNS='http://www.w3.org/2000/svg';
+function el(name,attrs,text){var e=document.createElementNS(SVGNS,name);for(var k in attrs)e.setAttribute(k,attrs[k]);if(text!=null)e.textContent=text;return e;}
+function byId(k){return MAIN.nodes.filter(function(n){return n.id===k;})[0];}
+function trim(x1,y1,x2,y2,r1,r2){var dx=x2-x1,dy=y2-y1,L=Math.sqrt(dx*dx+dy*dy)||1;var ux=dx/L,uy=dy/L;return {x1:x1+ux*r1,y1:y1+uy*r1,x2:x2-ux*(r2+7),y2:y2-uy*(r2+7)};}
+function chip(svg,x,y,text,color){var w=text.length*6.6+12,h=18;svg.appendChild(el('rect',{x:x-w/2,y:y-h/2,width:w,height:h,rx:5,fill:'#ffffff',stroke:'#eef0f3'}));svg.appendChild(el('text',{x:x,y:y+4,'text-anchor':'middle','class':'cm-elabel',fill:color},text));}
+function circleLabel(g,n,cx,cy){var lines=n.t2?[n.t,n.t2]:[n.t];var fs=n.r>=60?15:14,start=cy-(lines.length-1)*fs*0.6+(n.sub?-3:0);lines.forEach(function(ln,i){g.appendChild(el('text',{x:cx,y:start+i*fs*1.15+5,'text-anchor':'middle','class':'cm-nlabel','font-size':fs},ln));});if(n.sub)g.appendChild(el('text',{x:cx,y:start+lines.length*fs*1.15+4,'text-anchor':'middle','class':'cm-nsub','font-size':11},n.sub));}
+function renderMain(){var svg=document.getElementById('cm-mainmap');if(!svg)return;
+  MAIN.edges.forEach(function(e){var a=byId(e.a),b=byId(e.b);var t=trim(a.x,a.y,b.x,b.y,a.r,b.r);var line=el('path',{d:'M'+t.x1+','+t.y1+' L'+t.x2+','+t.y2,stroke:e.lc,'stroke-width':e.dashed?2.4:2.6,fill:'none','marker-end':'url(#cm-arrow)',opacity:.85});if(e.dashed){line.setAttribute('stroke-dasharray','2 7');line.setAttribute('stroke-linecap','round');}svg.appendChild(line);chip(svg,(t.x1+t.x2)/2,(t.y1+t.y2)/2,e.l,e.lc);});
+  MAIN.nodes.forEach(function(n){var g=el('g',{'class':'cm-node-g',tabindex:0,role:'button','aria-label':n.t+' '+(n.t2||'')});g.setAttribute('data-nid',n.id);g.appendChild(el('circle',{cx:n.x,cy:n.y,r:n.r,fill:n.c,'class':'cm-node-circle'}));circleLabel(g,n,n.x,n.y);svg.appendChild(g);});
+  svg.addEventListener('click',function(ev){var g=ev.target.closest('[data-nid]');if(g)openModal(g.getAttribute('data-nid'));});
+  svg.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){var g=ev.target.closest('[data-nid]');if(g){ev.preventDefault();openModal(g.getAttribute('data-nid'));}}});
+}
+var stack=[];
+function openModal(id){stack=[id];document.getElementById('cm-overlay').classList.add('show');drawSub();}
+function drill(id){stack.push(id);drawSub();}
+function back(){if(stack.length>1){stack.pop();drawSub();}}
+function closeModal(){document.getElementById('cm-overlay').classList.remove('show');}
+function srcHTML(s){if(!s)return '';return s.map(function(x){return '<a href="'+x[1]+'" target="_blank" rel="noopener">'+x[0]+' ↗</a>';}).join('');}
+function wrapText(g,text,cx,cy,r,fs,fill){var words=text.split(' '),lines=[],cur='';var max=Math.floor(r*2/(fs*0.6));words.forEach(function(w){if((cur+' '+w).trim().length<=max)cur=(cur+' '+w).trim();else{if(cur)lines.push(cur);cur=w;}});if(cur)lines.push(cur);if(lines.length>3)lines=[lines[0],lines[1],lines[2]];var start=cy-(lines.length-1)*fs*0.58;lines.forEach(function(ln,i){g.appendChild(el('text',{x:cx,y:start+i*fs*1.1+fs*0.35,'text-anchor':'middle','font-weight':800,'font-size':fs,fill:fill,'pointer-events':'none'},ln));});}
+function drawSub(){var id=stack[stack.length-1],node=N[id];var svg=document.getElementById('cm-submap');var defs=svg.querySelector('defs');svg.innerHTML='';svg.appendChild(defs);
+  document.getElementById('cm-crumbs').innerHTML=stack.map(function(s,i){var nm=N[s].t;return i===stack.length-1?'<b>'+nm+'</b>':nm;}).join(' › ');
+  document.getElementById('cm-backbtn').disabled=stack.length<=1;
+  document.getElementById('cm-detail').innerHTML='<span class="t">'+node.t+'</span>'+(node.p?'<span class="p">'+node.p+'</span>':'')+(node.d?'<div class="d">'+node.d+'</div>':'')+(node.s?'<div class="src">'+srcHTML(node.s)+'</div>':'');
+  document.getElementById('cm-leafinfo').classList.remove('show');
+  var kids=node.k||[];var cx=340,cy=222;var cg=el('g',{});cg.appendChild(el('circle',{cx:cx,cy:cy,r:48,fill:node.c}));wrapText(cg,node.t,cx,cy,48,15,'#fff');
+  var nk=kids.length,R=nk<=4?150:(nk<=5?158:166);
+  kids.forEach(function(kd,i){var childId=kd[0],rel=kd[1],child=N[childId];var ang=(-90+i*360/nk)*Math.PI/180;var x=cx+R*Math.cos(ang),y=cy+R*Math.sin(ang);var t=trim(cx,cy,x,y,48,36);
+    svg.appendChild(el('line',{x1:t.x1,y1:t.y1,x2:t.x2,y2:t.y2,stroke:'#c3c9d4','stroke-width':2,'marker-end':'url(#cm-arrow2)'}));
+    if(rel)chip(svg,cx+(x-cx)*0.56,cy+(y-cy)*0.56,rel,'#8a93a3');
+    var deeper=child.k&&child.k.length;var g=el('g',{'class':'cm-node-g',tabindex:0,role:'button','aria-label':child.t});g.setAttribute('data-cid',childId);g.style.cursor='pointer';
+    if(deeper)g.appendChild(el('circle',{cx:x,cy:y,r:41,fill:'none',stroke:child.c,'stroke-width':2,opacity:.45}));
+    g.appendChild(el('circle',{cx:x,cy:y,r:36,fill:child.c,'class':'cm-node-circle'}));wrapText(g,child.t,x,y,36,12,'#fff');svg.appendChild(g);});
+  svg.appendChild(cg);
+}
+var sub=document.getElementById('cm-submap');
+if(sub){
+ sub.addEventListener('click',function(ev){var g=ev.target.closest('[data-cid]');if(!g)return;var id=g.getAttribute('data-cid'),node=N[id];if(node.k&&node.k.length){drill(id);}else{var li=document.getElementById('cm-leafinfo');li.innerHTML='▸ <b>'+node.t+'</b> '+(node.p?'<span class="pl">'+node.p+'</span>':'')+' — '+(node.d||'')+(node.s?'<div style="margin-top:6px">'+srcHTML(node.s)+'</div>':'');li.classList.add('show');}});
+ sub.addEventListener('keydown',function(ev){if(ev.key==='Enter'||ev.key===' '){var g=ev.target.closest('[data-cid]');if(g){ev.preventDefault();g.click();}}});
+}
+var bb=document.getElementById('cm-backbtn');if(bb)bb.addEventListener('click',back);
+var cb=document.getElementById('cm-closebtn');if(cb)cb.addEventListener('click',closeModal);
+var ov=document.getElementById('cm-overlay');if(ov)ov.addEventListener('click',function(ev){if(ev.target.id==='cm-overlay')closeModal();});
+document.addEventListener('keydown',function(ev){if(ev.key==='Escape')closeModal();});
+renderMain();
+})();
+</script>
+</body>
+</html>

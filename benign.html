@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Benign</title>
+<style>
+:root{
+  --bg:#f6f7f9;--ink:#1c2431;--dim:#5b6572;--faint:#8b93a1;--line:#e7e9ee;--line2:#dde0e6;
+  --accent:#4f46e5;--accent2:#7c6cff;--soft:rgba(79,70,229,.08);--soft2:rgba(124,108,255,.10);
+  --card:#fff;--shadow:0 1px 2px rgba(20,25,40,.05),0 8px 24px rgba(20,25,40,.06);
+  --open:#0ea5e9;--mid:#d97706;--closed:#16a34a;
+}
+*{box-sizing:border-box}html,body{margin:0;height:100%}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;
+  background:radial-gradient(1100px 560px at 8% -12%,rgba(79,70,229,.05),transparent 60%),var(--bg);
+  color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.6}
+.app{display:flex;min-height:100vh;max-width:1280px;margin:0 auto}
+
+/* ---- column 1: branches ---- */
+.col1{flex:0 0 244px;border-right:1px solid var(--line);padding:18px 12px 40px;position:sticky;top:0;
+  max-height:100vh;overflow:auto;background:rgba(255,255,255,.4)}
+.brand{font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--accent);font-weight:800;padding:6px 10px 2px}
+.brandsub{font-size:11.5px;color:var(--faint);padding:0 10px 14px;line-height:1.4}
+.b1{display:flex;align-items:flex-start;gap:10px;width:100%;text-align:left;border:1px solid transparent;
+  background:none;font:inherit;cursor:pointer;padding:9px 10px;border-radius:12px;margin:2px 0;color:var(--ink)}
+.b1:hover{background:var(--soft)}
+.b1.active{background:var(--soft);border-color:var(--line2);box-shadow:var(--shadow)}
+.b1 .ic{font-size:17px;line-height:1.3}
+.b1 .tx .cd{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--accent)}
+.b1 .tx .nm{font-size:13.5px;font-weight:700;line-height:1.25;margin-top:1px}
+.b1 .tx .sb{font-size:11px;color:var(--faint);margin-top:2px;line-height:1.3}
+
+/* ---- column 2: subtopics ---- */
+.col2{flex:0 0 258px;border-right:1px solid var(--line);padding:18px 12px 40px;position:sticky;top:0;
+  max-height:100vh;overflow:auto}
+.col2 .c2head{padding:6px 10px 12px}
+.col2 .c2head .cd{font-size:10px;font-weight:800;letter-spacing:.08em;color:var(--accent)}
+.col2 .c2head .nm{font-size:16px;font-weight:800;letter-spacing:-.2px;margin-top:2px}
+.col2 .c2head .sb2{font-size:11.5px;color:var(--faint);margin-top:3px;line-height:1.35}
+.b2{display:flex;align-items:flex-start;gap:9px;width:100%;text-align:left;border:1px solid transparent;
+  background:none;font:inherit;cursor:pointer;padding:9px 10px;border-radius:11px;margin:2px 0;color:var(--ink)}
+.b2:hover{background:var(--soft2)}
+.b2.active{background:var(--soft2);border-color:var(--line2)}
+.b2 .dot{width:8px;height:8px;border-radius:50%;margin-top:6px;flex:0 0 auto;background:var(--open)}
+.b2.st-mid .dot{background:var(--mid)}.b2.st-closed .dot{background:var(--closed)}
+.b2 .tx .cd{font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--dim)}
+.b2 .tx .nm{font-size:12.5px;font-weight:650;line-height:1.3;margin-top:1px}
+
+/* ---- main ---- */
+.main{flex:1;min-width:0;padding:30px 34px 90px}
+.crumb{font-size:11.5px;color:var(--faint);font-weight:700;letter-spacing:.02em}
+.crumb b{color:var(--accent)}
+.mhead{display:flex;align-items:flex-start;gap:14px;margin:10px 0 0}
+.mhead .mic{font-size:30px;line-height:1}
+.mhead h1{font-size:clamp(22px,3.4vw,32px);margin:0;font-weight:850;letter-spacing:-.6px;line-height:1.1}
+.msub{color:var(--dim);font-size:14.5px;margin:12px 0 0;max-width:660px}
+.badge{display:inline-flex;align-items:center;gap:7px;font-size:11.5px;font-weight:800;
+  border:1px solid var(--line2);border-radius:20px;padding:4px 12px;margin:16px 0 0;color:var(--dim);background:var(--card)}
+.badge .d{width:8px;height:8px;border-radius:50%;background:var(--open)}
+.badge.st-mid .d{background:var(--mid)}.badge.st-closed .d{background:var(--closed)}
+
+.note{margin:22px 0 0;border-left:4px solid var(--accent);background:var(--soft);border-radius:0 14px 14px 0;padding:14px 18px}
+.note .l{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--accent)}
+.note p{margin:6px 0 0;font-size:14.5px;color:var(--ink);line-height:1.55}
+
+.placeholder{margin:26px 0 0;border:1px dashed var(--line2);border-radius:16px;padding:22px 20px;background:rgba(255,255,255,.5);color:var(--dim);font-size:13.5px;line-height:1.6}
+.placeholder b{color:var(--ink)}
+
+/* branch overview: grid of subtopic cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:13px;margin:24px 0 0}
+.gc{border:1px solid var(--line);border-radius:14px;background:var(--card);box-shadow:var(--shadow);
+  padding:14px 15px;cursor:pointer;border-top:3px solid var(--accent);transition:transform .12s}
+.gc:hover{transform:translateY(-2px)}
+.gc .cd{font-size:10px;font-weight:800;letter-spacing:.06em;color:var(--accent)}
+.gc .nm{font-size:14px;font-weight:750;margin:5px 0 0;line-height:1.3}
+.gc .st{display:inline-flex;align-items:center;gap:6px;font-size:10.5px;font-weight:800;color:var(--faint);margin-top:9px}
+.gc .st .d{width:7px;height:7px;border-radius:50%;background:var(--open)}
+
+.home{margin:26px 0 0}
+.home .lede{font-size:15px;color:var(--dim);max-width:640px;line-height:1.6}
+.legend{display:flex;gap:16px;flex-wrap:wrap;margin:22px 0 0;font-size:11.5px;color:var(--dim);font-weight:700}
+.legend span{display:inline-flex;align-items:center;gap:7px}
+.legend .d{width:8px;height:8px;border-radius:50%}
+.legend .o{background:var(--open)}.legend .m{background:var(--mid)}.legend .c{background:var(--closed)}
+
+@media(max-width:900px){
+  .app{flex-wrap:wrap}
+  .col1,.col2{position:static;max-height:none;flex:1 1 100%;border-right:0;border-bottom:1px solid var(--line)}
+  .main{flex:1 1 100%}
+}
+</style>
+</head>
+<body>
+<div class="app">
+  <nav class="col1" id="col1"></nav>
+  <nav class="col2" id="col2"></nav>
+  <main class="main" id="main"></main>
+</div>
+
+<script>
+const STATUS={open:{cls:'',dot:'open',word:'Open'},mid:{cls:'st-mid',dot:'mid',word:'Mid'},closed:{cls:'st-closed',dot:'closed',word:'Build-ready'}};
+
+const DATA=[
+  {code:'B0',icon:'🧭',title:'Foundations & mindset',sub:'the non-contact ground',
+   subs:[
+     {code:'B0·1',t:'Presence vs spectatoring',s:'open',n:'Self-monitoring in the moment kills arousal and speeds climax — presence is the antidote.'},
+     {code:'B0·2',t:'The anxiety → arousal hijack',s:'open',n:'Performance anxiety fires the sympathetic system, which works against arousal.'},
+     {code:'B0·3',t:'Curiosity over performance',s:'open',n:'Reframe from "am I doing well?" to "what is happening / what does she respond to?"'},
+     {code:'B0·4',t:'Self-compassion · imperfect for a while',s:'open',n:'The perfectionism and not-enough traps, applied to intimacy. Being a beginner is allowed.'},
+     {code:'B0·5',t:'Expectation-setting & porn recalibration',s:'open',n:'Porn distorts pace, bodies and arousal — recalibrate to reality.'},
+     {code:'B0·6',t:'Confidence & body image',s:'open',n:'Comfort being naked; body image as an enabler of presence.'},
+   ]},
+  {code:'B1',icon:'🤝',title:'Communication & consent',sub:'its own pillar',
+   subs:[
+     {code:'B1·1',t:'Consent literacy',s:'open',n:'Ongoing, enthusiastic, revocable; reading a real "yes" vs mere compliance.'},
+     {code:'B1·2',t:'Reading signals',s:'open',n:'Verbal + nonverbal — the real-time receptivity detector.'},
+     {code:'B1·3',t:'Talking about likes/limits',s:'open',n:'Communicating without killing the mood; how to check in naturally.'},
+     {code:'B1·4',t:'Boundaries & pacing',s:'open',n:'A safe, low-friction way to slow down or stop.'},
+   ]},
+  {code:'B2',icon:'✨',title:'Attraction & escalation',sub:'before any contact',
+   subs:[
+     {code:'B2·1',t:'Building tension / flirtation',s:'open',n:'Anticipation and charge before touch.'},
+     {code:'B2·2',t:'The touch ladder',s:'open',n:'Initiating and escalating physical contact gradually.'},
+     {code:'B2·3',t:'Reading receptivity; timing',s:'open',n:'Reading the moment and timing the move.'},
+   ]},
+  {code:'B3',icon:'💬',title:'Online / distance',sub:'',
+   subs:[
+     {code:'B3·1',t:'Dirty talk / sexting',s:'open',n:'Tone, escalation, matching her register.'},
+     {code:'B3·2',t:'Building anticipation at a distance',s:'open',n:'Creating charge without physical presence.'},
+     {code:'B3·3',t:'Online consent, privacy & risk',s:'open',n:'Screenshots, trust, and the risk model of anything sent.'},
+   ]},
+  {code:'B4',icon:'🪜',title:'The offline contact ladder',sub:'makeout → aftercare',
+   subs:[
+     {code:'B4·1',t:'Makeout / kissing',s:'open',n:'Technique, pace, and using hands.'},
+     {code:'B4·2',t:'Foreplay',s:'open',n:'Manual, oral (giving & receiving), teasing, tempo.'},
+     {code:'B4·3',t:'Intercourse',s:'open',n:'Positions, pacing, angles, comfort, staying present.'},
+     {code:'B4·4',t:'Aftercare',s:'open',n:'Physical (cleanup) + emotional (reassurance, cuddling, debrief).'},
+   ]},
+  {code:'B5',icon:'🗺️',title:'Body map & sensitisation',sub:'cross-cutting strategy',
+   subs:[
+     {code:'B5·1',t:'Male erogenous zones',s:'open',n:'The map of male-body responsive zones.'},
+     {code:'B5·2',t:'Female erogenous zones',s:'open',n:'Clitoris-centred reality vs myth.'},
+     {code:'B5·3',t:'The sensitisation model',s:'open',n:'Low / mid / high — how a zone’s state changes its response.'},
+     {code:'B5·4',t:'Tools → strategy → response',s:'open',n:'Your framing: zones are tools; combine into a strategy for a desired response, across makeout/foreplay/sex.'},
+   ]},
+  {code:'B6',icon:'🫀',title:'Physiology',sub:'',
+   subs:[
+     {code:'B6·1',t:'Male arousal & ejaculatory control',s:'open',n:'Start-stop, squeeze, pelvic floor, edging — the quick-climax concern.'},
+     {code:'B6·2',t:'Erectile reliability & anxiety loop',s:'open',n:'The anxiety → loss-of-erection feedback loop.'},
+     {code:'B6·3',t:'Female arousal cycle',s:'open',n:'Longer warm-up, lubrication, clitoral vs internal, avoiding pain, the orgasm gap.'},
+     {code:'B6·4',t:'Refractory period & hormones',s:'open',n:'Oxytocin / dopamine and bonding.'},
+   ]},
+  {code:'B7',icon:'🧠',title:'Psychology & connection',sub:'',
+   subs:[
+     {code:'B7·1',t:'Desire types',s:'open',n:'Spontaneous vs responsive desire (responsive is common in women).'},
+     {code:'B7·2',t:'Emotional safety & trust',s:'open',n:'Vulnerability and trust as the enabler of good sex.'},
+     {code:'B7·3',t:'Novelty vs habituation',s:'open',n:'Keeping charge alive over a relationship.'},
+     {code:'B7·4',t:'Handling mismatch',s:'open',n:'Awkward moments and when it doesn’t "work".'},
+   ]},
+  {code:'B8',icon:'🛡️',title:'Safety, hygiene & logistics',sub:'',
+   subs:[
+     {code:'B8·1',t:'Contraception & STI awareness',s:'open',n:'Testing; condom fit & correct use.'},
+     {code:'B8·2',t:'Lubrication',s:'open',n:'When and why it matters.'},
+     {code:'B8·3',t:'Hygiene & grooming',s:'open',n:'Body, breath, genital; peeing after (UTI prevention).'},
+     {code:'B8·4',t:'Setting & comfort',s:'open',n:'Privacy, comfort, being sober and mutually willing.'},
+   ]},
+  {code:'B9',icon:'🔁',title:'Meta: skill-acquisition OS',sub:'your framework applied',
+   subs:[
+     {code:'B9·1',t:'Model → experiment → cue → update',s:'open',n:'Your acquisition loop, applied to intimacy.'},
+     {code:'B9·2',t:'Solo vs partner practice',s:'open',n:'What can be practised solo (arousal control) vs only with a partner (attunement).'},
+     {code:'B9·3',t:'Real-time feedback loop',s:'open',n:'The low-stakes feedback loop with a partner.'},
+   ]},
+];
+
+const col1=document.getElementById('col1'),col2=document.getElementById('col2'),main=document.getElementById('main');
+let curB=null,curS=null;
+
+function save(){try{localStorage.setItem('benign-nav',JSON.stringify({b:curB,s:curS}))}catch(e){}}
+function load(){try{return JSON.parse(localStorage.getItem('benign-nav')||'null')}catch(e){return null}}
+
+function renderCol1(){
+  col1.innerHTML='<div class="brand">Da Vinci · Benign</div>'+
+    '<div class="brandsub">A private, structured map. Pick a branch, then a node.</div>';
+  DATA.forEach((b,i)=>{
+    const el=document.createElement('button');
+    el.className='b1'+(i===curB?' active':'');
+    el.innerHTML='<span class="ic">'+b.icon+'</span><span class="tx">'+
+      '<span class="nm">'+b.title+'</span>'+
+      (b.sub?'<span class="sb">'+b.sub+'</span>':'')+'</span>';
+    el.onclick=()=>{curB=i;curS=null;save();renderCol1();renderCol2();renderMain();};
+    col1.appendChild(el);
+  });
+}
+
+function renderCol2(){
+  if(curB===null){col2.style.display='none';return;}
+  col2.style.display='';
+  const b=DATA[curB];
+  col2.innerHTML='<div class="c2head"><div class="nm">'+b.title+'</div>'+(b.sub?'<div class="sb2">'+b.sub+'</div>':'')+'</div>';
+  b.subs.forEach((s,j)=>{
+    const el=document.createElement('button');
+    el.className='b2 '+STATUS[s.s].cls+(j===curS?' active':'');
+    el.innerHTML='<span class="dot"></span><span class="tx">'+
+      '<span class="nm">'+s.t+'</span></span>';
+    el.onclick=()=>{curS=j;save();renderCol2();renderMain();};
+    col2.appendChild(el);
+  });
+}
+
+function renderMain(){
+  if(curB===null){renderHome();return;}
+  const b=DATA[curB];
+  if(curS===null){renderBranch(b);return;}
+  const s=b.subs[curS];
+  const st=STATUS[s.s];
+  main.innerHTML=
+    '<div class="crumb">Benign · '+b.title+'</div>'+
+    '<div class="mhead"><div class="mic">'+b.icon+'</div><h1>'+s.t+'</h1></div>'+
+    '<div class="badge '+st.cls+'"><span class="d"></span>'+st.word+'</div>'+
+    '<div class="note"><div class="l">The thread</div><p>'+s.n+'</p></div>'+
+    '<div class="placeholder">Not yet explored. When we discuss this in depth, its reasoning, diagram, and take-home cue land here.</div>';
+}
+
+function renderBranch(b){
+  main.innerHTML=
+    '<div class="crumb">Benign</div>'+
+    '<div class="mhead"><div class="mic">'+b.icon+'</div><h1>'+b.title+'</h1></div>'+
+    (b.sub?'<div class="msub">'+b.sub+'</div>':'')+
+    '<div class="grid" id="grid"></div>';
+  const g=document.getElementById('grid');
+  b.subs.forEach((s,j)=>{
+    const c=document.createElement('div');
+    c.className='gc';
+    c.innerHTML='<div class="nm">'+s.t+'</div>'+
+      '<div class="st"><span class="d"></span>'+STATUS[s.s].word+'</div>';
+    c.onclick=()=>{curS=j;save();renderCol2();renderMain();};
+    g.appendChild(c);
+  });
+}
+
+function renderHome(){
+  col2.style.display='none';
+  main.innerHTML=
+    '<div class="crumb">Benign</div>'+
+    '<div class="mhead"><div class="mic">🤍</div><h1>The map</h1></div>'+
+    '<div class="home"><p class="lede">Ten branches, each with its own set of nodes. Pick a branch on the left; it opens its nodes in the second panel. Every node is a parked thread — we discuss it, then its depth fills in here. Nothing gets lost.</p>'+
+    '<div class="legend"><span><span class="d o"></span>Open — not yet explored</span><span><span class="d m"></span>Mid — partly explored</span><span><span class="d c"></span>Build-ready</span></div>'+
+    '<div class="grid" id="grid"></div></div>';
+  const g=document.getElementById('grid');
+  DATA.forEach((b,i)=>{
+    const c=document.createElement('div');
+    c.className='gc';
+    c.innerHTML='<div class="nm">'+b.icon+' '+b.title+'</div>'+
+      '<div class="st"><span class="d"></span>'+b.subs.length+' topics</div>';
+    c.onclick=()=>{curB=i;curS=null;save();renderCol1();renderCol2();renderMain();};
+    g.appendChild(c);
+  });
+}
+
+const st=load();
+if(st&&typeof st.b==='number'){curB=st.b;curS=(typeof st.s==='number')?st.s:null;}
+renderCol1();renderCol2();renderMain();
+</script>
+</body>
+</html>

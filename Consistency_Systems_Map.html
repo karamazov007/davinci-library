@@ -1,0 +1,444 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Consistency System — A Systems Map</title>
+<style>
+  *{box-sizing:border-box}
+  body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    background:linear-gradient(160deg,#fbf9f6 0%,#f4f6fb 60%,#eef2f9 100%);color:#414a60;}
+  header.top{padding:20px 30px 14px}
+  header.top h1{margin:0;font-size:24px;color:#3a4258;letter-spacing:.2px}
+  .titlerow{display:flex;align-items:center;gap:16px;flex-wrap:wrap}
+  .badge-sci{display:inline-flex;align-items:center;gap:6px;font-size:13px;font-weight:700;
+    color:#6d5bd0;background:#efeafc;border:1px solid #cfc3f2;border-radius:999px;padding:6px 14px}
+  header.top .sub{color:#6b7690;font-size:14.5px;margin-top:8px;max-width:1120px;line-height:1.6}
+  header.top .sub b{color:#4a5470}
+  .hint{color:#93a0bb;font-size:13px;margin-top:9px}
+  .hint b{color:#6b7690}
+  .stage{position:relative}
+  .toolbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;padding:11px 24px;
+    background:rgba(255,255,255,.72);border-top:1px solid #e7ebf3;border-bottom:1px solid #e7ebf3;
+    position:sticky;top:0;z-index:5;backdrop-filter:blur(6px)}
+  .grp{display:flex;gap:9px;align-items:center;background:#fff;border:1px solid #e3e8f1;border-radius:11px;padding:7px 13px;box-shadow:0 1px 2px rgba(60,70,100,.04)}
+  .chk{display:flex;gap:8px;align-items:center;font-size:13.5px;color:#59627c;cursor:pointer;user-select:none}
+  .chk input{width:15px;height:15px}
+  .dot{width:12px;height:12px;border-radius:4px;display:inline-block}
+  button.zbtn{background:#fff;color:#59627c;border:1px solid #e3e8f1;border-radius:9px;min-width:36px;height:36px;font-size:17px;cursor:pointer;padding:0 10px}
+  button.zbtn:hover{background:#f1f4fa;color:#3a4258}
+  input#zslider{width:150px;height:6px;cursor:pointer;accent-color:#6d5bd0;background:transparent}
+  .scroller{overflow:auto;max-height:calc(100vh - 176px);cursor:grab;
+    background:radial-gradient(circle at center,rgba(120,140,180,.05) 1px,transparent 1px) 0 0/38px 38px;}
+  .scroller.grabbing{cursor:grabbing}
+  svg#map{display:block}
+  .stock:hover rect.body{filter:url(#lift)}
+  .stock text.title{font-weight:700;fill:#3a4258}
+  .stock text.tagn{font-weight:700}
+  .stock text.hintlbl{fill:#8894ae;font-weight:500}
+  .cloud path{fill:#eef1f7;stroke:#cdd5e4;stroke-width:1.6}
+  .cloud text{fill:#7f8aa4;font-weight:600}
+  /* FLOWS — strong, high-contrast, the primary readable layer */
+  .flow path.pipe{fill:none;stroke:#5f6d95;stroke-width:3.8;marker-end:url(#arrow)}
+  .flow.neg path.pipe{stroke:#d17f8d;stroke-width:3.4;stroke-dasharray:11 7;marker-end:url(#arrowNeg)}
+  .flow:hover path.pipe{stroke:#3f4d72;stroke-width:4.8}
+  .flow.neg:hover path.pipe{stroke:#c26576}
+  .flow text.rate{fill:#4a5578;font-weight:600}
+  .flow text.rate.neg{fill:#b96676}
+  /* LOOPS — de-emphasised: small badges only, no big dotted rings */
+  #g-loops{opacity:.82}
+  .badge circle{stroke:#fff;stroke-width:3}
+  .badge text{font-weight:800;fill:#fff}
+  .loop text.looptitle{font-weight:700}
+  .clickable{cursor:pointer}
+  .delay rect.dbox{fill:#fdf1cf;stroke:#e9c46a;stroke-width:1.8}
+  .delay text.dt{font-weight:700;fill:#9a6b16}
+  .delay text.dsub{font-weight:600;fill:#b08a3e}
+  .interv rect{fill:#e4f5ec;stroke:#7cc79c;stroke-width:1.7}
+  .interv text{font-weight:700;fill:#2f8a5b}
+  .interv:hover rect{fill:#d5eede}
+  .hidden{display:none !important}
+  /* MODAL */
+  .overlay{position:fixed;inset:0;background:rgba(40,52,80,.44);backdrop-filter:blur(2px);
+    display:none;align-items:center;justify-content:center;z-index:50;padding:24px}
+  .overlay.open{display:flex}
+  .modal{background:#fff;width:min(600px,94vw);max-height:88vh;overflow:auto;border-radius:18px;
+    box-shadow:0 24px 70px rgba(40,55,95,.34);padding:30px;position:relative;animation:pop .16s ease}
+  @keyframes pop{from{transform:scale(.94);opacity:.4}to{transform:scale(1);opacity:1}}
+  .modal .kicker{font-size:12px;letter-spacing:1.5px;text-transform:uppercase;font-weight:800}
+  .modal h2{margin:8px 0 8px;font-size:22px;color:#3a4258;line-height:1.28;padding-right:34px}
+  .modal p{color:#59627c;font-size:15px;line-height:1.68}
+  .modal .row{margin:14px 0;padding:14px 16px;border-radius:12px;background:#f7f9fc;border:1px solid #edf1f7}
+  .modal .row h4{margin:0 0 6px;font-size:11.5px;color:#8894ae;text-transform:uppercase;letter-spacing:.7px}
+  .modal .row .v{font-size:14.5px;color:#454e66;line-height:1.55}
+  .modal .row.evidence{background:#f3f0fb;border-color:#e0d8f6}
+  .modal .row.evidence h4{color:#7a6bc4}
+  .modal .cite{display:block;margin:7px 0;font-size:13.5px;line-height:1.5}
+  .modal .cite a{color:#6d5bd0;text-decoration:none;font-weight:600}
+  .modal .cite a:hover{text-decoration:underline}
+  .modal .chip{display:inline-block;padding:4px 11px;border-radius:8px;font-size:12.5px;font-weight:700;margin-bottom:12px}
+  .modal .closebtn{position:absolute;top:18px;right:18px;width:34px;height:34px;border-radius:50%;
+    border:1px solid #e6eaf2;background:#f7f9fc;color:#7f8aa4;font-size:18px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  .modal .closebtn:hover{background:#eef1f7;color:#3a4258}
+  .below{padding:22px 30px 66px}
+  .legend{display:flex;flex-wrap:wrap;gap:22px;font-size:14px;color:#59627c;align-items:center}
+  .legend .item{display:flex;gap:10px;align-items:center}
+  .refs{margin-top:26px;background:#fff;border:1px solid #e7ebf3;border-radius:14px;padding:20px 24px}
+  .refs h3{margin:0 0 4px;font-size:15px;color:#3a4258}
+  .refs .rsub{color:#8894ae;font-size:12.5px;margin-bottom:12px}
+  .refs ol{margin:0;padding-left:20px}
+  .refs li{font-size:13px;color:#5b647e;line-height:1.6;margin-bottom:7px}
+  .refs li a{color:#6d5bd0;text-decoration:none}
+  .refs li a:hover{text-decoration:underline}
+  .footer{color:#9aa5bd;font-size:12.5px;margin-top:20px;line-height:1.6}
+  .lever{margin-top:22px;background:linear-gradient(180deg,#efeafc,transparent);border:1px dashed #a99bea;border-radius:14px;padding:20px 24px}
+  .lever h3{margin:0 0 6px;color:#4a4270;font-size:16px}
+  .lever p{color:#6b7690;font-size:14px;margin:.3em 0}
+  .lever .blank{border:1px solid #cfc3f2;border-radius:10px;background:#fff;min-height:24px;margin:8px 0;padding:6px 10px;color:#a3a0bd;font-size:13px}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="titlerow">
+    <h1>The Consistency System — A Systems Map</h1>
+    <span class="badge-sci">◇ built from peer-reviewed sources</span>
+  </div>
+  <div class="sub">
+    Why consistency is hard, mapped as <b>stocks</b> (things that accumulate), <b>flows</b> (rates that fill/drain them), <b>feedback loops</b> and <b>delays</b>. The top belt is the <b>virtuous engine</b> you're building; the bottom belt is the <b>competing system and constraints</b>. Every element is drawn from a named study — habit psychology (Lally; Wood), neuroscience (Yin&nbsp;&&nbsp;Knowlton; Schultz; Berridge), self-regulation (Hofmann; Baumeister), decision science (Ainslie; Gollwitzer), motivation (Ryan&nbsp;&&nbsp;Deci) and systems theory (Meadows).
+  </div>
+  <div class="hint"><b>Click any box, arrow, loop badge, delay or green tag</b> for the mechanism and the <b>evidence behind it</b>. The solid arrows are the flows (read these first); the small circular badges mark where a feedback loop closes. Drag to pan, zoom for detail.</div>
+</header>
+
+<div class="stage">
+  <div class="toolbar">
+    <div class="grp"><label class="chk"><input type="checkbox" id="t-loops" checked><span class="dot" style="background:#3f9b92"></span>Feedback loops</label></div>
+    <div class="grp"><label class="chk"><input type="checkbox" id="t-delays" checked><span class="dot" style="background:#e9c46a"></span>Delays</label></div>
+    <div class="grp"><label class="chk"><input type="checkbox" id="t-interv" checked><span class="dot" style="background:#7cc79c"></span>Interventions</label></div>
+    <div class="grp" style="margin-left:auto">
+      <button class="zbtn" id="zout" title="zoom out">−</button>
+      <input type="range" id="zslider" min="30" max="300" value="100" title="zoom level">
+      <button class="zbtn" id="zin" title="zoom in">+</button>
+      <span style="font-size:13px;color:#7f8aa4;min-width:46px;text-align:center" id="zlabel">100%</span>
+      <button class="zbtn" id="zfit" title="fit to window width">fit</button>
+      <button class="zbtn" id="z100" style="font-size:13px" title="reset to 100%">1:1</button>
+      <button class="zbtn" id="zdefault" style="font-size:12px;min-width:auto" title="Save the current zoom as the default the map opens at">set default</button>
+    </div>
+  </div>
+  <div class="scroller" id="scroller">
+    <svg id="map" xmlns="http://www.w3.org/2000/svg"></svg>
+  </div>
+</div>
+
+<div class="below">
+  <div class="legend" id="legend"></div>
+
+  <div class="lever">
+    <h3>🎯 Leverage points — your analysis</h3>
+    <p>Meadows (1999) ranks interventions from shallow to deep: <b>parameters → feedback-loop strength → system design → goal/paradigm</b>, with the paradigm the highest leverage. Each loop's pop-up notes where an intervention on it sits in that hierarchy. Decide for yourself:</p>
+    <div class="blank">Highest-leverage point I can see: ______________________________</div>
+    <div class="blank">The loop / stock it acts on: ______________________________</div>
+    <div class="blank">Why it cascades through the rest: ______________________________</div>
+  </div>
+
+  <div class="refs" id="refs"></div>
+  <div class="footer">A model for reasoning about behavioural consistency, assembled from the primary literature. Notation follows Forrester/Meadows system-dynamics conventions. Not medical or psychological advice.</div>
+</div>
+
+<div class="overlay" id="overlay">
+  <div class="modal" id="modal"><button class="closebtn" id="closebtn">✕</button><div id="modalContent"></div></div>
+</div>
+
+<script>
+/* ============================ CITATIONS ============================ */
+const CITES={
+ lally2010:{t:"Lally, van Jaarsveld, Potts & Wardle (2010). How are habits formed: Modelling habit formation in the real world.",v:"European Journal of Social Psychology, 40(6), 998–1009.",u:"https://onlinelibrary.wiley.com/doi/10.1002/ejsp.674"},
+ wood2007:{t:"Wood & Neal (2007). A new look at habits and the habit–goal interface.",v:"Psychological Review, 114(4), 843–863.",u:"https://dornsife.usc.edu/wendy-wood/wp-content/uploads/sites/183/2023/10/wood.neal_.2007psychrev_a_new_look_at_habits_and_the_interface_between_habits_and_goals.pdf"},
+ wood2005:{t:"Wood, Tam & Guerrero Witt (2005). Changing circumstances, disrupting habits.",v:"Journal of Personality and Social Psychology, 88(6), 918–933.",u:"https://pubmed.ncbi.nlm.nih.gov/15982113/"},
+ yin2006:{t:"Yin & Knowlton (2006). The role of the basal ganglia in habit formation.",v:"Nature Reviews Neuroscience, 7, 464–476.",u:"https://www.nature.com/articles/nrn1919"},
+ schultz1997:{t:"Schultz, Dayan & Montague (1997). A neural substrate of prediction and reward.",v:"Science, 275(5306), 1593–1599.",u:"https://www.semanticscholar.org/paper/A-Neural-Substrate-of-Prediction-and-Reward-Schultz-Dayan/12b9019f99a315a137400389ee7c6faa4cceef35"},
+ berridge2016:{t:"Robinson & Berridge — ‘wanting’ (incentive salience, dopamine-driven) is dissociable from ‘liking’; cues acquire motivational pull.",v:"Liking, Wanting & the Incentive-Sensitization Theory (review), PMC5171207.",u:"https://pmc.ncbi.nlm.nih.gov/articles/PMC5171207/"},
+ ainslie1975:{t:"Ainslie (1975). Specious reward: A behavioral theory of impulsiveness and impulse control (hyperbolic discounting).",v:"Psychological Bulletin, 82(4), 463–496.",u:"https://www.researchgate.net/publication/22054716_Specious_reward_A_behavioral_theory_of_impulsiveness_and_impulse_control"},
+ hofmann2009:{t:"Hofmann, Friese & Strack (2009). Impulse and self-control from a dual-systems perspective.",v:"Perspectives on Psychological Science, 4(2), 162–176.",u:"https://journals.sagepub.com/doi/10.1111/j.1745-6924.2009.01116.x"},
+ baumeister1998:{t:"Baumeister, Bratslavsky, Muraven & Tice (1998). Ego depletion: Is the active self a limited resource?",v:"Journal of Personality and Social Psychology, 74(5), 1252–1265.",u:"https://faculty.washington.edu/jdb/345/345%20Articles/Baumeister%20et%20al.%20(1998).pdf"},
+ egocaveat:{t:"Caveat — the ‘strength/depletion’ model is contested: large multi-lab replications found little/no effect.",v:"‘The Past, Present, and Future of Ego Depletion’, Social Psychology.",u:"https://econtent.hogrefe.com/doi/10.1027/1864-9335/a000398"},
+ gollwitzer2006:{t:"Gollwitzer & Sheeran (2006). Implementation intentions and goal achievement: a meta-analysis (94 tests; d = .65).",v:"Advances in Experimental Social Psychology, 38, 69–119.",u:"https://kops.uni-konstanz.de/handle/123456789/10973"},
+ ryandeci2000:{t:"Ryan & Deci (2000). Self-determination theory and the facilitation of intrinsic motivation (autonomy, competence, relatedness; internalization).",v:"American Psychologist, 55(1), 68–78.",u:"https://selfdeterminationtheory.org/SDT/documents/2000_RyanDeci_SDT.pdf"},
+ bem1972:{t:"Bem (1972). Self-perception theory (people infer their identity from observing their own behaviour).",v:"Advances in Experimental Social Psychology, 6, 1–62.",u:""},
+ meadows1999:{t:"Meadows (1999). Leverage Points: Places to Intervene in a System.",v:"The Sustainability Institute.",u:"https://donellameadows.org/archives/leverage-points-places-to-intervene-in-a-system/"}
+};
+function citeRow(keys){if(!keys||!keys.length)return"";
+  const items=keys.map(k=>{const c=CITES[k];if(!c)return"";const link=c.u?`<a href="${c.u}" target="_blank" rel="noopener">${c.v} ↗</a>`:`<span style="color:#8894ae">${c.v}</span>`;
+    return `<span class="cite"><b style="color:#454e66">${c.t}</b><br>${link}</span>`;}).join("");
+  return `<div class="row evidence"><h4>Evidence base</h4><div class="v">${items}</div></div>`;}
+
+/* ============================ STOCKS ============================ */
+const SW=340,SH=190;
+const stocks={
+ behavior:{x:820,y:900,pastel:"#dcebfc",edge:"#95c0f0",tag:"the act",title:"Cue-Triggered Repetition",hint:"the behaviour itself",
+   logic:"The behaviour on any given day — showing up. It is triggered two ways: <b>bottom-up</b> by a context cue (the automatic route) and <b>top-down</b> by a deliberate intention drawing on limited regulatory capacity (the effortful route). Wood & Neal's dual-process account frames exactly this habit↔goal interface. Early on, repetition depends on the costly top-down route; the whole point of the system is to hand it over to the cheap bottom-up route.",
+   cite:["wood2007","hofmann2009"],
+   detail:[["Two routes","Automatic (cue→response) vs. controlled (intention→response, effortful)"],["Why it's the hub","Every loop runs through this node — it is both the thing you want and the thing everything competes over"]]},
+ habit:{x:820,y:250,pastel:"#ece5fb",edge:"#b7a6ee",tag:"stock",title:"Habit Strength",hint:"how automatic it has become",
+   logic:"The accumulated automaticity of the behaviour — how much it runs without deliberate effort. Lally et al. tracked this in the real world: repeating a behaviour in a <b>stable context</b> raises automaticity along an <b>asymptotic curve</b> that plateaus. Neurally, control migrates from the goal-directed <b>dorsomedial striatum</b> to the habit-based <b>dorsolateral striatum</b> (Yin & Knowlton), which is why a well-formed habit costs almost no willpower.",
+   cite:["lally2010","yin2006","wood2007"],
+   detail:[["Builds via","Repetition in a consistent context (the build flow)"],["Time to plateau","Median ≈ 66 days, range 18–254 — see the delay on the build flow"],["Reassuring","Lally: missing a single opportunity did not measurably harm formation — one slip is noise"]]},
+ identity:{x:1720,y:250,pastel:"#daf0e5",edge:"#8dd3b2",tag:"stock",title:"Identity / Self-Concept",hint:'"I am the kind of person who…"',
+   logic:"How strongly the behaviour is woven into your self-concept. Bem's self-perception theory holds that people infer who they are by <b>observing their own actions</b> — so each repetition is evidence to yourself that 'this is who I am.' Self-Determination Theory calls the same process <b>internalisation</b>: as motivation shifts from external pressure toward autonomous, identity-level ownership, the behaviour becomes far more durable.",
+   cite:["bem1972","ryandeci2000"],
+   detail:[["Grows via","Each completed action = a self-signal / a 'vote' (the vote flow)"],["Why durable","Autonomous, internalised motivation persists where external pressure does not (SDT)"]]},
+ results:{x:2560,y:520,pastel:"#d3edf1",edge:"#8bccd1",tag:"stock",title:"Results / Delayed Payoff",hint:"fitness, skill — arrives later",
+   logic:"The actual outcome you're after — which arrives on a long <b>delay</b> and builds slowly. Ainslie's <b>hyperbolic discounting</b> is the crux: humans discount delayed rewards steeply, so a payoff months away exerts almost no pull <i>now</i> and is routinely beaten by smaller-sooner rewards (the phone). This delay is what weakens the reward→motivation engine, and why immediate feedback has to be engineered in.",
+   cite:["ainslie1975"],
+   detail:[["Key property","Separated from the action by weeks/months — the reward loop's built-in handicap"],["Implication","Manufacture immediate proxy-rewards (tracking, bundling) to bridge the gap"]]},
+ motivation:{x:1740,y:930,pastel:"#fbf1cf",edge:"#e6cf7e",tag:"stock",title:"Motivation / Incentive Salience",hint:'the "wanting" to start',
+   logic:"The moment-to-moment pull to initiate. Berridge & Robinson dissociate <b>'wanting' (incentive salience)</b> — a dopamine-driven motivational magnet attached to cues — from <b>'liking'</b> (the pleasure itself). Motivation here is mostly 'wanting', and it is <b>learned</b>: Schultz showed dopamine encodes a <b>reward-prediction error</b>, firing to better-than-expected outcomes and their cues. Quality matters — SDT shows autonomous motivation outlasts pressured motivation.",
+   cite:["berridge2016","schultz1997","ryandeci2000"],
+   detail:[["Volatile","'Wanting' spikes and crashes with cues — a poor thing to depend on"],["Trainable","Reliable rewards teach the cue to trigger 'wanting' — what the reward loop exploits"]]},
+ willpower:{x:820,y:1560,pastel:"#e6e9f2",edge:"#b6c0da",tag:"stock",title:"Self-Regulatory Capacity",hint:"the effortful, top-down route",
+   logic:"The capacity powering the deliberate, top-down route before a habit exists. In Hofmann's dual-systems model it is the <b>reflective system</b> overriding impulses, strongly shaped by <b>sleep, stress and load</b>. Baumeister's 'strength/ego-depletion' model cast it as a depletable resource — <b>but this is heavily contested</b>: large pre-registered replications found little to no depletion effect. Treat it as real but limited and fragile, not a simple fuel tank.",
+   cite:["hofmann2009","baumeister1998","egocaveat"],
+   detail:[["Powers","Top-down initiation when there's no cue-habit yet"],["Fragile","Degraded by poor sleep, high stress, cognitive load"],["Contested","The 'willpower runs out like fuel' story failed to replicate at scale — don't over-rely on it"]]},
+ distraction:{x:1720,y:1560,pastel:"#fbe3e6",edge:"#eda9b2",tag:"rival stock",title:"Distraction Habit",hint:"the phone/feed, on a variable reward",
+   logic:"A rival automaticity competing for the same cues, attention and initiation. Modern feeds are engineered <b>supernormal cues</b> delivering <b>immediate, variable rewards</b> — the exact conditions that maximise dopamine 'wanting' (Berridge) and reward-prediction-error learning (Schultz). Because it uses the same cue→response machinery as your target habit (Wood & Neal), it doesn't just distract — it <b>occupies the slot</b> your habit needs and drains the top-down route.",
+   cite:["berridge2016","schultz1997","wood2007"],
+   detail:[["Why it wins","Instant + variable reward beats delayed + reliable reward every time"],["Two harms","(a) steals the cue/attention; (b) burns the same capacity your habit needs"]]}
+};
+
+const clouds={
+ env:{x:150,y:930,w:250,h:130,title:"Environment & context cues"},
+ substrate:{x:150,y:1580,w:260,h:130,title:"Sleep · stress · load"}
+};
+
+/* ============================ FLOWS ============================ */
+const flows={
+ f_cue:{from:"env",to:"behavior",rate:"context cue → routine",bend:26,ldx:0,ldy:-30,cite:["wood2007","wood2005"],
+   logic:"The automatic trigger: a stable context cue fires the response with no deliberation. Wood & Neal show habits are context-cued; Wood, Tam & Guerrero Witt show a stable context keeps the habit firing, and that changing circumstances remove the cue and drop behaviour back to effortful intention. Controlling cues is controlling behaviour."},
+ f_build:{from:"behavior",to:"habit",rate:"repetition → automaticity",bend:0,ldx:170,ldy:0,cite:["lally2010","yin2006"],
+   logic:"Each repetition in a consistent context deposits automaticity into Habit Strength along Lally's asymptotic curve, as control migrates toward the dorsolateral striatum (Yin & Knowlton). This is the inflow that eventually lets the behaviour run itself."},
+ f_vote:{from:"behavior",to:"identity",rate:"each rep = a self-signal",bend:-30,ldx:-40,ldy:44,cite:["bem1972","ryandeci2000"],
+   logic:"Every completed action is evidence to yourself about who you are (Bem) and a step of internalisation (SDT). Repetitions accumulate into an identity that then makes the behaviour feel like self-expression rather than a task."},
+ f_out:{from:"behavior",to:"results",rate:"action → outcome (slow)",bend:-52,ldx:0,ldy:-26,cite:["ainslie1975"],
+   logic:"Consistent action produces the real payoff — but slowly and on a delay. Because of hyperbolic discounting (Ainslie), that distant payoff is worth little to your present self, which is the fundamental reason the reward loop is weak without help."},
+ f_rpe:{from:"results",to:"motivation",rate:"reward-prediction error",bend:44,ldx:70,ldy:0,cite:["schultz1997","berridge2016"],
+   logic:"Outcomes and their predictive cues update dopamine 'wanting' via reward-prediction error (Schultz): a better-than-expected result raises incentive salience for the behaviour. Visible, immediate feedback is what makes this signal fire — hence tracking and proxy-rewards."},
+ f_mot:{from:"motivation",to:"behavior",rate:"‘wanting’ pulls initiation",bend:26,ldx:0,ldy:-28,cite:["berridge2016"],
+   logic:"'Wanting' (incentive salience) is the motivational magnet that actually pulls you to start (Berridge). It is volatile and cue-dependent — useful as a boost, unreliable as a foundation."},
+ f_wsupport:{from:"willpower",to:"behavior",rate:"reserve enables effortful start",bend:80,ldx:-150,ldy:0,cite:["hofmann2009"],
+   logic:"Before a habit exists, initiation runs on the reflective/top-down route, which draws on self-regulatory capacity (Hofmann). Intact capacity lets you start on intention alone; degraded capacity means you can't."},
+ f_spend:{from:"behavior",to:"willpower",rate:"initiating & resisting cost capacity",bend:-80,ldx:170,ldy:0,neg:true,cite:["baumeister1998","egocaveat"],
+   logic:"Effortful initiation and resisting distraction draw down regulatory capacity (the classic depletion claim, Baumeister). Read with caution — the strength-model largely failed to replicate — but the practical point holds: the top-down route is costly, so a system leaning on it all day tends to fail late in the day."},
+ f_cue2:{from:"env",to:"distraction",rate:"supernormal cues + variable reward",bend:150,ldx:0,ldy:-24,cite:["berridge2016","schultz1997"],
+   logic:"The same environment is saturated with engineered cues (notifications, feeds) offering instant, variable rewards — the optimal schedule for building dopamine 'wanting' (Berridge) and prediction-error learning (Schultz). This inflow builds the rival Distraction Habit fast."},
+ f_distract:{from:"distraction",to:"behavior",rate:"competes for cue-slot & attention",bend:-40,ldx:120,ldy:26,neg:true,cite:["wood2007"],
+   logic:"Because distraction runs on the same cue→response machinery (Wood & Neal), it occupies the moments and cues your intended habit needs, and consumes the attention/capacity that top-down initiation requires — a negative pull on the behaviour."},
+ f_recover:{from:"substrate",to:"willpower",rate:"sleep/rest replenish capacity",bend:0,ldx:0,ldy:-28,cite:["hofmann2009"],
+   logic:"Self-regulatory capacity is restored by sleep and low stress, and degraded by their absence (Hofmann). This makes sleep a meta-habit: it funds the top-down route that every not-yet-automatic behaviour depends on."}
+};
+
+/* ============================ LOOPS (badges only) ============================ */
+const loops={
+ R1:{type:"R",badge:[640,610],col:"#e58a63",slabel:"Habit flywheel",title:"Habit flywheel (reinforcing)",
+   logic:"Repetition → Habit Strength → lower effort per rep → easier repetition → more repetition. Lally's asymptotic automaticity curve is this loop turning; Yin & Knowlton give its neural basis (control shifting to the dorsolateral striatum so the act costs less each time). Self-sustaining once spinning — but note the long formation delay before it is.",
+   cite:["lally2010","yin2006"],
+   lever:"Leverage: strengthen this loop's gain by protecting context stability so every rep counts (you can't shortcut its delay)."},
+ R2:{type:"R",badge:[1480,560],col:"#e58a63",slabel:"Identity engine",title:"Identity engine (reinforcing)",
+   logic:"Each action is a self-signal (Bem) that strengthens 'I am this kind of person', which makes the next congruent action more likely; SDT internalisation makes that motivation autonomous. Often the most robust loop — it depends on neither willpower nor the delayed payoff.",
+   cite:["bem1972","ryandeci2000"],
+   lever:"Leverage: operates near Meadows' deepest level — the goal/paradigm ('who am I'). Shifting the identity the behaviour serves is very high leverage."},
+ R3:{type:"R",badge:[2260,760],col:"#e58a63",slabel:"Reward → motivation",title:"Reward → motivation loop (delay-limited)",
+   logic:"Action → outcome → reward-prediction error updates 'wanting' (Schultz; Berridge) → more motivation to act. Virtuous in principle, but throttled by the payoff delay (Ainslie): the real result is far away, so the in-the-moment signal is tiny. The fix is to inject immediate feedback so the loop fires now.",
+   cite:["schultz1997","berridge2016","ainslie1975"],
+   lever:"Leverage: acts on an information flow (feedback timing). Shortening the delay to a felt reward — tracking, proxy-rewards — strengthens it substantially."},
+ R4:{type:"R",badge:[1400,1560],col:"#c76b7a",vicious:true,slabel:"Distraction spiral",title:"Distraction spiral (vicious reinforcing)",
+   logic:"A reinforcing loop pointed the wrong way: supernormal cue → instant, variable reward → strong prediction error → amplified 'wanting' → more cue-seeking → stronger Distraction Habit → more cue sensitivity. Berridge's incentive-sensitization and Schultz's prediction-error learning describe it exactly. It also drains the capacity your habit needs.",
+   cite:["berridge2016","schultz1997"],
+   lever:"Leverage: highest practical leverage is the parameter/structure of cue exposure — remove the cues (friction, distance), don't fight the 'wanting' after it fires."},
+ B1:{type:"B",badge:[640,1230],col:"#3f9b92",slabel:"Willpower depletion",title:"Willpower depletion (balancing)",
+   logic:"Relying on regulatory capacity to act spends it, and a lower reserve reduces the capacity to act — self-limiting. This is the classic depletion claim (Baumeister), with the strong caveat that the strength-model largely failed to replicate. Either way the top-down route is effortful and doesn't scale — which is why durable consistency must migrate to the automatic route (R1) and to identity (R2).",
+   cite:["baumeister1998","egocaveat","hofmann2009"],
+   lever:"Leverage: don't strengthen this loop (more willpower) — low leverage. Redesign so the behaviour needs less of it (cues, if-then plans)."},
+ B2:{type:"B",badge:[560,1520],col:"#3f9b92",slabel:"Recovery",title:"Recovery (balancing)",
+   logic:"Depleted capacity prompts rest/sleep, which replenishes it back toward baseline (Hofmann). Its set-point is governed by sleep and stress — which is why guarding sleep is a meta-habit that funds every other loop.",
+   cite:["hofmann2009"],
+   lever:"Leverage: raising this loop's set-point (better sleep/stress) lifts the ceiling on all top-down behaviour — a structural intervention."},
+ B3:{type:"B",badge:[430,620],col:"#3f9b92",slabel:"Context regulation",title:"Context regulation (balancing)",
+   logic:"Whether the habit fires at all is gated by context stability. Wood, Tam & Guerrero Witt showed that when the performance context changes, cues vanish and even strong habits collapse to effortful intention. The environment is a balancing regulator on habit expression — stable context keeps the flywheel fed; disruption (travel, a move, a new schedule) is where consistency quietly breaks.",
+   cite:["wood2005","wood2007"],
+   lever:"Leverage: designing a stable cue-context is structural; it also flags change-points (travel, moves) as the predictable failure windows to plan for."}
+};
+
+/* ============================ DELAYS (explicit positions) ============================ */
+const delays={
+ d_habit:{at:[1160,650],type:"Formation delay",short:"≈66 days (18–254)",cite:["lally2010"],
+   logic:"The lag between starting to repeat a behaviour and it becoming automatic. Lally et al. measured a median of about 66 days to the automaticity plateau, ranging 18–254 depending on person and behaviour. This is why the habit flywheel (R1) feels like it 'isn't working' for weeks — the stock fills below the surface long before the behaviour feels effortless. The popular '21 days' figure is not supported."},
+ d_payoff:{at:[1850,700],type:"Payoff delay + discounting",short:"weeks–months, hyperbolically discounted",cite:["ainslie1975"],
+   logic:"The gap between acting and seeing real results. Ainslie's hyperbolic discounting shows a reward's value drops steeply with delay, so a payoff months away barely registers now and is easily beaten by an immediate temptation. This delay is the structural reason the reward loop (R3) is weak — and the reason to engineer immediate proxy-rewards."},
+ d_recover:{at:[470,1710],type:"Recovery delay",short:"a sleep cycle",cite:["hofmann2009"],
+   logic:"Self-regulatory capacity doesn't refill instantly — it recovers over rest and sleep. Within a demanding day the top-down route can run low faster than it recovers, which is why hard, not-yet-automatic behaviours are best scheduled when the reserve is freshest."}
+};
+
+/* ============================ INTERVENTIONS ============================ */
+const interventions={
+ i_impl:{at:[560,905],w:220,label:"⚙ If-then plan",cite:["gollwitzer2006"],
+   title:"Implementation intentions",
+   logic:"Pre-deciding the exact cue and response — 'If situation X, then I do Y' — offloads initiation from the effortful top-down route onto an automatic cue→response link. Gollwitzer & Sheeran's meta-analysis of 94 tests found a medium-to-large effect (d = .65) on goal attainment. It strengthens the cue→routine flow and reduces load on Self-Regulatory Capacity.",
+   acts:"Strengthens the cue→routine flow; bypasses B1 (willpower)."},
+ i_bundle:{at:[2260,930],w:240,label:"⚙ Reward bundling",cite:["ainslie1975","schultz1997"],
+   title:"Bundle an immediate reward",
+   logic:"Because the real payoff is hyperbolically discounted (Ainslie), attach an immediate reward to the action — the tracked tick, or only-while-exercising treats (temptation bundling). This injects a present reward-prediction-error signal (Schultz) so the R3 loop fires now instead of waiting months.",
+   acts:"Shortens the payoff delay; powers the R3 reward→motivation loop."},
+ i_friction:{at:[2280,1500],w:230,label:"⚙ Cut the cues",cite:["berridge2016","wood2005"],
+   title:"Remove distraction cues (add friction)",
+   logic:"Since 'wanting' is cue-triggered and hard to fight once fired (Berridge), the high-leverage move is removing the cue: distance, friction, notifications off. Cue-removal also uses the context mechanism (Wood) — no cue, no automatic pull. This starves the inflow feeding the distraction spiral (R4).",
+   acts:"Starves the R4 distraction spiral at its source."}
+};
+
+/* ============================ RENDER ============================ */
+const VBW=3020, VBH=1900;
+const svg=document.getElementById('map');svg.setAttribute('viewBox',`0 0 ${VBW} ${VBH}`);
+const NS="http://www.w3.org/2000/svg";
+function el(t,a={},p){const e=document.createElementNS(NS,t);for(const k in a)e.setAttribute(k,a[k]);if(p)p.appendChild(e);return e;}
+const defs=el('defs',{},svg);
+defs.innerHTML=`
+<filter id="soft" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="4" stdDeviation="7" flood-color="#5b6b96" flood-opacity="0.16"/></filter>
+<filter id="lift" x="-30%" y="-30%" width="160%" height="160%"><feDropShadow dx="0" dy="6" stdDeviation="10" flood-color="#5b6b96" flood-opacity="0.32"/></filter>
+<marker id="arrow" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#5f6d95"/></marker>
+<marker id="arrowNeg" viewBox="0 0 10 10" refX="8.5" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#d17f8d"/></marker>`;
+
+const root=el('g',{id:'root'},svg);
+const gLane=el('g',{},root);
+const gFlows=el('g',{},root);
+const gNodes=el('g',{},root);
+const gLoops=el('g',{id:'g-loops'},root);
+const gDelays=el('g',{id:'g-delays'},root);
+const gInterv=el('g',{id:'g-interv'},root);
+
+function lane(y,txt,col){const t=el('text',{x:150,y:y,'font-size':17,'font-weight':800,fill:col,'letter-spacing':'1.5px',opacity:.42},gLane);t.textContent=txt;}
+lane(140,"THE VIRTUOUS ENGINE  ·  what you are trying to build","#8a7cc9");
+lane(1420,"THE COMPETING SYSTEM & CONSTRAINTS  ·  what fights it","#c98f8f");
+
+function dims(id){const n=stocks[id]?{...stocks[id],w:SW,h:SH}:clouds[id];return n;}
+function boxEdge(n,tx,ty){const cx=n.x+n.w/2,cy=n.y+n.h/2;const dx=tx-cx,dy=ty-cy;const hw=n.w/2+8,hh=n.h/2+8;
+  const sx=dx===0?1e9:hw/Math.abs(dx),sy=dy===0?1e9:hh/Math.abs(dy);const s=Math.min(sx,sy);return {x:cx+dx*s,y:cy+dy*s};}
+const midOf={};
+
+/* clouds */
+for(const id in clouds){const c=clouds[id];const g=el('g',{class:'cloud'},gNodes);const{x,y,w,h}=c;
+  el('path',{d:`M ${x+w*0.24} ${y+h*0.72} a ${w*0.15} ${h*0.2} 0 0 1 ${-w*0.01} ${-h*0.44} a ${w*0.2} ${h*0.28} 0 0 1 ${w*0.33} ${-h*0.2} a ${w*0.2} ${h*0.26} 0 0 1 ${w*0.38} ${h*0.05} a ${w*0.15} ${h*0.24} 0 0 1 ${-w*0.03} ${h*0.55} z`,filter:'url(#soft)'},g);
+  const tx=el('text',{'text-anchor':'middle','font-size':14.5},g);wrapText(tx,c.title,w-30,x+w/2,y+h*0.52,14.5);}
+
+/* flows */
+function connector(a,b,bend){const A=dims(a),B=dims(b);const ac={x:A.x+A.w/2,y:A.y+A.h/2},bc={x:B.x+B.w/2,y:B.y+B.h/2};
+  const s=boxEdge(A,bc.x,bc.y),e0=boxEdge(B,ac.x,ac.y);
+  const dx=e0.x-s.x,dy=e0.y-s.y,l=Math.hypot(dx,dy)||1,ux=dx/l,uy=dy/l;
+  const e={x:e0.x-ux*3,y:e0.y-uy*3};const mx=(s.x+e.x)/2,my=(s.y+e.y)/2,px=-uy,py=ux;
+  const cx=mx+px*(bend||0),cy=my+py*(bend||0);
+  return {d:`M ${s.x} ${s.y} Q ${cx} ${cy} ${e.x} ${e.y}`,mid:{x:0.25*s.x+0.5*cx+0.25*e.x,y:0.25*s.y+0.5*cy+0.25*e.y}};}
+for(const id in flows){const f=flows[id];const c=connector(f.from,f.to,f.bend);
+  const g=el('g',{class:'flow clickable'+(f.neg?' neg':''),id:'flow-'+id},gFlows);
+  el('path',{class:'pipe',d:c.d},g);midOf[id]=c.mid;
+  const lx=c.mid.x+(f.ldx||0), ly=c.mid.y+(f.ldy||0);
+  const rt=el('text',{class:'rate'+(f.neg?' neg':''),'font-size':15.5,'text-anchor':'middle',x:lx,y:ly},g);
+  wrapText(rt,f.rate,200,lx,ly,15.5);
+  /* polarity badge: + increases/supports, − reduces/depletes */
+  const pGood='#2f8a5b',pBad='#c26576';
+  el('circle',{class:'polbadge',cx:c.mid.x,cy:c.mid.y,r:12,fill:'#fff',stroke:f.neg?pBad:pGood,'stroke-width':2.4},g);
+  el('text',{class:'polsign',x:c.mid.x,y:c.mid.y+(f.neg?4:6),'text-anchor':'middle','font-size':f.neg?21:18,'font-weight':800,fill:f.neg?pBad:pGood},g).textContent=f.neg?'−':'+';
+  g.addEventListener('click',()=>openModal(html(f.neg?'Flow · reduces / depletes (−)':'Flow · increases / supports (+)',f.neg?'#c26576':'#2f8a5b',f.rate,`<p>${f.logic}</p>${row('Polarity',f.neg?'<b style="color:#c26576">Negative (−)</b> — when the source rises, the target <b>falls</b> (it drains or competes).':'<b style="color:#2f8a5b">Positive (+)</b> — when the source rises, the target <b>rises</b> too (it builds or supports).')}${citeRow(f.cite)}`)));}
+
+/* stocks */
+for(const id in stocks){const s={...stocks[id],w:SW,h:SH};const g=el('g',{class:'stock clickable',id:'stock-'+id},gNodes);
+  el('rect',{class:'body',x:s.x,y:s.y,width:s.w,height:s.h,rx:22,fill:s.pastel,stroke:s.edge,'stroke-width':2.6,filter:'url(#soft)'},g);
+  const pw=Math.max(52,s.tag.length*8.2+18);
+  el('rect',{x:s.x+24,y:s.y+20,width:pw,height:28,rx:14,fill:'#fff',stroke:s.edge,'stroke-width':1.6},g);
+  el('text',{class:'tagn',x:s.x+24+pw/2,y:s.y+39,'text-anchor':'middle','font-size':12.5,fill:s.edge},g).textContent=s.tag;
+  const t=el('text',{class:'title','font-size':22,fill:'#3a4258'},g);
+  wrapText(t,s.title,s.w-52,s.x+26,s.y+100,22,'start');
+  el('text',{class:'hintlbl','font-size':13.5,x:s.x+26,y:s.y+s.h-22},g).textContent=s.hint;
+  g.addEventListener('click',()=>openModal(html('Stock · accumulation',s.edge,s.title,
+    `<div class="chip" style="background:${s.pastel};color:#556074">${s.tag}</div><p>${s.logic}</p>${(s.detail||[]).map(x=>row(x[0],x[1])).join('')}${citeRow(s.cite)}`)));}
+
+/* loop badges */
+for(const id in loops){const L=loops[id];const g=el('g',{class:'loop '+L.type+' clickable',id:'loop-'+id},gLoops);
+  const b=el('g',{class:'badge'},g);
+  el('circle',{cx:L.badge[0],cy:L.badge[1],r:20,fill:L.col},b);
+  el('text',{x:L.badge[0],y:L.badge[1]+6,'text-anchor':'middle','font-size':16},b).textContent=L.label||id;
+  const col=L.type==='B'?'#347c74':(L.vicious?'#b0576a':'#c96a45');
+  el('text',{class:'looptitle',x:L.badge[0],y:L.badge[1]+40,'text-anchor':'middle','font-size':13.5,fill:col},g).textContent=(id)+" · "+L.slabel;
+  g.addEventListener('click',()=>openLoop(id));}
+
+/* delays */
+for(const id in delays){const dd=delays[id];const g=el('g',{class:'delay clickable',id:'delay-'+id},gDelays);
+  const cx=dd.at[0],cy=dd.at[1],w=214,h=48;
+  el('rect',{class:'dbox',x:cx-w/2,y:cy-h/2,width:w,height:h,rx:12,filter:'url(#soft)'},g);
+  el('text',{class:'dt',x:cx,y:cy-4,'text-anchor':'middle','font-size':13.5},g).textContent='⏱ '+dd.type;
+  el('text',{class:'dsub',x:cx,y:cy+15,'text-anchor':'middle','font-size':12},g).textContent=dd.short;
+  g.addEventListener('click',e=>{e.stopPropagation();openModal(html('Delay','#b98a2c','⏱ '+dd.type,`<div class="chip" style="background:#fdf1cf;color:#9a6b16">${dd.short}</div><p>${dd.logic}</p>${citeRow(dd.cite)}`));});}
+
+/* interventions */
+for(const id in interventions){const iv=interventions[id];const g=el('g',{class:'interv clickable',id:'interv-'+id},gInterv);
+  const w=iv.w,h=42,x=iv.at[0]-w/2,y=iv.at[1]-h/2;
+  el('rect',{x,y,width:w,height:h,rx:12,filter:'url(#soft)'},g);
+  el('text',{x:iv.at[0],y:iv.at[1]+5,'text-anchor':'middle','font-size':14},g).textContent=iv.label;
+  g.addEventListener('click',e=>{e.stopPropagation();openModal(html('Intervention · leverage point','#2f8a5b',iv.title,`<p>${iv.logic}</p>${row('Acts on the system by',iv.acts)}${citeRow(iv.cite)}`));});}
+
+/* helpers */
+function wrapText(te,str,maxW,x,y,size,anchor='middle'){te.textContent='';const words=str.split(' ');let line='';const lines=[];
+  for(const w of words){const test=line?line+' '+w:w;if(test.length*(size*0.54)>maxW&&line){lines.push(line);line=w;}else line=test;}
+  if(line)lines.push(line);const lh=size+3;const sy=y-((lines.length-1)*lh)/2;
+  lines.forEach((ln,i)=>{el('tspan',{x:x,y:sy+i*lh},te).textContent=ln;});te.setAttribute('text-anchor',anchor);}
+function row(h,v){return `<div class="row"><h4>${h}</h4><div class="v">${v}</div></div>`;}
+
+/* MODAL */
+const overlay=document.getElementById('overlay'),modalContent=document.getElementById('modalContent');
+function html(kicker,color,title,body){return `<div class="kicker" style="color:${color}">${kicker}</div><h2>${title}</h2>${body}`;}
+function openModal(h){modalContent.innerHTML=h;overlay.classList.add('open');}
+function closeModal(){overlay.classList.remove('open');}
+function openLoop(id){const L=loops[id];const isB=L.type==='B';const c=isB?'#3f9b92':(L.vicious?'#c76b7a':'#d9744c');
+  openModal(html(isB?'Balancing feedback loop':(L.vicious?'Reinforcing loop · vicious':'Reinforcing feedback loop'),c,id+' · '+L.title,
+    `<p>${L.logic}</p>${row('Loop type',isB?'Balancing — self-correcting; pushes back against change, settling toward a set-point':'Reinforcing — self-amplifying; each turn makes the next turn bigger'+(L.vicious?' (here, in the wrong direction)':''))}${L.lever?row('Leverage (Meadows)',L.lever):''}${citeRow(L.cite)}`));}
+document.getElementById('closebtn').addEventListener('click',closeModal);
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+window.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+/* toggles */
+document.getElementById('t-loops').addEventListener('change',e=>gLoops.classList.toggle('hidden',!e.target.checked));
+document.getElementById('t-delays').addEventListener('change',e=>gDelays.classList.toggle('hidden',!e.target.checked));
+document.getElementById('t-interv').addEventListener('change',e=>gInterv.classList.toggle('hidden',!e.target.checked));
+
+/* zoom + pan */
+let zoom=1;const zlabel=document.getElementById('zlabel');const scroller=document.getElementById('scroller');const zslider=document.getElementById('zslider');
+function applyZoom(){svg.setAttribute('width',VBW*zoom);svg.setAttribute('height',VBH*zoom);const pct=Math.round(zoom*100);zlabel.textContent=pct+'%';if(zslider)zslider.value=Math.max(30,Math.min(300,pct));}
+function setZoom(z){zoom=Math.max(0.3,Math.min(3,z));applyZoom();}
+zslider.addEventListener('input',()=>setZoom(zslider.value/100));
+document.getElementById('zin').onclick=()=>setZoom(zoom*1.15);
+document.getElementById('zout').onclick=()=>setZoom(zoom/1.15);
+document.getElementById('z100').onclick=()=>setZoom(1);
+document.getElementById('zfit').onclick=()=>setZoom((scroller.clientWidth-26)/VBW);
+scroller.addEventListener('wheel',e=>{if(e.ctrlKey||e.metaKey){e.preventDefault();setZoom(zoom*(e.deltaY<0?1.1:0.9));}},{passive:false});
+let drag=false,sx,sy,sl,st;
+scroller.addEventListener('mousedown',e=>{if(e.target.closest('.clickable'))return;drag=true;sx=e.clientX;sy=e.clientY;sl=scroller.scrollLeft;st=scroller.scrollTop;scroller.classList.add('grabbing');});
+window.addEventListener('mousemove',e=>{if(!drag)return;scroller.scrollLeft=sl-(e.clientX-sx);scroller.scrollTop=st-(e.clientY-sy);});
+window.addEventListener('mouseup',()=>{drag=false;scroller.classList.remove('grabbing');});
+document.getElementById('zdefault').onclick=()=>{const b=document.getElementById('zdefault');try{localStorage.setItem('consistmap_zoom',zoom);b.textContent='saved ✓';}catch(e){b.textContent='unavailable';}setTimeout(()=>b.textContent='set default',1300);};
+window.addEventListener('load',()=>{let d=null;try{d=localStorage.getItem('consistmap_zoom');}catch(e){}if(d)setZoom(parseFloat(d));else document.getElementById('zfit').click();});
+
+/* legend */
+document.getElementById('legend').innerHTML=`
+ <div class="item"><svg width="34" height="22"><rect x="1" y="3" width="32" height="16" rx="6" fill="#ece5fb" stroke="#b7a6ee" stroke-width="2"/></svg>Stock (accumulates)</div>
+ <div class="item"><svg width="40" height="20"><line x1="1" y1="10" x2="30" y2="10" stroke="#5f6d95" stroke-width="3.6"/><path d="M30,5 L39,10 L30,15z" fill="#5f6d95"/></svg>Flow (fills/drains)</div>
+ <div class="item"><svg width="40" height="20"><line x1="1" y1="10" x2="30" y2="10" stroke="#d17f8d" stroke-width="3.2" stroke-dasharray="7 5"/><path d="M30,5 L39,10 L30,15z" fill="#d17f8d"/></svg>Draining influence (−)</div>
+ <div class="item"><svg width="24" height="24"><circle cx="12" cy="12" r="10" fill="#fff" stroke="#2f8a5b" stroke-width="2.4"/><text x="12" y="17" text-anchor="middle" font-size="15" font-weight="800" fill="#2f8a5b">+</text></svg>increases / supports</div>
+ <div class="item"><svg width="24" height="24"><circle cx="12" cy="12" r="10" fill="#fff" stroke="#c26576" stroke-width="2.4"/><text x="12" y="17" text-anchor="middle" font-size="17" font-weight="800" fill="#c26576">−</text></svg>reduces / depletes</div>
+ <div class="item"><svg width="34" height="22"><rect x="2" y="4" width="30" height="15" rx="7" fill="#fdf1cf" stroke="#e9c46a" stroke-width="1.8"/></svg>⏱ Delay</div>
+ <div class="item"><svg width="26" height="26"><circle cx="13" cy="13" r="11" fill="#e58a63"/></svg><b style="color:#d9744c">R</b> Reinforcing loop</div>
+ <div class="item"><svg width="26" height="26"><circle cx="13" cy="13" r="11" fill="#3f9b92"/></svg><b style="color:#3f9b92">B</b> Balancing loop</div>
+ <div class="item"><svg width="34" height="22"><rect x="1" y="3" width="32" height="16" rx="7" fill="#e4f5ec" stroke="#7cc79c" stroke-width="1.8"/></svg><b style="color:#2f8a5b">⚙</b> Intervention</div>`;
+
+/* references */
+document.getElementById('refs').innerHTML=`<h3>References — primary literature this map is built on</h3>
+ <div class="rsub">Peer-reviewed studies, reviews and canonical theory. Click any 'Evidence base' link in a pop-up to jump to the source.</div>
+ <ol>${Object.values(CITES).map(c=>`<li>${c.t} <i>${c.v}</i>${c.u?` — <a href="${c.u}" target="_blank" rel="noopener">link ↗</a>`:''}</li>`).join('')}</ol>`;
+</script>
+</body>
+</html>
