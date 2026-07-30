@@ -21,6 +21,7 @@ This file holds the branches.
 - ○ **D3·3a** — How equanimity actually operates on the wanting–liking gap
 - ○ **D3·8** — Why the wanting-promise systematically *oversells*, and how to hear it as hype in real time
 - ○ **T2·X** — How to catch an internal cue once it's dropped below the waterline (carried over from the Automation Trap tab)
+- ○ **T3·W** — Derive a workaround + cue for each porn trigger (7 causes mapped in Tab ③; all ○ pending)
 - ○ **BUILD** — A "Proxy Theory of Everything" tab (D2), and a wanting/liking + escalation addition (D3)
 
 ---
@@ -43,7 +44,7 @@ This file holds the branches.
 - ○ **D2·3** — Correction 2: half of all proxies are *suffering* (pain/fear/disgust/loneliness). Two-valence architecture: approach AND avoid. Most compulsions run on the avoid side. Not yet explored.
 - ● **D2·4** — Refinement: not short- vs long-term; the organism *never* sees the ultimate goal, so proxies are used across the board. Real axis = how easily a proxy can be triggered without its function.
 - ◐ **D2·5** — Synthesis: every addiction = a *decoupled proxy* (junk food, porn, social media, gambling). This is Tab ②'s mismatch, generalized.
-  - ○ **BUILD** — make this a "Proxy Theory of Everything" tab.
+  - ○ **BUILD** — make this a "Proxy Theory of Everything" tab. *(Note: Tab ③ "Porn · Triggers" already built — see T3.)*
 - ○ **D2·6** — Caveat: mechanism ≠ destiny. Override layer — contraception, art, adoption, celibacy = deliberately severed/redirected proxies. Experienced meaning stays real. Not yet explored.
 
 ### D3 — Liking mechanism + dukkha + the escalation law
@@ -56,6 +57,25 @@ This file holds the branches.
 - ● **D3·6** — Two escalation engines: pharmacological tolerance (substances, receptor downregulation) vs informational habituation (phone/porn — wanting/novelty-driven, no receptor "substance").
 - ● **D3·7** — Takeaway cue: **"Escalation is the receipt that proves the account is empty."**
 - ○ **D3·8** — Why the promise systematically *oversells* (prediction-error hype), and how to hear it as hype in real time.
+
+### T3 — Porn trigger map (Tab ③, built as a fishbone) ▸ (you) reported these triggers
+Head: **the porn urge → acting out.** Each cause below has a ○ pending workaround to derive.
+- **Internal states (the push)**
+  - ○ **T3·1** ▸ (you) — Boredom, especially at task-transitions (the master internal cue)
+  - ○ **T3·2** ▸ (you) — Restlessness out of boredom (manufactured deprivation → negative reinforcement)
+- **Content & cascade (the accelerant)** — *bone added*
+  - ○ **T3·8** ▸ (you) — Social-media sexual content (verbal + visual) → amplifies the urge ~10× when scrolling past the tipping point
+  - ○ **T3·9** ▸ (you) — Curiosity → search domino ("how do new people look?" → sex positions → dirty talk → porn → masturbation); leverage is the FIRST search (own diagram built)
+- **Idle windows (the opening)**
+  - ○ **T3·3** ▸ (you) — Waiting for AI / chatbot output (dead-time + phone-in-hand + privacy converge) · *early-win candidate*
+- **Opportunity (the means / low friction)**
+  - ○ **T3·4** ▸ (you) — Privacy at home (removes social deterrent → risk axis to zero)
+  - ○ **T3·5** ▸ (you) — Smartphone within reach (collapses effort axis; no time for override) · *highest-leverage friction fix*
+- **Bodily / context (the prime)**
+  - ○ **T3·6** ▸ (you) — Undressed, post-shower / changing (conditioned context + low friction)
+  - ○ **T3·10** ▸ (you) — Shaving / grooming private parts (direct bodily prime + undress + privacy)
+  - ○ **T3·7** ▸ (you) — A direct urge to arouse oneself (overlaps the *natural* drive — sort, don't suppress; needs the D1·7 test)
+- *(grows: add a bone whenever a new trigger is noticed)*
 
 ---
 
