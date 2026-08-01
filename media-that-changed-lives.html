@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Media That Changed Lives — The Perspective Shift Archive</title>
+<style>
+  :root{
+    --bg:#fbfbfa;
+    --bg2:#ffffff;
+    --card:#ffffff;
+    --card-hover:#ffffff;
+    --ink:#1d1d1f;
+    --muted:#6b6b70;
+    --faint:#9a9aa0;
+    --line:#ececec;
+    --gold:#caa24a;
+    --accent:#1a1a1a;
+    --movie:#3b5bdb;
+    --anime:#c2456f;
+    --series:#1e9e6a;
+    --short:#b8862f;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  html{scroll-behavior:smooth}
+  body{
+    background:var(--bg);
+    color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Helvetica,Arial,sans-serif;
+    line-height:1.6;
+    min-height:100vh;
+    padding-bottom:80px;
+  }
+  .wrap{max-width:1180px;margin:0 auto;padding:0 22px}
+
+  header.hero{
+    text-align:center;
+    padding:74px 22px 40px;
+  }
+  .eyebrow{
+    letter-spacing:.32em;
+    text-transform:uppercase;
+    font-size:12px;
+    color:var(--gold);
+    margin-bottom:18px;
+  }
+  h1{
+    font-size:clamp(32px,6vw,58px);
+    font-weight:800;
+    line-height:1.05;
+    letter-spacing:-.02em;
+    color:var(--ink);
+  }
+  .sub{
+    max-width:680px;margin:22px auto 0;
+    color:var(--muted);font-size:17px;
+  }
+  .sub b{color:var(--ink);font-weight:600}
+
+  .stats{
+    display:flex;gap:38px;justify-content:center;flex-wrap:wrap;
+    margin-top:34px;
+  }
+  .stat .n{font-size:30px;font-weight:800;color:var(--ink)}
+  .stat .l{font-size:12px;letter-spacing:.14em;text-transform:uppercase;color:var(--faint)}
+
+  /* Controls */
+  .controls{
+    position:sticky;top:0;z-index:20;
+    background:rgba(247,247,245,.85);
+    backdrop-filter:blur(12px);
+    border-bottom:1px solid var(--line);
+    padding:16px 0;
+    margin-top:26px;
+  }
+  .controls-inner{display:flex;gap:14px;align-items:center;flex-wrap:wrap;justify-content:space-between}
+  .filters{display:flex;gap:8px;flex-wrap:wrap}
+  .chip{
+    border:1px solid var(--line);
+    background:var(--card);
+    color:var(--muted);
+    padding:8px 15px;border-radius:999px;
+    font-size:13.5px;font-weight:600;cursor:pointer;
+    transition:.16s;user-select:none;
+  }
+  .chip:hover{color:var(--ink);border-color:#c9cac4}
+  .chip.active{background:var(--ink);color:#fff;border-color:var(--ink)}
+  .chip .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-right:7px;vertical-align:middle}
+  .search{
+    flex:1;min-width:180px;max-width:280px;
+    background:var(--card);border:1px solid var(--line);
+    color:var(--ink);padding:9px 14px;border-radius:10px;font-size:14px;
+  }
+  .search::placeholder{color:var(--faint)}
+  .search:focus{outline:none;border-color:var(--accent)}
+
+  .count{color:var(--faint);font-size:13px;padding:14px 2px 0}
+
+  /* Grid */
+  .grid{
+    display:grid;
+    grid-template-columns:repeat(auto-fill,minmax(340px,1fr));
+    gap:18px;margin-top:8px;
+  }
+  .card{
+    background:var(--card);
+    border:1px solid var(--line);
+    border-radius:16px;
+    padding:22px 22px 20px;
+    display:flex;flex-direction:column;
+    transition:.18s;
+    position:relative;overflow:hidden;
+    box-shadow:0 1px 2px rgba(0,0,0,.03);
+  }
+  .card::before{
+    content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+    background:var(--c,var(--accent));opacity:.9;
+  }
+  .card:hover{transform:translateY(-3px);border-color:#d4d5cf;box-shadow:0 10px 28px rgba(0,0,0,.08)}
+  .card-top{display:flex;justify-content:space-between;align-items:flex-start;gap:12px;margin-bottom:6px}
+  .title{font-size:19px;font-weight:700;letter-spacing:-.01em;line-height:1.25}
+  .year{color:var(--faint);font-size:14px;font-weight:600;white-space:nowrap;padding-top:3px}
+  .meta{color:var(--muted);font-size:12.5px;margin-bottom:14px}
+  .badge{
+    display:inline-block;font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;
+    font-weight:700;padding:4px 9px;border-radius:6px;margin-bottom:12px;
+    background:color-mix(in srgb,var(--c) 16%,transparent);
+    color:var(--c);border:1px solid color-mix(in srgb,var(--c) 30%,transparent);
+  }
+  .shift-label{
+    font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--faint);
+    margin-bottom:5px;
+  }
+  .shift{color:var(--ink);font-size:15px;line-height:1.55}
+  .themes{margin-top:15px;display:flex;gap:6px;flex-wrap:wrap}
+  .theme{font-size:11px;color:var(--muted);background:#f2f2ee;border:1px solid var(--line);padding:3px 9px;border-radius:6px}
+
+  /* Watchlist */
+  .card-foot{margin-top:16px;padding-top:14px;border-top:1px solid var(--line)}
+  .watch-btn{
+    display:inline-flex;align-items:center;gap:7px;
+    font-size:13px;font-weight:600;cursor:pointer;
+    border:1px solid var(--line);background:#fff;color:var(--muted);
+    padding:7px 13px;border-radius:9px;transition:.15s;user-select:none;
+  }
+  .watch-btn:hover{border-color:#c9cac4;color:var(--ink)}
+  .watch-btn .ico{font-size:14px;line-height:1;transition:.15s}
+  .card.saved{border-color:color-mix(in srgb,var(--c) 45%,var(--line))}
+  .card.saved .watch-btn{
+    background:color-mix(in srgb,var(--c) 12%,#fff);
+    border-color:color-mix(in srgb,var(--c) 40%,transparent);
+    color:var(--c);
+  }
+
+  .chip.watch{border-color:var(--gold);color:var(--gold)}
+  .chip.watch.active{background:var(--gold);color:#fff;border-color:var(--gold)}
+  .chip .badge-n{
+    display:inline-block;margin-left:6px;font-size:11px;font-weight:800;
+    background:rgba(0,0,0,.08);border-radius:20px;padding:0 7px;line-height:17px;
+  }
+  .chip.watch.active .badge-n{background:rgba(255,255,255,.28)}
+
+  .empty{text-align:center;color:var(--faint);padding:60px 20px;display:none}
+  .empty .big{font-size:17px;color:var(--muted);font-weight:600;margin-bottom:6px}
+
+  footer{
+    text-align:center;color:var(--faint);font-size:13px;
+    margin-top:60px;padding:30px 22px 0;border-top:1px solid var(--line);
+  }
+  footer a{color:var(--muted)}
+  .note{max-width:720px;margin:0 auto 18px;color:var(--muted);font-size:14px;line-height:1.65}
+  @media(max-width:520px){
+    .grid{grid-template-columns:1fr}
+    .stats{gap:24px}
+  }
+</style>
+</head>
+<body>
+
+<header class="hero">
+  <div class="eyebrow">The Perspective Shift Archive</div>
+  <h1>Media That Changed Lives</h1>
+  <p class="sub">Films, anime, series, and short films that people across Reddit, Letterboxd, MyAnimeList and social feeds say <b>rewired how they live</b> — not from nostalgia, but from what the work actually said. Each card names <b>the shift</b> people report.</p>
+  <div class="stats">
+    <div class="stat"><div class="n" id="stat-total">0</div><div class="l">Titles</div></div>
+    <div class="stat"><div class="n">4</div><div class="l">Media types</div></div>
+    <div class="stat"><div class="n">∞</div><div class="l">Reframes</div></div>
+  </div>
+</header>
+
+<div class="controls">
+  <div class="wrap controls-inner">
+    <div class="filters" id="filters">
+      <span class="chip active" data-cat="all">All</span>
+      <span class="chip" data-cat="movie"><span class="dot" style="background:var(--movie)"></span>Movies</span>
+      <span class="chip" data-cat="anime"><span class="dot" style="background:var(--anime)"></span>Anime &amp; Animation</span>
+      <span class="chip" data-cat="series"><span class="dot" style="background:var(--series)"></span>Series / TV</span>
+      <span class="chip" data-cat="short"><span class="dot" style="background:var(--short)"></span>Short Films</span>
+      <span class="chip watch" data-cat="watch">★ To Watch<span class="badge-n" id="watch-n">0</span></span>
+    </div>
+    <input class="search" id="search" placeholder="Search title or theme…" />
+  </div>
+</div>
+
+<div class="wrap">
+  <div class="count" id="count"></div>
+  <div class="grid" id="grid"></div>
+  <div class="empty" id="empty"></div>
+</div>
+
+<footer class="wrap">
+  <p class="note">This is a curated synthesis of works that recur again and again in online threads titled some version of <i>"the movie/anime/show that changed my life."</i> It leans toward the <b>content-driven</b> testimonials — where people credit an idea, a scene, or a line for a real change in outlook — rather than childhood favorites. It's a starting map, not a ranking.</p>
+  <p>Built for Satyam · The value isn't the list — it's the sentence under each title.</p>
+</footer>
+
+<script>
+const DATA = [
+  // ---------------- MOVIES ----------------
+  {t:"Dead Poets Society",y:1989,cat:"movie",meta:"dir. Peter Weir",shift:"Carpe diem — seize the day. That your life is yours to make extraordinary, and conformity is a slow way of never really living.",themes:["Live deliberately","Individuality","Mortality"]},
+  {t:"The Shawshank Redemption",y:1994,cat:"movie",meta:"dir. Frank Darabont",shift:"Hope is not naive — it's a discipline. 'Get busy living, or get busy dying.' Patience and integrity outlast any wall.",themes:["Hope","Endurance","Freedom"]},
+  {t:"Fight Club",y:1999,cat:"movie",meta:"dir. David Fincher",shift:"You are not your job, your bank balance, or your possessions. A jolt against consumerist identity — though the trap is mistaking the diagnosis for the cure.",themes:["Consumerism","Identity","Masculinity"]},
+  {t:"The Truman Show",y:1998,cat:"movie",meta:"dir. Peter Weir",shift:"Question the reality handed to you. Comfort can be a cage, and freedom means walking through the door even when you can't see what's outside.",themes:["Authenticity","Free will","Media"]},
+  {t:"Groundhog Day",y:1993,cat:"movie",meta:"dir. Harold Ramis",shift:"Meaning isn't in novelty — it's in how you treat the ordinary day you're stuck in. Self-improvement and kindness are the way out of any loop.",themes:["Presence","Growth","Kindness"]},
+  {t:"Eternal Sunshine of the Spotless Mind",y:2004,cat:"movie",meta:"dir. Michel Gondry",shift:"Pain is the price of love, and it's worth paying. Erasing the hard memories would erase you. Choose people knowing they'll hurt you.",themes:["Love","Memory","Acceptance"]},
+  {t:"Into the Wild",y:2007,cat:"movie",meta:"dir. Sean Penn",shift:"'Happiness is only real when shared.' Freedom without connection is a hollow prize — a lesson learned too late by its hero, in time for us.",themes:["Connection","Freedom","Regret"]},
+  {t:"Good Will Hunting",y:1997,cat:"movie",meta:"dir. Gus Van Sant",shift:"'It's not your fault.' Talent means nothing without the courage to be vulnerable and let people in. Stop defending the walls that keep you safe and small.",themes:["Vulnerability","Healing","Potential"]},
+  {t:"The Secret Life of Walter Mitty",y:2013,cat:"movie",meta:"dir. Ben Stiller",shift:"Stop rehearsing a bolder life in your head and go live it. The extraordinary is out there for the ordinary person who finally shows up.",themes:["Courage","Adventure","Presence"]},
+  {t:"It's a Wonderful Life",y:1946,cat:"movie",meta:"dir. Frank Capra",shift:"No one who touches other lives is a failure. Your small, unglamorous existence has rippled further than you'll ever measure.",themes:["Meaning","Community","Worth"]},
+  {t:"Forrest Gump",y:1994,cat:"movie",meta:"dir. Robert Zemeckis",shift:"You don't need to understand everything to move through life with decency, loyalty, and an open heart. Just keep running.",themes:["Kindness","Perseverance","Simplicity"]},
+  {t:"The Pursuit of Happyness",y:2006,cat:"movie",meta:"dir. Gabriele Muccino",shift:"Protect your dream from the people who couldn't chase their own. Dignity survives even at rock bottom, one impossible day at a time.",themes:["Perseverance","Fatherhood","Dignity"]},
+  {t:"Whiplash",y:2014,cat:"movie",meta:"dir. Damien Chazelle",shift:"A brutal question, not an answer: what will greatness cost you, and is the price worth your humanity? People leave rethinking ambition itself.",themes:["Ambition","Obsession","Cost"]},
+  {t:"Everything Everywhere All at Once",y:2022,cat:"movie",meta:"dir. Daniels",shift:"In an absurd, meaningless multiverse, the antidote to nihilism is chosen kindness. 'Be a rock.' Nothing matters, so be gentle anyway.",themes:["Nihilism","Kindness","Family"]},
+  {t:"Perfect Days",y:2023,cat:"movie",meta:"dir. Wim Wenders",shift:"A whole, contented life can be built from small routines, sunlight through leaves, and paying full attention. Enough can be enough.",themes:["Contentment","Presence","Simplicity"]},
+  {t:"Peaceful Warrior",y:2006,cat:"movie",meta:"dir. Victor Salva",shift:"'There's never nothing going on.' Empty the mind of its garbage and be here now — the journey is the destination.",themes:["Presence","Mindfulness","Ego"]},
+  {t:"Waking Life",y:2001,cat:"movie",meta:"dir. Richard Linklater",shift:"A dizzying tour through free will, dreams, and consciousness that leaves you awake to how strange and open existence actually is.",themes:["Existence","Free will","Consciousness"]},
+  {t:"Cast Away",y:2000,cat:"movie",meta:"dir. Robert Zemeckis",shift:"When everything is lost, you keep breathing — 'because tomorrow the sun will rise, and who knows what the tide could bring.'",themes:["Survival","Loss","Hope"]},
+  {t:"Life of Pi",y:2012,cat:"movie",meta:"dir. Ang Lee",shift:"We survive by the stories we choose to tell about our suffering. Faith and meaning are decisions, not proofs.",themes:["Faith","Survival","Storytelling"]},
+  {t:"American Beauty",y:1999,cat:"movie",meta:"dir. Sam Mendes",shift:"There's so much beauty in the ordinary world it can be hard to bear. Wake up from the anesthetized suburban trance before it's over.",themes:["Beauty","Awakening","Meaning"]},
+  {t:"12 Angry Men",y:1957,cat:"movie",meta:"dir. Sidney Lumet",shift:"One person willing to say 'let's just talk about it' can hold back a stampede. Question your certainty; it may be prejudice in disguise.",themes:["Justice","Doubt","Conscience"]},
+  {t:"Amélie",y:2001,cat:"movie",meta:"dir. Jean-Pierre Jeunet",shift:"A life spent quietly engineering small joys for others — and finally daring to claim your own. Notice the tiny pleasures; act on the big fears.",themes:["Small joys","Courage","Connection"]},
+
+  // ---------------- ANIME & ANIMATION ----------------
+  {t:"Neon Genesis Evangelion",y:1995,cat:"anime",meta:"dir. Hideaki Anno",shift:"It's okay to exist, even in pain. A raw study of depression and the terror of intimacy — the 'hedgehog's dilemma' of needing others who can hurt you.",themes:["Depression","Self-worth","Connection"]},
+  {t:"Fullmetal Alchemist: Brotherhood",y:2009,cat:"anime",meta:"dir. Yasuhiro Irie",shift:"Equivalent exchange: nothing is gained without loss, and you move forward with your grief rather than trying to undo it.",themes:["Grief","Sacrifice","Growth"]},
+  {t:"A Silent Voice",y:2016,cat:"anime",meta:"dir. Naoko Yamada",shift:"Redemption is possible, and self-forgiveness is the hardest part. Learn to hear people — and to face the version of yourself you're ashamed of.",themes:["Redemption","Bullying","Forgiveness"]},
+  {t:"Your Name",y:2016,cat:"anime",meta:"dir. Makoto Shinkai",shift:"The ache of missing a connection you can't name — and the belief that the threads between people persist across time and distance.",themes:["Connection","Longing","Fate"]},
+  {t:"Grave of the Fireflies",y:1988,cat:"anime",meta:"dir. Isao Takahata",shift:"The true, un-heroic cost of war and pride, told through two children. It makes you hold the people you have more tightly.",themes:["War","Loss","Compassion"]},
+  {t:"Spirited Away",y:2001,cat:"anime",meta:"dir. Hayao Miyazaki",shift:"You are braver and more capable than fear tells you. Keep your name, do honest work, and don't be consumed by greed.",themes:["Courage","Identity","Growing up"]},
+  {t:"Vinland Saga",y:2019,cat:"anime",meta:"dir. Shūhei Yabuta",shift:"'I have no enemies.' Breaking the cycle of violence and revenge to build something instead of destroy — the hardest heroism there is.",themes:["Redemption","Pacifism","Purpose"]},
+  {t:"Violet Evergarden",y:2018,cat:"anime",meta:"dir. Taichi Ishidate",shift:"Learning, slowly, what it means to love and to feel — and that words written for others can teach you your own heart.",themes:["Love","Healing","Empathy"]},
+  {t:"March Comes in Like a Lion",y:2016,cat:"anime",meta:"dir. Akiyuki Shinbo",shift:"Depression eases when you let a found family pull you into the warm room. Healing is quiet, non-linear, and worth staying for.",themes:["Depression","Found family","Healing"]},
+  {t:"Mushishi",y:2005,cat:"anime",meta:"dir. Hiroshi Nagahama",shift:"Not everything is a battle of good and evil. A meditative case for coexistence, acceptance, and letting nature simply be.",themes:["Acceptance","Nature","Balance"]},
+  {t:"Ping Pong the Animation",y:2014,cat:"anime",meta:"dir. Masaaki Yuasa",shift:"Talent, passion, and mediocrity all deserve a life. What do you do when you love a thing you're not the best at? You play anyway.",themes:["Passion","Talent","Self-acceptance"]},
+  {t:"Ghost in the Shell",y:1995,cat:"anime",meta:"dir. Mamoru Oshii",shift:"What makes a 'self' when memory and body can be copied? A philosophical primer that made a generation ask what identity even is.",themes:["Identity","Consciousness","Humanity"]},
+  {t:"Soul",y:2020,cat:"anime",meta:"Pixar · dir. Pete Docter",shift:"Your 'purpose' isn't the point — a life is made of ordinary sparks: pizza, sky, a song. You were ready to live all along.",themes:["Purpose","Presence","Joy"]},
+  {t:"Inside Out",y:2015,cat:"anime",meta:"Pixar · dir. Pete Docter",shift:"Sadness isn't the enemy — it's necessary. You can't be whole by forcing joy; grief is how we ask for help and connect.",themes:["Emotions","Grief","Growth"]},
+  {t:"Coco",y:2017,cat:"anime",meta:"Pixar · dir. Lee Unkrich",shift:"We live as long as someone remembers us. Family, memory, and legacy outrank fame — and reconciliation can cross even death.",themes:["Family","Memory","Legacy"]},
+  {t:"The Tale of the Princess Kaguya",y:2013,cat:"anime",meta:"dir. Isao Takahata",shift:"Life is fleeting and that is exactly what makes it precious. To be alive — birdsong, seasons, grief and all — is the whole gift.",themes:["Impermanence","Life","Freedom"]},
+
+  // ---------------- SERIES / TV ----------------
+  {t:"BoJack Horseman",y:2014,cat:"series",meta:"Netflix · Raphael Bob-Waksberg",shift:"'It gets easier. Every day it gets a little easier. But you gotta do it every day.' The most honest depiction of depression, self-sabotage, and slow accountability on TV.",themes:["Depression","Accountability","Healing"]},
+  {t:"The Good Place",y:2016,cat:"series",meta:"NBC · Michael Schur",shift:"What we owe each other. Being good is a practice you never finish — and the fact that everything ends is what gives it meaning.",themes:["Ethics","Growth","Mortality"]},
+  {t:"Mr. Robot",y:2015,cat:"series",meta:"USA · Sam Esmail",shift:"A radical, empathetic portrait of mental illness, isolation, and the systems that grind people down — and the courage of reaching out anyway.",themes:["Mental health","Isolation","Society"]},
+  {t:"Breaking Bad",y:2008,cat:"series",meta:"AMC · Vince Gilligan",shift:"Pride and self-deception can turn anyone into the danger. A study in how we lie to ourselves about why we do what we do.",themes:["Consequences","Pride","Morality"]},
+  {t:"The Bear",y:2022,cat:"series",meta:"FX · Christopher Storer",shift:"Excellence and healing are both daily, un-glamorous grind. You can honor your wounds without letting them run the kitchen of your life.",themes:["Trauma","Excellence","Healing"]},
+  {t:"Fleabag",y:2016,cat:"series",meta:"BBC · Phoebe Waller-Bridge",shift:"'Love is awful. It's painful. It's brave.' Grief, guilt, and the terrifying vulnerability of actually wanting a good life.",themes:["Grief","Love","Vulnerability"]},
+  {t:"Six Feet Under",y:2001,cat:"series",meta:"HBO · Alan Ball",shift:"Every episode opens with a death so you'll finally live. Its finale is often called the thing that made people stop wasting their days.",themes:["Mortality","Living","Family"]},
+  {t:"Ted Lasso",y:2020,cat:"series",meta:"Apple TV+ · Jason Sudeikis",shift:"'Be curious, not judgmental.' Relentless kindness as a discipline — and the reminder that hurt people can still choose to be warm.",themes:["Kindness","Belief","Mental health"]},
+  {t:"Dark",y:2017,cat:"series",meta:"Netflix · Baran bo Odar",shift:"Are we free, or repeating loops we inherited? A demand to examine the cycles — of family, trauma, choice — you might be blindly re-running.",themes:["Determinism","Cycles","Choice"]},
+  {t:"The Midnight Gospel",y:2020,cat:"series",meta:"Netflix · Pendleton Ward & Duncan Trussell",shift:"Its finale, a real conversation with a dying mother, is a meditation on accepting death and being fully present with impermanence.",themes:["Death","Acceptance","Presence"]},
+  {t:"Beef",y:2023,cat:"series",meta:"Netflix · Lee Sung Jin",shift:"Rage is loneliness with nowhere to go. Two strangers' feud unmasks how much of our anger is really unspoken pain begging to be seen.",themes:["Anger","Isolation","Connection"]},
+  {t:"Normal People",y:2020,cat:"series",meta:"Hulu/BBC · Lenny Abrahamson",shift:"So much love is lost to things left unsaid. A quiet argument for communicating, and for believing you deserve to be loved well.",themes:["Intimacy","Communication","Worth"]},
+
+  // ---------------- SHORT FILMS ----------------
+  {t:"World of Tomorrow",y:2015,cat:"short",meta:"Don Hertzfeldt · 17 min",shift:"'Now is the envy of all of the dead.' A tiny sci-fi masterpiece that makes the fleeting, ordinary present feel almost unbearably precious.",themes:["Mortality","Memory","Presence"]},
+  {t:"The Present",y:2014,cat:"short",meta:"Jacob Frey · 4 min",shift:"The gut-punch reveal that reframes limitation: the thing you resent about yourself may be exactly what's holding you back from joy.",themes:["Acceptance","Perspective","Joy"]},
+  {t:"Validation",y:2007,cat:"short",meta:"Kurt Kuenne · 16 min",shift:"A man who hands out free validation makes a whole town happier. To be truly seen and appreciated is a small miracle you can give anyone.",themes:["Kindness","Being seen","Connection"]},
+  {t:"Alike",y:2015,cat:"short",meta:"Daniel Martínez Lara & Rafa Cano · 8 min",shift:"Routine and conformity slowly drain your color. Protect the creative, playful part of yourself — and your kids' — before it fades.",themes:["Creativity","Conformity","Parenthood"]},
+  {t:"Signs",y:2008,cat:"short",meta:"Patrick Hughes · 11 min",shift:"Connection is worth the risk of looking foolish. Two lonely people in office windows — a nudge to actually reach out before the moment passes.",themes:["Connection","Courage","Loneliness"]},
+  {t:"Destiny",y:2014,cat:"short",meta:"Fabien Weibel et al. · 5 min",shift:"Chasing the perfect moment forever means never living one. A loop about breaking the loop — seize the imperfect now.",themes:["Presence","Time","Choice"]},
+  {t:"Snack Attack",y:2012,cat:"short",meta:"Andrew Cadelago · 4 min",shift:"The old woman and the 'thief' — a sharp reminder of how confidently, and how wrongly, we judge other people's motives.",themes:["Judgment","Assumptions","Empathy"]},
+  {t:"Kitbull",y:2019,cat:"short",meta:"Pixar SparkShorts · 9 min",shift:"Two damaged creatures learn to trust. Love is worth being scared for, and the smallest kindness can pull someone out of the dark.",themes:["Trust","Love","Healing"]},
+  {t:"Piper",y:2016,cat:"short",meta:"Pixar · Alan Barillaro · 6 min",shift:"Facing the wave instead of fleeing it. A wordless lesson that we outgrow fear only by moving toward the thing that scared us.",themes:["Courage","Growth","Fear"]},
+  {t:"In a Heartbeat",y:2017,cat:"short",meta:"Beth David & Esteban Bravo · 4 min",shift:"Your heart gives you away before you're ready — and that's okay. A tender case for the courage to be who you are, openly.",themes:["Authenticity","Courage","Acceptance"]},
+  {t:"The Last Knit",y:2005,cat:"short",meta:"Laura Neuvonen · 6 min",shift:"Obsession will follow you off the cliff unless you cut the thread. Sometimes survival means letting go of the thing you can't stop making.",themes:["Letting go","Obsession","Freedom"]},
+  {t:"Others Will Follow",y:2013,cat:"short",meta:"Gaëtan & Paul · 6 min",shift:"Stranded and dying on a Mars mission, one last act of care for the people who come next — connection outlasts the individual.",themes:["Connection","Sacrifice","Legacy"]},
+];
+
+const catMeta = {
+  movie:{label:"Film",color:"var(--movie)"},
+  anime:{label:"Anime / Animation",color:"var(--anime)"},
+  series:{label:"Series / TV",color:"var(--series)"},
+  short:{label:"Short Film",color:"var(--short)"},
+};
+
+const grid = document.getElementById('grid');
+const countEl = document.getElementById('count');
+const emptyEl = document.getElementById('empty');
+const watchNEl = document.getElementById('watch-n');
+let activeCat = 'all';
+let query = '';
+
+document.getElementById('stat-total').textContent = DATA.length;
+
+// --- Watchlist persistence (survives reloads) ---
+const STORE_KEY = 'mediaWatchlist_v1';
+let watchlist = new Set();
+try{ watchlist = new Set(JSON.parse(localStorage.getItem(STORE_KEY) || '[]')); }catch(e){}
+function saveWatchlist(){
+  try{ localStorage.setItem(STORE_KEY, JSON.stringify([...watchlist])); }catch(e){}
+}
+function updateWatchCount(){ watchNEl.textContent = watchlist.size; }
+
+function render(){
+  const q = query.trim().toLowerCase();
+  const items = DATA.filter(d=>{
+    const catOk = activeCat==='all' ? true
+      : activeCat==='watch' ? watchlist.has(d.t)
+      : d.cat===activeCat;
+    const qOk = !q || d.t.toLowerCase().includes(q) ||
+      d.shift.toLowerCase().includes(q) ||
+      d.themes.join(' ').toLowerCase().includes(q) ||
+      (d.meta||'').toLowerCase().includes(q);
+    return catOk && qOk;
+  });
+  grid.innerHTML = items.map(d=>{
+    const cm = catMeta[d.cat];
+    const saved = watchlist.has(d.t);
+    const key = d.t.replace(/"/g,'&quot;');
+    return `<article class="card${saved?' saved':''}" style="--c:${cm.color}">
+      <div class="badge">${cm.label}</div>
+      <div class="card-top">
+        <div class="title">${d.t}</div>
+        <div class="year">${d.y}</div>
+      </div>
+      <div class="meta">${d.meta||''}</div>
+      <div class="shift-label">The shift</div>
+      <div class="shift">${d.shift}</div>
+      <div class="themes">${d.themes.map(t=>`<span class="theme">${t}</span>`).join('')}</div>
+      <div class="card-foot">
+        <span class="watch-btn" data-title="${key}">
+          <span class="ico">${saved?'✓':'+'}</span>${saved?'On my list':'To Watch'}
+        </span>
+      </div>
+    </article>`;
+  }).join('');
+  countEl.textContent = activeCat==='watch'
+    ? `${items.length} on your watchlist`
+    : `Showing ${items.length} of ${DATA.length} titles`;
+  if(items.length){
+    emptyEl.style.display='none';
+  }else{
+    emptyEl.style.display='block';
+    emptyEl.innerHTML = activeCat==='watch'
+      ? `<div class="big">Your watchlist is empty</div>Tap “+ To Watch” on any card to save it here.`
+      : `No titles match that filter. Try clearing the search.`;
+  }
+}
+
+function toggleWatch(title){
+  if(watchlist.has(title)) watchlist.delete(title);
+  else watchlist.add(title);
+  saveWatchlist();
+  updateWatchCount();
+  render();
+}
+
+document.getElementById('filters').addEventListener('click', e=>{
+  const chip = e.target.closest('.chip');
+  if(!chip) return;
+  document.querySelectorAll('.chip').forEach(c=>c.classList.remove('active'));
+  chip.classList.add('active');
+  activeCat = chip.dataset.cat;
+  render();
+});
+document.getElementById('search').addEventListener('input', e=>{
+  query = e.target.value; render();
+});
+grid.addEventListener('click', e=>{
+  const btn = e.target.closest('.watch-btn');
+  if(!btn) return;
+  toggleWatch(btn.dataset.title);
+});
+
+updateWatchCount();
+render();
+</script>
+</body>
+</html>

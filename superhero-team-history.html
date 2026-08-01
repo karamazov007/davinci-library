@@ -1,0 +1,633 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Marvel & DC — Heroes, Teams & How They Club Together</title>
+<style>
+  :root{
+    --bg:#f7f8fa; --panel:#ffffff; --ink:#1f2733; --muted:#66718a; --line:#e6e9f0;
+    --marvel:#ed1d24; --dc:#0476f2;
+    --split:#d5372f; --reunion:#1f9d5c; --join:#2467d0; --accent:#d5372f;
+  }
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--bg);color:var(--ink);
+    font-family:"Segoe UI",system-ui,-apple-system,Roboto,Helvetica,Arial,sans-serif;line-height:1.5}
+  header.hero{text-align:center;padding:40px 20px 6px}
+  header.hero h1{margin:0;font-size:clamp(24px,4.5vw,38px);font-weight:800;letter-spacing:-.5px}
+  header.hero p{margin:10px auto 0;max-width:720px;color:var(--muted);font-size:15px}
+  .wrap{max-width:1280px;margin:0 auto;padding:0 16px 70px}
+
+  /* Top publisher tabs */
+  .toptabs{display:flex;gap:10px;justify-content:center;margin:20px 0 6px}
+  .toptab{cursor:pointer;border:2px solid var(--line);background:var(--panel);color:var(--muted);
+    padding:11px 34px;border-radius:12px;font-weight:800;font-size:17px;letter-spacing:.5px;transition:.16s}
+  .toptab:hover{border-color:#cfd5e2}
+  .toptab.active[data-pub="marvel"]{background:var(--marvel);border-color:var(--marvel);color:#fff}
+  .toptab.active[data-pub="dc"]{background:var(--dc);border-color:var(--dc);color:#fff}
+
+  .modebar{display:flex;justify-content:center;margin:12px 0 4px}
+  .toggle{display:inline-flex;background:#eef0f5;border:1px solid var(--line);border-radius:10px;padding:4px}
+  .toggle button{border:0;background:transparent;color:var(--muted);padding:8px 22px;border-radius:8px;
+    font-weight:600;cursor:pointer;font-size:14px;transition:.16s;display:flex;align-items:center;gap:7px}
+  .toggle button.active{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(20,30,60,.12)}
+
+  .hint{text-align:center;color:var(--muted);font-size:12.5px;margin:8px 0 2px}
+  .hint b{color:var(--ink)}
+  .legend{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin:6px 0 0;font-size:12px;color:var(--muted)}
+  .legend span{display:inline-flex;align-items:center;gap:6px}
+  .legend i{width:11px;height:11px;border-radius:3px;display:inline-block}
+
+  /* Shell: sidebar + content */
+  .shell{display:flex;gap:16px;align-items:flex-start;margin-top:14px}
+  .sidebar{width:196px;flex:none;display:flex;flex-direction:column;gap:6px}
+  .sbtitle{font-size:11px;font-weight:800;letter-spacing:1px;text-transform:uppercase;color:#aeb6c7;margin:2px 4px 4px}
+  .gbtn{cursor:pointer;text-align:left;border:1px solid var(--line);background:var(--panel);color:var(--ink);
+    padding:11px 13px;border-radius:11px;font-weight:600;font-size:14px;transition:.14s;display:flex;flex-direction:column;gap:2px}
+  .gbtn:hover{border-color:#cfd5e2;transform:translateX(2px)}
+  .gbtn .gsub{font-size:11px;color:var(--muted);font-weight:500}
+  .gbtn.active{color:#fff}
+  .gbtn.active .gsub{color:rgba(255,255,255,.85)}
+  .content{flex:1;min-width:0}
+
+  .scroller{overflow-x:auto;overflow-y:hidden;border:1px solid var(--line);
+    border-radius:16px;background:var(--panel);box-shadow:0 6px 22px rgba(30,40,70,.06)}
+  .canvas{position:relative;height:520px}
+  .canvas svg{position:absolute;inset:0;pointer-events:none}
+  .regionlabel{position:absolute;top:14px;font-size:11px;font-weight:800;letter-spacing:1.2px;text-transform:uppercase;color:#aeb6c7}
+  .eragroup{position:absolute;border:1.5px dashed;border-radius:16px;pointer-events:none;z-index:0}
+  .eragroup .erlabel{position:absolute;top:8px;left:15px;right:12px;font-size:10.5px;font-weight:800;letter-spacing:.6px;text-transform:uppercase;line-height:1.2}
+
+  .node{position:absolute;cursor:pointer;transition:transform .14s, box-shadow .14s;
+    border-radius:12px;padding:9px 12px;user-select:none;background:var(--panel);border:1px solid var(--line)}
+  .node:hover{transform:translateY(-3px);box-shadow:0 10px 24px rgba(30,40,70,.16);z-index:5}
+  .node .ny{font-size:11px;font-weight:800;letter-spacing:.3px}
+  .node .nn{font-size:13px;font-weight:700;color:var(--ink);line-height:1.22;margin-top:1px;padding-right:6px}
+  .node .more{font-size:10px;color:#aeb6c7;margin-top:3px}
+  .node .sub{font-size:11px;color:#5f6b82;margin-top:2px}
+  .node .sub b{color:#3a465c;font-weight:700}
+  .node .chip{position:absolute;top:8px;right:9px;font-size:8px;font-weight:800;letter-spacing:.5px;
+    padding:2px 6px;border-radius:20px;color:#fff;line-height:1.4}
+  .chip.char{background:#2467d0} .chip.film{background:#8a4fd0} .chip.series{background:#159b8f} .chip.event{background:#95a0b2}
+  .node.team .chip{top:9px;right:10px;background:rgba(255,255,255,.28);color:#fff}
+  .node.hero{border-left:4px solid var(--accent)} .node.hero .ny{color:var(--accent)}
+  .node.hero.ghost{border-left:4px dashed #c2c9d6;background:#fbfcfe} .node.hero.ghost .ny{color:#98a2b6}
+  .node.team{background:var(--accent);border:none;color:#fff;text-align:center;box-shadow:0 10px 26px rgba(30,40,70,.22)}
+  .node.team .ny{color:rgba(255,255,255,.85)} .node.team .nn{color:#fff;font-size:15px} .node.team .more{color:rgba(255,255,255,.8)}
+  .node.ev.split{border-left:4px solid var(--split)} .node.ev.split .ny{color:var(--split)}
+  .node.ev.reunion{border-left:4px solid var(--reunion)} .node.ev.reunion .ny{color:var(--reunion)}
+  .node.ev.join{border-left:4px solid var(--join)} .node.ev.join .ny{color:var(--join)}
+  .node.ev.plain{border-left:4px solid #9aa4bb} .node.ev.plain .ny{color:#7a86a0}
+
+  .overlay{position:fixed;inset:0;background:rgba(20,26,40,.45);backdrop-filter:blur(2px);
+    display:none;align-items:center;justify-content:center;z-index:50;padding:20px}
+  .overlay.open{display:flex}
+  .modal{background:#fff;border-radius:16px;max-width:450px;width:100%;padding:26px 26px 24px;position:relative;
+    box-shadow:0 24px 60px rgba(0,0,0,.3);animation:pop .2s}
+  @keyframes pop{from{transform:scale(.94);opacity:0}to{transform:scale(1);opacity:1}}
+  .modal .kicker{font-size:12px;font-weight:800;letter-spacing:1px;text-transform:uppercase}
+  .modal h3{margin:6px 0 2px;font-size:22px}
+  .modal .sub{color:var(--muted);font-size:14px;margin-bottom:12px}
+  .modal .media{display:inline-block;font-size:11px;font-weight:800;letter-spacing:.5px;padding:3px 10px;border-radius:20px;color:#fff;margin:0 0 10px}
+  .modal .media.char{background:#2467d0} .modal .media.film{background:#8a4fd0} .modal .media.series{background:#159b8f} .modal .media.event{background:#95a0b2}
+  .modal .src{display:inline-block;font-size:12.5px;font-weight:600;background:#f0f2f7;color:#41506b;padding:4px 10px;border-radius:20px;margin-bottom:12px}
+  .modal p{margin:0;font-size:14.5px;color:#3a465c;line-height:1.6}
+  .modal .x{position:absolute;top:14px;right:16px;cursor:pointer;font-size:22px;color:#aeb6c7;border:0;background:none}
+  .modal .x:hover{color:var(--ink)}
+
+  @media(max-width:720px){ .shell{flex-direction:column} .sidebar{width:100%;flex-direction:row;flex-wrap:wrap} .gbtn{flex:1 1 auto} }
+  footer{text-align:center;color:var(--muted);font-size:12.5px;padding:24px;border-top:1px solid var(--line);margin-top:30px}
+</style>
+</head>
+<body>
+<header class="hero">
+  <h1>Marvel &amp; DC — Heroes, Teams &amp; How They Club Together</h1>
+  <p>Pick a publisher, then a team on the left. Solid threads flow only from the true founders into the team; heroes who arrived later — or who stay solo — appear along the timeline or as dashed “not a member” boxes. Click anything for its story.</p>
+</header>
+
+<div class="wrap">
+  <div class="toptabs">
+    <div class="toptab active" data-pub="marvel">MARVEL</div>
+    <div class="toptab" data-pub="dc">DC</div>
+  </div>
+
+  <div class="modebar">
+    <div class="toggle">
+      <button class="active" data-mode="comics">📖 Comics</button>
+      <button data-mode="movies">🎬 Movies / Screen</button>
+    </div>
+  </div>
+
+  <div class="hint">Scroll the map sideways →&nbsp;·&nbsp;<b>Click any box</b> for details</div>
+  <div class="legend">
+    <span><i style="background:#9aa4bb"></i> Founder / debut</span>
+    <span><i style="background:var(--join)"></i> Joins later</span>
+    <span><i style="background:var(--reunion)"></i> Forms / reunites</span>
+    <span><i style="background:var(--split)"></i> Splits</span>
+    <span><i style="border:1.5px dashed #c2c9d6;background:#fff"></i> Not a member</span>
+  </div>
+
+  <div class="shell">
+    <div class="sidebar" id="sidebar"></div>
+    <div class="content"><div class="scroller"><div class="canvas" id="canvas"></div></div></div>
+  </div>
+</div>
+
+<div class="overlay" id="overlay"><div class="modal" id="modal"></div></div>
+<footer>Dates reflect documented first appearances (comics) and release order (screen). Some teams (e.g. Teen Titans) live mainly on TV — noted where relevant. Built for Satyam.</footer>
+
+<script>
+/* thread:false → shown but NO line into the team (precursor / villain / solo ally).
+   timeline items come AFTER the team forms, in publication / release order. */
+const DATA = {
+ marvel:{ label:'Marvel', color:'#ed1d24', groups:{
+
+  avengers:{ label:'Avengers', tag:'Earth’s Mightiest', accent:'#d5372f',
+   comics:{
+    left:[
+     {era:'Timely · Golden Age (precursors)',name:'Sub-Mariner & Human Torch',yr:'1939–41',real:'Namor / android Torch',src:'Marvel Comics #1',thread:false,role:'precursors — not founders',note:'Marvel’s earliest heroes, shown only as lineage. They were not Avengers founders.'},
+     {era:'Marvel · founders (1962–63)',name:'The Hulk',yr:'1962',real:'Bruce Banner',src:'Incredible Hulk #1',note:'A founding Avenger who quit by issue #2.'},
+     {era:'Marvel · founders (1962–63)',name:'Thor',yr:'1962',real:'Thor Odinson',src:'Journey into Mystery #83',note:'Asgardian founding member.'},
+     {era:'Marvel · founders (1962–63)',name:'Ant-Man & the Wasp',yr:'1962',real:'Hank Pym / Janet van Dyne',src:'Tales to Astonish #35 & #44',note:'Founders. The Wasp names the team.'},
+     {era:'Marvel · founders (1962–63)',name:'Iron Man',yr:'1963',real:'Tony Stark',src:'Tales of Suspense #39',note:'Founding Avenger and modern anchor.'},
+    ],
+    team:{yr:'Sept 1963',name:'The Avengers',src:'Avengers #1',note:'Five heroes unite against Loki. Created by Lee & Kirby to answer DC’s Justice League.'},
+    timeline:[
+     {type:'split',yr:'1963',t:'Hulk walks out',note:'Leaves by issue #2.'},
+     {type:'join',yr:'1964',t:'Captain America joins',real:'Steve Rogers (debut 1941)',src:'Avengers #4',note:'Debuted in 1941, frozen for decades, thawed in #4 — so he JOINS, not founds, and becomes leader.'},
+     {type:'join',yr:'2005',t:'Spider-Man joins',real:'Peter Parker (debut 1962)',src:'New Avengers',note:'Solo for decades before becoming a full member.'},
+     {type:'join',yr:'2010s',t:'Shang-Chi joins',real:'Master of Kung Fu (debut 1973)',src:'Special Marvel Edition #15',note:'The martial-arts hero, son of the Ten Rings’ founder, has served on Avengers teams — an example of a solo hero clubbing in.'},
+     {type:'split',yr:'2006',t:'Civil War',note:'Registration law splits the team.'},
+     {type:'reunion',yr:'2010',t:'Heroic Age',note:'Steve Rogers reunites the roster.'},
+    ]},
+   movies:{
+    left:[
+     {era:'Marvel Studios · MCU Phase One',name:'Iron Man',yr:'2008',real:'Robert Downey Jr.',src:'Iron Man',note:'Launched the MCU.'},
+     {era:'Marvel Studios · MCU Phase One',name:'The Hulk',yr:'2008',real:'Edward Norton',src:'The Incredible Hulk',note:'Later recast with Mark Ruffalo.'},
+     {era:'Marvel Studios · MCU Phase One',name:'Black Widow',yr:'2010',real:'Scarlett Johansson',src:'Iron Man 2',note:'Introduced as an agent.'},
+     {era:'Marvel Studios · MCU Phase One',name:'Thor',yr:'2011',real:'Chris Hemsworth',src:'Thor',note:'Brought in Asgard and Loki.'},
+     {era:'Marvel Studios · MCU Phase One',name:'Captain America',yr:'2011',real:'Chris Evans',src:'The First Avenger',note:'WWII origin, frozen then thawed.'},
+    ],
+    team:{yr:'May 2012',name:'The Avengers',src:'The Avengers',note:'Six solo-film heroes finally unite in the Battle of New York.'},
+    timeline:[
+     {type:'plain',yr:'2015',t:'Age of Ultron',note:'Vision & Scarlet Witch appear.'},
+     {type:'split',yr:'2016',t:'Civil War',note:'The Accords split the team.'},
+     {type:'join',yr:'2021',t:'Shang-Chi arrives',real:'Simu Liu',src:'Shang-Chi & the Legend of the Ten Rings',note:'The Ten Rings organisation (the real one behind “the Mandarin”) takes centre stage; Shang-Chi is set up as a future Avenger.'},
+     {type:'split',yr:'2018',t:'Infinity War',note:'Divided, they lose to Thanos.'},
+     {type:'reunion',yr:'2019',t:'Endgame',note:'The survivors reunite; Tony sacrifices himself.'},
+    ]}
+  },
+
+  xmen:{ label:'X-Men', tag:'The Mutants', accent:'#e08a1e',
+   comics:{
+    left:[
+     {era:'Marvel · founders (X-Men #1, 1963)',name:'Professor X',yr:'1963',real:'Charles Xavier',src:'X-Men #1',note:'Founder and mentor.'},
+     {era:'Marvel · founders (X-Men #1, 1963)',name:'Cyclops',yr:'1963',real:'Scott Summers',src:'X-Men #1',note:'Field leader.'},
+     {era:'Marvel · founders (X-Men #1, 1963)',name:'Marvel Girl',yr:'1963',real:'Jean Grey',src:'X-Men #1',note:'Later the Phoenix.'},
+     {era:'Marvel · founders (X-Men #1, 1963)',name:'Beast',yr:'1963',real:'Hank McCoy',src:'X-Men #1',note:'Genius founder.'},
+     {era:'Marvel · founders (X-Men #1, 1963)',name:'Angel & Iceman',yr:'1963',real:'Warren Worthington / Bobby Drake',src:'X-Men #1',note:'The remaining founders.'},
+     {era:'The antagonist (same issue)',name:'Magneto',yr:'1963',real:'Max Eisenhardt',src:'X-Men #1',thread:false,role:'villain — not a member',note:'Debuts as the villain in issue #1; opposes the team.'},
+    ],
+    team:{yr:'Sept 1963',name:'The X-Men',src:'X-Men #1',note:'The whole team debuts together — five mutant students under Professor X.'},
+    timeline:[
+     {type:'join',yr:'1975',t:'Wolverine & the all-new team',real:'Logan (debut 1974)',src:'Giant-Size X-Men #1',note:'Wolverine debuted in 1974 — 11 years after the team formed — and only joins here with Storm, Nightcrawler & Colossus.'},
+     {type:'split',yr:'1980',t:'Dark Phoenix Saga',note:'Jean’s Phoenix consumes her.'},
+     {type:'split',yr:'2011',t:'Schism',note:'Cyclops and Wolverine split the mutants.'},
+    ]},
+   movies:{
+    left:[
+     {era:'20th Century Fox · X-Men (2000)',name:'Wolverine',yr:'2000',real:'Hugh Jackman',src:'X-Men',note:'The audience’s way into the team.'},
+     {era:'20th Century Fox · X-Men (2000)',name:'Professor X',yr:'2000',real:'Patrick Stewart',src:'X-Men',note:'Leads the team.'},
+     {era:'20th Century Fox · X-Men (2000)',name:'Storm',yr:'2000',real:'Halle Berry',src:'X-Men',note:'Core member.'},
+     {era:'20th Century Fox · X-Men (2000)',name:'Cyclops & Jean Grey',yr:'2000',real:'Marsden / Janssen',src:'X-Men',note:'On-screen founders.'},
+     {era:'The antagonist (2000)',name:'Magneto',yr:'2000',real:'Ian McKellen',src:'X-Men',thread:false,role:'villain — not a member',note:'The team’s adversary.'},
+    ],
+    team:{yr:'July 2000',name:'X-Men — series begins',src:'X-Men (Fox)',note:'The team appears together in film one. Everything below is a LATER release.'},
+    timeline:[
+     {type:'split',yr:'2006',t:'The Last Stand',note:'The team is torn apart.'},
+     {type:'plain',yr:'2011',t:'First Class (reboot)',real:'McAvoy / Fassbender',src:'X-Men: First Class',note:'A 1960s prequel in-story, but a 2011 release — so it belongs here.'},
+     {type:'reunion',yr:'2014',t:'Days of Future Past',note:'Both casts unite across timelines.'},
+     {type:'plain',yr:'2016',t:'Deadpool spin-off',real:'Ryan Reynolds',src:'Deadpool',note:'R-rated revival.'},
+     {type:'reunion',yr:'2024',t:'Deadpool & Wolverine',note:'The mutants cross into the MCU.'},
+    ]}
+  },
+
+  ff:{ label:'Fantastic Four', tag:'The First Family', accent:'#2166c9',
+   comics:{
+    left:[
+     {era:'Marvel · The First Family (FF #1, 1961)',name:'Mr. Fantastic',yr:'1961',real:'Reed Richards',src:'Fantastic Four #1',note:'Stretchable genius; leader.'},
+     {era:'Marvel · The First Family (FF #1, 1961)',name:'Invisible Woman',yr:'1961',real:'Sue Storm',src:'Fantastic Four #1',note:'Force fields & invisibility.'},
+     {era:'Marvel · The First Family (FF #1, 1961)',name:'Human Torch',yr:'1961',real:'Johnny Storm',src:'Fantastic Four #1',note:'A new, flaming Torch (not the Golden-Age android).'},
+     {era:'Marvel · The First Family (FF #1, 1961)',name:'The Thing',yr:'1961',real:'Ben Grimm',src:'Fantastic Four #1',note:'The rocky heart of the team.'},
+     {era:'The arch-nemesis (FF #5)',name:'Doctor Doom',yr:'1962',real:'Victor von Doom',src:'Fantastic Four #5',thread:false,role:'villain — not a member',note:'Marvel’s greatest villain; the FF’s eternal foe.'},
+    ],
+    team:{yr:'Nov 1961',name:'Fantastic Four',src:'Fantastic Four #1',note:'The book that began the “Marvel Age.” The first Silver-Age super-team — a bickering family, not secret-identity heroes.'},
+    timeline:[
+     {type:'plain',yr:'1966',t:'The Galactus Trilogy',note:'Introduces Galactus and the Silver Surfer — a landmark saga.'},
+     {type:'split',yr:'2015',t:'The team disbands',note:'After “Secret Wars,” the FF book ends and the family scatters.'},
+     {type:'reunion',yr:'2018',t:'Fantastic Four return',note:'A relaunch reunites the First Family.'},
+    ]},
+   movies:{
+    left:[
+     {era:'20th Century Fox (2005)',name:'Mr. Fantastic',yr:'2005',real:'Ioan Gruffudd',src:'Fantastic Four',note:'Leader of the film team.'},
+     {era:'20th Century Fox (2005)',name:'Invisible Woman',yr:'2005',real:'Jessica Alba',src:'Fantastic Four',note:'Core member.'},
+     {era:'20th Century Fox (2005)',name:'Human Torch',yr:'2005',real:'Chris Evans',src:'Fantastic Four',note:'Yes — the future Captain America played the Torch first.'},
+     {era:'20th Century Fox (2005)',name:'The Thing',yr:'2005',real:'Michael Chiklis',src:'Fantastic Four',note:'The team’s muscle.'},
+    ],
+    team:{yr:'2005',name:'Fantastic Four (film)',src:'Fantastic Four (Fox)',note:'The team debuts together on screen.'},
+    timeline:[
+     {type:'plain',yr:'2007',t:'Rise of the Silver Surfer',note:'Sequel adds the Surfer and Galactus.'},
+     {type:'split',yr:'2015',t:'The failed reboot',note:'A darker 2015 reboot flops and stalls the franchise.'},
+     {type:'reunion',yr:'2025',t:'First Steps (MCU)',note:'The First Family finally joins the MCU in a fresh reboot.'},
+    ]}
+  },
+
+  guardians:{ label:'Guardians of the Galaxy', tag:'Cosmic misfits', accent:'#8e44c9',
+   comics:{
+    left:[
+     {era:'Marvel · scattered cosmic debuts',name:'Groot',yr:'1960',real:'Groot',src:'Tales to Astonish #13',thread:false,role:'first appeared as a monster',note:'Originally a one-off alien monster in 1960, decades before the team.'},
+     {era:'Marvel · scattered cosmic debuts',name:'Drax',yr:'1973',real:'Arthur Douglas',src:'Iron Man #55',note:'Created to hunt Thanos.'},
+     {era:'Marvel · scattered cosmic debuts',name:'Gamora',yr:'1975',real:'Gamora',src:'Strange Tales #180',note:'“The deadliest woman in the galaxy.”'},
+     {era:'Marvel · scattered cosmic debuts',name:'Star-Lord',yr:'1976',real:'Peter Quill',src:'Marvel Preview #4',note:'Half-human space adventurer; eventual leader.'},
+     {era:'Marvel · scattered cosmic debuts',name:'Rocket Raccoon',yr:'1976',real:'Rocket',src:'Marvel Preview #7',note:'Gun-toting genius raccoon.'},
+    ],
+    team:{yr:'2008',name:'Guardians of the Galaxy',src:'Guardians of the Galaxy vol.2 #1',note:'Star-Lord assembles these cosmic misfits into a team — reviving a team name first used by a totally different 1969 far-future line-up.'},
+    timeline:[
+     {type:'plain',yr:'2013',t:'Marvel NOW! relaunch',note:'Iron Man briefly joins; the team hits the A-list ahead of the film.'},
+     {type:'plain',yr:'2015',t:'Cosmic mainstays',note:'They anchor Marvel’s space-based events.'},
+    ]},
+   movies:{
+    left:[
+     {era:'Marvel Studios (2014)',name:'Star-Lord',yr:'2014',real:'Chris Pratt',src:'Guardians of the Galaxy',note:'Leader of the film team.'},
+     {era:'Marvel Studios (2014)',name:'Gamora',yr:'2014',real:'Zoe Saldaña',src:'Guardians of the Galaxy',note:'Assassin turned hero.'},
+     {era:'Marvel Studios (2014)',name:'Drax',yr:'2014',real:'Dave Bautista',src:'Guardians of the Galaxy',note:'Literal-minded warrior.'},
+     {era:'Marvel Studios (2014)',name:'Rocket & Groot',yr:'2014',real:'Cooper / Diesel',src:'Guardians of the Galaxy',note:'The fan-favourite duo.'},
+    ],
+    team:{yr:'2014',name:'Guardians of the Galaxy (film)',src:'Guardians of the Galaxy',note:'A surprise hit that made obscure cosmic characters into stars.'},
+    timeline:[
+     {type:'plain',yr:'2017',t:'Vol. 2',note:'Explores Star-Lord’s parentage.'},
+     {type:'join',yr:'2018',t:'They join the Avengers',k:'event',src:'Infinity War / Endgame',note:'The Guardians club up with the Avengers against Thanos — cross-team teamwork across two films.'},
+     {type:'reunion',yr:'2023',t:'Vol. 3',note:'The team’s emotional finale.'},
+    ]}
+  },
+
+  defenders:{ label:'Defenders (Street-Level)', tag:'Daredevil, Punisher, Moon Knight…', accent:'#a11d33',
+   comics:{
+    left:[
+     {era:'Marvel · street-level heroes',name:'Daredevil',yr:'1964',real:'Matt Murdock',src:'Daredevil #1',note:'Blind lawyer, fearless vigilante of Hell’s Kitchen.'},
+     {era:'Marvel · street-level heroes',name:'Luke Cage',yr:'1972',real:'Luke Cage',src:'Hero for Hire #1',note:'Unbreakable skin; a “hero for hire.”'},
+     {era:'Marvel · street-level heroes',name:'Iron Fist',yr:'1974',real:'Danny Rand',src:'Marvel Premiere #15',note:'Kung-fu master; pairs with Cage as “Power Man & Iron Fist.”'},
+     {era:'Marvel · street-level heroes',name:'Jessica Jones',yr:'2001',real:'Jessica Jones',src:'Alias #1',note:'Ex-hero turned private eye.'},
+     {era:'Solo antiheroes (occasional allies)',name:'The Punisher',yr:'1974',real:'Frank Castle',src:'Amazing Spider-Man #129',thread:false,role:'solo antihero',note:'A gun-toting vigilante who works alone — allies with, but rarely joins, the others.'},
+     {era:'Solo antiheroes (occasional allies)',name:'Moon Knight',yr:'1975',real:'Marc Spector',src:'Werewolf by Night #32',thread:false,role:'solo antihero',note:'Avatar of an Egyptian god with dissociative identities; mostly a loner.'},
+    ],
+    team:{yr:'2010s',name:'The Defenders (street team)',src:'The Defenders (Bendis)',note:'The street-level heroes band together as “The Defenders.” (Note: an unrelated 1971 “Defenders” — Doctor Strange, Hulk, Namor — was Marvel’s original non-team.)'},
+    timeline:[
+     {type:'plain',yr:'1978',t:'Power Man & Iron Fist',note:'Cage and Fist become a famous crime-fighting duo — “Heroes for Hire.”'},
+     {type:'reunion',yr:'2017',t:'The Defenders reunite',note:'A modern relaunch teams the street heroes again.'},
+    ]},
+   movies:{
+    left:[
+     {era:'Marvel · Netflix (2015–17)',name:'Daredevil',yr:'2015',real:'Charlie Cox',src:'Daredevil (Netflix)',note:'The gritty series that launched Marvel’s street-level TV corner.'},
+     {era:'Marvel · Netflix (2015–17)',name:'Jessica Jones',yr:'2015',real:'Krysten Ritter',src:'Jessica Jones',note:'Noir detective series.'},
+     {era:'Marvel · Netflix (2015–17)',name:'Luke Cage',yr:'2016',real:'Mike Colter',src:'Luke Cage',note:'Harlem’s bulletproof hero.'},
+     {era:'Marvel · Netflix (2015–17)',name:'Iron Fist',yr:'2017',real:'Finn Jones',src:'Iron Fist',note:'The fourth Defender.'},
+     {era:'Solo antiheroes',name:'The Punisher',yr:'2017',real:'Jon Bernthal',src:'The Punisher',note:'Spun off into his own series.'},
+     {era:'Solo antiheroes',name:'Moon Knight',yr:'2022',real:'Oscar Isaac',src:'Moon Knight (Disney+)',note:'Brought into the MCU proper.'},
+    ],
+    team:{yr:'2017',name:'The Defenders (Netflix)',media:'series',src:'The Defenders',note:'The four street heroes unite for one miniseries.'},
+    timeline:[
+     {type:'plain',yr:'2018',t:'Series wind down',k:'event',note:'The Netflix corner closes as rights revert to Marvel.'},
+     {type:'join',yr:'2024',t:'Daredevil returns to the MCU',real:'Charlie Cox',src:'Born Again era',note:'Charlie Cox’s Daredevil is folded into the main MCU.'},
+    ]}
+  },
+
+  eternals:{ label:'Eternals', tag:'Immortal cosmic race', accent:'#1f8a80',
+   comics:{
+    left:[
+     {era:'Marvel · Kirby’s cosmic myth (1976)',name:'Ikaris',yr:'1976',real:'Ikaris',src:'The Eternals #1',note:'A leading Eternal.'},
+     {era:'Marvel · Kirby’s cosmic myth (1976)',name:'Sersi',yr:'1976',real:'Sersi',src:'The Eternals #1',note:'Later even joins the Avengers.'},
+     {era:'Marvel · Kirby’s cosmic myth (1976)',name:'Thena',yr:'1976',real:'Thena',src:'The Eternals #1',note:'Warrior Eternal.'},
+     {era:'Marvel · Kirby’s cosmic myth (1976)',name:'Makkari & Kingo',yr:'1976',real:'Makkari / Kingo',src:'The Eternals #1',note:'Speedster and swordsman.'},
+     {era:'The cosmic forces',name:'Celestials & Deviants',yr:'1976',real:'Their makers & foes',src:'The Eternals #1',thread:false,role:'cosmic powers — not members',note:'The god-like Celestials created the Eternals; the Deviants are their monstrous opposite.'},
+    ],
+    team:{yr:'1976',name:'The Eternals',src:'The Eternals #1',note:'Jack Kirby’s immortal race, secretly guiding humanity — an entire mythology, more than a “team.”'},
+    timeline:[
+     {type:'join',yr:'1991',t:'Sersi joins the Avengers',src:'Avengers #314',note:'A clear example of clubbing across teams — an Eternal becomes an Avenger.'},
+     {type:'plain',yr:'2006',t:'Gaiman relaunch',note:'Neil Gaiman reintroduces them to the modern Marvel Universe.'},
+    ]},
+   movies:{
+    left:[
+     {era:'Marvel Studios (2021)',name:'Sersi',yr:'2021',real:'Gemma Chan',src:'Eternals',note:'The film’s lead.'},
+     {era:'Marvel Studios (2021)',name:'Ikaris',yr:'2021',real:'Richard Madden',src:'Eternals',note:'Powerful and conflicted.'},
+     {era:'Marvel Studios (2021)',name:'Thena',yr:'2021',real:'Angelina Jolie',src:'Eternals',note:'Warrior Eternal.'},
+     {era:'Marvel Studios (2021)',name:'Kingo & others',yr:'2021',real:'Kumail Nanjiani, cast',src:'Eternals',note:'The wider ensemble.'},
+    ],
+    team:{yr:'2021',name:'Eternals (film)',src:'Eternals',note:'Introduces the immortal race to the MCU across thousands of years.'},
+    timeline:[
+     {type:'split',yr:'2021',t:'The team fractures',k:'event',note:'They turn on each other over the planet-ending “Emergence” — a story beat within the film.'},
+     {type:'plain',yr:'future',t:'MCU future open',k:'event',note:'Their next steps in the MCU remain unresolved.'},
+    ]}
+  },
+
+  thunderbolts:{ label:'Thunderbolts', tag:'Reformed villains / antiheroes', accent:'#6b5bd0',
+   comics:{
+    left:[
+     {era:'Marvel · villains in disguise (1997)',name:'Citizen V (Baron Zemo)',yr:'1997',real:'Helmut Zemo',src:'Thunderbolts #1',note:'Secretly the villainous mastermind.'},
+     {era:'Marvel · villains in disguise (1997)',name:'Songbird',yr:'1997',real:'Melissa Gold',src:'Thunderbolts #1',note:'A reformed villain who becomes a true hero.'},
+     {era:'Marvel · villains in disguise (1997)',name:'MACH-1 & Atlas',yr:'1997',real:'Beetle / Goliath',src:'Thunderbolts #1',note:'Former Masters of Evil in new identities.'},
+    ],
+    team:{yr:'1997',name:'The Thunderbolts',src:'Thunderbolts #1',note:'Famous twist: they debut as heroes, then the last page reveals they’re the Masters of Evil in disguise. Later, some genuinely reform.'},
+    timeline:[
+     {type:'split',yr:'1997',t:'The villain reveal',note:'The team fractures as some go straight and others stay crooked.'},
+     {type:'plain',yr:'2007',t:'Osborn’s black-ops team',note:'Norman Osborn turns them into a government hit squad.'},
+    ]},
+   movies:{
+    left:[
+     {era:'Marvel Studios · antiheroes',name:'Yelena Belova',yr:'2021',real:'Florence Pugh',src:'Black Widow',note:'The new Black Widow.'},
+     {era:'Marvel Studios · antiheroes',name:'Winter Soldier',yr:'2014',real:'Sebastian Stan',src:'The Winter Soldier',note:'Reformed assassin.'},
+     {era:'Marvel Studios · antiheroes',name:'US Agent',yr:'2021',real:'Wyatt Russell',src:'Falcon & Winter Soldier',note:'A harder-edged “Cap.”'},
+     {era:'Marvel Studios · antiheroes',name:'Red Guardian & Ghost',yr:'2018–21',real:'Harbour / John-Kamen',src:'Ant-Man / Black Widow',note:'Antiheroes gathered from across the MCU.'},
+    ],
+    team:{yr:'2025',name:'Thunderbolts*',src:'Thunderbolts*',note:'A team of MCU antiheroes and reformed villains assembled by Valentina — pulling together characters who each debuted elsewhere.'},
+    timeline:[
+     {type:'plain',yr:'2025',t:'A new kind of Avengers',k:'event',note:'The film reframes the group as an unlikely successor team.'},
+    ]}
+  }
+
+ }},
+
+ dc:{ label:'DC', color:'#0476f2', groups:{
+
+  jl:{ label:'Justice League', tag:'World’s Greatest Heroes', accent:'#2467d0',
+   comics:{
+    left:[
+     {era:'DC · Golden Age founders',name:'Superman',yr:'1938',real:'Kal-El',src:'Action Comics #1',note:'The first modern superhero.'},
+     {era:'DC · Golden Age founders',name:'Batman',yr:'1939',real:'Bruce Wayne',src:'Detective Comics #27',note:'No powers — just will and wealth.'},
+     {era:'DC · Golden Age founders',name:'Wonder Woman',yr:'1941',real:'Diana',src:'All Star Comics #8',note:'Charter Leaguer.'},
+     {era:'DC · Golden Age founders',name:'Aquaman',yr:'1941',real:'Arthur Curry',src:'More Fun Comics #73',note:'King of Atlantis.'},
+     {era:'First-ever super-team (precursor, 1940)',name:'Justice Society',yr:'1940',real:'The JSA',src:'All Star Comics #3',thread:false,role:'precursor team',note:'The template the League revived — inspiration, not a member.'},
+     {era:'DC · Silver Age founders',name:'Martian Manhunter',yr:'1955',real:'J’onn J’onzz',src:'Detective Comics #225',note:'A charter member.'},
+     {era:'DC · Silver Age founders',name:'The Flash',yr:'1956',real:'Barry Allen',src:'Showcase #4',note:'Began the Silver Age.'},
+     {era:'DC · Silver Age founders',name:'Green Lantern',yr:'1959',real:'Hal Jordan',src:'Showcase #22',note:'Silver-Age revival.'},
+    ],
+    team:{yr:'1960',name:'Justice League of America',src:'The Brave and the Bold #28',note:'Seven icons vs. the alien Starro — the book that inspired Marvel to create the Avengers.'},
+    timeline:[
+     {type:'split',yr:'1984',t:'Justice League Detroit',note:'A-listers leave; a low point.'},
+     {type:'reunion',yr:'1987',t:'League International',note:'A revamped, comedic League.'},
+     {type:'reunion',yr:'2011',t:'The New 52',note:'Origin retold with the seven core members.'},
+    ]},
+   movies:{
+    left:[
+     {era:'Warner Bros. · DCEU',name:'Superman',yr:'2013',real:'Henry Cavill',src:'Man of Steel',note:'DCEU starting point.'},
+     {era:'Warner Bros. · DCEU',name:'Batman',yr:'2016',real:'Ben Affleck',src:'Batman v Superman',note:'Introduced ahead of the team film.'},
+     {era:'Warner Bros. · DCEU',name:'Wonder Woman',yr:'2016–17',real:'Gal Gadot',src:'BvS → Wonder Woman',note:'Cameo, then the DCEU’s biggest hit.'},
+     {era:'Warner Bros. · DCEU',name:'Flash · Aquaman · Cyborg',yr:'2016–17',real:'Miller / Momoa / Fisher',src:'Justice League',note:'Introduced in cameos and the team film.'},
+    ],
+    team:{yr:'Nov 2017',name:'Justice League (film)',src:'Justice League',note:'Batman assembles the team; Superman returns — reached with fewer setup films than Marvel.'},
+    timeline:[
+     {type:'split',yr:'2017',t:'Troubled theatrical cut',k:'event',note:'A director change split the film’s vision.'},
+     {type:'reunion',yr:'2021',t:'The Snyder Cut',note:'A four-hour restoration released on streaming.'},
+     {type:'reunion',yr:'2025',t:'A new DC Universe',k:'event',note:'James Gunn reboots the franchise with a fresh Superman film.'},
+    ]}
+  },
+
+  jsa:{ label:'Justice Society', tag:'The first super-team', accent:'#b8860b',
+   comics:{
+    left:[
+     {era:'DC · Golden Age (All Star Comics #3, 1940)',name:'The Flash',yr:'1940',real:'Jay Garrick',src:'Flash Comics #1',note:'The original Flash.'},
+     {era:'DC · Golden Age (All Star Comics #3, 1940)',name:'Green Lantern',yr:'1940',real:'Alan Scott',src:'All-American Comics #16',note:'The original Green Lantern.'},
+     {era:'DC · Golden Age (All Star Comics #3, 1940)',name:'Hawkman',yr:'1940',real:'Carter Hall',src:'Flash Comics #1',note:'Reincarnated warrior.'},
+     {era:'DC · Golden Age (All Star Comics #3, 1940)',name:'Doctor Fate & The Spectre',yr:'1940',real:'Kent Nelson / Jim Corrigan',src:'More Fun Comics #55/52',note:'Mystic heavyweights.'},
+    ],
+    team:{yr:'1940',name:'Justice Society of America',src:'All Star Comics #3',note:'The first team of superheroes ever assembled — the idea that made every later team, including the Justice League and Avengers, possible.'},
+    timeline:[
+     {type:'split',yr:'1951',t:'The Golden Age ends',note:'Super-hero comics fade and the JSA is shelved.'},
+     {type:'reunion',yr:'1963',t:'Meets the Justice League',note:'“Crisis on Earth-One/Two” revives them alongside the modern League.'},
+     {type:'reunion',yr:'1999',t:'Modern JSA relaunch',note:'A celebrated series pairs Golden-Age veterans with new legacy heroes.'},
+    ]},
+   movies:{
+    left:[
+     {era:'Warner Bros. (Black Adam, 2022)',name:'Hawkman',yr:'2022',real:'Aldis Hodge',src:'Black Adam',note:'Leads the on-screen JSA.'},
+     {era:'Warner Bros. (Black Adam, 2022)',name:'Doctor Fate',yr:'2022',real:'Pierce Brosnan',src:'Black Adam',note:'Mystic elder.'},
+     {era:'Warner Bros. (Black Adam, 2022)',name:'Atom Smasher & Cyclone',yr:'2022',real:'Centineo / Swindell',src:'Black Adam',note:'Younger members.'},
+    ],
+    team:{yr:'2022',name:'Justice Society (film)',src:'Black Adam',note:'The JSA makes its first big-screen appearance, opposing (then wary of) Black Adam.'},
+    timeline:[
+     {type:'plain',yr:'2023',t:'DC universe reboot',k:'event',note:'Warner’s reboot leaves this JSA’s future uncertain.'},
+    ]}
+  },
+
+  titans:{ label:'Teen Titans', tag:'The sidekicks grow up', accent:'#17a2a2',
+   comics:{
+    left:[
+     {era:'DC · the sidekicks (1964–65)',name:'Robin',yr:'1940',real:'Dick Grayson',src:'Detective Comics #38',note:'Batman’s partner; the Titans’ leader.'},
+     {era:'DC · the sidekicks (1964–65)',name:'Kid Flash',yr:'1959',real:'Wally West',src:'The Flash #110',note:'The Flash’s sidekick.'},
+     {era:'DC · the sidekicks (1964–65)',name:'Aqualad',yr:'1960',real:'Garth',src:'Adventure Comics #269',note:'Aquaman’s protégé.'},
+     {era:'DC · the sidekicks (1964–65)',name:'Wonder Girl',yr:'1965',real:'Donna Troy',src:'The Brave and the Bold #60',note:'Rounds out the founding team.'},
+    ],
+    team:{yr:'1964–65',name:'Teen Titans',src:'The Brave and the Bold #54 → #60',note:'DC’s teen sidekicks band together on their own — first in a 1964 team-up, formally named the Teen Titans in 1965.'},
+    timeline:[
+     {type:'reunion',yr:'1980',t:'The New Teen Titans',note:'Wolfman & Pérez add Cyborg, Raven, Starfire and Beast Boy — the classic, beloved line-up that rivalled the X-Men in sales.'},
+     {type:'plain',yr:'2003',t:'Modern relaunch',note:'A new series and a hit cartoon make the team a household name.'},
+    ]},
+   movies:{
+    left:[
+     {era:'DC · TV & animation',name:'Robin',yr:'2003',real:'Dick Grayson',src:'Teen Titans (cartoon)',note:'Anchors the animated team.'},
+     {era:'DC · TV & animation',name:'Cyborg & Raven',yr:'2003',real:'Victor Stone / Rachel Roth',src:'Teen Titans (cartoon)',note:'Fan favourites of the show.'},
+     {era:'DC · TV & animation',name:'Starfire & Beast Boy',yr:'2003',real:'Koriand’r / Garfield Logan',src:'Teen Titans (cartoon)',note:'Complete the classic five.'},
+    ],
+    team:{yr:'2003',name:'Teen Titans (screen)',media:'series',src:'Teen Titans (Cartoon Network)',note:'The Titans live mainly on TV, not film — the 2003 cartoon defined them for a generation.'},
+    timeline:[
+     {type:'plain',yr:'2013',t:'Teen Titans Go!',k:'series',note:'A comedic animated reboot becomes a long-running hit.'},
+     {type:'plain',yr:'2018',t:'Titans (live-action)',k:'series',note:'A darker live-action series on DC’s streaming service.'},
+    ]}
+  },
+
+  ssquad:{ label:'Suicide Squad', tag:'Villains on a leash', accent:'#6a8f2b',
+   comics:{
+    left:[
+     {era:'DC · Task Force X (1987)',name:'Deadshot',yr:'1950',real:'Floyd Lawton',src:'Batman #59',note:'The assassin who never misses.'},
+     {era:'DC · Task Force X (1987)',name:'Captain Boomerang',yr:'1960',real:'Digger Harkness',src:'The Flash #117',note:'A Flash villain drafted onto the Squad.'},
+     {era:'DC · Task Force X (1987)',name:'Bronze Tiger & Rick Flag',yr:'1975/59',real:'Ben Turner / Rick Flag',src:'DC war & kung-fu titles',note:'The Squad’s field muscle and leader.'},
+     {era:'The handler (not a combatant)',name:'Amanda Waller',yr:'1986',real:'“The Wall”',src:'Legends #1',thread:false,role:'director — sends them in',note:'The ruthless government official who runs the Squad; she commands but doesn’t fight.'},
+    ],
+    team:{yr:'1987',name:'Suicide Squad (Task Force X)',src:'Suicide Squad #1',note:'John Ostrander’s revival: imprisoned super-villains sent on deadly black-ops missions in exchange for reduced sentences.'},
+    timeline:[
+     {type:'plain',yr:'2011',t:'New 52 relaunch',note:'Harley Quinn joins and becomes the breakout star.'},
+     {type:'plain',yr:'2016',t:'Movie-styled lineup',note:'The comics lean into the film’s popular roster.'},
+    ]},
+   movies:{
+    left:[
+     {era:'Warner Bros. (2016)',name:'Deadshot',yr:'2016',real:'Will Smith',src:'Suicide Squad',note:'The team’s marksman.'},
+     {era:'Warner Bros. (2016)',name:'Harley Quinn',yr:'2016',real:'Margot Robbie',src:'Suicide Squad',note:'The breakout star of the film era.'},
+     {era:'Warner Bros. (2016)',name:'Captain Boomerang & El Diablo',yr:'2016',real:'Courtney / Hernandez',src:'Suicide Squad',note:'Rounding out the squad.'},
+     {era:'The handler',name:'Amanda Waller',yr:'2016',real:'Viola Davis',src:'Suicide Squad',thread:false,role:'director',note:'Runs Task Force X; the fixed point across DC films.'},
+    ],
+    team:{yr:'2016',name:'Suicide Squad (film)',src:'Suicide Squad',note:'DC’s villains-as-antiheroes hit the big screen.'},
+    timeline:[
+     {type:'plain',yr:'2020',t:'Birds of Prey',note:'A Harley Quinn spin-off.'},
+     {type:'reunion',yr:'2021',t:'The Suicide Squad',note:'James Gunn’s soft reboot with a fresh, wilder roster.'},
+    ]}
+  }
+
+ }}
+};
+
+let curPub='marvel', curGroup='avengers', curMode='comics';
+const sidebar=document.getElementById('sidebar');
+const canvas=document.getElementById('canvas');
+const overlay=document.getElementById('overlay');
+const modal=document.getElementById('modal');
+
+function groupObj(){return DATA[curPub].groups[curGroup];}
+function accentColor(){return groupObj().accent;}
+function hexToRgba(hex,a){hex=hex.replace('#','');
+  const r=parseInt(hex.slice(0,2),16),g=parseInt(hex.slice(2,4),16),b=parseInt(hex.slice(4,6),16);
+  return `rgba(${r},${g},${b},${a})`;}
+function groupsOf(items){const out=[];items.forEach((h,i)=>{const last=out[out.length-1];
+  if(last&&last.era===(h.era||''))last.idxs.push(i);else out.push({era:h.era||'',idxs:[i]});});return out;}
+function evColor(t){return t==='split'?getComputedStyle(document.documentElement).getPropertyValue('--split').trim()
+  :t==='reunion'?getComputedStyle(document.documentElement).getPropertyValue('--reunion').trim()
+  :t==='join'?getComputedStyle(document.documentElement).getPropertyValue('--join').trim():'#9aa4bb';}
+
+function renderSidebar(){
+  const groups=DATA[curPub].groups;
+  let h=`<div class="sbtitle">${DATA[curPub].label} teams</div>`;
+  Object.keys(groups).forEach(key=>{
+    const g=groups[key], on=key===curGroup;
+    h+=`<div class="gbtn${on?' active':''}" data-key="${key}"
+      style="${on?`background:${g.accent};border-color:${g.accent}`:''}">
+      <span>${g.label}</span><span class="gsub">${g.tag}</span></div>`;
+  });
+  sidebar.innerHTML=h;
+  sidebar.querySelectorAll('.gbtn').forEach(b=>b.addEventListener('click',()=>{
+    curGroup=b.dataset.key; renderSidebar(); render(); canvas.parentElement.scrollLeft=0;
+  }));
+}
+
+function chipFor(kind,item){
+  // returns {cls,label} or null (comics mode = no chip)
+  if(curMode!=='movies') return null;
+  if(kind==='left') return {cls:'char',label:'CHARACTER'};
+  if(kind==='team'){const m=item.media||'film';
+    return m==='series'?{cls:'series',label:'SERIES'}:{cls:'film',label:'FILM'};}
+  // timeline
+  const k=item.k||(item.type==='join'?'character':'film');
+  return k==='character'?{cls:'char',label:'CHARACTER'}
+       :k==='series'?{cls:'series',label:'SERIES'}
+       :k==='event'?{cls:'event',label:'EVENT'}:{cls:'film',label:'FILM'};
+}
+
+function render(){
+  const d=groupObj()[curMode];
+  const acc=accentColor();
+  document.documentElement.style.setProperty('--accent',acc);
+  const isMovie=curMode==='movies';
+
+  const heroW=176, heroH=isMovie?74:58, gapY=isMovie?14:16, stackTop=78, heroX=44;
+  const groupHeadH=30, groupPad=10, groupGap=20;
+  const N=d.left.length;
+  const groups=groupsOf(d.left);
+  const heroTop=new Array(N); const rects=[];
+  let yc=stackTop;
+  groups.forEach(g=>{const gTop=yc; yc+=groupHeadH;
+    g.idxs.forEach(i=>{heroTop[i]=yc; yc+=heroH+gapY;});
+    rects.push({era:g.era,top:gTop,bottom:yc-gapY+groupPad}); yc+=groupGap;});
+  const stackBottom=yc;
+  const cy=i=>heroTop[i]+heroH/2;
+
+  const founders=d.left.map((h,i)=>i).filter(i=>d.left[i].thread!==false);
+  const fset=founders.length?founders:d.left.map((h,i)=>i);
+  const midY=(cy(fset[0])+cy(fset[fset.length-1]))/2;
+
+  const teamW=196, teamH=104, teamCx=heroX+heroW+232, teamCy=midY;
+  const teamLeft=teamCx-teamW/2, teamRight=teamCx+teamW/2;
+  const evW=168, evH=isMovie?88:72, evStartX=teamRight+70, evSpacing=214;
+  const evCx=k=>evStartX+k*evSpacing+evW/2;
+  const evCy=k=>teamCy+(k%2===0?-1:1)*124;
+  const M=d.timeline.length;
+  const lastX=M?evCx(M-1)+evW/2:teamRight;
+  const cW=Math.max(lastX+70,900);
+  const cH=Math.max(stackBottom+40, teamCy+150+evH, 460);
+  canvas.style.width=cW+'px'; canvas.style.height=cH+'px';
+
+  const p=[];
+  fset.forEach(i=>{const x1=heroX+heroW,y1=cy(i),x2=teamLeft,y2=teamCy,c=(x1+x2)/2;
+    p.push(`<path d="M${x1},${y1} C${c},${y1} ${c},${y2} ${x2},${y2}" fill="none" stroke="${acc}" stroke-width="2" opacity="0.5"/>`);});
+  if(M){p.push(`<path d="M${teamRight},${teamCy} L${lastX},${teamCy}" fill="none" stroke="#cfd5e2" stroke-width="2.5"/>`);
+    for(let k=0;k<M;k++){const ex=evCx(k),ey=evCy(k),col=evColor(d.timeline[k].type),mc=(teamCy+ey)/2;
+      p.push(`<path d="M${ex},${teamCy} C${ex},${mc} ${ex},${mc} ${ex},${ey}" fill="none" stroke="${col}" stroke-width="2" opacity="0.55"/>`);
+      p.push(`<circle cx="${ex}" cy="${teamCy}" r="4" fill="${col}"/>`);}}
+  let html=`<svg width="${cW}" height="${cH}">${p.join('')}</svg>`;
+
+  html+=`<div class="regionlabel" style="left:${heroX}px">Started alone / founded</div>`;
+  html+=`<div class="regionlabel" style="left:${teamLeft}px">Assembled</div>`;
+  if(M) html+=`<div class="regionlabel" style="left:${evStartX}px">Later — joins, splits & reunions</div>`;
+
+  rects.forEach(g=>{html+=`<div class="eragroup" style="left:${heroX-16}px;top:${g.top}px;width:${heroW+32}px;height:${g.bottom-g.top}px;
+    border-color:${hexToRgba(acc,0.35)};background:${hexToRgba(acc,0.05)}">
+    <div class="erlabel" style="color:${hexToRgba(acc,0.95)}">${g.era}</div></div>`;});
+
+  d.left.forEach((h,i)=>{
+    const ghost=h.thread===false?' ghost':'';
+    const ch=chipFor('left',h); const chip=ch?`<div class="chip ${ch.cls}">${ch.label}</div>`:'';
+    const sub=isMovie?`<div class="sub"><b>${h.real}</b></div>`:'';
+    const more=h.role?`<div class="more">${h.role}</div>`:(isMovie?'':`<div class="more">click for story</div>`);
+    html+=`<div class="node hero${ghost}" style="left:${heroX}px;top:${cy(i)-heroH/2}px;width:${heroW}px"
+      data-kind="left" data-i="${i}">${chip}<div class="ny">${h.yr}</div><div class="nn">${h.name}</div>${sub}${more}</div>`;});
+
+  const tch=chipFor('team',d.team); const tchip=tch?`<div class="chip ${tch.cls}">${tch.label}</div>`:'';
+  html+=`<div class="node team" style="left:${teamLeft}px;top:${teamCy-teamH/2}px;width:${teamW}px;height:${teamH}px"
+    data-kind="team">${tchip}<div class="ny">★ ${d.team.yr}</div><div class="nn">${d.team.name}</div><div class="more">team forms — click</div></div>`;
+
+  d.timeline.forEach((e,k)=>{const cls=e.type==='split'?'split':e.type==='reunion'?'reunion':e.type==='join'?'join':'plain';
+    const lbl=e.type==='split'?'split':e.type==='reunion'?'reunited':e.type==='join'?'joins later':'';
+    const ec=chipFor('ev',e); const echip=ec?`<div class="chip ${ec.cls}">${ec.label}</div>`:'';
+    const esub=(isMovie&&ec&&ec.cls==='char'&&e.real)?`<div class="sub"><b>${e.real}</b></div>`:'';
+    html+=`<div class="node ev ${cls}" style="left:${evCx(k)-evW/2}px;top:${evCy(k)-evH/2}px;width:${evW}px"
+      data-kind="ev" data-i="${k}">${echip}<div class="ny">${e.yr}</div><div class="nn">${e.t}</div>${esub}<div class="more">${lbl}</div></div>`;});
+
+  canvas.innerHTML=html;
+  canvas.querySelectorAll('.node').forEach(n=>n.addEventListener('click',()=>openModal(n.dataset.kind,n.dataset.i)));
+}
+
+function mediaTag(kind,item){
+  const c=chipFor(kind,item); if(!c) return '';
+  const map={char:'🎭 Character',film:'🎬 Film',series:'📺 Series',event:'✦ Story moment'};
+  return `<div class="media ${c.cls}">${map[c.cls]}</div><br>`;
+}
+function openModal(kind,i){
+  const d=groupObj()[curMode], acc=accentColor(), ico=(curMode==='comics'?'📖 ':'🎬 ');
+  let kicker,color,title,sub,src,body,mt='';
+  if(kind==='left'){const h=d.left[i], gh=h.thread===false;
+    kicker=gh?(h.role||'Not a member'):DATA[curPub].label+' · founder';
+    color=gh?'#7a86a0':acc; title=h.name; sub=h.real; src=ico+h.src; body=h.note; mt=mediaTag('left',h);
+  }else if(kind==='team'){kicker='The team assembles'; color=acc; title=d.team.name; sub=d.team.yr; src=ico+d.team.src; body=d.team.note; mt=mediaTag('team',d.team);
+  }else{const e=d.timeline[i];
+    kicker=e.type==='split'?'The team splits':e.type==='reunion'?'The team reunites':e.type==='join'?'A new member joins':'A later chapter';
+    color=evColor(e.type); title=e.t; sub=e.real?e.real:e.yr; src=e.src?ico+e.src:''; body=e.note; mt=mediaTag('ev',e);}
+  modal.innerHTML=`<button class="x" onclick="closeModal()">×</button>
+    <div class="kicker" style="color:${color}">${kicker}</div><h3>${title}</h3><div class="sub">${sub}</div>
+    ${mt}${src?`<div class="src">${src}</div><br>`:''}<p>${body}</p>`;
+  overlay.classList.add('open');
+}
+function closeModal(){overlay.classList.remove('open');}
+overlay.addEventListener('click',e=>{if(e.target===overlay)closeModal();});
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeModal();});
+
+document.querySelectorAll('.toptab').forEach(tab=>tab.addEventListener('click',()=>{
+  document.querySelectorAll('.toptab').forEach(t=>t.classList.remove('active'));
+  tab.classList.add('active'); curPub=tab.dataset.pub;
+  curGroup=Object.keys(DATA[curPub].groups)[0];
+  renderSidebar(); render(); canvas.parentElement.scrollLeft=0;
+}));
+document.querySelectorAll('.toggle button').forEach(btn=>btn.addEventListener('click',()=>{
+  document.querySelectorAll('.toggle button').forEach(b=>b.classList.remove('active'));
+  btn.classList.add('active'); curMode=btn.dataset.mode; render(); canvas.parentElement.scrollLeft=0;
+}));
+
+renderSidebar(); render();
+</script>
+</body>
+</html>

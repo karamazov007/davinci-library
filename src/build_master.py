@@ -24,6 +24,8 @@ FEATURED = {"mvp", "social", "swimming"}
 SUB_FILES = [
     ("Media Consumption/media-atlas.html",                                   "media"),
     ("Media Consumption/media-consumption.html",                             "media"),
+    ("Media Consumption/media-that-changed-lives.html",                      "media"),
+    ("Media Consumption/for-me.html",                                        "media"),
     ("Systems Thinking & Mental Models/complete-thinking-tools-toolkit.html","systems"),
     ("Systems Thinking & Mental Models/mental-models-by-party.html",         "systems"),
     ("Systems Thinking & Mental Models/parrish-mental-models.html",          "systems"),
@@ -215,6 +217,39 @@ PAGE_NAV = {
   "media-hub.html": {"tabbar":".tabs","brand":".brand"},
 }
 
+# ---- add custom tabs ("Changed My Life", "For Me") to the Media Hub.
+# The hub uses <button class="tab" data-target="frameX"> toggling <iframe> panels in .stage,
+# so we add matching buttons + iframes and a delegated (bubble-phase) click handler that
+# authoritatively toggles the active frame — robust regardless of the native tab script.
+# Each iframe src is rewired to the embedded blob / hosted URL by INJECT_TEMPLATE's fixFrames.
+MEDIA_HUB_TAB = r"""<script>(function(){
+  var EXTRA=[
+    {id:'frameChanged', src:'media-that-changed-lives.html', label:'Changed My Life'},
+    {id:'frameForMe',   src:'for-me.html',                   label:'For Me'}
+  ];
+  function init(){try{
+    var TB=document.querySelector('.tabs'); var STAGE=document.querySelector('.stage');
+    if(!TB||!STAGE){return;}
+    EXTRA.forEach(function(x){
+      if(document.getElementById(x.id)){return;}
+      var f=document.createElement('iframe'); f.id=x.id; f.setAttribute('src',x.src); f.title=x.label; STAGE.appendChild(f);
+      var b=document.createElement('button'); b.className='tab'; b.setAttribute('role','tab'); b.setAttribute('data-target',x.id); b.textContent=x.label; TB.appendChild(b);
+    });
+    function activate(target){
+      document.querySelectorAll('.stage iframe').forEach(function(fr){fr.classList.toggle('active',fr.id===target);});
+      document.querySelectorAll('.tabs .tab').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-target')===target);});
+    }
+    if(!TB.__dvhWired){ TB.__dvhWired=1;
+      TB.addEventListener('click',function(e){var t=e.target.closest?e.target.closest('.tab'):null; if(!t)return; activate(t.getAttribute('data-target'));});
+    }
+  }catch(e){}}
+  if(document.readyState!=='loading') setTimeout(init,80);
+  else document.addEventListener('DOMContentLoaded',function(){setTimeout(init,80);});
+})();</script>"""
+EXTRA_SCRIPTS = {
+    "media-hub.html": MEDIA_HUB_TAB,
+}
+
 def build_home(pid, d):
     nav = PAGE_NAV.get(pid, {"tabbar":"body","brand":".brand"})
     whys = "".join('<p class="dvh-p">%s</p>' % _esc(p) for p in d["why"])
@@ -287,6 +322,8 @@ HOME_PANELS = {
       "This hub is a personal catalogue: the Atlas is everything gathered and filed; the Watchlist is what's in front of you now. Tracking it turns passive consumption into a growing canon you can revisit, recommend, and actually discuss."],
     "aspects":[["🗺️","The Atlas","Everything — films, books, ideas — catalogued and searchable in one place."],
       ["▶️","The Watchlist","What you're watching now, what's on hold, and what's finished."],
+      ["💡","Changed My Life","62 films, anime, series & shorts people credit with a real shift in how they live — each card names the shift, with a To-Watch list."],
+      ["🎯","For Me","A personal cut for the chapter you're in now — picks tied to the triad, the self-work and the perfectionism trap, each with a 'why this, for you.'"],
       ["⭐","Taste over time","A record of what actually stayed with you — your evolving canon."],
       ["💬","Conversation fuel","Find it again the moment you want to share or discuss it."]],
     "resources":[
@@ -317,9 +354,10 @@ def build_page_html(relpath, family, entry, local=None):
     with open(os.path.join(BASE, relpath), "rb") as f:
         raw = f.read()
     h = inject(raw, name, family, entry, local)
-    if name in EXTRA_SKIN:  h = insert_before_body(h, EXTRA_SKIN[name])
-    if name in HOME_PANELS: h = insert_before_body(h, build_home(name, HOME_PANELS[name]))
-    if family == "brain":   h = insert_before_body(h, BRAIN_RENAME)
+    if name in EXTRA_SKIN:    h = insert_before_body(h, EXTRA_SKIN[name])
+    if name in HOME_PANELS:   h = insert_before_body(h, build_home(name, HOME_PANELS[name]))
+    if name in EXTRA_SCRIPTS: h = insert_before_body(h, EXTRA_SCRIPTS[name])
+    if family == "brain":     h = insert_before_body(h, BRAIN_RENAME)
     return name, h
 
 def _b64(h): return base64.b64encode(h.encode('utf-8')).decode('ascii')
