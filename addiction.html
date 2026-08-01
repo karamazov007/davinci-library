@@ -170,6 +170,7 @@
       <button class="tabpill active" data-tab="model" onclick="switchTab('model')">① The System</button>
       <button class="tabpill" data-tab="trap" onclick="switchTab('trap')">② The Automation Trap</button>
       <button class="tabpill" data-tab="porn" onclick="switchTab('porn')">③ Porn · Triggers</button>
+      <button class="tabpill" data-tab="phone" onclick="switchTab('phone')">④ Phone · Triggers</button>
     </div>
     <button class="theme-btn" id="themeBtn" title="Toggle theme">🌙</button>
   </div>
@@ -180,7 +181,7 @@
   <header class="hero">
     <div class="kicker">A First-Principles Map · Two Lenses, One Machine</div>
     <h1>The Anatomy of a Hijacked Wanting System</h1>
-    <p class="lead">Addiction is not a moral failure or a lack of willpower. It is a learning system doing exactly what it evolved to do — trained too well, on the wrong thing. <strong>Tab ①</strong> dismantles the machine — its parts, wiring and dynamics. <strong>Tab ②</strong> follows the deeper trap: how the mind's drive to automate turns boredom into the fuel and quietly hands itself over. <strong>Tab ③</strong> is the applied, personal layer — a living map of specific triggers and the workaround for each.</p>
+    <p class="lead">Addiction is not a moral failure or a lack of willpower. It is a learning system doing exactly what it evolved to do — trained too well, on the wrong thing. <strong>Tab ①</strong> dismantles the machine — its parts, wiring and dynamics. <strong>Tab ②</strong> follows the deeper trap: how the mind's drive to automate turns boredom into the fuel and quietly hands itself over. <strong>Tab ③</strong> and <strong>④</strong> are the applied, personal layer — living trigger-maps (porn, phone) with a workaround for each.</p>
     <div class="badges">
       <span class="badge n"><span class="dot"></span>Neuroscience &amp; behaviour</span>
       <span class="badge d"><span class="dot"></span>Buddhist first principles</span>
@@ -1586,6 +1587,236 @@
     </section>
 
   </div><!-- /pane-porn -->
+
+  <!-- ============================================================= -->
+  <!-- ==================== PANE 4: PHONE TRIGGERS ================== -->
+  <!-- ============================================================= -->
+  <div class="pane" id="pane-phone">
+    <div class="chipnav">
+      <a class="chip" href="#phone-map">The trigger map</a>
+      <a class="chip" href="#phone-cascade">The cascade</a>
+      <a class="chip" href="#phone-causes">Causes &amp; workarounds</a>
+    </div>
+
+    <div style="padding:14px 0 4px">
+      <div class="kicker" style="background:linear-gradient(90deg,var(--accent),var(--neuro));-webkit-background-clip:text;background-clip:text;color:transparent">Part Four · Applied &amp; personal</div>
+      <h1 class="pane-h">Phone · The Trigger Map</h1>
+      <p class="pane-lead">Same idea as the porn map: a living functional-analysis of what actually precedes the pick-up. Each trigger is a lever with an address, and each gets a concrete workaround. This map grows — tell me a new one the moment you notice it.</p>
+    </div>
+
+    <div class="note">Non-judgmental by design: a pick-up is data, not a failing. Most of these are the <em>same engine</em> as everything in Tab ② — an idle, restless moment reaching for the cheapest stimulation — just wearing a screen.</div>
+
+    <!-- ============ FISHBONE ============ -->
+    <section id="phone-map">
+      <div class="sec-head"><span class="sec-tag s">Dependent origination</span></div>
+      <h2 class="sec-title">The pick-up is assembled, not spontaneous</h2>
+      <p class="sec-intro">No single thing makes you reach for the phone. It happens when several arrows land together: an internal push, an open window of dead time, a notification hook, or a legitimate reason that becomes a trojan horse. Break enough arrows and the pick-up can't form.</p>
+      <figure>
+        <div class="fig-title">Fishbone — what feeds the phone pick-up</div>
+        <svg viewBox="0 0 980 560" role="img" aria-label="Fishbone diagram: categories of triggers feeding the phone pick-up">
+          <defs>
+            <marker id="phSpine" markerWidth="12" markerHeight="12" refX="8" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="var(--bad)"/></marker>
+            <marker id="phBone" markerWidth="11" markerHeight="11" refX="8" refY="3.5" orient="auto"><path d="M0,0 L9,3.5 L0,7 Z" fill="var(--ink-faint)"/></marker>
+          </defs>
+          <line x1="70" y1="285" x2="810" y2="285" stroke="var(--ink-dim)" stroke-width="4" marker-end="url(#phSpine)"/>
+          <rect x="818" y="247" width="156" height="76" rx="14" fill="var(--bad)" opacity=".14" stroke="var(--bad)" stroke-width="2"/>
+          <text x="896" y="278" text-anchor="middle" style="font:800 15px sans-serif;fill:var(--bad)">THE PICK-UP</text>
+          <text x="896" y="300" text-anchor="middle" class="svg-tiny" style="fill:var(--bad)">&#8594; doomscroll</text>
+          <line x1="150" y1="140" x2="240" y2="278" stroke="var(--accent)" stroke-width="3" marker-end="url(#phBone)"/>
+          <line x1="720" y1="140" x2="640" y2="278" stroke="var(--warn)" stroke-width="3" marker-end="url(#phBone)"/>
+          <line x1="215" y1="450" x2="345" y2="292" stroke="var(--neuro)" stroke-width="3" marker-end="url(#phBone)"/>
+          <line x1="645" y1="450" x2="650" y2="292" stroke="var(--accent2)" stroke-width="3" marker-end="url(#phBone)"/>
+          <g>
+            <circle cx="40" cy="60" r="6" fill="var(--accent)"/>
+            <text x="54" y="65" style="font:800 13px sans-serif;fill:var(--accent)">INTERNAL STATES</text>
+            <text x="54" y="82" class="svg-tiny">the push</text>
+            <text x="40" y="103" class="svg-sub">&#8226; Wake-up boredom / feeling flat</text>
+            <text x="40" y="121" class="svg-sub">&#8226; Restlessness between tasks</text>
+          </g>
+          <g>
+            <circle cx="700" cy="60" r="6" fill="var(--warn)"/>
+            <text x="714" y="65" style="font:800 13px sans-serif;fill:var(--warn)">NOTIFICATION HOOKS</text>
+            <text x="714" y="82" class="svg-tiny">the pull</text>
+            <text x="700" y="103" class="svg-sub">&#8226; A text &#8594; &#8216;just check&#8217;</text>
+            <text x="700" y="121" class="svg-sub">&#8226; Archived-WhatsApp rabbit hole</text>
+          </g>
+          <g>
+            <circle cx="40" cy="470" r="6" fill="var(--neuro)"/>
+            <text x="54" y="475" style="font:800 13px sans-serif;fill:var(--neuro)">DEAD-TIME WINDOWS</text>
+            <text x="54" y="492" class="svg-tiny">the opening</text>
+            <text x="40" y="513" class="svg-sub">&#8226; Switching between tasks</text>
+            <text x="40" y="531" class="svg-sub">&#8226; Travelling / commuting</text>
+          </g>
+          <g>
+            <circle cx="660" cy="452" r="6" fill="var(--accent2)"/>
+            <text x="674" y="457" style="font:800 13px sans-serif;fill:var(--accent2)">FUNCTIONAL ENTRY</text>
+            <text x="674" y="474" class="svg-tiny">the trojan horse</text>
+            <text x="660" y="495" class="svg-sub">&#8226; Story upload &#8594; Reels binge</text>
+            <text x="660" y="513" class="svg-sub">&#8226; Gym music &#8594; feed drift</text>
+          </g>
+          <text x="440" y="315" text-anchor="middle" class="svg-tiny">When enough arrows land together, you pick up. <tspan style="fill:var(--accent);font-weight:700">Tap a cause below.</tspan></text>
+        </svg>
+        <figcaption>Read it as dependent origination: the pick-up is the <em>effect</em>; each bone is a contributing <em>cause</em>. You don't fight the phone — you disassemble the arrows. <span class="hint">This map is meant to grow.</span></figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ CASCADE ============ -->
+    <section id="phone-cascade">
+      <div class="sec-head"><span class="sec-tag s">The cascade</span></div>
+      <h2 class="sec-title">The trojan horse — a legit reason becomes 45 minutes</h2>
+      <p class="prose">The most deceptive trigger isn't boredom — it's a <em>good</em> reason. You open the phone to post a story or start gym music, and one tap later the feed has you. Like the porn search-domino, each step green-lights the next, and by the time you notice you're several dominoes down.</p>
+      <figure>
+        <div class="fig-title">The pick-up cascade</div>
+        <svg viewBox="0 0 960 220" role="img" aria-label="A cascade from a legitimate reason to a 45-minute binge">
+          <defs><marker id="pcArr" markerWidth="10" markerHeight="10" refX="7" refY="3" orient="auto"><path d="M0,0 L7,3 L0,6 Z" fill="var(--ink-faint)"/></marker></defs>
+          <rect x="10" y="78" width="150" height="64" rx="11" fill="var(--good)" opacity=".16" stroke="var(--good)" stroke-width="1.8"/>
+          <text x="85" y="66" text-anchor="middle" style="font:800 10px sans-serif;fill:var(--good)">&#9733; the only cheap stop</text>
+          <text x="85" y="104" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--ink)">A legit reason</text>
+          <text x="85" y="120" text-anchor="middle" class="svg-tiny">post a story &#183; music</text>
+          <rect x="180" y="78" width="122" height="64" rx="11" fill="var(--warn)" opacity=".12" stroke="var(--warn)" stroke-width="1.6"/>
+          <text x="241" y="106" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--ink)">Open the app</text>
+          <rect x="322" y="78" width="122" height="64" rx="11" fill="var(--warn)" opacity=".22" stroke="var(--warn)" stroke-width="1.6"/>
+          <text x="383" y="104" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--ink)">Notification</text><text x="383" y="120" text-anchor="middle" class="svg-tiny">/ the feed</text>
+          <rect x="464" y="78" width="122" height="64" rx="11" fill="var(--bad)" opacity=".14" stroke="var(--bad)" stroke-width="1.6"/>
+          <text x="525" y="110" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--ink)">One reel&#8230;</text>
+          <rect x="606" y="78" width="122" height="64" rx="11" fill="var(--bad)" opacity=".22" stroke="var(--bad)" stroke-width="1.8"/>
+          <text x="667" y="106" text-anchor="middle" style="font:700 10px sans-serif;fill:var(--bad)">Autoplay</text><text x="667" y="121" text-anchor="middle" class="svg-tiny">pulls you</text>
+          <rect x="748" y="78" width="140" height="64" rx="11" fill="var(--bad)" opacity=".3" stroke="var(--bad)" stroke-width="2"/>
+          <text x="818" y="112" text-anchor="middle" style="font:800 11px sans-serif;fill:var(--bad)">45 min gone</text>
+          <path d="M160,110 L178,110" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#pcArr)"/>
+          <path d="M302,110 L320,110" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#pcArr)"/>
+          <path d="M444,110 L462,110" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#pcArr)"/>
+          <path d="M586,110 L604,110" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#pcArr)"/>
+          <path d="M728,110 L746,110" stroke="var(--ink-faint)" stroke-width="2" marker-end="url(#pcArr)"/>
+          <text x="440" y="175" text-anchor="middle" class="svg-sub">Each tap makes the next inevitable. The leverage is the <tspan style="fill:var(--good);font-weight:700">first</tspan> box &#8212; open with an exit plan, or not at all.</text>
+        </svg>
+        <figcaption>Why "I'll just post it and get off" fails: opening the app <em>is</em> tipping domino one. The workaround lives at the head of the chain, not in the middle of the feed.</figcaption>
+      </figure>
+    </section>
+
+    <!-- ============ CAUSES & WORKAROUNDS ============ -->
+    <section id="phone-causes">
+      <div class="sec-head"><span class="sec-tag s">Cause by cause</span></div>
+      <h2 class="sec-title">Each trigger — and its workaround</h2>
+      <p class="sec-intro">Each card explains why the trigger has power and gives a concrete workaround. Open threads are marked where we still need to refine.</p>
+
+      <h3 class="sub" style="color:var(--accent)">Internal states — the push</h3>
+      <div class="grid">
+        <button class="card" onclick="openCard(this)">
+          <div class="ch"><span class="ci">🥱</span><h4>Wake-up boredom / feeling flat</h4></div>
+          <p class="teaser">On waking you feel understimulated, so the phone manufactures instant interest.</p>
+          <div class="more">Open &#8250;</div>
+          <template>
+            <div class="tagrow"><span class="mtag">Internal</span><span class="mtag">Master cue</span></div>
+            <h3>Wake-up boredom / feeling flat</h3>
+            <p><strong>Why it fires:</strong> Waking is a low-stimulation moment your mind reads as &#8220;boring / uninteresting.&#8221; The phone is the fastest way to manufacture interest &#8212; and morning is when the reach is most automatic, before any structure is in place.</p>
+            <p><strong>Workaround:</strong> Keep the phone out of the bedroom (charge it across the room or another room). Give the first minutes a fixed non-phone anchor &#8212; water, light, three breaths, a stretch &#8212; and set a rule: no pick-up until after that anchor.</p>
+            <div class="src">Linked: Tab &#9313; &#8220;The Loop&#8221; (boredom is the internal cue).</div>
+          </template>
+        </button>
+        <button class="card" onclick="openCard(this)">
+          <div class="ch"><span class="ci">🌀</span><h4>Restlessness between tasks</h4></div>
+          <p class="teaser">The idle, restless neutral state reaches for the cheapest stimulation.</p>
+          <div class="more">Open &#8250;</div>
+          <template>
+            <div class="tagrow"><span class="mtag">Internal</span><span class="mtag">Neutral tone</span></div>
+            <h3>Restlessness between tasks</h3>
+            <p><strong>Why it fires:</strong> The unstructured, restless moment is the master internal cue (Tab &#9313;). The phone converts an intolerable neutral tone into stimulation in one tap.</p>
+            <p><strong>Workaround:</strong> Name it &#8212; &#8220;this is restlessness, not a need&#8221; &#8212; and sit in it for one breath longer than is comfortable. Pre-choose a 2-minute non-phone filler (stand, water, look out a window) so the idle engine has somewhere to land.</p>
+            <div class="src">Linked: Tab &#9313; &#8220;Neutral Tone&#8221;; the natural-vs-compulsive reach.</div>
+          </template>
+        </button>
+      </div>
+
+      <h3 class="sub" style="color:var(--neuro)">Dead-time windows — the opening</h3>
+      <div class="grid">
+        <button class="card n" onclick="openCard(this)">
+          <div class="ch"><span class="ci">🔀</span><h4>Switching between tasks</h4></div>
+          <p class="teaser">The micro-gap between tasks is where the idle engine grabs the phone.</p>
+          <div class="more">Open &#8250;</div>
+          <template>
+            <div class="tagrow"><span class="mtag n">Dead-time</span><span class="mtag n">Transition</span></div>
+            <h3>Switching between tasks</h3>
+            <p><strong>Why it fires:</strong> A task-transition is a micro-gap where the predictive engine goes idle &#8212; and an idle engine seeks. The phone is the nearest thing to reach for.</p>
+            <p><strong>Workaround:</strong> Close the gap: before you finish one task, name the very next action, so there's no open window. Keep the phone in another room during work blocks so the reach costs real steps.</p>
+            <div class="src">Linked: Tab &#9313; idle-engine loop.</div>
+          </template>
+        </button>
+        <button class="card n" onclick="openCard(this)">
+          <div class="ch"><span class="ci">🚌</span><h4>Travelling / commuting</h4></div>
+          <p class="teaser">Transit is unstructured dead time with the phone already in hand.</p>
+          <div class="more">Open &#8250;</div>
+          <template>
+            <div class="tagrow"><span class="mtag n">Dead-time</span><span class="mtag n">Transit</span></div>
+            <h3>Travelling / commuting</h3>
+            <p><strong>Why it fires:</strong> A commute is a long block of dead time with low friction &#8212; the phone is in hand and there's nothing else pulling attention.</p>
+            <p><strong>Workaround:</strong> Pre-load an <em>intentional</em> use so the dead time has a chosen filler: a queued podcast/audiobook, a planning note, or simply looking out the window. Decide it before you set off, not once you're bored.</p>
+            <div class="src">Linked: Tab &#9313; &#8220;Idle Windows.&#8221;</div>
+          </template>
+        </button>
+      </div>
+
+      <h3 class="sub" style="color:var(--warn)">Notification hooks — the pull</h3>
+      <div class="grid">
+        <button class="card" onclick="openCard(this)" style="border-color:var(--line)">
+          <div class="ch"><span class="ci" style="background:rgba(217,119,6,.14)">💬</span><h4>A text arrives &#8594; &#8220;just check&#8221;</h4></div>
+          <p class="teaser">A single notification opens the door; &#8220;just checking&#8221; becomes drifting.</p>
+          <div class="more">Open &#8250;</div>
+          <template>
+            <div class="tagrow"><span class="mtag" style="background:rgba(217,119,6,.14);color:var(--warn)">Notification</span><span class="mtag">Social pull</span></div>
+            <h3>A text arrives &#8594; &#8220;just check&#8221;</h3>
+            <p><strong>Why it fires:</strong> Notifications exploit a variable-reward, social pull &#8212; you never know what's waiting. &#8220;Just checking&#8221; unlocks the whole device, and the feed is one tap away.</p>
+            <p><strong>Workaround:</strong> Turn off non-essential notifications so the phone stops interrupting you. Batch-check messages at set times, from a standing position with a timer &#8212; a context that has a hard exit.</p>
+            <div class="src">Linked: variable-reward (Tab &#9312;); intermittent reinforcement.</div>
+          </template>
+        </button>
+        <button class="card" onclick="openCard(this)" style="border-color:var(--line)">
+          <div class="ch"><span class="ci" style="background:rgba(217,119,6,.14)">📥</span><h4>Message-check drift (archived WhatsApp, YouTube)</h4></div>
+          <p class="teaser">One check cascades into reading everything &#8212; even archived chats &#8212; then YouTube.</p>
+          <div class="more">Open &#8250;</div>
+          <template>
+            <div class="tagrow"><span class="mtag" style="background:rgba(217,119,6,.14);color:var(--warn)">Notification</span><span class="mtag">Cascade</span></div>
+            <h3>Message-check drift</h3>
+            <p><strong>Why it fires:</strong> Once the app is open, infinite novelty is one swipe away &#8212; unread chats, the archived section, then YouTube. Each is a fresh hit that green-lights the next (higher-order conditioning in real time).</p>
+            <p><strong>Workaround:</strong> Decide the <em>one</em> message you came for, do only that, and close the app. Remove YouTube/Instagram from the home screen and use grayscale so the feed stops rewarding the eye.</p>
+            <div class="src">Linked: the cascade above; Tab &#9312; difference-detector / novelty.</div>
+          </template>
+        </button>
+      </div>
+
+      <h3 class="sub" style="color:var(--accent2)">Functional entry &#8212; the trojan horse</h3>
+      <div class="grid">
+        <button class="card" onclick="openCard(this)" style="border-color:var(--line)">
+          <div class="ch"><span class="ci" style="background:rgba(124,108,255,.14)">📸</span><h4>Story upload &#8594; re-install &#8594; Reels binge</h4></div>
+          <p class="teaser">A photo you want to share reopens the very app you'd removed &#8212; then Reels.</p>
+          <div class="more">Open &#8250;</div>
+          <template>
+            <div class="tagrow"><span class="mtag" style="background:rgba(124,108,255,.14);color:var(--accent2)">Functional</span><span class="mtag">Trojan horse</span></div>
+            <h3>Story upload &#8594; re-install &#8594; Reels binge</h3>
+            <p><strong>Why it fires:</strong> A legitimate reason (post a picture) removes the friction you'd built by deleting the app. Once you're in, the feed cascades into Reels and the time is gone.</p>
+            <p><strong>Workaround:</strong> Preserve the friction: post, then immediately log out or delete the app again &#8212; decide &#8220;post and out&#8221; before you open it, and set a 3-minute timer. Better, post from a browser or a scheduling tool so the feed never loads.</p>
+            <div class="src">Linked: the cascade above; friction / the means (porn map).</div>
+          </template>
+        </button>
+        <button class="card" onclick="openCard(this)" style="border-color:var(--line)">
+          <div class="ch"><span class="ci" style="background:rgba(124,108,255,.14)">🏋</span><h4>Gym music &#8594; feed drift</h4></div>
+          <p class="teaser">Opening the phone for a boost track puts you one tap from the feed mid-set.</p>
+          <div class="more">Open &#8250;</div>
+          <template>
+            <div class="tagrow"><span class="mtag" style="background:rgba(124,108,255,.14);color:var(--accent2)">Functional</span><span class="mtag">Trojan horse</span></div>
+            <h3>Gym music &#8594; feed drift</h3>
+            <p><strong>Why it fires:</strong> Music genuinely boosts hard sets &#8212; but opening the phone for it leaves you one tap from the feed, right when you're resting between sets.</p>
+            <p><strong>Workaround:</strong> Separate the function from the temptation: use a dedicated music device or an offline playlist, put the phone in airplane mode, or lock it to the music app (Guided Access / a focus mode) so the feed can't load.</p>
+            <div class="src">Linked: separate the function from the means.</div>
+          </template>
+        </button>
+      </div>
+
+      <div class="note"><strong>Next:</strong> this is the starting skeleton. As you notice more pick-up moments, tell me and I'll add a bone. Then we sharpen each workaround against what actually works for you in the moment.</div>
+    </section>
+
+  </div><!-- /pane-phone -->
+
 
   <div class="foot">Da Vinci · Addiction — a living model. Click any card for depth and sources. Specifics of individual habits are handled in separate notes.</div>
 </div>

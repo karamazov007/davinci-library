@@ -22,6 +22,7 @@ This file holds the branches.
 - ○ **D3·8** — Why the wanting-promise systematically *oversells*, and how to hear it as hype in real time
 - ○ **T2·X** — How to catch an internal cue once it's dropped below the waterline (carried over from the Automation Trap tab)
 - ○ **T3·W** — Derive a workaround + cue for each porn trigger (7 causes mapped in Tab ③; all ○ pending)
+- ◐ **T4·W** — Phone trigger map built (Tab ④, 8 triggers, first-pass workarounds drafted); refine against what works in the moment
 - ○ **BUILD** — A "Proxy Theory of Everything" tab (D2), and a wanting/liking + escalation addition (D3)
 
 ---
@@ -76,6 +77,22 @@ Head: **the porn urge → acting out.** Each cause below has a ○ pending worka
   - ○ **T3·10** ▸ (you) — Shaving / grooming private parts (direct bodily prime + undress + privacy)
   - ○ **T3·7** ▸ (you) — A direct urge to arouse oneself (overlaps the *natural* drive — sort, don't suppress; needs the D1·7 test)
 - *(grows: add a bone whenever a new trigger is noticed)*
+
+### T4 — Phone trigger map (Tab ④, fishbone + cascade) ▸ (you) reported these triggers
+Head: **the phone pick-up → doomscroll.** Workarounds drafted (◐), to refine in the moment.
+- **Internal states (the push)**
+  - ◐ **T4·1** ▸ (you) — Wake-up boredom / feeling flat → open phone to find something interesting
+  - ◐ **T4·2** ▸ (you) — Restlessness between tasks (the neutral-tone reach)
+- **Dead-time windows (the opening)**
+  - ◐ **T4·3** ▸ (you) — Switching between tasks (micro-gap)
+  - ◐ **T4·4** ▸ (you) — Travelling / commuting (unstructured dead time)
+- **Notification hooks (the pull)**
+  - ◐ **T4·5** ▸ (you) — A text arrives → "just check" (variable-reward pull)
+  - ◐ **T4·6** ▸ (you) — Message-check drift → archived-WhatsApp rabbit hole, YouTube
+- **Functional entry → cascade (the trojan horse)**
+  - ◐ **T4·7** ▸ (you) — Story/photo upload → re-install Instagram → Reels binge
+  - ◐ **T4·8** ▸ (you) — Gym music → feed drift
+- *(grows: add a bone whenever a new pick-up moment is noticed)*
 
 ---
 

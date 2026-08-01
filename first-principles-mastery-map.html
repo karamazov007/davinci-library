@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>First Principles Thinking → Mastery — System Map</title>
+<style>
+  :root{color-scheme:light;
+    --bg:#f6f7f9; --grid:#e3e6ec; --card:#ffffff; --border:#e0e4ea; --ink:#1c2431; --muted:#6b7280;
+    --line:#b3bcc9; --root:#4f46e5; --branch:#0d9488; --leaf:#2563eb; --tool:#db2777; --note:#94a3b8;
+    --accent:#4f46e5; --seq:#059669;}
+  *{box-sizing:border-box}
+  html,body{margin:0;height:100%;background:var(--bg);color:var(--ink);
+    font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,sans-serif;overflow:hidden}
+  #stage{position:fixed;inset:0;cursor:grab;
+    background:radial-gradient(circle at 1px 1px, var(--grid) 1.4px, transparent 0) 0 0/26px 26px, var(--bg);}
+  #stage.grabbing{cursor:grabbing}
+  #world{position:absolute;top:0;left:0;transform-origin:0 0;will-change:transform}
+  svg#edges{position:absolute;top:0;left:0;overflow:visible;pointer-events:none}
+  .node{position:absolute;transform:translate(-50%,-50%);padding:8px 12px;border-radius:11px;
+    background:var(--card);border:1px solid var(--border);font-size:13px;line-height:1.25;
+    max-width:205px;text-align:center;cursor:pointer;transition:box-shadow .12s,border-color .12s,transform .08s;
+    box-shadow:0 1px 2px rgba(20,25,40,.05),0 4px 14px rgba(20,25,40,.06)}
+  .node:hover{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.12),0 6px 18px rgba(20,25,40,.12);z-index:6}
+  .node small{display:block;color:var(--muted);font-size:10.5px;margin-top:2px}
+  .node.root{background:linear-gradient(135deg,#eef0ff,#e3e6ff);border-color:var(--root);color:#312e81;font-weight:700;font-size:15px}
+  .node.branch{border-color:var(--branch);font-weight:600}
+  .node.branch .k{color:var(--branch)}
+  .node.leaf{border-color:var(--leaf)}
+  .node.tool{border-color:var(--tool)}
+  .node.note{border-style:dashed;border-color:var(--note);color:var(--muted);background:#fbfcfe;font-size:11.5px;max-width:220px}
+  .node.pill{border-radius:999px;border-color:var(--seq);background:#ecfdf5;color:#065f46;font-weight:600}
+  .node.emph{border-color:var(--accent);box-shadow:0 0 0 3px rgba(79,70,229,.18),0 6px 18px rgba(20,25,40,.12)}
+  .zone-label{position:absolute;transform:translate(-50%,-50%);font-size:23px;font-weight:800;letter-spacing:.3px;
+    color:var(--ink);opacity:.92;pointer-events:none;text-transform:uppercase}
+  .zone-label small{display:block;font-size:11px;font-weight:600;letter-spacing:2px;color:var(--accent);text-transform:none;margin-top:4px}
+  .edge{fill:none;stroke:var(--line);stroke-width:1.6}
+  .edge.dash{stroke-dasharray:5 5}
+  .edge.strong{stroke:var(--accent);stroke-width:2.1}
+  .elabel{fill:var(--muted);font-size:11px;font-style:italic}
+  #hud{position:fixed;left:16px;bottom:16px;display:flex;gap:6px;background:#fff;
+    border:1px solid var(--border);border-radius:12px;padding:6px;box-shadow:0 6px 20px rgba(20,25,40,.12);z-index:20}
+  #hud button{width:38px;height:38px;border:none;border-radius:8px;background:#eef0f4;color:var(--ink);
+    font-size:16px;cursor:pointer;display:flex;align-items:center;justify-content:center}
+  #hud button:hover{background:#e2e6ec}
+  #zoomval{min-width:52px;display:flex;align-items:center;justify-content:center;font-size:12px;color:var(--muted)}
+  #title{position:fixed;left:16px;top:14px;z-index:20;max-width:56%}
+  #title h1{margin:0;font-size:16px;font-weight:800;color:var(--ink)}
+  #title p{margin:2px 0 0;font-size:12px;color:var(--muted)}
+  #nav{position:fixed;right:16px;top:14px;z-index:20;display:flex;gap:6px;flex-wrap:wrap;justify-content:flex-end;max-width:46%}
+  #nav button{border:1px solid var(--border);background:#fff;color:var(--ink);font-size:11.5px;
+    padding:6px 11px;border-radius:999px;cursor:pointer}
+  #nav button:hover{border-color:var(--accent);color:var(--accent)}
+  #detail{position:fixed;right:-390px;top:0;bottom:0;width:370px;background:#fff;
+    border-left:1px solid var(--border);z-index:30;transition:right .22s;padding:24px 24px 40px;overflow:auto;
+    box-shadow:-12px 0 34px rgba(20,25,40,.14)}
+  #detail.open{right:0}
+  #detail h2{margin:6px 0 4px;font-size:19px;color:var(--ink)}
+  #detail .tag{display:inline-block;font-size:10.5px;letter-spacing:1px;text-transform:uppercase;
+    color:var(--accent);border:1px solid var(--accent);border-radius:999px;padding:2px 8px;margin-bottom:8px}
+  #detail p{font-size:13.5px;line-height:1.6;color:#374151}
+  #detail .close{position:absolute;right:14px;top:12px;background:none;border:none;color:var(--muted);font-size:22px;cursor:pointer}
+  #hint{position:fixed;left:50%;bottom:18px;transform:translateX(-50%);z-index:15;font-size:12px;color:var(--muted);
+    background:#fff;border:1px solid var(--border);padding:6px 14px;border-radius:999px;box-shadow:0 4px 14px rgba(20,25,40,.08);transition:opacity .5s}
+  @media (max-width:640px){#nav{display:none}#title{max-width:82%}}
+</style>
+</head>
+<body>
+<div id="stage"><div id="world"><svg id="edges"></svg></div></div>
+
+<div id="title">
+  <h1>First Principles Thinking → Mastery</h1>
+  <p>The mechanism of skill acquisition &amp; the flow · drag to pan · scroll to zoom · click any node</p>
+</div>
+
+<div id="nav">
+  <button data-go="framework">Mechanism</button>
+  <button data-go="flow">Flow &amp; Examples</button>
+  <button data-go="fit">Fit all</button>
+</div>
+
+<div id="hud">
+  <button id="zin" title="Zoom in">+</button>
+  <div id="zoomval">100%</div>
+  <button id="zout" title="Zoom out">−</button>
+  <button id="zfit" title="Fit to screen">⤢</button>
+  <button id="zreset" title="Reset default zoom">⟳</button>
+</div>
+
+<div id="hint">Tip: scroll / pinch to zoom · drag to pan · click nodes for detail</div>
+
+<div id="detail">
+  <button class="close" onclick="closeDetail()">×</button>
+  <span class="tag" id="d-tag">Concept</span>
+  <h2 id="d-title">Title</h2>
+  <p id="d-body">Body</p>
+</div>
+
+<script>
+const zones = [
+  {id:'framework', x:820, y:40,  title:'First Principles Thinking', sub:'the mechanism of skill acquisition'},
+  {id:'flow',      x:2320, y:40, title:'Flow', sub:'facts → configuration → automatic skill'},
+];
+
+const N = [
+  /* ---------- MECHANISM ---------- */
+  {id:'facts', x:320, y:150, type:'root', label:'Unchangeable Facts', sub:'1st principles', note:"Start from what cannot be changed — the irreducible truths of the domain (physics, rules, biology, the geometry of the movement). This is the bedrock everything else is built on. You never argue with the facts; you build around them."},
+  {id:'opt', x:320, y:290, type:'branch', label:'Our interaction with them must be OPTIMISED', note:"You can't change the facts, so the only lever you have is HOW you interact with them. Mastery is simply the optimisation of that interaction."},
+  {id:'diff', x:320, y:410, type:'branch', label:'Different optimisation priorities', sub:'[hierarchical]', note:"Not everything matters equally. Priorities are ranked into a hierarchy — you optimise the highest-leverage constraints first, and this ranking drives the order of everything downstream."},
+  {id:'constr', x:770, y:150, type:'note', label:'Constraints', sub:'filter out options', note:"The facts DECIDE the constraints. Constraints prune the space of possible strategies — they tell you what NOT to waste time on. A constraint isn't an obstacle; it's information that removes bad options for free."},
+  {id:'strat', x:770, y:300, type:'branch', label:'Strategy', note:"Given the facts, the constraints and the ranked priorities, choose an approach. Strategy sits between raw truth and concrete action."},
+  {id:'purpose', x:1210, y:150, type:'branch', label:'Purpose', note:"Strategy is DECIDED BY purpose — what you're actually optimising FOR. Purpose comes in two tiers."},
+  {id:'pri', x:1410, y:118, type:'leaf', label:'Primary', note:"The main goal that dominates every trade-off."},
+  {id:'sec', x:1410, y:186, type:'leaf', label:'Secondary', note:"Supporting goals you pursue only when they don't cost the primary."},
+  {id:'app', x:770, y:420, type:'branch', label:'Application', note:"Strategy expressed as action — the actual doing."},
+  {id:'algo', x:1230, y:420, type:'note', label:'Algorithmic', sub:'in order of optimisation priority / strategy rank', note:"Application is sequenced like an algorithm: work through the elements in the EXACT order your priority hierarchy dictates. You don't improvise the order — the sequence is itself part of the optimisation."},
+  {id:'tools', x:320, y:560, type:'tool', label:'Tools', note:"The instruments a skill uses — a racket, a barbell, an instrument, your own body."},
+  {id:'toolnote', x:320, y:680, type:'note', label:'Develop a deep understanding of its machinations', sub:'[build a framework for this one too]', note:"Don't treat a tool as a black box. Understand exactly how it works — then even tool-mastery gets its own first-principles framework."},
+  {id:'config', x:680, y:560, type:'branch', label:'Configuration', note:"How the tools are set up and combined for your purpose — the bridge from strategy to technique."},
+  {id:'tech', x:1010, y:560, type:'root', label:'Technique', note:"The concrete, repeatable movements. This is where practice actually lives. It splits three ways: name it, rep it, master it."},
+  {id:'names', x:970, y:680, type:'branch', label:'Learn by technique NAMES', note:"Name every technique. A vocabulary turns a blur of motion into addressable, improvable units — you can only recall, reference and reform what you can name."},
+  {id:'aigd', x:730, y:690, type:'note', label:"Without names you might not remember — like AIGD!!", note:"Your handwritten warning: an unnamed technique is like an unlabelled block of AI weights (\"AIGD\") — the knowledge is in there, but with no handle you can't retrieve or improve it. Names are the retrieval keys."},
+  {id:'egn', x:970, y:770, type:'note', label:'forehand · backhand · front / chop · Bo · pull · Drive', note:"Concrete named techniques from your board. Each becomes an addressable unit you can drill, critique and refine on its own."},
+  {id:'rep', x:1230, y:610, type:'branch', label:'Rep', sub:'drill the named technique', note:"Once a technique is named, you REP it — deliberate repetition feeds it into the reform loop below, where it gets corrected rep by rep."},
+  {id:'new', x:1160, y:720, type:'leaf', label:'New', note:"A freshly learned technique enters here — raw and unrefined."},
+  {id:'reform', x:1340, y:720, type:'branch', label:'Reform', note:"Correct and reshape the technique. New → Reform → look-for-errors → Reform is the feedback loop that grinds it clean."},
+  {id:'errors', x:1540, y:720, type:'leaf', label:'Look for errors', note:"Actively hunt mistakes — error detection is what drives the reform loop. You then loop back to Reform and repeat."},
+  {id:'feedback', x:1350, y:820, type:'note', label:'Feedback loop', note:"New → Reform → look for errors → Reform … repeated tightly until the technique is clean. (Circled on your board.)"},
+  {id:'master', x:1470, y:560, type:'branch', label:'Master the technique', note:"The end state of a technique: it drops out of conscious control."},
+  {id:'unconscious', x:1690, y:530, type:'leaf', label:'Goes to unconscious', note:"A mastered technique runs on autopilot — you no longer think it, you just do it."},
+  {id:'erased', x:1690, y:600, type:'note', label:'Gets erased from working memory', note:"Automating the technique frees working memory — attention is released for higher-level play. That freeing is the entire point of mastery."},
+
+  /* ---------- FLOW ---------- */
+  {id:'f_facts', x:1900, y:150, type:'leaf', label:'Immutable facts', note:"The same bedrock — the facts you can't change."},
+  {id:'f_purpose', x:1900, y:228, type:'leaf', label:'Purpose', note:"What you're optimising for."},
+  {id:'f_targets', x:2180, y:190, type:'branch', label:'Optimisation targets', note:"Facts + purpose combine to define exactly what to optimise."},
+  {id:'f_strat', x:2440, y:190, type:'branch', label:'Strategies + Tools', note:"Targets select the strategies and the tools you'll use."},
+  {id:'f_config', x:2680, y:190, type:'emph', label:'Configuration', note:"Everything converges on a configuration — the concrete set-up you then practise. (Circled in the original: this is the hinge of the whole flow.)"},
+  {id:'f_tech', x:2680, y:300, type:'branch', label:'Technique → Steps', note:"Configuration is expressed as a technique, which decomposes into steps. Each step then runs the practice cycle below."},
+  {id:'iso', x:2080, y:390, type:'pill', label:'Isolate', note:"Take ONE component out and drill it alone, with no interference from the others."},
+  {id:'integ', x:2280, y:390, type:'pill', label:'Integrate', note:"Recombine the isolated component with the others once it's solid."},
+  {id:'ver', x:2470, y:390, type:'pill', label:'Verify', note:"Check the integrated whole actually works and holds up under pressure."},
+  {id:'ref', x:2660, y:390, type:'pill', label:'Refine', note:"Polish, then loop back — Isolate → Integrate → Verify → Refine is the practice cycle for every step. It respects the hierarchy."},
+  {id:'hier', x:2380, y:460, type:'note', label:'Hierarchy', note:"The steps are worked in the order set by the optimisation-priority hierarchy — the same ranking that governs the mechanism on the left."},
+  {id:'flutter', x:1900, y:540, type:'leaf', label:'Flutter kick', sub:'e.g. (swimming)', note:"Worked example: swimming is decomposed into independently-trainable components."},
+  {id:'arm', x:2090, y:540, type:'emph', label:'Arm stroke', note:"One component (circled) — practised individually before integration."},
+  {id:'rot', x:2260, y:540, type:'emph', label:'Rotation', note:"Body rotation (circled) — its own component."},
+  {id:'breath', x:2420, y:540, type:'leaf', label:'Breathing', note:"Breathing timing — its own component."},
+  {id:'comps', x:2650, y:540, type:'note', label:'Components / Steps', sub:'can be practised individually', note:"Because the skill is decomposed, each component gets isolated practice, then they're integrated back into the full stroke."},
+
+  /* practice→automate cascade */
+  {id:'c_p1', x:1980, y:650, type:'pill', label:'Practice', note:"Drill component 1."},
+  {id:'c_a1', x:1980, y:715, type:'branch', label:'Automate', note:"Component 1 becomes automatic — it now runs without attention."},
+  {id:'c_p2', x:2180, y:715, type:'pill', label:'Practice', note:"Move to component 2 while component 1 keeps running on autopilot."},
+  {id:'c_a2', x:2180, y:780, type:'branch', label:'Automate', note:"Component 2 becomes automatic."},
+  {id:'c_p3', x:2380, y:780, type:'pill', label:'Practice', note:"Component 3, stacked on the automated 1 and 2."},
+  {id:'c_a3', x:2380, y:845, type:'branch', label:'Automate', note:"Component 3 becomes automatic."},
+  {id:'c_p4', x:2580, y:845, type:'pill', label:'Practice', note:"Each new layer is cheaper because the ones below run themselves."},
+  {id:'c_a4', x:2580, y:910, type:'branch', label:'Automate', note:"Automation cascades — the whole skill is now assembled from automatic parts, freeing attention for expression and live play."},
+];
+
+const SEQ = [
+  {x:1900, y:1010, label:'Music', items:['Right hand','Left hand','Both hands','Performance'], back:'Expression',
+    note:"Isolate hands separately → integrate both → perform. Expression feeds back into performance."},
+  {x:1900, y:1090, label:'Dance', items:['Footwork','Arm movement','Timing','Musicality'],
+    note:"Foundation (footwork) first, layer on arms, then timing, then musical expression."},
+  {x:1900, y:1170, label:'Tennis', items:['Swing path','Footwork','Timing','Ball tracking','Point play'],
+    note:"Groove the mechanics before adding live perception and tactics."},
+  {x:1900, y:1250, label:'Martial Arts', items:['Stance','Strike','Movement','Combination','Sparring'],
+    note:"Static fundamentals → dynamic combinations → live application against a resisting opponent."},
+];
+
+const E = [
+  {from:'facts',to:'constr',type:'dash',label:'decides',arrow:1},
+  {from:'facts',to:'opt',arrow:1},
+  {from:'opt',to:'diff',arrow:1},
+  {from:'diff',to:'strat',type:'dash',label:'rank',arrow:1},
+  {from:'constr',to:'strat',label:'filters',arrow:1},
+  {from:'strat',to:'purpose',type:'dash',label:'decided by',arrow:1},
+  {from:'purpose',to:'pri',arrow:1},{from:'purpose',to:'sec',arrow:1},
+  {from:'strat',to:'app',arrow:1},
+  {from:'app',to:'algo',arrow:1},
+  {from:'opt',to:'tools',arrow:1},
+  {from:'tools',to:'toolnote',type:'dash'},
+  {from:'tools',to:'config',arrow:1},{from:'config',to:'tech',arrow:1},
+  {from:'tech',to:'names',arrow:1},{from:'names',to:'aigd',type:'dash'},{from:'names',to:'egn',type:'dash'},
+  {from:'tech',to:'rep',arrow:1},
+  {from:'rep',to:'new',arrow:1},
+  {from:'new',to:'reform',arrow:1},{from:'reform',to:'errors',arrow:1},{from:'errors',to:'reform',type:'dash',arrow:1},
+  {from:'reform',to:'feedback',type:'dash'},
+  {from:'tech',to:'master',type:'strong',arrow:1},
+  {from:'master',to:'unconscious',arrow:1},{from:'unconscious',to:'erased',type:'dash',arrow:1},
+  {from:'f_facts',to:'f_targets',arrow:1},{from:'f_purpose',to:'f_targets',arrow:1},
+  {from:'f_targets',to:'f_strat',arrow:1},{from:'f_strat',to:'f_config',arrow:1},
+  {from:'f_config',to:'f_tech',type:'dash',arrow:1},
+  {from:'f_tech',to:'iso',type:'dash',arrow:1},
+  {from:'iso',to:'integ',arrow:1},{from:'integ',to:'ver',arrow:1},{from:'ver',to:'ref',arrow:1},
+  {from:'ref',to:'iso',type:'dash',arrow:1,label:'loop'},
+  {from:'iso',to:'flutter',type:'dash'},
+  {from:'flutter',to:'arm',arrow:1},{from:'arm',to:'rot',arrow:1},{from:'rot',to:'breath',arrow:1},{from:'breath',to:'comps',arrow:1},
+  {from:'flutter',to:'c_p1',type:'dash',arrow:1},
+  {from:'c_p1',to:'c_a1',arrow:1},{from:'c_a1',to:'c_p2',arrow:1},{from:'c_p2',to:'c_a2',arrow:1},
+  {from:'c_a2',to:'c_p3',arrow:1},{from:'c_p3',to:'c_a3',arrow:1},{from:'c_a3',to:'c_p4',arrow:1},{from:'c_p4',to:'c_a4',arrow:1},
+];
+
+const world=document.getElementById('world'), svg=document.getElementById('edges');
+const NM=Object.fromEntries(N.map(n=>[n.id,n]));
+svg.innerHTML='<defs>'+
+  '<marker id="arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--line)"/></marker>'+
+  '<marker id="arrowA" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse"><path d="M0,0 L10,5 L0,10 z" fill="var(--accent)"/></marker>'+
+  '</defs>';
+
+zones.forEach(z=>{const d=document.createElement('div');d.className='zone-label';d.style.left=z.x+'px';d.style.top=z.y+'px';d.innerHTML=z.title+'<small>'+z.sub+'</small>';world.appendChild(d);});
+
+N.forEach(n=>{const d=document.createElement('div');d.className='node '+(n.type||'leaf');d.style.left=n.x+'px';d.style.top=n.y+'px';
+  d.innerHTML=n.label+(n.sub?'<small>'+n.sub+'</small>':'');
+  d.addEventListener('click',e=>{e.stopPropagation();openDetail(n);});world.appendChild(d);n._el=d;});
+
+SEQ.forEach(s=>{
+  let x=s.x;const y=s.y;
+  const lab=document.createElement('div');lab.className='node branch';lab.style.left=(x-40)+'px';lab.style.top=y+'px';lab.style.fontWeight='700';lab.innerHTML=s.label;
+  lab.addEventListener('click',e=>{e.stopPropagation();openDetailRaw(s.label,'Domain sequence',s.note);});world.appendChild(lab);
+  let prevX=x-40,prevY=y,prevW=70;x+=150;
+  s.items.forEach((it,i)=>{const w=Math.max(74,it.length*7.2+22);
+    const el=document.createElement('div');el.className='node pill';el.style.left=x+'px';el.style.top=y+'px';el.innerHTML=it;
+    el.addEventListener('click',e=>{e.stopPropagation();openDetailRaw(it,s.label+' · step '+(i+1),s.note);});world.appendChild(el);
+    addRawEdge(prevX+prevW/2,prevY,x-w/2,y,{arrow:1});prevX=x;prevW=w;x+=w+64;});
+  if(s.back){const w=Math.max(74,s.back.length*7.2+22);
+    const el=document.createElement('div');el.className='node pill';el.style.left=x+'px';el.style.top=(y+44)+'px';el.innerHTML=s.back;
+    el.addEventListener('click',e=>{e.stopPropagation();openDetailRaw(s.back,s.label,s.note);});world.appendChild(el);
+    addRawEdge(x,y+44-18,prevX,prevY+16,{arrow:1,type:'dash'});}
+});
+
+function anchor(a,b){const ax=a.x,ay=a.y,bx=b.x,by=b.y;
+  const w=(a._el?a._el.offsetWidth:120)/2+2,h=(a._el?a._el.offsetHeight:36)/2+2;
+  const dx=bx-ax,dy=by-ay;if(dx===0&&dy===0)return{x:ax,y:ay};
+  const sx=dx!==0?w/Math.abs(dx):Infinity,sy=dy!==0?h/Math.abs(dy):Infinity;const s=Math.min(sx,sy);
+  return{x:ax+dx*s,y:ay+dy*s};}
+function pathEl(x1,y1,x2,y2,o){const mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1;
+  const cx=mx-dy*0.08,cy=my+dx*0.08;
+  const p=document.createElementNS('http://www.w3.org/2000/svg','path');
+  p.setAttribute('d','M'+x1+','+y1+' Q'+cx+','+cy+' '+x2+','+y2);
+  p.setAttribute('class','edge'+(o.type==='dash'?' dash':'')+(o.type==='strong'?' strong':''));
+  if(o.arrow)p.setAttribute('marker-end',o.type==='strong'?'url(#arrowA)':'url(#arrow)');svg.appendChild(p);
+  if(o.label){const t=document.createElementNS('http://www.w3.org/2000/svg','text');t.setAttribute('x',cx);t.setAttribute('y',cy-3);t.setAttribute('class','elabel');t.setAttribute('text-anchor','middle');t.textContent=o.label;svg.appendChild(t);}}
+function addRawEdge(x1,y1,x2,y2,o){pathEl(x1,y1,x2,y2,o||{});}
+
+requestAnimationFrame(()=>{E.forEach(e=>{const a=NM[e.from],b=NM[e.to];if(!a||!b)return;const pa=anchor(a,b),pb=anchor(b,a);pathEl(pa.x,pa.y,pb.x,pb.y,e);});fitAll(true);});
+
+const stage=document.getElementById('stage');let scale=1,tx=0,ty=0;const MIN=0.12,MAX=2.6;let defaultView=null;
+function apply(){world.style.transform='translate('+tx+'px,'+ty+'px) scale('+scale+')';document.getElementById('zoomval').textContent=Math.round(scale*100)+'%';}
+function contentBounds(){let minX=1e9,minY=1e9,maxX=-1e9,maxY=-1e9;
+  world.querySelectorAll('.node,.zone-label').forEach(el=>{const x=parseFloat(el.style.left),y=parseFloat(el.style.top),w=el.offsetWidth,h=el.offsetHeight;
+    minX=Math.min(minX,x-w/2);maxX=Math.max(maxX,x+w/2);minY=Math.min(minY,y-h/2);maxY=Math.max(maxY,y+h/2);});
+  return{minX,minY,maxX,maxY,w:maxX-minX,h:maxY-minY};}
+function fitAll(setDefault){const b=contentBounds(),pad=70,sw=window.innerWidth,sh=window.innerHeight;
+  const s=Math.min((sw-pad*2)/b.w,(sh-pad*2)/b.h);scale=Math.max(MIN,Math.min(MAX,s));
+  tx=(sw-b.w*scale)/2-b.minX*scale;ty=(sh-b.h*scale)/2-b.minY*scale;apply();if(setDefault)defaultView={scale,tx,ty};}
+function focusZone(id){let band=id==='framework'?[220,1800,20,900]:[1850,2900,20,1300];
+  const sw=window.innerWidth,sh=window.innerHeight,bw=band[1]-band[0],bh=band[3]-band[2];
+  const s=Math.min((sw-120)/bw,(sh-150)/bh);scale=Math.max(MIN,Math.min(MAX,s));
+  tx=(sw-bw*scale)/2-band[0]*scale;ty=(sh-bh*scale)/2-band[2]*scale+20;apply();}
+stage.addEventListener('wheel',e=>{e.preventDefault();const r=stage.getBoundingClientRect(),mx=e.clientX-r.left,my=e.clientY-r.top;
+  const f=Math.exp(-e.deltaY*0.0016),ns=Math.max(MIN,Math.min(MAX,scale*f)),k=ns/scale;tx=mx-(mx-tx)*k;ty=my-(my-ty)*k;scale=ns;apply();},{passive:false});
+let dragging=false,sx0,sy0,tx0,ty0,moved=false;
+stage.addEventListener('pointerdown',e=>{dragging=true;moved=false;sx0=e.clientX;sy0=e.clientY;tx0=tx;ty0=ty;stage.classList.add('grabbing');stage.setPointerCapture(e.pointerId);});
+stage.addEventListener('pointermove',e=>{if(!dragging)return;tx=tx0+(e.clientX-sx0);ty=ty0+(e.clientY-sy0);if(Math.abs(e.clientX-sx0)+Math.abs(e.clientY-sy0)>4)moved=true;apply();});
+stage.addEventListener('pointerup',()=>{dragging=false;stage.classList.remove('grabbing');});
+stage.addEventListener('click',()=>{if(!moved)closeDetail();});
+let pinchD=0,pinchS=1;
+stage.addEventListener('touchmove',e=>{if(e.touches.length===2){e.preventDefault();const dd=Math.hypot(e.touches[0].clientX-e.touches[1].clientX,e.touches[0].clientY-e.touches[1].clientY);if(pinchD){scale=Math.max(MIN,Math.min(MAX,pinchS*dd/pinchD));apply();}else{pinchD=dd;pinchS=scale;}}},{passive:false});
+stage.addEventListener('touchend',()=>{pinchD=0;});
+function zoomBy(f){const sw=window.innerWidth/2,sh=window.innerHeight/2,ns=Math.max(MIN,Math.min(MAX,scale*f)),k=ns/scale;tx=sw-(sw-tx)*k;ty=sh-(sh-ty)*k;scale=ns;apply();}
+document.getElementById('zin').onclick=()=>zoomBy(1.2);
+document.getElementById('zout').onclick=()=>zoomBy(1/1.2);
+document.getElementById('zfit').onclick=()=>fitAll(false);
+document.getElementById('zreset').onclick=()=>{if(defaultView){scale=defaultView.scale;tx=defaultView.tx;ty=defaultView.ty;apply();}};
+document.querySelectorAll('#nav button').forEach(b=>{b.onclick=()=>{b.dataset.go==='fit'?fitAll(false):focusZone(b.dataset.go);};});
+
+const det=document.getElementById('detail');
+function openDetail(n){openDetailRaw(n.label,(n.type||'concept'),n.note||'—');}
+function openDetailRaw(title,tag,body){document.getElementById('d-title').textContent=title;document.getElementById('d-tag').textContent=tag;document.getElementById('d-body').textContent=body;det.classList.add('open');}
+function closeDetail(){det.classList.remove('open');}
+window.closeDetail=closeDetail;
+document.addEventListener('keydown',e=>{if(e.key==='Escape')closeDetail();});
+setTimeout(()=>{const h=document.getElementById('hint');if(h)h.style.opacity=0;},6000);
+</script>
+</body>
+</html>
