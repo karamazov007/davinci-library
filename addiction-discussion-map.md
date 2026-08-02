@@ -69,6 +69,9 @@ Head: **the porn urge → acting out.** Each cause below has a ○ pending worka
   - ○ **T3·9** ▸ (you) — Curiosity → search domino ("how do new people look?" → sex positions → dirty talk → porn → masturbation); leverage is the FIRST search (own diagram built)
 - **Idle windows (the opening)**
   - ○ **T3·3** ▸ (you) — Waiting for AI / chatbot output (dead-time + phone-in-hand + privacy converge) · *early-win candidate*
+- **Unstructured freedom (the void)** — *bone added (reframed from "night"): it's the empty day, not the clock*
+  - ◐ **T3·11** ▸ (you) — Unproductive day / weekend, freedom + no accountability (day-long structural void) → porn, often at night as the day winds down · *high-leverage; workaround = give the day a spine early*
+  - ◐ **T3·12** ▸ (you) — Passively watching a show/series → drift → thoughts → switch to porn (the show is the warm-up) · *workaround = active, bounded viewing on a non-phone device*
 - **Opportunity (the means / low friction)**
   - ○ **T3·4** ▸ (you) — Privacy at home (removes social deterrent → risk axis to zero)
   - ○ **T3·5** ▸ (you) — Smartphone within reach (collapses effort axis; no time for override) · *highest-leverage friction fix*
