@@ -159,6 +159,16 @@
   .chip:hover{border-color:var(--accent);color:var(--accent)}
   .pane-lead{font-size:17px;color:var(--ink-dim);max-width:74ch;margin:8px 0 4px}
   .pane-h{font-size:clamp(24px,3.4vw,34px);font-weight:800;letter-spacing:-.02em;margin:14px 0 2px}
+.pl-layout{display:flex;gap:24px;align-items:flex-start}
+.pl-side{flex:0 0 220px;position:sticky;top:64px;display:flex;flex-direction:column;gap:6px;padding:6px 0}
+.pl-side-title{font-size:11px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--ink-faint);padding:4px 12px 8px}
+.pl-item{text-align:left;font-family:inherit;font-size:14px;font-weight:600;color:var(--ink-dim);background:transparent;border:1px solid transparent;border-radius:10px;padding:11px 14px;cursor:pointer;transition:all .12s;display:flex;gap:9px;align-items:center;line-height:1.3}
+.pl-item:hover{background:var(--panel2);color:var(--ink)}
+.pl-item.active{background:var(--accent-soft);color:var(--accent);border-color:var(--accent)}
+.pl-main{flex:1;min-width:0}
+.pl-view{display:none}
+.pl-view.active{display:block}
+@media(max-width:760px){.pl-layout{flex-direction:column;gap:10px}.pl-side{position:static;flex:0 0 auto;flex-direction:row;flex-wrap:wrap}.pl-item{flex:1 1 auto}}
 </style>
 </head>
 <body>
@@ -1343,10 +1353,15 @@
   <!-- ==================== PANE 3: PORN TRIGGERS =================== -->
   <!-- ============================================================= -->
   <div class="pane" id="pane-porn">
-    <div class="chipnav">
-      <a class="chip" href="#porn-map">The trigger map</a>
-      <a class="chip" href="#porn-causes">Causes &amp; workarounds</a>
-    </div>
+    <div class="pl-layout">
+      <aside class="pl-side">
+        <div class="pl-side-title">Porn · applied</div>
+        <button class="pl-item active" data-pv="map" onclick="pornView('map')">🗺️ The trigger map</button>
+        <button class="pl-item" data-pv="causes" onclick="pornView('causes')">🛠️ Causes &amp; workarounds</button>
+        <button class="pl-item" data-pv="cycle" onclick="pornView('cycle')">🔁 Porn consumption life cycle</button>
+      </aside>
+      <div class="pl-main">
+        <div class="pl-view active" id="pv-map">
 
     <div style="padding:14px 0 4px">
       <div class="kicker" style="background:linear-gradient(90deg,var(--accent),var(--bad));-webkit-background-clip:text;background-clip:text;color:transparent">Part Three · Applied &amp; personal</div>
@@ -1459,7 +1474,9 @@
     </section>
 
     <!-- ============ CAUSES & WORKAROUNDS ============ -->
-    <section id="porn-causes">
+    </div><!--/pv-map-->
+      <div class="pl-view" id="pv-causes">
+      <section id="porn-causes">
       <div class="sec-head"><span class="sec-tag s">Cause by cause</span></div>
       <h2 class="sec-title">Each root cause — and its workaround</h2>
       <p class="sec-intro">Each card explains <em>why</em> the cause has power (tied to the mechanisms in tabs ① and ②) and holds a slot for the workaround we'll derive from first principles. Open threads are marked ○ — we build these together.</p>
@@ -1623,6 +1640,22 @@
       <div class="note"><strong>Next:</strong> this is the skeleton. As you notice more triggers, tell me and I'll add bones. Then we take them one at a time — root cause → first-principles workaround → a cue you can carry — and I'll fill each card's workaround slot as we close it.</div>
     </section>
 
+  </div><!--/pv-causes-->
+      <div class="pl-view" id="pv-cycle">
+      <div style="padding:14px 0 4px">
+        <div class="kicker" style="background:linear-gradient(90deg,var(--accent),var(--bad));-webkit-background-clip:text;background-clip:text;color:transparent">Part Three · The cycle</div>
+        <h1 class="pane-h">Porn — Consumption Life Cycle</h1>
+        <p class="pane-lead">The self-sustaining loop you mapped: a phone within reach becomes a night's spiral, and the hollow, powerless aftermath quietly primes the next reach. This is the &#8220;dependency framework&#8221; &#8212; each stage feeds the next.</p>
+      </div>
+      <figure>
+        <div class="fig-title">The loop</div>
+        <svg viewBox="0 0 780 1064" role="img" aria-label="Porn consumption life cycle loop" style="width:100%;max-width:640px;height:auto;display:block;margin:0 auto"><defs><marker id="lcA" markerWidth="11" markerHeight="11" refX="8" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 Z" fill="#9aa2ad"/></marker><marker id="lcL" markerWidth="12" markerHeight="12" refX="9" refY="4" orient="auto"><path d="M0,0 L11,4 L0,8 Z" fill="#dc2626"/></marker></defs><line x1="350" y1="110" x2="350" y2="136" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="194" x2="350" y2="220" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="278" x2="350" y2="304" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="362" x2="350" y2="388" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="446" x2="350" y2="472" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="530" x2="350" y2="556" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="614" x2="350" y2="640" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="698" x2="350" y2="724" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="782" x2="350" y2="808" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="866" x2="350" y2="892" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><line x1="350" y1="950" x2="350" y2="976" stroke="#9aa2ad" stroke-width="2" marker-end="url(#lcA)"/><rect x="130" y="54" width="440" height="56" rx="12" fill="rgba(79,70,229,.08)" stroke="#4f46e5" stroke-width="2"/><text x="350" y="88" text-anchor="middle" style="font:700 13px sans-serif;fill:#4f46e5">Phone within reach</text><rect x="130" y="138" width="440" height="56" rx="12" fill="rgba(79,70,229,.08)" stroke="#4f46e5" stroke-width="2"/><text x="350" y="172" text-anchor="middle" style="font:700 13px sans-serif;fill:#4f46e5">Urge to explore a new / random porn category</text><rect x="130" y="222" width="440" height="56" rx="12" fill="rgba(79,70,229,.08)" stroke="#4f46e5" stroke-width="2"/><text x="350" y="256" text-anchor="middle" style="font:700 13px sans-serif;fill:#4f46e5">Opens it — goes and does it</text><rect x="130" y="306" width="440" height="56" rx="12" fill="rgba(217,119,6,.10)" stroke="#d97706" stroke-width="2"/><text x="350" y="340" text-anchor="middle" style="font:700 13px sans-serif;fill:#d97706">Spends time there exploring variations</text><rect x="130" y="390" width="440" height="56" rx="12" fill="rgba(217,119,6,.10)" stroke="#d97706" stroke-width="2"/><text x="350" y="424" text-anchor="middle" style="font:700 13px sans-serif;fill:#d97706">Urge to masturbate rises</text><rect x="130" y="474" width="440" height="56" rx="12" fill="rgba(217,119,6,.10)" stroke="#d97706" stroke-width="2"/><text x="350" y="508" text-anchor="middle" style="font:700 13px sans-serif;fill:#d97706">The new genre now feels uninteresting</text><rect x="130" y="558" width="440" height="56" rx="12" fill="rgba(217,119,6,.10)" stroke="#d97706" stroke-width="2"/><text x="350" y="582" text-anchor="middle" style="font:700 13px sans-serif;fill:#d97706">Retreats to a familiar genre</text><text x="350" y="600" text-anchor="middle" style="font:600 10.5px sans-serif;fill:#6b7280">Indian porn · Extreme porn</text><rect x="130" y="642" width="440" height="56" rx="12" fill="rgba(107,114,128,.08)" stroke="#6b7280" stroke-width="2"/><text x="350" y="676" text-anchor="middle" style="font:700 13px sans-serif;fill:#6b7280">Jerks off</text><rect x="130" y="726" width="440" height="56" rx="12" fill="rgba(107,114,128,.08)" stroke="#6b7280" stroke-width="2"/><text x="350" y="760" text-anchor="middle" style="font:700 13px sans-serif;fill:#6b7280">Sleeps → next day</text><rect x="130" y="810" width="440" height="56" rx="12" fill="rgba(220,38,38,.09)" stroke="#dc2626" stroke-width="2"/><text x="350" y="834" text-anchor="middle" style="font:700 13px sans-serif;fill:#dc2626">The day</text><text x="350" y="852" text-anchor="middle" style="font:600 10.5px sans-serif;fill:#6b7280">meditation · gym · work</text><rect x="130" y="894" width="440" height="56" rx="12" fill="rgba(220,38,38,.09)" stroke="#dc2626" stroke-width="2"/><text x="350" y="928" text-anchor="middle" style="font:700 13px sans-serif;fill:#dc2626">Sexual thoughts overwhelm during the day</text><rect x="130" y="978" width="440" height="56" rx="12" fill="rgba(220,38,38,.09)" stroke="#dc2626" stroke-width="2"/><text x="350" y="1002" text-anchor="middle" style="font:700 13px sans-serif;fill:#dc2626">Feels hollow · pretty powerless</text><text x="350" y="1020" text-anchor="middle" style="font:600 10.5px sans-serif;fill:#6b7280">→ primes the next reach</text><path d="M570,1006 C730,1006 730,82 572,82" fill="none" stroke="#dc2626" stroke-width="2.4" stroke-dasharray="7 5" marker-end="url(#lcL)"/><text x="742" y="544" text-anchor="middle" transform="rotate(90 742 544)" style="font:800 11px sans-serif;fill:#dc2626">↺  THE LOOP REPEATS</text></svg>
+        <figcaption>Read top to bottom, then the red arrow loops it back. The escalation (amber) is novelty-seeking that ends up retreating to familiar extremes; the aftermath (red) is the hollow, powerless feeling that becomes the next day's internal cue.</figcaption>
+      </figure>
+      <div class="note"><strong>Where to break it:</strong> the cheapest exits are the earliest stages (phone out of reach; catching the first &#8220;explore&#8221; urge) &#8212; and the <em>aftermath</em> stage, where meeting the hollow feeling with self-compassion, rest, or a real activity, instead of another reach, is what actually interrupts the loop.</div>
+      </div><!--/pv-cycle-->
+      </div><!--/pl-main-->
+    </div><!--/pl-layout-->
   </div><!-- /pane-porn -->
 
   <!-- ============================================================= -->
@@ -1880,6 +1913,7 @@
   document.addEventListener('keydown',function(e){if(e.key==='Escape')closeCard();});
 
   // top tabs
+  window.pornView=function(v){var vs=document.querySelectorAll('#pane-porn .pl-view');for(var i=0;i<vs.length;i++)vs[i].classList.toggle('active',vs[i].id==='pv-'+v);var it=document.querySelectorAll('#pane-porn .pl-item');for(var j=0;j<it.length;j++)it[j].classList.toggle('active',it[j].getAttribute('data-pv')===v);var m=document.querySelector('#pane-porn .pl-main');if(m)m.scrollIntoView({behavior:'smooth',block:'nearest'});};
   window.switchTab=function(t){
     document.querySelectorAll('.pane').forEach(function(p){p.classList.toggle('active',p.id==='pane-'+t);});
     document.querySelectorAll('.tabpill').forEach(function(b){b.classList.toggle('active',b.getAttribute('data-tab')===t);});
