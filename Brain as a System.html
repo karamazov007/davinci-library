@@ -509,7 +509,9 @@ var brand=document.querySelector('.brand'); if(brand&&home){ brand.style.cursor=
   {label:'Agency Thinking',sub:'willpower',causes:['“I can move toward it”','Belief in your own push']},
   {label:'Pathways Thinking',sub:'waypower',causes:['Seeing routes and plans','Alternate paths if one blocks']},
   {label:'Tolerable Uncertainty',sub:'stance',causes:['Possibility without guarantee','Distinct from blind optimism']}]},
-    {id:'overthinking',name:'Overthinking',pol:'neg',badge:'GROWTH BOTTLENECK',tl:'the worry-plus-rumination engine (RNT)',cats:[{label:'Repetitive Negative Thinking',sub:'RNT',causes:['See the two-sided view']}]}
+    {id:'overthinking',name:'Overthinking',pol:'neg',badge:'GROWTH BOTTLENECK',tl:'the worry-plus-rumination engine (RNT)',cats:[{label:'Repetitive Negative Thinking',sub:'RNT',causes:['See the two-sided view']}]},
+    {id:'patience',name:'Patience',pol:'pos',badge:'POSITIVE-VALENCE',tl:'tolerating delay calmly for a larger later reward',cats:[{label:'—',sub:'',causes:['see the spectrum']}]},
+    {id:'impatience',name:'Impatience',pol:'neg',badge:'GROWTH BOTTLENECK',tl:'over-weighting the immediate; can’t bear the wait',cats:[{label:'—',sub:'',causes:['see the spectrum']}]}
   ];
 
   function esc(s){return String(s).replace(/&(?!amp;|#)/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');}
@@ -665,7 +667,7 @@ var brand=document.querySelector('.brand'); if(brand&&home){ brand.style.cursor=
 consistency:{causes:[
  {label:'Clear goal & identity',items:['Specific goal','“I’m a person who…”'],detail:'A concrete goal plus an identity anchor gives repeated behavior something stable to hold onto.',work:'Write the goal specifically and attach an identity statement to it.',src:'Gardner (2012)',url:''},
  {label:'Cue-consistent context',items:['Same time / place'],detail:'Habits form when a behavior repeats in a consistent context, building automaticity (median ~66 days).',work:'Anchor the action to a fixed existing cue (“after breakfast”).',src:'Lally et al. (2010)',url:'https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.674'},
- {label:'Low friction & feedback',items:['Easy to start','Visible progress'],detail:'Low activation energy and small visible wins keep the reward loop alive.',work:'Shrink the first step; track a visible streak.',src:'Wood & Neal (2007)',url:''}],
+ {label:'Low friction & feedback',items:['Easy to start','Visible progress'],detail:'Low activation energy and small visible wins keep the reward loop alive.',work:'Shrink the first step; track a visible streak.',src:'Wood & Neal (2007)',url:''},{label:'Domain immersion',items:['Videos, docs & films on the domain','A community you engage with'],detail:'Surrounding yourself with the domain — its content and its people — keeps the goal salient and the identity reinforced, so consistency is pulled by the environment rather than pushed by willpower. Workout videos, swimming films, documentaries, and being among people who do the thing all keep it alive in you.',work:'Deliberately immerse: follow creators, watch documentaries and films, and join a community in the domain, so the world around you keeps you consistent.',src:'Oyserman (2009), identity-based motivation; Lave & Wenger (1991), communities of practice',url:''}],
  effects:[
  {label:'Automaticity',items:['Runs without willpower'],detail:'Repetition migrates the behavior into automatic control, so it no longer needs motivation.',work:'Protect the cue and context that trigger it.',src:'Lally et al. (2010)',url:'https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.674'},
  {label:'Compounding results',items:['Small gains accumulate'],detail:'Steady repetition compounds into skill and outcomes over time.',work:'Favor sustainable frequency over intensity.',src:'Ericsson et al. (1993)',url:''},
@@ -673,7 +675,7 @@ consistency:{causes:[
 inconsistency:{causes:[
  {label:'Reliance on motivation',items:['Waiting to feel like it'],detail:'Depending on fluctuating mood makes behavior sporadic.',work:'Replace “when I feel like it” with a fixed cue and if-then plan.',src:'Gollwitzer (1999)',url:''},
  {label:'No stable cue',items:['Changing times / places'],detail:'Without a consistent context, automaticity never forms.',work:'Pick one fixed anchor and keep it constant.',src:'Lally et al. (2010)',url:'https://onlinelibrary.wiley.com/doi/abs/10.1002/ejsp.674'},
- {label:'All-or-nothing standard',items:['Perfect or skip'],detail:'A rigid standard turns one miss into total abandonment.',work:'Define a “minimum version” you can always do.',src:'Steel (2007)',url:''}],
+ {label:'All-or-nothing standard',items:['Perfect or skip'],detail:'A rigid standard turns one miss into total abandonment.',work:'Define a “minimum version” you can always do.',src:'Steel (2007)',url:''},{label:'Domain isolation',items:['No content or media around it','No community keeping it alive'],detail:'Disconnected from the content and people around the goal, it fades from daily awareness — nothing reminds or reinforces it, so effort becomes sporadic and the identity weakens.',work:'Re-immerse: add domain content to your feed and one community touchpoint, so the goal stays present instead of slipping out of mind.',src:'Oyserman (2009); Wood & Neal (2007), context & habit',url:''}],
  effects:[
  {label:'No compounding',items:['Progress resets'],detail:'Sporadic effort never accumulates into skill or results.',work:'Prioritize never missing twice in a row.',src:'Wood & Neal (2007)',url:''},
  {label:'Eroded efficacy',items:['“I can’t stick to things”'],detail:'Repeatedly breaking self-promises lowers self-efficacy and identity.',work:'Rebuild with tiny, guaranteed wins.',src:'Bandura (1997)',url:''},
@@ -925,7 +927,26 @@ hope:{causes:[
  effects:[
  {label:'Persistence & resilience',items:['Keeps going'],detail:'Hope predicts persistence, coping, and better outcomes.',work:'When blocked, switch pathways rather than quit.',src:'Snyder (2002)',url:''},
  {label:'Wellbeing & performance',items:['Achievement; health'],detail:'Higher hope links to achievement, health, and wellbeing.',work:'Keep goals, agency, and pathways all in view.',src:'Snyder (2002)',url:''},
- {label:'Distinct from optimism',items:['Includes a plan'],detail:'Unlike vague optimism, hope carries agency and concrete pathways.',work:'Add a plan to positive expectation.',src:'Snyder (2002)',url:''}]}
+ {label:'Distinct from optimism',items:['Includes a plan'],detail:'Unlike vague optimism, hope carries agency and concrete pathways.',work:'Add a plan to positive expectation.',src:'Snyder (2002)',url:''}]},
+  patience:{causes:[
+    {label:'Future orientation',items:['Values the larger-later reward','Low delay discounting'],detail:'Patience rests on weighting future rewards nearly as much as present ones — a shallow discount curve rather than a steep, present-biased one.',work:'Make the future reward vivid and concrete (write it, picture it) so it can compete with the immediate pull.',src:'Ainslie (1975); Laibson (1997)',url:''},
+    {label:'Distress tolerance',items:['Can sit with the discomfort of waiting'],detail:'Waiting is uncomfortable; patience is largely the capacity to tolerate that discomfort without acting to end it.',work:'Treat the itch to rush as a wave — name it, breathe, let it crest and pass.',src:'Simons & Gaher (2005)',url:''},
+    {label:'Trust the process',items:['Belief the wait pays off','Visible incremental progress'],detail:'When you trust that slow work will pay off — and can see small progress — the urge to abandon it drops.',work:'Track incremental progress so the payoff feels real and near.',src:'Mischel, Shoda & Rodriguez (1989)',url:''},
+    {label:'Acceptance of what takes time',items:['“Some things can’t be rushed”'],detail:'Accepting that certain outcomes are neither controllable nor fast reduces the friction of waiting (equanimity).',work:'Separate what you can speed up from what you must simply allow.',src:'Hayes et al. (1999)',url:''}],
+   effects:[
+    {label:'Larger long-term payoffs',items:['Compounding; delayed rewards won'],detail:'Choosing larger-later over smaller-sooner compounds — childhood self-control predicts better health, wealth and outcomes decades on.',work:'Keep the long game visible so patience keeps paying.',src:'Moffitt et al. (2011)',url:'https://www.pnas.org/doi/10.1073/pnas.1010076108'},
+    {label:'Calm, lower stress',items:['Less reactivity while waiting'],detail:'Patience reduces the frustration and stress of delay, keeping body and mind regulated.',work:'Use the wait as recovery, not agitation.',src:'Mischel, Shoda & Rodriguez (1989)',url:''},
+    {label:'Sustained effort',items:['Stays with slow goals'],detail:'Patience is the temporal backbone of long projects — it underwrites consistency when rewards are distant.',work:'Pair patience with visible milestones to sustain it.',src:'Duckworth et al. (2007)',url:''}]},
+  impatience:{causes:[
+    {label:'Present bias',items:['Immediate over larger-later','Hyperbolic discounting'],detail:'Impatience is a steep, present-biased discount curve — the near reward looms far larger than the delayed one, even when the delayed one is bigger.',work:'Add friction / precommitment to the immediate option; make the delayed reward vivid.',src:'Ainslie (1975); Laibson (1997)',url:''},
+    {label:'Low distress tolerance',items:['Can’t sit with the wait'],detail:'A low tolerance for the discomfort of waiting drives action just to end the unpleasant feeling.',work:'Build the muscle: wait one beat longer than is comfortable.',src:'Simons & Gaher (2005)',url:''},
+    {label:'Inflated pace baseline',items:['Habituated to instant feedback'],detail:'Constant fast rewards raise the minimum acceptable pace, so any delay reads as intolerable — the Automation-Trap baseline applied to time.',work:'Reduce fast-reward exposure so tolerance for a slower pace can recover.',src:'Brickman & Campbell (1971), hedonic adaptation',url:''},
+    {label:'Time pressure / scarcity',items:['Feeling rushed; tunneling'],detail:'Scarcity of time — real or felt — tunnels attention onto the now and starves patience.',work:'Reduce load and widen the frame; separate real deadlines from felt urgency.',src:'Mullainathan & Shafir (2013)',url:''}],
+   effects:[
+    {label:'Impulsive choices',items:['Abandons the long game'],detail:'Impatience takes the quick, smaller reward and quits before the larger delayed one arrives.',work:'Precommit to the delayed choice before the moment of temptation.',src:'Ainslie (1975)',url:''},
+    {label:'Poorer quality, errors',items:['Rushing degrades the work'],detail:'Acting before things are ready degrades decisions and output.',work:'Insert a mandatory pause before acting on urgency.',src:'Kahneman (2011)',url:''},
+    {label:'Frustration & stress',items:['Irritability; can tip to anger'],detail:'Slowed or blocked goals under impatience generate frustration and stress, sometimes spilling into anger.',work:'Reappraise the delay; treat the frustration as a signal, not a command.',src:'Berkowitz (1989)',url:'https://psycnet.apa.org/doiLanding?doi=10.1037%2F0033-2909.106.1.59'},
+    {label:'Sabotaged goals',items:['Forfeits compounding'],detail:'By refusing the wait, impatience forfeits the compounding rewards that slow goals require.',work:'Anchor to milestones so the payoff feels closer.',src:'Moffitt et al. (2011)',url:'https://www.pnas.org/doi/10.1073/pnas.1010076108'}]}
 };
   function clipS(s,n){var e=esc(s);return e.length>n?e.slice(0,n-1)+'…':e;}
   function fishTwo(t,d){
@@ -996,9 +1017,10 @@ hope:{causes:[
     sp_effort:{pos:'hardwork',neg:'laziness'},
     sp_discipline:{pos:'discipline',neg:'procrastination'},
     sp_focus:{pos:'focus',neg:'mindwandering',negName:'Distraction'},
-    sp_confidence:{pos:'confidence',neg:'selfdoubt'}
+    sp_confidence:{pos:'confidence',neg:'selfdoubt'},
+    sp_patience:{pos:'patience',neg:'impatience'}
   };
-  var collapsedTo={consistency:'sp_consistency',inconsistency:'sp_consistency',hardwork:'sp_effort',laziness:'sp_effort',discipline:'sp_discipline',procrastination:'sp_discipline',focus:'sp_focus',mindwandering:'sp_focus',confidence:'sp_confidence',selfdoubt:'sp_confidence'};
+  var collapsedTo={consistency:'sp_consistency',inconsistency:'sp_consistency',hardwork:'sp_effort',laziness:'sp_effort',discipline:'sp_discipline',procrastination:'sp_discipline',focus:'sp_focus',mindwandering:'sp_focus',confidence:'sp_confidence',selfdoubt:'sp_confidence',patience:'sp_patience',impatience:'sp_patience'};
   function nameOf(id){ if(SPECTRA[id]){var s=SPECTRA[id];var pn=(byId(s.pos)||{name:s.pos}).name;var nn=s.negName||(byId(s.neg)||{name:s.neg}).name;return pn+' ↔ '+nn;} var t=byId(id);return t?t.name:id; }
   function poleNames(sp){return {pos:(byId(sp.pos)||{name:sp.pos}).name, neg:sp.negName||(byId(sp.neg)||{name:sp.neg}).name};}
   function fishSpectrum(spec){
@@ -1108,7 +1130,7 @@ hope:{causes:[
   window.selectTrait=selectTrait;
 
   var GROUPS=[
-    {label:'Effort &amp; consistency',ids:['sp_consistency','sp_effort','sp_discipline','obsession']},
+    {label:'Effort &amp; consistency',ids:['sp_consistency','sp_effort','sp_discipline','sp_patience','obsession']},
     {label:'Attention &amp; control',ids:['sp_focus','willpower','decisionparalysis','insight']},
     {label:'Threat',ids:['anxiety','fear','desperation']},
     {label:'Anger &amp; letdown',ids:['anger','disappointment','regret']},
