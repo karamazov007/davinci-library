@@ -1,0 +1,642 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Complete Trip Framework</title>
+<style>
+:root{--bg:#fbfbfa;--panel:#fff;--soft:#f5f6f7;--fig:#fcfcfd;--ink:#1f2328;--ink2:#3a4048;--muted:#6b7280;--line:#e8e9ec;--line2:#eef0f2;
+--a1:#4f46e5;--a2:#0891b2;--a3:#db2777;--a4:#ea580c;--a5:#16a34a;--a6:#9333ea;--soft1:#eef0ff;
+--shadow:0 1px 2px rgba(16,24,40,.05),0 6px 22px rgba(16,24,40,.05)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;background:var(--bg);color:var(--ink);line-height:1.6;font-size:15px;-webkit-font-smoothing:antialiased}
+a{color:var(--a1);text-decoration:none}
+/* sidebar */
+.sidebar{position:fixed;top:0;left:0;width:230px;height:100vh;background:#fff;border-right:1px solid var(--line);padding:22px 14px;overflow-y:auto;z-index:60}
+.sidebar .brand{font-size:15px;font-weight:800;letter-spacing:-.01em;line-height:1.2}
+.sidebar .brand span{color:var(--a1)}
+.sidebar .brandtag{font-size:11px;color:var(--muted);margin:5px 0 18px;display:block}
+.sidebar nav{display:flex;flex-direction:column;gap:2px}
+.sidebar nav a{display:flex;align-items:center;gap:10px;font-size:13px;color:var(--ink2);padding:8px 11px;border-radius:9px;transition:.13s}
+.sidebar nav a:hover{background:var(--soft);color:var(--ink)}
+.sidebar nav a.active{background:var(--soft1);color:var(--a1);font-weight:600}
+.sidebar nav a .dot{width:7px;height:7px;border-radius:50%;background:var(--line);flex:none;transition:.13s}
+.sidebar nav a.active .dot{background:var(--a1)}
+.backlink{margin-top:18px;padding-top:14px;border-top:1px solid var(--line);font-size:12.5px}
+.page{margin-left:230px}
+@media(max-width:900px){.sidebar{position:static;width:auto;height:auto;border-right:none;border-bottom:1px solid var(--line);padding:12px 16px}
+.sidebar .brandtag{display:none}.sidebar nav{flex-direction:row;flex-wrap:wrap;gap:6px}
+.sidebar nav a{padding:6px 11px;border:1px solid var(--line);border-radius:20px}.sidebar nav a .dot{display:none}.page{margin-left:0}}
+/* header */
+header{padding:56px 40px 8px;max-width:1080px;margin:0 auto}
+.kicker{color:var(--a1);font-size:12px;font-weight:700;letter-spacing:.13em;text-transform:uppercase;margin-bottom:12px}
+h1{font-size:clamp(30px,5vw,44px);margin:0 0 12px;letter-spacing:-.025em;font-weight:800;background:linear-gradient(120deg,var(--ink),var(--a1));-webkit-background-clip:text;background-clip:text;color:transparent}
+.sub{color:var(--muted);max-width:680px;font-size:16.5px}
+.wrap{max-width:1080px;margin:0 auto;padding:0 40px 100px}
+section{padding-top:26px}
+h2{font-size:24px;margin:56px 0 4px;letter-spacing:-.02em;font-weight:750;display:flex;align-items:center;gap:12px}
+h2 .ic{font-size:22px}
+.lead{color:var(--muted);margin:0 0 22px;max-width:760px;font-size:15.5px}
+/* figures */
+.fig{background:var(--panel);border:1px solid var(--line);border-radius:16px;padding:16px 16px 10px;margin:0 0 20px;box-shadow:var(--shadow);position:relative}
+.viztag{display:inline-block;font-size:11px;font-weight:700;letter-spacing:.03em;color:var(--a1);background:var(--soft1);padding:4px 11px;border-radius:999px;margin-bottom:8px}
+.svgbox{width:100%;overflow:hidden}
+.svgbox svg{display:block;width:100%;height:auto}
+figcaption{color:var(--muted);font-size:13.5px;margin-top:8px;line-height:1.5}
+.grid3{display:grid;grid-template-columns:repeat(3,1fr);gap:16px}
+.grid3 .fig{margin:0}
+@media(max-width:820px){.grid3{grid-template-columns:1fr}}
+/* thesis */
+.thesis{background:linear-gradient(180deg,#fff,#fafaff);border:1px solid var(--line);border-radius:16px;padding:22px 24px;margin:0 0 22px;box-shadow:var(--shadow)}
+.thesis-eq{display:flex;flex-wrap:wrap;align-items:center;gap:10px;margin-bottom:12px}
+.chip{font-size:14px;font-weight:800;color:#fff;padding:7px 14px;border-radius:10px;letter-spacing:.02em}
+.chip.c1{background:var(--a1)}.chip.c2{background:var(--a2)}.chip.c3{background:var(--a3)}.chip.c5{background:var(--a5)}
+.op{font-size:18px;font-weight:700;color:var(--muted)}
+.thesis p{margin:0;color:var(--ink2);font-size:15px}
+/* notes */
+.notegrid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:4px}
+@media(max-width:820px){.notegrid{grid-template-columns:1fr}}
+.note{background:var(--soft);border:1px solid var(--line2);border-left:3px solid var(--a1);border-radius:10px;padding:12px 15px;font-size:13.5px;color:var(--ink2);line-height:1.55}
+.note.wide{grid-column:1/-1;border-left-color:var(--a5)}
+.note b{color:var(--ink)}
+/* structure map */
+.structmap{display:grid;grid-template-columns:repeat(4,1fr);gap:12px}
+.structmap.cols3{grid-template-columns:repeat(3,1fr)}
+.structmap.cols5{grid-template-columns:repeat(5,1fr)}
+@media(max-width:900px){.structmap,.structmap.cols3,.structmap.cols5{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.structmap,.structmap.cols3,.structmap.cols5{grid-template-columns:1fr}}
+.col{border:1px solid var(--line);border-radius:12px;overflow:hidden;background:var(--fig)}
+.colh{font-size:13px;font-weight:800;color:#fff;padding:10px 12px;letter-spacing:.03em}
+.col1 .colh{background:var(--a1)}.col2 .colh{background:var(--a2)}.col3 .colh{background:var(--a3)}.col4 .colh{background:var(--a4)}.col5 .colh{background:var(--a5)}.col6 .colh{background:var(--a6)}
+.col1{border-color:var(--a1)}.col2{border-color:var(--a2)}.col3{border-color:var(--a3)}.col4{border-color:var(--a4)}.col5{border-color:var(--a5)}.col6{border-color:var(--a6)}
+.grp{padding:9px 11px;border-top:1px solid var(--line2)}
+.grp:first-of-type{border-top:none}
+.gh{font-size:11.5px;font-weight:700;color:var(--ink2);text-transform:uppercase;letter-spacing:.05em;margin-bottom:7px}
+.chips{display:flex;flex-wrap:wrap;gap:5px}
+.chips span{font-size:11.5px;color:var(--ink2);background:#fff;border:1px solid var(--line);border-radius:7px;padding:3px 8px;line-height:1.3}
+</style></head>
+<body>
+<aside class="sidebar">
+  <div class="brand">Trip Planning<br><span>Complete Framework</span></div>
+  <span class="brandtag">Move · Stay · Experience · Eat</span>
+  <nav id="toc"><a href="#overview"><span class="dot"></span>At a glance</a>
+<a href="#move"><span class="dot"></span>1 · Move</a>
+<a href="#stay"><span class="dot"></span>2 · Stay</a>
+<a href="#experience"><span class="dot"></span>3 · Experience</a>
+<a href="#eat"><span class="dot"></span>4 · Eat</a>
+<a href="#interact"><span class="dot"></span>How the four interact</a>
+<a href="#engine"><span class="dot"></span>The planning engine</a>
+<a href="#package"><span class="dot"></span>Package vs DIY</a></nav>
+  <div class="backlink"><a href="travel.html">← Back to Travel</a></div>
+</aside>
+<div class="page">
+  <header>
+    <div class="kicker">Travel · Operating System</div>
+    <h1>The Complete Trip Framework</h1>
+    <p class="sub">Once the destination is chosen, every trip reduces to four systems. Here is the whole thing — mapped, not written.</p>
+  </header>
+  <div class="wrap">
+  <section id="overview">
+  <h2><span class="ic">✦</span>At a glance</h2>
+  <p class="lead">A destination tells you <b>where</b>. These four systems tell you <b>how the trip actually happens</b>.</p>
+  
+<div class="thesis">
+  <div class="thesis-eq"><span class="chip c1">MOVE</span><span class="op">+</span><span class="chip c2">STAY</span><span class="op">+</span><span class="chip c3">EXPERIENCE</span><span class="op">+</span><span class="chip c5">EAT</span></div>
+  <p>Buy a <b>package</b> and these are bundled for you. Go <b>DIY</b> and you solve each one yourself. Either way, every trip is made of exactly these four.</p>
+</div>
+<figure class="fig"><span class="viztag">🗺 Mind Map</span>
+<div class="svgbox" id="c-masterMind"></div>
+<figcaption>The whole framework as a radial master map — four systems, each with its own branches.</figcaption></figure>
+<figure class="fig"><span class="viztag">🗂 Full structure</span>
+<div class="structmap">
+  <div class="col col1"><div class="colh">1 · MOVE</div>
+    <div class="grp"><div class="gh">Big move</div><div class="chips"><span>Home → Destination</span><span>Destination → Home</span></div></div>
+    <div class="grp"><div class="gh">Small move</div><div class="chips"><span>Base → Activity</span><span>Activity → Activity</span><span>Activity → Food</span><span>Food → Base</span><span>Base → Base</span></div></div>
+  </div>
+  <div class="col col2"><div class="colh">2 · STAY</div>
+    <div class="grp"><div class="gh">Bases</div><div class="chips"><span>One base, whole trip</span><span>One base per cluster</span><span>Multiple clusters per base</span></div></div>
+    <div class="grp"><div class="gh">Base changes</div><div class="chips"><span>When: Morning</span><span>Afternoon</span><span>Night</span><span>Why: Distance</span><span>Time efficiency</span><span>Experience</span></div></div>
+    <div class="grp"><div class="gh">Accommodation</div><div class="chips"><span>Location</span><span>Price</span><span>Quality</span><span>Breakfast incl.?</span><span>Facilities</span></div></div>
+  </div>
+  <div class="col col3"><div class="colh">3 · EXPERIENCE</div>
+    <div class="grp"><div class="gh">What?</div><div class="chips"><span>See</span><span>Do</span><span>Explore</span><span>Learn</span><span>Relax</span></div></div>
+    <div class="grp"><div class="gh">Where?</div><div class="chips"><span>Cluster 1</span><span>Cluster 2</span><span>Cluster 3</span></div></div>
+    <div class="grp"><div class="gh">How long?</div><div class="chips"><span>Fixed-duration</span><span>Flexible</span><span>Passive viewing</span></div></div>
+    <div class="grp"><div class="gh">When?</div><div class="chips"><span>Morning</span><span>Afternoon</span><span>Evening</span><span>Night</span></div></div>
+  </div>
+  <div class="col col5"><div class="colh">4 · EAT</div>
+    <div class="grp"><div class="gh">Meal structure</div><div class="chips"><span>Breakfast</span><span>Lunch</span><span>Snacks</span><span>Dinner</span></div></div>
+    <div class="grp"><div class="gh">Where?</div><div class="chips"><span>Hotel</span><span>Restaurant</span><span>Café</span><span>Street food</span><span>Activity location</span></div></div>
+    <div class="grp"><div class="gh">When?</div><div class="chips"><span>At base</span><span>During transit</span><span>Between activities</span><span>At destination</span></div></div>
+    <div class="grp"><div class="gh">Logistics</div><div class="chips"><span>Eat there</span><span>Carry packed</span><span>Buy en route</span><span>Hotel packed meal</span></div></div>
+  </div>
+</div>
+<figcaption>The same framework as a strict hierarchy — every branch and leaf you must decide, in full.</figcaption></figure>
+
+</section>
+<section id="move">
+  <h2><span class="ic">🚗</span>1 · Move</h2>
+  <p class="lead">Two completely different scales: getting <b>in & out</b> of the destination, and moving <b>around</b> once there.</p>
+  
+<figure class="fig"><span class="viztag">➡ Flow</span>
+<div class="svgbox" id="c-bigMove"></div>
+<figcaption>BIG MOVE — solved once at each end: home → station/airport → destination, and back.</figcaption></figure>
+<figure class="fig"><span class="viztag">🔄 Cycle / Loop</span>
+<div class="svgbox" id="c-smallMove"></div>
+<figcaption>SMALL MOVE — the daily out-and-back from base through activities and food. The whole game is minimising dead movement.</figcaption></figure>
+<figure class="fig"><span class="viztag">🕸 Network</span>
+<div class="svgbox" id="c-clusters"></div>
+<figcaption>Group activities that sit near each other into <b>clusters</b>, so small moves stay short.</figcaption></figure>
+
+</section>
+<section id="stay">
+  <h2><span class="ic">🏨</span>2 · Stay</h2>
+  <p class="lead">Not "which hotel?" first, but <b>"how many operational bases, and where?"</b></p>
+  
+<div class="grid3">
+  <figure class="fig"><span class="viztag">➡ Flow</span>
+<div class="svgbox" id="c-stayOne"></div>
+<figcaption>Strategy A — one base. Simple, but Cluster C means a long daily commute.</figcaption></figure>
+  <figure class="fig"><span class="viztag">➡ Flow</span>
+<div class="svgbox" id="c-stayTwo"></div>
+<figcaption>Strategy B — two bases. One hotel change buys far less driving.</figcaption></figure>
+  <figure class="fig"><span class="viztag">➡ Flow</span>
+<div class="svgbox" id="c-stayThree"></div>
+<figcaption>Strategy C — three bases. Maximum geographic efficiency, maximum packing friction.</figcaption></figure>
+</div>
+<figure class="fig"><span class="viztag">📈 Spectrum</span>
+<div class="svgbox" id="c-staySpectrum"></div>
+<figcaption>The core trade-off on a single dial: every base you add swaps commuting for check-in / packing friction.</figcaption></figure>
+<figure class="fig"><span class="viztag">🕸 Radar</span>
+<div class="svgbox" id="c-accomRadar"></div>
+<figcaption>Only after the base question do you profile actual hotels across the five criteria.</figcaption></figure>
+<figure class="fig"><span class="viztag">🌳 Tree</span>
+<div class="svgbox" id="c-baseChange"></div>
+<figcaption>When a base change happens, and the reason that justifies it.</figcaption></figure>
+
+</section>
+<section id="experience">
+  <h2><span class="ic">🎯</span>3 · Experience</h2>
+  <p class="lead">Don't start from "what attractions exist?" Start from <b>"what experiences do we want?"</b></p>
+  
+<figure class="fig"><span class="viztag">🗺 Mind Map</span>
+<div class="svgbox" id="c-expMind"></div>
+<figcaption>Think in verbs, not attractions: five ways to experience a place.</figcaption></figure>
+<figure class="fig"><span class="viztag">🗂 Full structure</span>
+<div class="structmap cols5"><div class="col col1"><div class="colh">SEE</div><div class="grp"><div class="gh">examples</div><div class="chips"><span>Viewpoint</span><span>Sunset</span><span>Waterfall</span><span>Monument</span></div></div></div><div class="col col2"><div class="colh">DO</div><div class="grp"><div class="gh">examples</div><div class="chips"><span>Trek</span><span>Swim</span><span>Kayak</span><span>Cycle</span><span>Adventure</span></div></div></div><div class="col col3"><div class="colh">EXPLORE</div><div class="grp"><div class="gh">examples</div><div class="chips"><span>Market</span><span>Old town</span><span>Village</span><span>Nature</span></div></div></div><div class="col col5"><div class="colh">LEARN</div><div class="grp"><div class="gh">examples</div><div class="chips"><span>Museum</span><span>Historical site</span><span>Workshop</span></div></div></div><div class="col col4"><div class="colh">RELAX</div><div class="grp"><div class="gh">examples</div><div class="chips"><span>Beach</span><span>Resort</span><span>Spa</span><span>Café</span></div></div></div></div>
+<figcaption>Each verb, unpacked into the concrete things you might actually do.</figcaption></figure>
+<figure class="fig"><span class="viztag">➡ Flow</span>
+<div class="svgbox" id="c-expOps"></div>
+<figcaption>Every chosen experience then answers three operational questions in order.</figcaption></figure>
+<figure class="fig"><span class="viztag">📈 Spectrum</span>
+<div class="svgbox" id="c-expDuration"></div>
+<figcaption>How much each activity locks your clock — from passive viewing to a fixed booked slot.</figcaption></figure>
+
+</section>
+<section id="eat">
+  <h2><span class="ic">🍽</span>4 · Eat</h2>
+  <p class="lead">Food is a <b>logistics problem</b> with two purposes: fuel vs experience.</p>
+  
+<figure class="fig"><span class="viztag">📈 Spectrum</span>
+<div class="svgbox" id="c-eatSpectrum"></div>
+<figcaption>Purpose decides everything: Maggi at a viewpoint is fuel; a famous restaurant is the experience.</figcaption></figure>
+<figure class="fig"><span class="viztag">🗂 Full structure</span>
+<div class="structmap cols3"><div class="col col3"><div class="colh">Purpose</div><div class="grp"><div class="gh">why you eat</div><div class="chips"><span>Experience</span><span>Fuel</span></div></div></div><div class="col col1"><div class="colh">Meal</div><div class="grp"><div class="gh">the slot</div><div class="chips"><span>Breakfast</span><span>Lunch</span><span>Snacks</span><span>Dinner</span></div></div></div><div class="col col5"><div class="colh">Execution</div><div class="grp"><div class="gh">how it happens</div><div class="chips"><span>Hotel</span><span>Restaurant</span><span>Café</span><span>Street food</span><span>En route</span><span>Packed</span></div></div></div></div>
+<figcaption>The full eat decision: purpose × meal × execution.</figcaption></figure>
+<figure class="fig"><span class="viztag">🕒 Timeline</span>
+<div class="svgbox" id="c-eatDay"></div>
+<figcaption>A complete one-day food strategy laid out across the day.</figcaption></figure>
+
+</section>
+<section id="interact">
+  <h2><span class="ic">🔗</span>How the four interact</h2>
+  <p class="lead">The systems are <b>not independent</b> — each one constrains the next.</p>
+  
+<figure class="fig"><span class="viztag">🕸 Concept Map</span>
+<div class="svgbox" id="c-interact"></div>
+<figcaption>Experience sets timing → Move & Stay bend to fit → Move & long days dictate how you Eat.</figcaption></figure>
+<div class="notegrid">
+  <div class="note"><b>Experience → Move.</b> "Trek at 7 AM" forces a base near the trailhead.</div>
+  <div class="note"><b>Stay → Experience.</b> A hotel 30 km out quietly kills operationally-painful experiences.</div>
+  <div class="note"><b>Experience → Eat.</b> A 6-hour trek means breakfast → packed lunch → snack → dinner.</div>
+  <div class="note"><b>Move → Eat.</b> A 4-hour drive turns lunch into a transit meal, not a destination.</div>
+</div>
+
+</section>
+<section id="engine">
+  <h2><span class="ic">⚙</span>The planning engine</h2>
+  <p class="lead">Run the four in this order — then iterate.</p>
+  
+<figure class="fig"><span class="viztag">🔄 Cycle / Loop</span>
+<div class="svgbox" id="c-engine"></div>
+<figcaption>Destination → Clusters → Bases → Experiences → Movement → Meals → Schedule → iterate.</figcaption></figure>
+<figure class="fig"><span class="viztag">🔺 Pyramid</span>
+<div class="svgbox" id="c-substrate"></div>
+<figcaption>How the plan is built up, layer on layer — with time & geography sitting under all four.</figcaption></figure>
+
+</section>
+<section id="package">
+  <h2><span class="ic">📦</span>Package vs DIY</h2>
+  <p class="lead">The key insight: a package doesn't create new categories — it just <b>bundles the execution</b>.</p>
+  
+<figure class="fig"><span class="viztag">➡ Flow</span>
+<div class="svgbox" id="c-pkg"></div>
+<figcaption>A package = a pre-solved chain of Move + Stay + Experience, handed to you.</figcaption></figure>
+<figure class="fig"><span class="viztag">🗺 Mind Map</span>
+<div class="svgbox" id="c-diy"></div>
+<figcaption>DIY = you personally solve all four systems.</figcaption></figure>
+<div class="note wide"><b>Either way, the four systems are the same.</b> A package outsources the operational layer; DIY keeps it. The destination told you <i>where</i> — these four are always <i>how</i>.</div>
+
+</section>
+  </div>
+</div>
+<script>
+const C={ink:'#1f2933',mut:'#5b6572',line:'#c3cbd8',a1:'#4f46e5',a2:'#0891b2',a3:'#db2777',a4:'#ea580c',a5:'#16a34a',a6:'#9333ea'};
+const P=[C.a1,C.a2,C.a4,C.a5,C.a6,C.a3];
+const escT=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+const MK=`<defs>
+<marker id="mA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.mut}"/></marker>
+<marker id="mR" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.a3}"/></marker>
+<marker id="mB" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.a1}"/></marker></defs>`;
+function SV(inner,w=680,h=460){return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Arial">${MK}${inner}</svg>`;}
+function T(x,y,txt,{fill=C.ink,fs=12,fw=400,anchor='middle',tr=''}={}){return `<text x="${x}" y="${y}" text-anchor="${anchor}" fill="${fill}" font-size="${fs}" font-weight="${fw}"${tr?` transform="${tr}"`:''}>${escT(txt)}</text>`;}
+function ML(x,y,label,o={}){const lines=String(label).split('\n');const lh=o.lh||13;const off=(lines.length-1)*lh/2;return lines.map((ln,i)=>T(x,y-off+i*lh,ln,o)).join('');}
+function boxN(x,y,w,h,label,{fill=C.a1,tc='#fff',fs=12,r=9,stroke='',sw=0}={}){const lines=String(label).split('\n');const startY=y+h/2-((lines.length-1)*7)+4;return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}"${stroke?` stroke="${stroke}" stroke-width="${sw}"`:''}/>`+lines.map((ln,i)=>T(x+w/2,startY+i*14,ln,{fill:tc,fs,fw:600})).join('');}
+function cir(cx,cy,r,label,col,hollow){return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${hollow?'#fff':col}"${hollow?` stroke="${col}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,label,{fill:hollow?C.ink:'#fff',fs:11,fw:600});}
+function arr(x1,y1,x2,y2,o={}){let X1=x1,Y1=y1,X2=x2,Y2=y2;if(o.trim){const dx=X2-X1,dy=Y2-Y1,d=Math.hypot(dx,dy)||1;X1+=dx/d*o.trim;Y1+=dy/d*o.trim;X2-=dx/d*o.trim;Y2-=dy/d*o.trim;}const col=o.color||C.mut,mk=o.arrow===false?'':`marker-end="url(#${o.mk||'mA'})"`;let path,lmx,lmy;if(o.curve){const dx=X2-X1,dy=Y2-Y1,d=Math.hypot(dx,dy)||1,mxp=(X1+X2)/2-dy/d*o.curve,myp=(Y1+Y2)/2+dx/d*o.curve;path=`<path d="M${X1},${Y1} Q${mxp},${myp} ${X2},${Y2}" fill="none" stroke="${col}" stroke-width="${o.w||2}" ${o.dash?`stroke-dasharray="${o.dash}"`:''} ${mk}/>`;lmx=(X1+2*mxp+X2)/4;lmy=(Y1+2*myp+Y2)/4;}else{path=`<line x1="${X1}" y1="${Y1}" x2="${X2}" y2="${Y2}" stroke="${col}" stroke-width="${o.w||2}" ${o.dash?`stroke-dasharray="${o.dash}"`:''} ${mk}/>`;lmx=(X1+X2)/2;lmy=(Y1+Y2)/2;}let s=path;if(o.label){const t=String(o.label),lw=t.length*6+10;s+=`<rect x="${lmx-lw/2}" y="${lmy-9}" width="${lw}" height="17" rx="4" fill="#fff" opacity=".95"/>`+T(lmx,lmy+3,t,{fill:o.lc||C.mut,fs:t.length<3?12:9.5,fw:t.length<3?800:600});}return s;}
+function zone(x,y,w,h,label){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="16" fill="none" stroke="${C.line}" stroke-width="1.5" stroke-dasharray="7 6"/>`+`<rect x="${x+14}" y="${y-11}" width="${label.length*7+18}" height="22" rx="11" fill="#fff"/>`+T(x+23,y+4,label,{fill:C.a1,fs:12,fw:700,anchor:'start'});}
+function genGraph(nodes,edges,{w=700,h=460,pad=26}={}){
+  const px=n=>pad+n.x*(w-2*pad), py=n=>pad+n.y*(h-2*pad); const byId={}; nodes.forEach(n=>byId[n.id]=n); let s='';
+  (edges||[]).forEach(e=>{const a=byId[e.from],b=byId[e.to]; if(!a||!b)return; let x1=px(a),y1=py(a),x2=px(b),y2=py(b);
+    const dx=x2-x1,dy=y2-y1,d=Math.hypot(dx,dy)||1;
+    const o1=(a.r||(a.w?Math.max(a.w,a.h)/2:26))+2, o2=(b.r||(b.w?Math.max(b.w,b.h)/2:26))+7;
+    x1+=dx/d*o1; y1+=dy/d*o1; x2-=dx/d*o2; y2-=dy/d*o2;
+    const mk=e.arrow===false?'':`marker-end="url(#${e.mk||'mA'})"`, col=e.color||C.mut; let lmx,lmy;
+    if(e.curve){const mxp=(x1+x2)/2-dy/d*e.curve, myp=(y1+y2)/2+dx/d*e.curve; s+=`<path d="M${x1},${y1} Q${mxp},${myp} ${x2},${y2}" fill="none" stroke="${col}" stroke-width="${e.w||1.7}" ${e.dash?`stroke-dasharray="${e.dash}"`:''} ${mk}/>`; lmx=(x1+2*mxp+x2)/4; lmy=(y1+2*myp+y2)/4;}
+    else {s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="${e.w||1.7}" ${e.dash?`stroke-dasharray="${e.dash}"`:''} ${mk}/>`; lmx=(x1+x2)/2; lmy=(y1+y2)/2;}
+    if(e.label){const lw=String(e.label).length*6+8; s+=`<rect x="${lmx-lw/2}" y="${lmy-9}" width="${lw}" height="16" rx="4" fill="#fff" opacity=".92"/>`+T(lmx,lmy+3,e.label,{fill:e.lc||C.mut,fs:e.label.length<3?12:9.5,fw:e.label.length<3?800:400});}
+  });
+  nodes.forEach((n,i)=>{const cx=px(n),cy=py(n),fill=n.fill||P[i%P.length],tc=n.tc||'#fff',shape=n.shape||'round';
+    if(shape==='circle'){const r=n.r||30; s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${n.hollow?'#fff':fill}"${n.hollow?` stroke="${fill}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,n.label,{fill:n.hollow?C.ink:tc,fs:n.fs||11,fw:600});}
+    else if(shape==='diamond'){const ww=n.w||96,hh=n.h||64; s+=`<polygon points="${cx},${cy-hh/2} ${cx+ww/2},${cy} ${cx},${cy+hh/2} ${cx-ww/2},${cy}" fill="${n.hollow?'#fff':fill}"${n.hollow?` stroke="${fill}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,n.label,{fill:n.hollow?C.ink:tc,fs:n.fs||10,fw:600});}
+    else {const ww=n.w||110,hh=n.h||44; s+=boxN(cx-ww/2,cy-hh/2,ww,hh,n.label,{fill,tc,fs:n.fs||11,r:shape==='rect'?4:12});}
+  });
+  return SV(s,w,h);
+}
+function genMindMap(center,branches,{w=780,h=540}={}){const cx=w/2,cy=h/2,R1=Math.min(w,h)*0.29,rr=Math.min(w,h)*0.185,n=branches.length; let s='';
+  branches.forEach((br,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,bx=cx+Math.cos(ang)*R1,by=cy+Math.sin(ang)*R1,col=P[i%P.length];
+    s+=`<path d="M${cx},${cy} Q${(cx+bx)/2},${(cy+by)/2} ${bx},${by}" fill="none" stroke="${col}" stroke-width="2.5"/>`;
+    const kids=br.children||[],spread=Math.PI/2.6;
+    kids.forEach((k,j)=>{const ka=ang+(kids.length>1?(-spread/2+j*spread/(kids.length-1)):0),kx=bx+Math.cos(ka)*rr,ky=by+Math.sin(ka)*rr;
+      s+=`<line x1="${bx}" y1="${by}" x2="${kx}" y2="${ky}" stroke="${col}" stroke-width="1.4" opacity=".65"/>`;
+      s+=`<rect x="${kx-48}" y="${ky-13}" width="96" height="26" rx="13" fill="#fff" stroke="${col}" stroke-width="1.4"/>`+ML(kx,ky+4,k,{fill:C.ink,fs:9.5,fw:600});});
+    s+=boxN(bx-58,by-19,116,38,br.label,{fill:col,fs:11,r:19});});
+  s+=`<circle cx="${cx}" cy="${cy}" r="48" fill="${C.ink}"/>`+ML(cx,cy+4,center,{fill:'#fff',fs:13,fw:700});
+  return SV(s,w,h);}
+function genTree(root,{w=720,h=440,pad=44,boxW=104,boxH=40}={}){let leaves=[];const levels=[];
+  (function walk(n,d){n._d=d;levels[d]=1;if(!n.children||!n.children.length)leaves.push(n);else n.children.forEach(c=>walk(c,d+1));})(root,0);
+  const maxD=levels.length-1,xGap=(w-2*pad)/Math.max(1,leaves.length-1);
+  leaves.forEach((lf,i)=>lf._x=leaves.length===1?w/2:pad+i*xGap);
+  const yGap=(h-2*pad-boxH)/Math.max(1,maxD);
+  (function setx(n){if(n.children&&n.children.length){n.children.forEach(setx);n._x=(n.children[0]._x+n.children[n.children.length-1]._x)/2;}n._y=pad+n._d*yGap;})(root);
+  let s='';const pal=[C.a2,C.a4,C.a5,C.a6,C.a3];
+  (function ed(n){if(n.children)n.children.forEach(c=>{s+=`<path d="M${n._x},${n._y+boxH} C${n._x},${(n._y+boxH+c._y)/2} ${c._x},${(n._y+boxH+c._y)/2} ${c._x},${c._y}" fill="none" stroke="${C.line}" stroke-width="1.6"/>`;ed(c);});})(root);
+  (function nd(n){const col=n._d===0?C.a1:pal[(n._d-1)%pal.length];s+=boxN(n._x-boxW/2,n._y,boxW,boxH,n.label,{fill:n._d===0?C.a1:'#fff',tc:n._d===0?'#fff':C.ink,stroke:n._d===0?'':col,sw:1.8,fs:10.5,r:8});if(n.children)n.children.forEach(nd);})(root);
+  return SV(s,w,h);}
+function genPyramid(levels,{w=680,h=460}={}){const n=levels.length,top=44,botW=w-160,ax=w/2,H=h-100,lh=H/n;let s='';
+  levels.forEach((lv,i)=>{const y0=top+i*lh,y1=top+(i+1)*lh,wt=botW*i/n,wb=botW*(i+1)/n;
+    s+=`<polygon points="${ax-wt/2},${y0} ${ax+wt/2},${y0} ${ax+wb/2},${y1} ${ax-wb/2},${y1}" fill="${lv.color||P[i%P.length]}"/>`;
+    s+=ML(ax,(y0+y1)/2+4,lv.label,{fill:'#fff',fs:12,fw:700});
+    if(lv.sub)s+=T(ax+wb/2+10,(y0+y1)/2+4,lv.sub,{fill:C.mut,fs:10,anchor:'start'});});
+  return SV(s,w,h);}
+function genTreemap(items,{w=680,h=440,pad=8}={}){const total=items.reduce((a,b)=>a+b.weight,0);let it=items.slice().sort((a,b)=>b.weight-a.weight);
+  const x=pad,rw=w-2*pad,rh=h-2*pad;let curY=pad,s='',rem=it.slice();
+  while(rem.length){const rc=Math.min(rem.length,rem.length<=3?rem.length:2),row=rem.splice(0,rc),rowW=row.reduce((a,b)=>a+b.weight,0),rowH=rh*(rowW/total);let curX=x;
+    row.forEach(item=>{const cw=rw*(item.weight/rowW);s+=`<rect x="${curX}" y="${curY}" width="${cw-4}" height="${rowH-4}" rx="6" fill="${item.color||C.a1}"/>`;
+      s+=ML(curX+(cw-4)/2,curY+rowH/2-2,item.label,{fill:'#fff',fs:11.5,fw:700});
+      s+=T(curX+(cw-4)/2,curY+rowH/2+16,Math.round(item.weight/total*100)+'%',{fill:'rgba(255,255,255,.85)',fs:10});curX+=cw;});curY+=rowH;}
+  return SV(s,w,h);}
+function genTimeline(events,{w=780,h=420}={}){const y=h/2,x0=80,x1=w-80,n=events.length;let s=`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="${C.line}" stroke-width="3"/>`;
+  events.forEach((e,i)=>{const x=x0+(x1-x0)*(n===1?0.5:i/(n-1)),dir=i%2===0?-1:1,col=P[i%P.length];
+    s+=`<circle cx="${x}" cy="${y}" r="7" fill="${col}"/>`;const ly=y+dir*74;
+    s+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${ly+(dir<0?24:-24)}" stroke="${col}" stroke-width="1.6"/>`;
+    s+=`<rect x="${x-72}" y="${ly-24}" width="144" height="54" rx="9" fill="#fff" stroke="${col}" stroke-width="1.6"/>`;
+    s+=T(x,ly-6,e.when,{fill:col,fs:11.5,fw:700})+ML(x,ly+13,e.label,{fill:C.ink,fs:9.5,fw:600,lh:11});});
+  return SV(s,w,h);}
+function genCycle(stages,{w=620,h=560,center=''}={}){const cx=w/2,cy=h/2,R=Math.min(w,h)*0.30,n=stages.length;let s=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.line}" stroke-width="1.5" stroke-dasharray="5 5"/>`;
+  const pts=stages.map((st,i)=>{const a=-Math.PI/2+i*2*Math.PI/n;return{x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R,a};});
+  for(let i=0;i<n;i++){const p=pts[i],q=pts[(i+1)%n],a1=p.a+0.44,a2=q.a-0.44,x1=cx+Math.cos(a1)*R,y1=cy+Math.sin(a1)*R,x2=cx+Math.cos(a2)*R,y2=cy+Math.sin(a2)*R;
+    s+=`<path d="M${x1},${y1} A${R},${R} 0 0 1 ${x2},${y2}" fill="none" stroke="${C.mut}" stroke-width="2" marker-end="url(#mA)"/>`;}
+  stages.forEach((st,i)=>{const p=pts[i],col=P[i%P.length];s+=`<circle cx="${p.x}" cy="${p.y}" r="46" fill="${col}"/>`+ML(p.x,p.y+4,st.label,{fill:'#fff',fs:11,fw:700});
+    if(st.note){const ox=cx+(p.x-cx)*1.62,oy=cy+(p.y-cy)*1.62;s+=ML(ox,oy,st.note,{fill:C.mut,fs:9,lh:10});}});
+  if(center)s+=ML(cx,cy,center,{fill:C.ink,fs:12,fw:700});
+  return SV(s,w,h);}
+function genSankey(source,flows,{w=740,h=460}={}){const total=flows.reduce((a,b)=>a+b.value,0),pad=34,barX=64,barW=28,sy0=pad,sy1=h-pad,H=sy1-sy0;
+  let s=`<rect x="${barX}" y="${sy0}" width="${barW}" height="${H}" rx="5" fill="${C.a1}"/>`+ML(barX+barW/2,sy0-14,source,{fill:C.ink,fs:12,fw:700,lh:12});
+  const rightX=w-250;let cur=sy0;
+  flows.forEach((f,i)=>{const th=H*(f.value/total),col=f.color||P[i%P.length],x1=barX+barW,x2=rightX;
+    s+=`<path d="M${x1},${cur} C${(x1+x2)/2},${cur} ${(x1+x2)/2},${cur} ${x2},${cur} L${x2},${cur+th} C${(x1+x2)/2},${cur+th} ${(x1+x2)/2},${cur+th} ${x1},${cur+th} Z" fill="${col}" opacity=".5"/>`;
+    s+=`<rect x="${x2}" y="${cur}" width="15" height="${th}" fill="${col}"/>`;
+    s+=T(x2+24,cur+th/2+4,`${f.label} (${Math.round(f.value/total*100)}%)`,{fill:C.ink,fs:11,anchor:'start',fw:600});cur+=th;});
+  return SV(s,w,h);}
+function genFishbone(effect,bones,{w=800,h=470}={}){const y=h/2,x0=40,xEnd=w-170;let s=`<line x1="${x0}" y1="${y}" x2="${xEnd}" y2="${y}" stroke="${C.ink}" stroke-width="2.5"/>`;
+  s+=`<polygon points="${xEnd},${y-9} ${xEnd+22},${y} ${xEnd},${y+9}" fill="${C.ink}"/>`+boxN(xEnd+26,y-27,132,54,effect,{fill:C.a4,fs:11});
+  const ups=bones.filter((_,i)=>i%2===0),downs=bones.filter((_,i)=>i%2===1);
+  const place=(arr,dir)=>{const m=arr.length;arr.forEach((b,k)=>{const bx=x0+90+(xEnd-x0-150)*((k+0.5)/m),tipx=bx-64,tipy=y+dir*150,col=P[bones.indexOf(b)%P.length];
+    s+=`<line x1="${bx}" y1="${y}" x2="${tipx}" y2="${tipy}" stroke="${col}" stroke-width="2.2"/>`+T(tipx,tipy+(dir<0?-9:20),b.name,{fill:col,fs:11,fw:700});
+    (b.causes||[]).forEach((c,j)=>{const t=(j+1)/(b.causes.length+1),cxp=bx+(tipx-bx)*t,cyp=y+(tipy-y)*t;s+=`<line x1="${cxp}" y1="${cyp}" x2="${cxp+28}" y2="${cyp}" stroke="${col}" stroke-width="1.1" opacity=".7"/>`+T(cxp+32,cyp+3,c,{fill:C.ink,fs:9,anchor:'start'});});});};
+  place(ups,-1);place(downs,1);return SV(s,w,h);}
+function genVenn3(sets,regions={},title,{w=640,h=560}={}){const cx=w/2,cy=h/2-16,R=142,pos=[[cx,cy-72],[cx-82,cy+62],[cx+82,cy+62]];let s='';
+  sets.forEach((st,i)=>{s+=`<circle cx="${pos[i][0]}" cy="${pos[i][1]}" r="${R}" fill="${st.color||P[i]}" opacity=".28"/>`;});
+  const lp=[[cx,cy-198],[cx-208,cy+156],[cx+208,cy+156]];
+  sets.forEach((st,i)=>{s+=ML(lp[i][0],lp[i][1],st.label,{fill:st.color||P[i],fs:14,fw:700});});
+  const RT=(x,y,t)=>t?ML(x,y,t,{fill:C.ink,fs:10.5,fw:700,lh:11}):'';
+  s+=RT(cx,cy-96,regions.a)+RT(cx-118,cy+96,regions.b)+RT(cx+118,cy+96,regions.c);
+  s+=RT(cx-74,cy-2,regions.ab)+RT(cx+74,cy-2,regions.ca)+RT(cx,cy+98,regions.bc)+RT(cx,cy+18,regions.abc);
+  if(title)s+=ML(cx,h-22,title,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+function genMatrix(xLab,yLab,quads,{w=690,h=560}={}){const pad=76,gx=w-24,gy0=44,gy1=h-72,cw=(gx-pad)/2,ch=(gy1-gy0)/2,midX=pad+cw,midY=gy0+ch;let s='';
+  const cells=[['tl',pad,gy0,C.a4],['tr',midX,gy0,C.a3],['bl',pad,midY,C.a2],['br',midX,midY,C.a5]];
+  cells.forEach(([k,x,y,col])=>{const q=quads[k]||{};s+=`<rect x="${x}" y="${y}" width="${cw}" height="${ch}" fill="${col}" opacity=".12" stroke="#fff" stroke-width="2"/>`;
+    s+=ML(x+12,y+22,q.title||'',{fill:col,fs:12,fw:700,anchor:'start'});
+    (q.items||[]).forEach((it,i)=>{s+=T(x+12,y+44+i*15,'• '+it,{fill:C.ink,fs:10,anchor:'start'});});});
+  s+=`<line x1="${pad}" y1="${gy0}" x2="${pad}" y2="${gy1}" stroke="${C.ink}" stroke-width="1.6"/>`;
+  s+=`<line x1="${pad}" y1="${gy1}" x2="${gx}" y2="${gy1}" stroke="${C.ink}" stroke-width="1.6"/>`;
+  s+=`<line x1="${pad}" y1="${midY}" x2="${gx}" y2="${midY}" stroke="${C.line}" stroke-width="1.2"/>`;
+  s+=`<line x1="${midX}" y1="${gy0}" x2="${midX}" y2="${gy1}" stroke="${C.line}" stroke-width="1.2"/>`;
+  s+=T((pad+gx)/2,gy1+32,xLab,{fill:C.mut,fs:12,fw:700});
+  s+=T(pad-48,midY,yLab,{fill:C.mut,fs:12,fw:700,tr:`rotate(-90 ${pad-48} ${midY})`});
+  return SV(s,w,h);}
+function genRadar(axes,series,{w=620,h=560}={}){const cx=w/2,cy=h/2+6,R=Math.min(w,h)*0.30,n=axes.length;let s='';
+  [0.25,0.5,0.75,1].forEach(f=>{let p=[];for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;p.push(`${cx+Math.cos(a)*R*f},${cy+Math.sin(a)*R*f}`);}s+=`<polygon points="${p.join(' ')}" fill="none" stroke="${C.line}" stroke-width="1"/>`;});
+  for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${C.line}" stroke-width="1"/>`;
+    const lx=cx+Math.cos(a)*(R+30),ly=cy+Math.sin(a)*(R+22);s+=ML(lx,ly+4,axes[i],{fill:C.mut,fs:10,fw:600});}
+  series.forEach(se=>{let p=[];for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;p.push(`${cx+Math.cos(a)*R*se.vals[i]},${cy+Math.sin(a)*R*se.vals[i]}`);}s+=`<polygon points="${p.join(' ')}" fill="${se.color}" opacity=".22" stroke="${se.color}" stroke-width="2.5"/>`;});
+  series.forEach((se,k)=>{s+=`<rect x="26" y="${26+k*20}" width="12" height="12" rx="3" fill="${se.color}"/>`+T(44,36+k*20,se.name,{fill:C.ink,fs:11,anchor:'start'});});
+  return SV(s,w,h);}
+function genSpectrum(left,right,markers,{w=780,h=300,title=''}={}){const y=h/2,x0=64,x1=w-64;let s=`<defs><linearGradient id="spg" x1="0" x2="1"><stop offset="0" stop-color="${C.a2}"/><stop offset="1" stop-color="${C.a3}"/></linearGradient></defs>`;
+  s+=`<rect x="${x0}" y="${y-9}" width="${x1-x0}" height="18" rx="9" fill="url(#spg)"/>`;
+  s+=T(x0,y-26,left,{fill:C.ink,fs:13,fw:700,anchor:'start'})+T(x1,y-26,right,{fill:C.ink,fs:13,fw:700,anchor:'end'});
+  markers.forEach((m,i)=>{const x=x0+(x1-x0)*m.pos,dir=i%2===0?1:-1;s+=`<circle cx="${x}" cy="${y}" r="8" fill="#fff" stroke="${m.color||C.a1}" stroke-width="2.5"/>`;
+    s+=`<line x1="${x}" y1="${y+dir*10}" x2="${x}" y2="${y+dir*36}" stroke="${C.mut}" stroke-width="1"/>`+ML(x,y+dir*52,m.label,{fill:C.ink,fs:10,fw:600,lh:11});});
+  if(title)s+=T(w/2,h-16,title,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+function genTriad(corners,el={},center,{w=620,h=540}={}){const cx=w/2,top=74,bot=h-96,A=[cx,top],B=[w-96,bot],Cc=[96,bot],pts=[A,B,Cc];let s='';
+  s+=`<polygon points="${A[0]},${A[1]} ${B[0]},${B[1]} ${Cc[0]},${Cc[1]}" fill="none" stroke="${C.line}" stroke-width="1.8"/>`;
+  const mid=(p,q)=>[(p[0]+q[0])/2,(p[1]+q[1])/2];const eL=(p,q,t)=>{if(!t)return'';const m=mid(p,q);return `<rect x="${m[0]-t.length*3.3-5}" y="${m[1]-9}" width="${t.length*6.6+10}" height="17" rx="4" fill="#fff"/>`+T(m[0],m[1]+3,t,{fill:C.mut,fs:9.5});};
+  s+=eL(A,B,el.ab)+eL(B,Cc,el.bc)+eL(Cc,A,el.ca);
+  corners.forEach((c,i)=>{const p=pts[i];s+=`<circle cx="${p[0]}" cy="${p[1]}" r="48" fill="${c.color||P[i]}"/>`+ML(p[0],p[1]+4,c.label,{fill:'#fff',fs:12,fw:700});});
+  if(center)s+=ML(cx,(top+bot)/2+70,center,{fill:C.ink,fs:12,fw:700,lh:13});
+  return SV(s,w,h);}
+function genConcentric(rings,{w=600,h=560,caption=''}={}){const cx=w/2,cy=h/2-8,n=rings.length,Rmax=Math.min(w,h)*0.35;let s='';
+  rings.forEach((r,i)=>{const rad=Rmax*(n-i)/n,op=(0.2+0.62*(i/Math.max(1,n-1))).toFixed(2);s+=`<circle cx="${cx}" cy="${cy}" r="${rad}" fill="${r.color||C.a1}" opacity="${op}"/>`;});
+  rings.forEach((r,i)=>{const rad=Rmax*(n-i)/n,y=i===n-1?cy:cy-rad+(Rmax/n)/2+8;s+=ML(cx,y+4,r.label,{fill:i>=n-2?'#fff':C.ink,fs:12,fw:700});});
+  if(caption)s+=T(cx,h-22,caption,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+/* ============================================================
+   FIGURE DATA — each concept matched to its best-fit viz type
+   ============================================================ */
+const FIGS = {};
+
+/* ---------- §0 OVERVIEW ---------- */
+// Master map (radial) — the whole framework at a glance
+// branch order matters: 4-child systems sit left/right (vertical fan), ≤3-child sit top/bottom
+FIGS.masterMind = genMindMap("TRIP",[
+  {label:"MOVE",children:["Big move","Small move"]},
+  {label:"EXPERIENCE",children:["What","Where","How long","When"]},
+  {label:"STAY",children:["Bases","Base changes","Accommodation"]},
+  {label:"EAT",children:["Structure","Where","When","Logistics"]}
+],{w:900,h:680});
+
+// Full structural tree (the framework as drawn)
+FIGS.masterTree = genTree({label:"TRIP",children:[
+  {label:"MOVE",children:[
+    {label:"Big move",children:[{label:"Home→Dest"},{label:"Dest→Home"}]},
+    {label:"Small move",children:[{label:"Base→Activity"},{label:"Activity→Activity"},{label:"Activity→Food"},{label:"Food→Base"}]}
+  ]},
+  {label:"STAY",children:[
+    {label:"Bases",children:[{label:"One base"},{label:"Per cluster"},{label:"Multi/base"}]},
+    {label:"Base changes",children:[{label:"When?"},{label:"Why?"}]},
+    {label:"Accommodation",children:[{label:"Location"},{label:"Price"},{label:"Quality"},{label:"Breakfast"},{label:"Facilities"}]}
+  ]},
+  {label:"EXPERIENCE",children:[
+    {label:"What?",children:[{label:"See"},{label:"Do"},{label:"Explore"},{label:"Learn"},{label:"Relax"}]},
+    {label:"Where?",children:[{label:"Cluster 1"},{label:"Cluster 2"},{label:"Cluster 3"}]},
+    {label:"How long?",children:[{label:"Fixed"},{label:"Flexible"},{label:"Passive"}]},
+    {label:"When?",children:[{label:"Morn"},{label:"Aft"},{label:"Eve"},{label:"Night"}]}
+  ]},
+  {label:"EAT",children:[
+    {label:"Structure",children:[{label:"Breakfast"},{label:"Lunch"},{label:"Snacks"},{label:"Dinner"}]},
+    {label:"Where?",children:[{label:"Hotel"},{label:"Restaurant"},{label:"Café"},{label:"Street"},{label:"Activity"}]},
+    {label:"When?",children:[{label:"At base"},{label:"Transit"},{label:"Between"},{label:"At dest"}]},
+    {label:"Logistics",children:[{label:"Eat there"},{label:"Packed"},{label:"En route"},{label:"Hotel meal"}]}
+  ]}
+]},{w:960,h:620,boxW:96,boxH:34});
+
+/* ---------- §1 MOVE ---------- */
+// Big move — there-and-back linear flow
+FIGS.bigMove = genGraph([
+  {id:'h1',x:.08,y:.28,shape:'round',w:120,h:44,label:'HOME',fill:C.a1},
+  {id:'s1',x:.5,y:.28,shape:'rect',w:150,h:44,label:'Airport /\nStation',fill:C.a4},
+  {id:'d',x:.9,y:.5,shape:'round',w:130,h:50,label:'DESTINATION',fill:C.a5},
+  {id:'s2',x:.5,y:.72,shape:'rect',w:150,h:44,label:'Airport /\nStation',fill:C.a4},
+  {id:'h2',x:.08,y:.72,shape:'round',w:120,h:44,label:'HOME',fill:C.a1}
+],[
+  {from:'h1',to:'s1',label:'out'},
+  {from:'s1',to:'d'},
+  {from:'d',to:'s2'},
+  {from:'s2',to:'h2',label:'back'}
+],{w:760,h:360});
+
+// Small move — the on-trip loop
+FIGS.smallMove = genCycle([
+  {label:'Base'},{label:'Activity A'},{label:'Activity B'},{label:'Lunch'},{label:'Activity C'}
+],{center:'Minimise\ndead\nmovement',w:600,h:520});
+
+// Clusters — network of activities grouped in space
+FIGS.clusters = genGraph([
+  {id:'base',x:.5,y:.5,shape:'round',w:110,h:44,label:'BASE',fill:C.a1},
+  {id:'a1',x:.16,y:.22,shape:'rect',w:90,h:34,label:'A1',fill:C.a2},
+  {id:'a2',x:.28,y:.5,shape:'rect',w:90,h:34,label:'A2',fill:C.a2},
+  {id:'a3',x:.16,y:.78,shape:'rect',w:90,h:34,label:'A3',fill:C.a2},
+  {id:'b1',x:.84,y:.24,shape:'rect',w:90,h:34,label:'B1',fill:C.a4},
+  {id:'b2',x:.84,y:.6,shape:'rect',w:90,h:34,label:'B2',fill:C.a4}
+],[
+  {from:'base',to:'a2',arrow:false},{from:'a2',to:'a1',arrow:false},{from:'a2',to:'a3',arrow:false},
+  {from:'base',to:'b1',arrow:false},{from:'b1',to:'b2',arrow:false}
+],{w:720,h:420});
+
+/* ---------- §2 STAY ---------- */
+// Base strategies compared — three spatial layouts
+function stayStrategy(bases){
+  // bases: array describing which cluster each base serves
+  return bases;
+}
+// Strategy A: one base
+FIGS.stayOne = genGraph([
+  {id:'base',x:.5,y:.15,shape:'round',w:120,h:44,label:'One base',fill:C.a1},
+  {id:'A',x:.2,y:.8,shape:'rect',w:100,h:38,label:'Cluster A',fill:C.a5},
+  {id:'B',x:.5,y:.8,shape:'rect',w:100,h:38,label:'Cluster B',fill:C.a5},
+  {id:'Cc',x:.8,y:.8,shape:'rect',w:100,h:38,label:'Cluster C',fill:C.a5}
+],[
+  {from:'base',to:'A',label:'commute'},{from:'base',to:'B',label:'commute'},{from:'base',to:'Cc',label:'long commute',color:C.a3}
+],{w:700,h:380});
+// Strategy B: two bases
+FIGS.stayTwo = genGraph([
+  {id:'b1',x:.28,y:.18,shape:'round',w:110,h:42,label:'Base 1',fill:C.a1},
+  {id:'b2',x:.75,y:.18,shape:'round',w:110,h:42,label:'Base 2',fill:C.a1},
+  {id:'A',x:.14,y:.8,shape:'rect',w:96,h:36,label:'Cluster A',fill:C.a5},
+  {id:'B',x:.42,y:.8,shape:'rect',w:96,h:36,label:'Cluster B',fill:C.a5},
+  {id:'Cc',x:.75,y:.8,shape:'rect',w:96,h:36,label:'Cluster C',fill:C.a5}
+],[
+  {from:'b1',to:'A'},{from:'b1',to:'B'},{from:'b2',to:'Cc'},
+  {from:'b1',to:'b2',label:'1 move',color:C.a4,curve:38}
+],{w:720,h:380});
+// Strategy C: three bases
+FIGS.stayThree = genGraph([
+  {id:'b1',x:.16,y:.25,shape:'round',w:96,h:40,label:'Base 1',fill:C.a1},
+  {id:'b2',x:.5,y:.25,shape:'round',w:96,h:40,label:'Base 2',fill:C.a1},
+  {id:'b3',x:.84,y:.25,shape:'round',w:96,h:40,label:'Base 3',fill:C.a1},
+  {id:'A',x:.16,y:.82,shape:'rect',w:90,h:34,label:'Cluster A',fill:C.a5},
+  {id:'B',x:.5,y:.82,shape:'rect',w:90,h:34,label:'Cluster B',fill:C.a5},
+  {id:'Cc',x:.84,y:.82,shape:'rect',w:90,h:34,label:'Cluster C',fill:C.a5}
+],[
+  {from:'b1',to:'A'},{from:'b2',to:'B'},{from:'b3',to:'Cc'},
+  {from:'b1',to:'b2',label:'move',color:C.a4},{from:'b2',to:'b3',label:'move',color:C.a4}
+],{w:740,h:380});
+// The trade-off — one axis
+FIGS.staySpectrum = genSpectrum('Fewer bases','More bases',[
+  {label:'Least\npacking\nfriction',pos:.08,color:C.a1},
+  {label:'Most\ncommuting',pos:.2,color:C.a3},
+  {label:'Balance',pos:.5,color:C.a5},
+  {label:'Least\ncommuting',pos:.8,color:C.a2},
+  {label:'Most check-in\n/packing',pos:.92,color:C.a3}
+],{title:'Every base you add trades commuting for packing & check-in friction',w:820,h:300});
+// Accommodation profile — radar across the 5 criteria
+FIGS.accomRadar = genRadar(['Location','Price','Quality','Breakfast','Facilities'],[
+  {name:'Hotel A — central',color:C.a1,vals:[.95,.4,.7,.6,.5]},
+  {name:'Hotel B — value',color:C.a5,vals:[.55,.9,.6,.9,.75]}
+],{w:660,h:560});
+// Base changes — when & why
+FIGS.baseChange = genTree({label:"Base change",children:[
+  {label:"WHEN?",children:[{label:"Morning"},{label:"Afternoon"},{label:"Night"}]},
+  {label:"WHY?",children:[{label:"Distance"},{label:"Time efficiency"},{label:"Experience"}]}
+]},{w:640,h:340,boxW:120,boxH:38});
+
+/* ---------- §3 EXPERIENCE ---------- */
+// Verb-based taxonomy — radial mind map
+FIGS.expMind = genMindMap("EXPERIENCE\n(what to do?)",[
+  {label:"SEE"},{label:"DO"},{label:"EXPLORE"},{label:"LEARN"},{label:"RELAX"}
+],{w:760,h:560});
+// The three operational questions — linear flow
+FIGS.expOps = genGraph([
+  {id:'w',x:.1,y:.5,shape:'round',w:130,h:52,label:'An\nexperience',fill:C.a1},
+  {id:'q1',x:.38,y:.5,shape:'rect',w:140,h:52,label:'WHERE?\n(cluster)',fill:C.a2},
+  {id:'q2',x:.66,y:.5,shape:'rect',w:150,h:52,label:'HOW LONG?\nfixed·flex·passive',fill:C.a4},
+  {id:'q3',x:.93,y:.5,shape:'rect',w:150,h:52,label:'WHEN?\nmorn·aft·eve·night',fill:C.a5}
+],[
+  {from:'w',to:'q1'},{from:'q1',to:'q2'},{from:'q2',to:'q3'}
+],{w:900,h:210});
+// Duration — a spectrum
+FIGS.expDuration = genSpectrum('Passive viewing','Fixed-duration',[
+  {label:'Sunset\nlookout',pos:.1,color:C.a2},
+  {label:'Wander\na market',pos:.45,color:C.a1},
+  {label:'Booked\ntrek slot',pos:.88,color:C.a4}
+],{title:'How much does the activity lock your clock?',w:800,h:290});
+
+/* ---------- §4 EAT ---------- */
+// Purpose — experience vs fuel spectrum
+FIGS.eatSpectrum = genSpectrum('Food as FUEL','Food as EXPERIENCE',[
+  {label:'Maggi at a\nviewpoint',pos:.12,color:C.a4},
+  {label:'Packed\ntrek lunch',pos:.28,color:C.a2},
+  {label:'Local\ncafé',pos:.6,color:C.a1},
+  {label:'Famous\nrestaurant',pos:.9,color:C.a3}
+],{title:'Every meal is planned differently depending on why you are eating it',w:820,h:300});
+// EAT structure — tree
+FIGS.eatTree = genTree({label:"EAT",children:[
+  {label:"Purpose",children:[{label:"Experience"},{label:"Fuel"}]},
+  {label:"Meal",children:[{label:"Breakfast"},{label:"Lunch"},{label:"Snack"},{label:"Dinner"}]},
+  {label:"Execution",children:[{label:"Hotel"},{label:"Restaurant"},{label:"Café"},{label:"Street"},{label:"En route"},{label:"Packed"}]}
+]},{w:820,h:380,boxW:92,boxH:34});
+// A day's food strategy — timeline
+FIGS.eatDay = genTimeline([
+  {when:'Morning',label:'Breakfast at hotel'},
+  {when:'Midday',label:'Packed lunch on trek'},
+  {when:'Afternoon',label:'Roadside snack'},
+  {when:'Night',label:'Dinner at restaurant'}
+],{w:820,h:360});
+
+/* ---------- §5 THE FOUR INTERACT ---------- */
+// Concept map — directed dependencies between the four
+FIGS.interact = genGraph([
+  {id:'exp',x:.5,y:.14,shape:'round',w:140,h:50,label:'EXPERIENCE',fill:C.a3},
+  {id:'move',x:.14,y:.55,shape:'round',w:120,h:48,label:'MOVE',fill:C.a1},
+  {id:'stay',x:.86,y:.55,shape:'round',w:120,h:48,label:'STAY',fill:C.a2},
+  {id:'eat',x:.5,y:.9,shape:'round',w:120,h:48,label:'EAT',fill:C.a5}
+],[
+  {from:'exp',to:'move',label:'sets timing → shapes',color:C.a3,curve:20},
+  {from:'stay',to:'exp',label:'reach → enables/kills',color:C.a2,curve:20},
+  {from:'exp',to:'eat',label:'long day → fuel plan',color:C.a3,curve:-20},
+  {from:'move',to:'eat',label:'transit → meal window',color:C.a1,curve:-20},
+  {from:'exp',to:'stay',label:'anchors base',color:C.mut,curve:30}
+],{w:760,h:520});
+
+/* ---------- §6 THE PLANNING ENGINE ---------- */
+// Iteration loop
+FIGS.engine = genCycle([
+  {label:'Destination'},{label:'Clusters'},{label:'Bases'},{label:'Experiences'},
+  {label:'Movement'},{label:'Meals'},{label:'Schedule'}
+],{center:'iterate',w:640,h:600});
+// Convergence — time & geography under everything
+FIGS.substrate = genPyramid([
+  {label:'Itinerary'},
+  {label:'Meals placed in the gaps'},
+  {label:'Movement connects experiences'},
+  {label:'Experiences inside clusters'},
+  {label:'Bases chosen · Clusters identified'}
+],{w:760,h:460});
+
+/* ---------- §7 PACKAGE vs DIY ---------- */
+// Package = pre-solved linear chain
+FIGS.pkg = genGraph([
+  {id:'f1',x:.09,y:.5,shape:'round',w:92,h:40,label:'Flight',fill:C.a1},
+  {id:'t1',x:.27,y:.5,shape:'rect',w:92,h:38,label:'Transfer',fill:C.mut},
+  {id:'h1',x:.45,y:.3,shape:'rect',w:92,h:38,label:'Hotel',fill:C.a2},
+  {id:'s1',x:.45,y:.7,shape:'rect',w:100,h:38,label:'Sightsee',fill:C.a4},
+  {id:'h2',x:.66,y:.3,shape:'rect',w:92,h:38,label:'Hotel',fill:C.a2},
+  {id:'s2',x:.66,y:.7,shape:'rect',w:100,h:38,label:'Sightsee',fill:C.a4},
+  {id:'f2',x:.9,y:.5,shape:'round',w:100,h:40,label:'Flight home',fill:C.a1}
+],[
+  {from:'f1',to:'t1'},{from:'t1',to:'h1'},{from:'h1',to:'s1'},{from:'s1',to:'h2'},
+  {from:'h2',to:'s2'},{from:'s2',to:'f2'}
+],{w:820,h:360});
+// DIY = you solve all four
+FIGS.diy = genMindMap("YOU\n(DIY trip)",[
+  {label:"Solve MOVE"},{label:"Solve STAY"},{label:"Solve EXPERIENCE"},{label:"Solve EAT"}
+],{w:640,h:420});
+
+(function(){
+  var keys=['masterMind','bigMove','smallMove','clusters','stayOne','stayTwo','stayThree','staySpectrum','accomRadar','baseChange','expMind','expOps','expDuration','eatSpectrum','eatDay','interact','engine','substrate','pkg','diy'];
+  function draw(){keys.forEach(function(k){var el=document.getElementById('c-'+k);if(el&&FIGS[k])el.innerHTML=FIGS[k];});}
+  if(document.readyState!=='loading')draw();else document.addEventListener('DOMContentLoaded',draw);
+  // scroll-spy
+  var links=[].slice.call(document.querySelectorAll('#toc a'));
+  var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  function spy(){var y=window.pageYOffset+140,idx=0;for(var i=0;i<secs.length;i++){if(secs[i]&&secs[i].offsetTop<=y)idx=i;}links.forEach(function(a,i){a.classList.toggle('active',i===idx);});}
+  window.addEventListener('scroll',spy,{passive:true});window.addEventListener('load',spy);spy();
+})();
+</script>
+<script>
+/* ---- hub integration: link-resolve + deep-state (ported from hub pages) ---- */
+(function(){try{
+var PID="travel-complete-framework.html", TOP=null; try{TOP=window.top;}catch(e){}
+function base(n){n=decodeURIComponent(String(n).split('#')[0].split('?')[0]);return n.substring(n.lastIndexOf('/')+1);}
+function R(name){var bn=base(name);try{if(TOP&&TOP.__HUB_RESOLVE__){var u=TOP.__HUB_RESOLVE__(bn);if(u)return u;}}catch(e){}return null;}
+function isLocalHtml(h){return h&&/\.html($|[#?])/i.test(h)&&!/^(https?:|data:|blob:|mailto:|\/\/)/i.test(h);}
+document.addEventListener('click',function(e){try{var a=e.target.closest?e.target.closest('a[href]'):null;if(!a)return;var h=a.getAttribute('href');if(!isLocalHtml(h))return;var u=R(h);if(!u)return;e.preventDefault();location.href=u;}catch(_){}},true);
+var KEY='khub.deep.'+PID,timer=null;
+function cap(){try{localStorage.setItem(KEY,JSON.stringify({h:location.hash,sy:window.pageYOffset}));}catch(e){}}
+window.addEventListener('scroll',function(){clearTimeout(timer);timer=setTimeout(cap,350);},{passive:true});
+window.addEventListener('pagehide',cap);
+function restore(){try{var st=JSON.parse(localStorage.getItem(KEY)||'null');if(st&&st.sy){setTimeout(function(){window.scrollTo(0,st.sy);},220);}}catch(e){}}
+if(document.readyState!=='loading')restore();else document.addEventListener('DOMContentLoaded',restore);
+}catch(e){}})();
+</script>
+</body></html>

@@ -1,0 +1,969 @@
+<!doctype html>
+<html lang="en"><head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="A complete trip-planning framework with destination clusters, transport guidance, booking order, feasibility checks and final control sheets.">
+  <title>Trip Planning Framework</title>
+  <style>
+    :root {
+      --ink:#1c2431; --muted:#5b6572; --line:#e7e9ee; --line-soft:#eff1f4;
+      --paper:#f6f7f9; --surface:#fff; --accent:#2f7d4f; --accent-soft:#e7f2ec;
+      --forest:#2f7d4f; --sand:#9a6b2f; --rose:#9a5f58; --warn:#a46220;
+      --warn-soft:#fff6e8; --closed:#a24d4d; --closed-soft:#f9ebeb;
+      --shadow:0 1px 2px rgba(20,25,40,.04); --radius:16px;
+    }
+    *{box-sizing:border-box}
+    html{scroll-behavior:smooth}
+    body{margin:0;color:var(--ink);background:var(--paper);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;line-height:1.55;-webkit-font-smoothing:antialiased}
+    button{font:inherit}
+    .modebar{position:sticky;top:0;z-index:20;display:flex;align-items:center;justify-content:space-between;gap:20px;min-height:64px;padding:10px clamp(18px,4vw,48px);border-bottom:1px solid var(--line);background:rgba(251,252,251,.94);backdrop-filter:blur(18px)}
+    .modebrand{display:flex;align-items:center;gap:10px;font-size:12px;font-weight:750;letter-spacing:.09em;text-transform:uppercase}
+    .modebrand span{display:grid;place-items:center;width:31px;height:31px;border:1px solid var(--line);border-radius:50%;color:var(--accent);background:#fff}
+    .mode-tabs{display:flex;gap:6px;padding:4px;border:1px solid var(--line);border-radius:14px;background:#f2f6f4}
+    .mode-tab{min-width:98px;padding:8px 16px;border:0;border-radius:10px;color:var(--muted);background:transparent;font-weight:700;cursor:pointer}
+    .mode-tab[aria-selected="true"]{color:#fff;background:var(--ink);box-shadow:0 5px 14px rgba(24,35,31,.16)}
+    .mode-view[hidden]{display:none}
+    .app{display:grid;grid-template-columns:260px minmax(0,1fr);width:min(1440px,100%);min-height:calc(100vh - 64px);margin:0 auto}
+    .sidebar{position:sticky;top:64px;align-self:start;height:calc(100vh - 64px);padding:30px 24px;overflow-y:auto;border-right:1px solid var(--line);background:rgba(251,252,251,.92);backdrop-filter:blur(18px)}
+    .brand{display:flex;align-items:center;gap:10px;margin-bottom:34px;font-size:12px;font-weight:700;letter-spacing:.09em;text-transform:uppercase}
+    .brand-mark{display:grid;place-items:center;width:32px;height:32px;border:1px solid var(--line);border-radius:50%;background:var(--surface);color:var(--accent);font-size:18px}
+    .nav-label{margin:0 0 10px;color:#96a19d;font-size:10px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+    .destination-nav{display:grid;gap:7px}
+    .destination-tab{display:grid;grid-template-columns:28px 1fr;gap:10px;align-items:start;width:100%;padding:12px 10px;border:0;border-radius:14px;text-align:left;color:var(--muted);background:transparent;cursor:pointer}
+    .destination-tab:hover{background:#f2f6f4;color:var(--ink)}
+    .destination-tab[aria-selected="true"]{color:var(--ink);background:var(--accent-soft)}
+    .tab-number{padding-top:1px;color:#98a6a1;font-family:Georgia,"Times New Roman",serif;font-size:17px}
+    .destination-tab strong{display:block;font-size:14px;font-weight:650}
+    .destination-tab small{display:block;margin-top:2px;color:var(--muted);font-size:11px}
+    .sidebar-note{margin:28px 0 0;padding-top:18px;border-top:1px solid var(--line);color:var(--muted);font-size:11px}
+    .content{min-width:0;padding:28px clamp(22px,5vw,72px) 70px}
+    .topbar{display:flex;align-items:center;justify-content:flex-end;min-height:36px}
+    .print-button{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid var(--line);border-radius:999px;color:var(--ink);background:rgba(255,255,255,.8);cursor:pointer}
+    .print-button:hover{border-color:#b7c9c2;background:#fff}
+    .travel-shell{display:grid;grid-template-columns:230px minmax(0,1fr);width:min(1280px,100%);min-height:calc(100vh - 64px);margin:0 auto}
+    .travel-rail{position:sticky;top:64px;align-self:start;height:calc(100vh - 64px);padding:34px 20px;border-right:1px solid var(--line);background:rgba(251,252,251,.9)}
+    .travel-rail h2{margin:0 0 7px;font-size:27px;letter-spacing:-.02em}
+    .travel-rail>p{margin:0 0 26px;color:var(--muted);font-size:12px}
+    .travel-nav{display:grid;gap:7px}
+    .travel-tab{display:flex;align-items:center;gap:11px;width:100%;padding:12px;border:1px solid transparent;border-radius:13px;text-align:left;color:var(--muted);background:transparent;cursor:pointer}
+    .travel-tab:hover{color:var(--ink);background:#f2f6f4}
+    .travel-tab[aria-selected="true"]{border-color:#cbdcd6;color:var(--accent);background:var(--accent-soft);font-weight:700}
+    .travel-tab span{display:grid;place-items:center;width:27px;height:27px;border:1px solid var(--line);border-radius:9px;background:#fff;font-size:13px}
+    .travel-main{min-width:0;padding:clamp(30px,5vw,68px)}
+    .trip-context{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:40px}
+    .trip-context span{padding:6px 10px;border:1px solid var(--line);border-radius:999px;color:var(--muted);background:rgba(255,255,255,.8);font-size:11px}
+    .travel-panel{display:none}
+    .travel-panel.active{display:block}
+    .travel-hero{display:grid;grid-template-columns:1fr .76fr;gap:48px;align-items:end;padding-bottom:38px;border-bottom:1px solid var(--line)}
+    .travel-hero h1{font-size:clamp(43px,6vw,72px)}
+    .travel-hero p{margin:0;color:var(--muted);font-size:17px}
+    .travel-hero p strong{color:var(--ink)}
+    .booking-rule{margin:30px 0;padding:23px 25px;border:1px solid #cbdcd6;border-radius:18px;background:linear-gradient(120deg,#edf6f3,#fff)}
+    .booking-rule small{display:block;margin-bottom:6px;color:var(--accent);font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+    .booking-rule strong{font-family:Georgia,"Times New Roman",serif;font-size:clamp(22px,3vw,31px);font-weight:400}
+    .travel-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px;margin-top:18px}
+    .travel-card{padding:22px;border:1px solid var(--line);border-radius:18px;background:rgba(255,255,255,.9);box-shadow:0 10px 30px rgba(37,61,53,.05)}
+    .travel-card .step{display:block;margin-bottom:14px;color:#9aa6a1;font-family:Georgia,"Times New Roman",serif;font-size:25px}
+    .travel-card h3{margin:0 0 7px;font-size:22px}
+    .travel-card p{margin:0;color:var(--muted);font-size:13px}
+    .travel-check{margin:30px 0 0;padding:24px;border:1px solid #e7d4bd;border-radius:18px;background:var(--warn-soft)}
+    .travel-check h3{margin:0 0 11px;font-size:23px;color:#684522}
+    .travel-check ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px 24px;margin:0;padding-left:19px;color:#765b3c;font-size:13px}
+    .tool-links{display:flex;flex-wrap:wrap;gap:9px;margin-top:28px}
+    .tool-links a{padding:9px 13px;border:1px solid var(--line);border-radius:999px;color:var(--accent);background:#fff;text-decoration:none;font-size:12px;font-weight:700}
+    .tool-links a:hover{border-color:var(--accent)}
+    /* Align this page with the visual system used by Workout, Nutrition and Meditation. */
+    .modebar{display:grid;grid-template-columns:1fr auto 1fr;min-height:57px;padding:10px 20px;background:var(--surface);border-bottom:1px solid var(--line);backdrop-filter:none}
+    .modebrand{justify-self:start;font-size:15px;font-weight:800;letter-spacing:0;text-transform:none}
+    .modebrand span{width:auto;height:auto;border:0;border-radius:0;background:transparent;font-size:17px}
+    .mode-tabs{justify-self:center;gap:3px;padding:0;border:0;border-radius:0;background:transparent}
+    .mode-tab{min-width:0;padding:8px 16px;border-radius:9px;font-size:13px;font-weight:650}
+    .mode-tab:hover{color:var(--ink);background:var(--accent-soft)}
+    .mode-tab[aria-selected="true"]{background:var(--accent);box-shadow:none}
+    .mode-actions{display:flex;align-items:center;justify-self:end;gap:7px}
+    .download-button{display:inline-flex;align-items:center;gap:7px;padding:8px 13px;border:1px solid var(--accent);border-radius:999px;color:#fff;background:var(--accent);font:inherit;font-size:13px;font-weight:700;cursor:pointer}
+    .download-button:hover{background:#286c44;border-color:#286c44}
+    .app{grid-template-columns:236px minmax(0,1fr);min-height:calc(100vh - 57px)}
+    .sidebar{top:57px;height:calc(100vh - 57px);padding:12px 10px;background:var(--surface);backdrop-filter:none}
+    .brand{margin:0 0 10px;padding:8px 10px 10px;font-size:14.5px;letter-spacing:0;text-transform:none}
+    .brand-mark{width:28px;height:28px;border-radius:9px;font-size:15px}
+    .nav-label{margin:0;padding:8px 10px 6px;color:var(--accent);font-size:10.5px;letter-spacing:.1em}
+    .destination-nav{gap:3px}
+    .destination-tab{grid-template-columns:25px 1fr;gap:9px;padding:10px 11px;border:1px solid transparent;border-radius:10px}
+    .destination-tab:hover{background:var(--accent-soft)}
+    .destination-tab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--ink)}
+    .tab-number{font-family:inherit;font-size:11px;font-weight:800;color:var(--accent)}
+    .destination-tab strong{font-size:14px;font-weight:750}
+    .destination-tab small{font-size:11.5px}
+    .sidebar-note{margin:18px 10px 0;padding:14px 0 0;font-size:11.5px;line-height:1.5}
+    .content{padding:28px 34px 90px}
+    .content>.topbar{display:none}
+    h1,h2,h3{font-family:inherit;font-weight:800}
+    h1{font-size:clamp(38px,5vw,58px);letter-spacing:-.04em;line-height:1.02}
+    .hero{max-width:1100px;margin:0 auto;gap:40px;padding:48px 0 38px}
+    .hero-copy{font-size:16px;line-height:1.6}
+    .eyebrow{font-size:11px;font-weight:800;letter-spacing:.12em}
+    .formula span{background:var(--surface);font-size:11.5px}
+    .season-alert{max-width:1100px;margin:22px auto 46px;border-color:#ead8bf;border-radius:13px;box-shadow:var(--shadow)}
+    .section-head,.explorer,.truth-strip,.key-section,.itinerary,.sources{max-width:1100px;margin-left:auto;margin-right:auto}
+    .section-head h2{font-size:clamp(26px,3vw,34px);font-weight:800;letter-spacing:-.025em}
+    .explorer{min-height:600px;border-radius:16px;box-shadow:var(--shadow)}
+    .cluster-canvas{min-height:600px;background:linear-gradient(rgba(255,255,255,.74),rgba(255,255,255,.74)),repeating-linear-gradient(0deg,transparent,transparent 45px,rgba(96,118,110,.045) 46px),repeating-linear-gradient(90deg,transparent,transparent 45px,rgba(96,118,110,.045) 46px)}
+    .hub{font-family:inherit;font-size:15px;font-weight:800}
+    .cluster-node{border-radius:13px;box-shadow:var(--shadow)}
+    .cluster-node[aria-pressed="true"]{box-shadow:0 0 0 2px rgba(47,125,79,.10)}
+    .detail h3{font-size:clamp(28px,3vw,38px);font-weight:850}
+    .detail-thesis{font-size:16px}
+    .truth-strip{border-radius:14px}
+    .truth{min-height:145px;padding:21px}
+    .truth-number{font-family:inherit;font-size:20px;font-weight:800;color:var(--accent)}
+    .key-section h2,.itinerary h2{font-size:clamp(27px,3.4vw,39px);font-weight:850}
+    .itinerary{border-radius:16px;background:var(--accent-soft)}
+    .day h3{font-size:20px}
+    .travel-shell{grid-template-columns:236px minmax(0,1fr);min-height:calc(100vh - 57px)}
+    .travel-rail{top:57px;height:calc(100vh - 57px);padding:18px 10px;background:var(--surface)}
+    .travel-rail h2{padding:4px 10px 0;font-size:21px;font-weight:850}
+    .travel-rail>p{padding:0 10px;margin-bottom:18px;font-size:11.5px}
+    .travel-nav{gap:3px}
+    .travel-tab{gap:10px;padding:10px 11px;border-radius:10px;font-size:14px}
+    .travel-tab span{width:25px;height:25px;border:0;background:transparent;font-size:15px}
+    .travel-tab[aria-selected="true"]{border-color:var(--accent);background:var(--accent-soft);color:var(--ink)}
+    .travel-main{padding:28px 34px 90px}
+    .travel-panel{max-width:960px;margin:0 auto}
+    .trip-context{max-width:960px;margin:0 auto 34px}
+    .travel-hero{gap:34px;padding:20px 0 30px}
+    .travel-hero h1{font-size:clamp(35px,4.7vw,52px);font-weight:850}
+    .travel-hero p{font-size:15px;line-height:1.62}
+    .booking-rule{margin:22px 0;padding:18px 20px;border-radius:13px;background:var(--accent-soft);box-shadow:var(--shadow)}
+    .booking-rule strong{font-family:inherit;font-size:clamp(20px,2.5vw,27px);font-weight:800}
+    .travel-grid{gap:12px}
+    .travel-card{padding:18px;border-radius:13px;box-shadow:var(--shadow)}
+    .travel-card .step{margin-bottom:10px;font-family:inherit;font-size:12px;font-weight:800;color:var(--accent);letter-spacing:.08em}
+    .travel-card h3{font-size:17px;font-weight:800}
+    .travel-card p{font-size:13.5px;line-height:1.55}
+    .travel-check{padding:19px 21px;border-radius:13px}
+    .travel-check h3{font-size:18px;font-weight:800}
+    .framework-shell{display:grid;grid-template-columns:296px minmax(0,1fr);width:100%;min-height:calc(100vh - 57px);margin:0}
+    .framework-rail{position:sticky;top:57px;align-self:start;height:calc(100vh - 57px);overflow-y:auto;padding:14px 10px 24px;border-right:1px solid var(--line);background:var(--surface)}
+    .framework-rail .rail-title{padding:7px 10px 2px;font-size:16px;font-weight:850}
+    .framework-rail .rail-copy{margin:0;padding:0 10px 15px;color:var(--muted);font-size:11.5px;line-height:1.45}
+    .framework-rail .rail-label{padding:8px 10px 6px;color:var(--accent);font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase}
+    .framework-nav{display:grid;gap:3px}
+    .framework-tab{display:grid;grid-template-columns:26px 1fr;gap:9px;align-items:start;width:100%;padding:10px 11px;border:1px solid transparent;border-radius:10px;text-align:left;color:var(--muted);background:transparent;cursor:pointer}
+    .framework-tab:hover{color:var(--ink);background:var(--accent-soft)}
+    .framework-tab[aria-selected="true"]{border-color:var(--accent);color:var(--ink);background:var(--accent-soft)}
+    .framework-tab .fn{padding-top:1px;color:var(--accent);font-size:10px;font-weight:850;letter-spacing:.04em}
+    .framework-tab b{display:block;font-size:13.5px;font-weight:780;line-height:1.2}
+    .framework-tab small{display:block;margin-top:3px;color:var(--muted);font-size:10.5px;line-height:1.25}
+    .framework-main{min-width:0;padding:30px 34px 100px}
+    .framework-panel{display:none;max-width:980px;margin:0 auto}
+    .framework-panel.active{display:block}
+    .fw-hero{padding:18px 0 30px;border-bottom:1px solid var(--line)}
+    .fw-hero .kick{color:var(--accent);font-size:11px;font-weight:800;letter-spacing:.14em;text-transform:uppercase}
+    .fw-hero h1{max-width:850px;margin:9px 0 0;font-size:clamp(36px,5vw,56px);font-weight:850;letter-spacing:-.045em;line-height:1.02}
+    .fw-hero .lede{max-width:790px;margin:15px 0 0;color:var(--muted);font-size:16px;line-height:1.65}
+    .fw-hero .lede b{color:var(--ink)}
+    .fw-rule{margin:22px 0 0;padding:15px 18px;border:1px solid #cfe6d9;border-left:4px solid var(--accent);border-radius:12px;background:var(--accent-soft);color:#274b39;font-size:14px;line-height:1.6}
+    .fw-rule b{color:var(--ink)}
+    .fw-section{margin-top:42px}
+    .fw-section-head{display:flex;align-items:center;gap:12px;margin-bottom:8px}
+    .fw-section-head .num{padding:3px 9px;border:1px solid var(--line);border-radius:999px;color:var(--accent);background:var(--surface);font-size:10px;font-weight:850;letter-spacing:.08em}
+    .fw-section-head h2{margin:0;font-size:24px;font-weight:850;letter-spacing:-.025em}
+    .fw-section-head::after{content:"";flex:1;height:1px;background:var(--line)}
+    .fw-section>p{max-width:780px;margin:9px 0;color:#39424f;font-size:14.5px;line-height:1.7}
+    .fw-section>p b{color:var(--ink)}
+    .fw-pipeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:18px}
+    .fw-stage{position:relative;min-height:134px;padding:15px;border:1px solid var(--line);border-radius:13px;background:var(--surface);box-shadow:var(--shadow)}
+    .fw-stage .sn{display:block;margin-bottom:13px;color:var(--accent);font-size:10px;font-weight:850;letter-spacing:.1em}
+    .fw-stage b{display:block;font-size:14px;line-height:1.25}
+    .fw-stage p{margin:6px 0 0;color:var(--muted);font-size:11.5px;line-height:1.45}
+    .fw-stage .out{display:block;margin-top:10px;color:var(--accent);font-size:10.5px;font-weight:750}
+    .fw-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:16px}
+    .fw-grid.three{grid-template-columns:repeat(3,minmax(0,1fr))}
+    .fw-card{padding:17px 18px;border:1px solid var(--line);border-radius:13px;background:var(--surface);box-shadow:var(--shadow)}
+    .fw-card .tag{display:inline-block;margin-bottom:8px;color:var(--accent);font-size:10px;font-weight:850;letter-spacing:.09em;text-transform:uppercase}
+    .fw-card h3{margin:0 0 6px;font-size:17px;font-weight:820;line-height:1.25}
+    .fw-card p{margin:0;color:var(--muted);font-size:13px;line-height:1.55}
+    .fw-card ul{margin:8px 0 0;padding-left:18px;color:var(--muted);font-size:12.5px;line-height:1.55}
+    .fw-card li{margin:4px 0}
+    .fw-card.accent{border-top:3px solid var(--accent)}
+    .fw-card.warn{border-top:3px solid var(--warn)}
+    .fw-table-wrap{margin-top:16px;overflow-x:auto;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+    .fw-table{width:100%;border-collapse:collapse;font-size:12.5px}
+    .fw-table th,.fw-table td{padding:11px 13px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top}
+    .fw-table th{color:var(--muted);background:var(--accent-soft);font-size:10px;font-weight:850;letter-spacing:.06em;text-transform:uppercase}
+    .fw-table tr:last-child td{border-bottom:0}
+    .fw-table td:first-child{color:var(--ink);font-weight:750}
+    .fw-formula{display:flex;flex-wrap:wrap;align-items:center;gap:7px;margin-top:16px;padding:15px 17px;border:1px solid var(--line);border-radius:13px;background:var(--surface);font-size:12.5px;font-weight:750}
+    .fw-formula span{padding:5px 9px;border-radius:8px;color:var(--accent);background:var(--accent-soft)}
+    .fw-formula i{color:#9aa2af;font-style:normal}
+    .fw-output{margin-top:20px;padding:17px 19px;border-radius:13px;color:#fff;background:linear-gradient(120deg,var(--accent),#245f3e)}
+    .fw-output small{display:block;margin-bottom:4px;font-size:10px;font-weight:850;letter-spacing:.1em;text-transform:uppercase;opacity:.78}
+    .fw-output b{font-size:15px}
+    .fw-list{display:grid;gap:0;margin:13px 0 0;padding:0;list-style:none;border-top:1px solid var(--line)}
+    .fw-list li{position:relative;padding:10px 8px 10px 24px;border-bottom:1px solid var(--line);color:#39424f;font-size:13px;line-height:1.5}
+    .fw-list li::before{content:"→";position:absolute;left:3px;color:var(--accent);font-weight:850}
+    .fw-list li b{color:var(--ink)}
+    .fw-score{display:grid;grid-template-columns:160px 1fr 50px;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-size:12.5px}
+    .fw-score:last-child{border-bottom:0}
+    .fw-score b{font-size:13px}
+    .fw-score .bar{height:7px;overflow:hidden;border-radius:999px;background:#edf0f2}
+    .fw-score .bar span{display:block;height:100%;border-radius:inherit;background:var(--accent)}
+    .fw-score em{text-align:right;color:var(--muted);font-style:normal;font-size:11px}
+    .book-lanes{display:grid;gap:10px;margin-top:16px}
+    .book-lane{display:grid;grid-template-columns:150px 1fr;gap:18px;padding:15px 17px;border:1px solid var(--line);border-radius:13px;background:var(--surface)}
+    .book-lane b{font-size:13px;color:var(--accent)}
+    .book-lane p{margin:0;color:var(--muted);font-size:12.5px;line-height:1.55}
+    .fw-timeline{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;margin-top:16px}
+    .fw-time{padding:15px;border-top:3px solid var(--accent);border-radius:10px;background:var(--surface);box-shadow:var(--shadow)}
+    .fw-time b{display:block;font-size:12px;color:var(--accent)}
+    .fw-time p{margin:6px 0 0;color:var(--muted);font-size:11.5px;line-height:1.45}
+    .fw-sources{margin-top:40px;padding-top:16px;border-top:1px solid var(--line);color:var(--muted);font-size:11.5px;line-height:1.6}
+    .fw-sources a{color:var(--accent);text-underline-offset:3px}
+    .hero{display:grid;grid-template-columns:1.1fr .9fr;gap:52px;align-items:end;padding:68px 0 58px;border-bottom:1px solid var(--line)}
+    .eyebrow{margin:0 0 13px;color:var(--accent);font-size:11px;font-weight:750;letter-spacing:.12em;text-transform:uppercase}
+    h1,h2,h3{font-family:Georgia,"Times New Roman",serif;font-weight:400}
+    h1{max-width:760px;margin:0;font-size:clamp(46px,6.4vw,82px);letter-spacing:-.045em;line-height:.94}
+    .hero-copy{margin:0;color:var(--muted);font-size:clamp(16px,1.8vw,20px)}
+    .hero-copy strong{color:var(--ink);font-weight:650}
+    .formula{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+    .formula span{padding:6px 10px;border:1px solid var(--line);border-radius:999px;background:rgba(255,255,255,.75);color:var(--muted);font-size:12px}
+    .season-alert{display:grid;grid-template-columns:auto 1fr;gap:15px;margin:30px 0 58px;padding:20px 22px;border:1px solid #e8d2b7;border-radius:18px;background:var(--warn-soft)}
+    .season-icon{display:grid;place-items:center;width:34px;height:34px;border-radius:50%;color:var(--warn);background:#fff7eb;font-weight:750}
+    .season-alert strong{display:block;margin-bottom:3px;color:#684522}
+    .season-alert p{margin:0;color:#765b3c;font-size:14px}
+    .section-head{display:flex;align-items:baseline;justify-content:space-between;gap:18px;margin-bottom:20px}
+    .section-head h2{margin:0;font-size:clamp(29px,3.8vw,42px);letter-spacing:-.025em}
+    .section-head p{margin:0;color:var(--muted);font-size:14px}
+    .explorer{display:grid;grid-template-columns:minmax(360px,.96fr) minmax(390px,1.04fr);min-height:620px;overflow:hidden;border:1px solid var(--line);border-radius:var(--radius);background:rgba(255,255,255,.88);box-shadow:var(--shadow)}
+    .cluster-canvas{position:relative;min-height:620px;padding:30px;border-right:1px solid var(--line);background:linear-gradient(rgba(255,255,255,.5),rgba(255,255,255,.5)),repeating-linear-gradient(0deg,transparent,transparent 45px,rgba(96,118,110,.045) 46px),repeating-linear-gradient(90deg,transparent,transparent 45px,rgba(96,118,110,.045) 46px)}
+    .canvas-orbit{position:absolute;inset:12% 9% 15%;border:1px solid rgba(57,118,111,.18);border-radius:44% 56% 48% 52%;transform:rotate(-5deg)}
+    .canvas-orbit::before{content:"";position:absolute;inset:15%;border:1px solid rgba(57,118,111,.12);border-radius:55% 45% 52% 48%;transform:rotate(14deg)}
+    .hub{position:absolute;top:43%;left:50%;z-index:1;width:118px;min-height:82px;padding:13px;transform:translate(-50%,-50%);display:grid;place-items:center;border:1px solid #c9d9d4;border-radius:50%;text-align:center;background:var(--accent-soft);color:var(--accent);font-family:Georgia,"Times New Roman",serif;font-size:17px;line-height:1.15}
+    .cluster-list{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:16px;height:100%;align-content:space-between}
+    .cluster-node{display:grid;gap:2px;min-height:94px;padding:14px;border:1px solid rgba(66,88,80,.15);border-radius:17px;text-align:left;color:var(--ink);background:rgba(255,255,255,.95);box-shadow:0 9px 24px rgba(44,69,61,.08);cursor:pointer;transition:transform .18s ease,border-color .18s ease,box-shadow .18s ease}
+    .cluster-node:hover{transform:translateY(-2px);border-color:#a8beb7}
+    .cluster-node[aria-pressed="true"]{border-color:var(--accent);box-shadow:0 0 0 3px rgba(57,118,111,.12),0 11px 26px rgba(44,69,61,.1)}
+    .cluster-node:nth-child(3),.cluster-node:nth-child(4){align-self:center}
+    .cluster-node small{color:var(--muted);font-size:11px}
+    .cluster-node strong{font-size:14px;font-weight:650}
+    .node-kicker{color:var(--accent);font-size:9px;font-weight:800;letter-spacing:.08em;text-transform:uppercase}
+    .availability{display:inline-flex;align-items:center;width:max-content;margin-top:5px;padding:3px 7px;border-radius:999px;color:var(--forest);background:#edf4ef;font-size:9px;font-weight:750;text-transform:uppercase}
+    .availability.closed{color:var(--closed);background:var(--closed-soft)}
+    .availability.weather{color:var(--warn);background:var(--warn-soft)}
+    .map-caption{position:absolute;left:25px;bottom:14px;z-index:3;color:#93a09b;font-size:10px;letter-spacing:.04em}
+    .detail{padding:clamp(28px,4vw,46px);background:var(--surface)}
+    .detail-head{display:flex;align-items:flex-start;justify-content:space-between;gap:18px;padding-bottom:22px;border-bottom:1px solid var(--line-soft)}
+    .detail-index{color:var(--muted);font-size:10px;letter-spacing:.09em;text-transform:uppercase}
+    .detail h3{margin:5px 0 4px;font-size:clamp(30px,3.8vw,46px);letter-spacing:-.03em;line-height:1}
+    .detail-subtitle{margin:0;color:var(--muted);font-size:14px}
+    .time-badge{flex:0 0 auto;padding:6px 10px;border-radius:999px;color:var(--accent);background:var(--accent-soft);font-size:11px;font-weight:750}
+    .detail-thesis{margin:23px 0;font-size:17px;line-height:1.55}
+    .spot-list{display:grid;grid-template-columns:1fr 1fr;gap:0 22px;margin:0;padding:0;list-style:none}
+    .spot-list li{position:relative;padding:9px 0 9px 16px;border-bottom:1px solid var(--line-soft);color:#34413d;font-size:13px}
+    .spot-list li::before{content:"";position:absolute;top:16px;left:1px;width:5px;height:5px;border-radius:50%;background:var(--accent)}
+    .detail-note{margin:24px 0 0;padding:16px 17px;border-left:3px solid var(--accent);background:#f4f8f7;color:#43524d;font-size:13px}
+    .truth-strip{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;margin:52px 0 68px;overflow:hidden;border:1px solid var(--line);border-radius:20px;background:var(--line)}
+    .truth{min-height:160px;padding:24px;background:rgba(255,255,255,.95)}
+    .truth-number{display:block;margin-bottom:18px;color:#9ca8a4;font-family:Georgia,"Times New Roman",serif;font-size:28px}
+    .truth strong{display:block;margin-bottom:6px;font-size:15px}
+    .truth p{margin:0;color:var(--muted);font-size:13px}
+    .key-section{display:grid;grid-template-columns:.72fr 1.28fr;gap:42px;align-items:start;margin-bottom:68px}
+    .key-section h2{margin:0;font-size:clamp(30px,4vw,46px);letter-spacing:-.025em;line-height:1.05}
+    .key-section>div>p{color:var(--muted);font-size:14px}
+    .key-table{width:100%;border-collapse:collapse}
+    .key-table th,.key-table td{padding:14px 8px;border-bottom:1px solid var(--line);text-align:left;vertical-align:top;font-size:13px}
+    .key-table th{color:var(--muted);font-size:10px;letter-spacing:.08em;text-transform:uppercase}
+    .key-table td:first-child{width:33%;font-weight:650}
+    .key-muted{color:var(--muted)}
+    .itinerary{padding:clamp(28px,4vw,48px);border:1px solid var(--line);border-radius:var(--radius);background:#eff5f2}
+    .itinerary-top{display:flex;align-items:flex-end;justify-content:space-between;gap:24px;margin-bottom:30px}
+    .itinerary h2{margin:0;font-size:clamp(31px,4vw,48px);letter-spacing:-.03em}
+    .plan-switch{display:flex;gap:7px}
+    .plan-switch button{padding:7px 11px;border:1px solid #b9cbc4;border-radius:999px;color:var(--muted);background:rgba(255,255,255,.65);cursor:pointer}
+    .plan-switch button[aria-pressed="true"]{border-color:var(--ink);color:#fff;background:var(--ink)}
+    .day-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px}
+    .day-grid[data-columns="2"]{grid-template-columns:repeat(2,1fr)}
+    .day{padding-top:16px;border-top:1px solid #c8d7d2}
+    .day-label{color:var(--forest);font-size:10px;font-weight:750;letter-spacing:.1em;text-transform:uppercase}
+    .day h3{margin:7px 0 10px;font-size:24px}
+    .day p{margin:0;color:var(--muted);font-size:13px}
+    .trip-note{display:flex;justify-content:space-between;gap:24px;margin-top:23px;padding-top:20px;border-top:1px solid #c8d7d2;color:var(--muted);font-size:12px}
+    .trip-note strong{color:var(--ink)}
+    .sources{margin-top:24px;color:#899590;font-size:11px}
+    .sources a{color:var(--accent);text-underline-offset:3px}
+    @media(max-width:1050px){.app{grid-template-columns:220px minmax(0,1fr)}.sidebar{padding:26px 17px}.hero{grid-template-columns:1fr;gap:24px}.explorer{grid-template-columns:1fr}.cluster-canvas{min-height:570px;border-right:0;border-bottom:1px solid var(--line)}.key-section{grid-template-columns:1fr;gap:18px}}
+    @media(max-width:760px){.app{display:block}.sidebar{position:static;width:100%;height:auto;padding:16px 14px;border-right:0;border-bottom:1px solid var(--line)}.brand{margin-bottom:14px}.nav-label,.sidebar-note{display:none}.destination-nav{display:grid;grid-template-columns:repeat(3,1fr);gap:6px}.destination-tab{display:block;padding:10px;text-align:center}.tab-number,.destination-tab small{display:none}.content{padding:16px 12px 48px}.topbar{min-height:28px}.hero{padding:42px 0}.season-alert{margin:24px 0 42px}.section-head{display:block}.section-head p{margin-top:5px}.cluster-canvas{min-height:700px;padding:18px}.cluster-list{grid-template-columns:1fr 1fr;gap:12px}.hub{top:47%;width:96px;min-height:70px;font-size:15px}.cluster-node{min-height:98px;padding:12px}.spot-list{grid-template-columns:1fr}.truth-strip{grid-template-columns:1fr}.truth{min-height:auto}.itinerary-top{display:block}.plan-switch{margin-top:16px}.day-grid,.day-grid[data-columns="2"]{grid-template-columns:1fr}.trip-note{display:block}.trip-note span{display:block;margin-top:7px}.key-table th:nth-child(2),.key-table td:nth-child(2){display:none}.key-table td:first-child{width:44%}}
+    @media(max-width:820px){.modebar{display:grid;grid-template-columns:1fr auto;padding:10px 14px}.modebrand{margin:0}.mode-tabs{grid-column:1/-1;grid-row:2;justify-self:center;margin-top:7px}.mode-tab{flex:0 0 auto}.mode-actions{grid-column:2;grid-row:1}.travel-shell{display:block;min-height:auto}.travel-rail{position:static;width:100%;height:auto;padding:11px 14px;border-right:0;border-bottom:1px solid var(--line)}.travel-rail h2,.travel-rail>p{display:none}.travel-nav{display:flex;gap:4px;overflow-x:auto}.travel-tab{flex:0 0 auto;width:auto;padding:8px 10px;white-space:nowrap}.travel-main{padding:30px 18px 54px}.travel-hero{grid-template-columns:1fr;gap:16px}.travel-grid{grid-template-columns:1fr}.travel-check ul{grid-template-columns:1fr}}
+    @media(max-width:1050px){.fw-pipeline{grid-template-columns:repeat(2,minmax(0,1fr))}.fw-grid.three{grid-template-columns:repeat(2,minmax(0,1fr))}}
+    @media(max-width:820px){.framework-shell{display:block;min-height:auto}.framework-rail{position:static;width:100%;height:auto;padding:10px 14px;border-right:0;border-bottom:1px solid var(--line)}.framework-rail .rail-title,.framework-rail .rail-copy,.framework-rail .rail-label{display:none}.framework-nav{display:flex;gap:4px;overflow-x:auto}.framework-tab{flex:0 0 auto;display:block;width:auto;padding:9px 12px;white-space:nowrap}.framework-tab .fn{display:none}.framework-tab small{display:none}.framework-main{padding:28px 18px 70px}}
+    @media(max-width:620px){.fw-pipeline,.fw-grid,.fw-grid.three,.fw-timeline{grid-template-columns:1fr}.book-lane{grid-template-columns:1fr;gap:5px}.fw-score{grid-template-columns:120px 1fr 38px}.fw-hero h1{font-size:34px}.mode-tab{padding:8px 12px}}
+    @media(max-width:430px){.destination-tab strong{font-size:12px}.cluster-canvas{min-height:auto}.canvas-orbit,.hub{display:none}.cluster-list{grid-template-columns:1fr;align-content:start}.cluster-node{min-height:auto}.map-caption{position:static;display:block;margin-top:12px}.detail{padding:24px 19px}.detail-head{display:block}.time-badge{display:inline-block;margin-top:12px}}
+    @media print{body{background:#fff}.modebar,.sidebar,.travel-rail,.framework-rail,.print-button,.download-button,.plan-switch{display:none}.app,.travel-shell,.framework-shell{display:block}.content,.travel-main,.framework-main{padding:0}.hero{padding:28px 0}.explorer{box-shadow:none;break-inside:avoid}.truth-strip,.key-section,.itinerary,.travel-card,.travel-check,.fw-card,.fw-table-wrap{break-inside:avoid}}
+  </style>
+</head>
+<body>
+  <header class="modebar">
+    <div class="modebrand"><span aria-hidden="true">🧭</span> Trip Planning</div>
+    <nav class="mode-tabs" role="tablist" aria-label="Trip planning sections">
+      <button class="mode-tab" type="button" role="tab" data-mode="framework" aria-selected="true">Framework</button>
+      <button class="mode-tab" type="button" role="tab" data-mode="places" aria-selected="false">Places</button>
+      <button class="mode-tab" type="button" role="tab" data-mode="travel" aria-selected="false">Travel</button>
+    </nav>
+    <div class="mode-actions"><button class="download-button" type="button" onclick="downloadGuide()">↓ Download HTML</button><button class="print-button" type="button" onclick="window.print()">Print / PDF</button></div>
+  </header>
+
+  <section class="mode-view" id="mode-framework" aria-label="Trip planning framework">
+    <div class="framework-shell">
+      <aside class="framework-rail">
+        <div class="rail-title">Planning system</div>
+        <p class="rail-copy">Move from an open wish to a bookable, resilient trip.</p>
+        <div class="rail-label">The sequence</div>
+        <nav class="framework-nav" role="tablist" aria-label="Trip planning stages">
+          <button class="framework-tab" type="button" role="tab" data-framework="overview" aria-selected="true"><span class="fn">00</span><span><b>The whole system</b><small>How every stage connects</small></span></button>
+          <button class="framework-tab" type="button" role="tab" data-framework="constraints" aria-selected="false"><span class="fn">01</span><span><b>Fix constraints</b><small>What cannot move</small></span></button>
+          <button class="framework-tab" type="button" role="tab" data-framework="brief" aria-selected="false"><span class="fn">02</span><span><b>Write the brief</b><small>What the trip must do</small></span></button>
+          <button class="framework-tab" type="button" role="tab" data-framework="options" aria-selected="false"><span class="fn">03</span><span><b>Generate options</b><small>Put real ideas on the table</small></span></button>
+          <button class="framework-tab" type="button" role="tab" data-framework="decide" aria-selected="false"><span class="fn">04</span><span><b>Choose a place</b><small>Filter first, then score</small></span></button>
+          <button class="framework-tab" type="button" role="tab" data-framework="feasibility" aria-selected="false"><span class="fn">05</span><span><b>Prove feasibility</b><small>Routes, season and risk</small></span></button>
+          <button class="framework-tab" type="button" role="tab" data-framework="itinerary" aria-selected="false"><span class="fn">06</span><span><b>Build the itinerary</b><small>Clusters, anchors and buffers</small></span></button>
+          <button class="framework-tab" type="button" role="tab" data-framework="booking" aria-selected="false"><span class="fn">07</span><span><b>Book in order</b><small>Scarcity before convenience</small></span></button>
+          <button class="framework-tab" type="button" role="tab" data-framework="control" aria-selected="false"><span class="fn">08</span><span><b>Close the plan</b><small>One final control sheet</small></span></button>
+        </nav>
+      </aside>
+
+      <main class="framework-main">
+        <section class="framework-panel active" id="framework-overview" role="tabpanel">
+          <div class="fw-hero"><div class="kick">The complete system</div><h1>Reduce uncertainty in the right order.</h1><p class="lede">A trip is not planned by collecting attractive places. It is planned by turning a vague desire into a sequence of decisions: <b>fix what cannot move, define the job of the trip, generate genuinely different options, eliminate impossible ones, prove the winner, design the days, reserve scarce pieces and close every open loop.</b></p><div class="fw-rule"><b>The governing rule:</b> make cheap, reversible decisions early. Delay expensive, irreversible decisions until the facts they depend on are verified.</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>The eight-stage pipeline</h2></div><p>Each stage has a specific output. Do not jump forward with an unresolved input; uncertainty simply reappears later as cost, cancellation or a broken itinerary.</p>
+            <div class="fw-pipeline">
+              <article class="fw-stage"><span class="sn">01 · FIX</span><b>Constraints</b><p>Dates, duration, origin, travellers, money, legal limits and vetoes.</p><span class="out">Output → constraint sheet</span></article>
+              <article class="fw-stage"><span class="sn">02 · DEFINE</span><b>Trip brief</b><p>Purpose, pace, desired memories, comfort and explicit non-goals.</p><span class="out">Output → one-line brief</span></article>
+              <article class="fw-stage"><span class="sn">03 · DIVERGE</span><b>Options</b><p>A varied set of destination hypotheses built from the brief.</p><span class="out">Output → option cards</span></article>
+              <article class="fw-stage"><span class="sn">04 · CONVERGE</span><b>Decision</b><p>Hard gates, weighted trade-offs and a documented winner.</p><span class="out">Output → chosen place</span></article>
+              <article class="fw-stage"><span class="sn">05 · VERIFY</span><b>Feasibility</b><p>Route, weather, operations, permits, health and fragile links.</p><span class="out">Output → go / no-go proof</span></article>
+              <article class="fw-stage"><span class="sn">06 · DESIGN</span><b>Itinerary</b><p>Geographic clusters, one anchor per day, travel time and buffers.</p><span class="out">Output → executable days</span></article>
+              <article class="fw-stage"><span class="sn">07 · RESERVE</span><b>Bookings</b><p>Secure scarce dependencies first; keep uncertainty refundable.</p><span class="out">Output → booking ledger</span></article>
+              <article class="fw-stage"><span class="sn">08 · CLOSE</span><b>Control sheet</b><p>Confirmations, deadlines, contacts, money, backups and ownership.</p><span class="out">Output → trip ready</span></article>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Three different kinds of input</h2></div>
+            <div class="fw-grid three">
+              <article class="fw-card accent"><span class="tag">Hard constraint</span><h3>Must be true</h3><p>If violated, the trip is impossible or unacceptable: fixed leave, passport validity, an absolute budget ceiling or a mobility need.</p></article>
+              <article class="fw-card"><span class="tag">Preference</span><h3>Improves the trip</h3><p>A direct flight, boutique stay, nightlife, quiet nature or a preferred climate. Preferences can trade against one another.</p></article>
+              <article class="fw-card warn"><span class="tag">Open question</span><h3>Must be verified</h3><p>Road condition, permit release, weather warning, last-mile transport or whether a key attraction is operating.</p></article>
+            </div>
+            <div class="fw-output"><small>Definition of done</small><b>The trip is planned when every hard constraint is satisfied, every critical dependency is confirmed or backed up, and one control sheet can answer “what happens next?” without fresh research.</b></div>
+          </div>
+          <p class="fw-sources">Safety and verification anchors: <a href="https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php" target="_blank" rel="noopener">IMD district warnings</a> · <a href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener">NDMA SACHET alerts</a> · <a href="https://www.mea.gov.in/dos-and-donts-for-foreign-travel.htm" target="_blank" rel="noopener">MEA foreign-travel guidance</a></p>
+        </section>
+
+        <section class="framework-panel" id="framework-constraints" role="tabpanel">
+          <div class="fw-hero"><div class="kick">Stage 01 · Fix constraints</div><h1>Begin with what cannot move.</h1><p class="lede">A destination is suitable only inside the shape created by the trip’s fixed facts. Write these down before opening Instagram, flight search or a “best places” list.</p><div class="fw-rule"><b>A constraint is not “what I would like.”</b> It is a fact or boundary that can eliminate an option. Give every item a type: fixed point, acceptable range, minimum, maximum or veto.</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>The constraint sheet</h2></div>
+            <div class="fw-table-wrap"><table class="fw-table"><thead><tr><th>Dimension</th><th>Write it precisely</th><th>What it eliminates</th></tr></thead><tbody>
+              <tr><td>Dates</td><td>Earliest departure, latest return, flexibility by hours or days</td><td>Unavailable transport, closed seasons, impossible visa timing</td></tr>
+              <tr><td>Duration</td><td>Total nights plus usable arrival and departure hours</td><td>Places whose access consumes too much of the window</td></tr>
+              <tr><td>Origin</td><td>Actual door-to-door starting point, not merely the nearest airport</td><td>Connections with poor first- or last-mile access</td></tr>
+              <tr><td>Travellers</td><td>Count, ages, documents, mobility, health, sleep and room needs</td><td>Unsafe terrain, wrong vehicles, unsuitable rooms or pace</td></tr>
+              <tr><td>Budget</td><td>Comfort range, stretch range and absolute ceiling</td><td>Options that only work under optimistic pricing</td></tr>
+              <tr><td>Purpose</td><td>Celebration, rest, novelty, nature, learning, bonding or event</td><td>Destinations that are good but wrong for this trip</td></tr>
+              <tr><td>Risk vetoes</td><td>No overnight road, no active monsoon trek, no waitlist, no visa uncertainty</td><td>Any option relying on a prohibited dependency</td></tr>
+              <tr><td>Legal / access</td><td>Passport, visa, permits, age rules, licences and medical restrictions</td><td>Anything not legally or operationally reachable</td></tr>
+            </tbody></table></div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Use ranges, not false precision</h2></div>
+            <div class="fw-grid">
+              <article class="fw-card"><span class="tag">Point</span><h3>Truly fixed</h3><p>“Must return before 9 pm Sunday.” A point has no trade space and becomes an elimination gate.</p></article>
+              <article class="fw-card"><span class="tag">Range</span><h3>Negotiable inside limits</h3><p>“₹45–55k comfortable; ₹60k absolute.” A range lets options reveal the value of spending more or less.</p></article>
+              <article class="fw-card"><span class="tag">Threshold</span><h3>Minimum or maximum</h3><p>“At least two full days there,” “no more than one connection,” or “hotel rating above the agreed floor.”</p></article>
+              <article class="fw-card"><span class="tag">Veto</span><h3>One failure is enough</h3><p>A severe allergy, inaccessible terrain or unsafe weather can reject an otherwise high-scoring option.</p></article>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">03</span><h2>Build the budget from the whole trip</h2></div><p>Do not compare an airfare with a total budget. Estimate every destination on the same basis and include uncertainty explicitly.</p>
+            <div class="fw-formula"><span>Door-to-door transport</span><i>+</i><span>Stay</span><i>+</i><span>Local movement</span><i>+</i><span>Food</span><i>+</i><span>Activities</span><i>+</i><span>Documents / insurance</span><i>+</i><span>Contingency</span></div>
+            <ul class="fw-list"><li><b>Price the immovable pieces first:</b> long-haul transport, scarce stay and permits usually drive the decision.</li><li><b>Keep contingency as a line item:</b> it is protection against uncertainty, not leftover spending money.</li><li><b>Compare likely total, not best-case total:</b> use realistic baggage, taxes, transfers and meals.</li><li><b>Record paid, committed and estimated separately:</b> cash flow and final cost are different questions.</li></ul>
+            <div class="fw-output"><small>Stage output</small><b>A one-page constraint sheet with no ambiguous words such as “cheap,” “near,” “easy” or “not too tiring.”</b></div>
+          </div>
+        </section>
+
+        <section class="framework-panel" id="framework-brief" role="tabpanel">
+          <div class="fw-hero"><div class="kick">Stage 02 · Write the brief</div><h1>Define what the trip is supposed to accomplish.</h1><p class="lede">Constraints describe the box. The brief describes the <b>experience worth creating inside it.</b> Without a brief, every appealing destination competes on a different definition of “good.”</p><div class="fw-rule"><b>One-line template:</b> “A [pace] [duration] trip from [origin] for [travellers], primarily for [purpose], built around [two or three experience types], while avoiding [non-goals], within [budget range].”</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>Six decisions inside the brief</h2></div>
+            <div class="fw-grid three">
+              <article class="fw-card"><span class="tag">Purpose</span><h3>Why now?</h3><p>Rest, reunion, romance, celebration, novelty, challenge, culture, food, wildlife or a specific event.</p></article>
+              <article class="fw-card"><span class="tag">Pace</span><h3>How should time feel?</h3><p>Slow base, balanced exploration or high-density sightseeing. Pick one primary rhythm.</p></article>
+              <article class="fw-card"><span class="tag">Experience</span><h3>What should dominate?</h3><p>Choose two or three: nature, heritage, food, nightlife, activity, wellness, learning or unstructured time.</p></article>
+              <article class="fw-card"><span class="tag">Comfort</span><h3>Where will you spend ease?</h3><p>Direct travel, room quality, private vehicle, flexible booking, familiar food or extra recovery time.</p></article>
+              <article class="fw-card"><span class="tag">Memory</span><h3>What must be remembered?</h3><p>Name one signature moment. It becomes the anchor that the itinerary protects.</p></article>
+              <article class="fw-card warn"><span class="tag">Non-goals</span><h3>What will you not optimise?</h3><p>Not every landmark, not nightlife, not shopping, not a road trip, not a rushed checklist. Exclusion creates coherence.</p></article>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Align multiple travellers without voting on place names</h2></div><p>Ask each person for needs before nominations. Place names create attachment too early; experience requirements reveal compatible destinations.</p>
+            <div class="fw-table-wrap"><table class="fw-table"><thead><tr><th>Each person states</th><th>Meaning</th><th>Planning treatment</th></tr></thead><tbody><tr><td>One must-have</td><td>The trip feels unsuccessful without it</td><td>Try to satisfy every must-have or expose the conflict</td></tr><tr><td>One veto</td><td>A genuine unacceptable condition</td><td>Use as an elimination gate, not a low score</td></tr><tr><td>One trade-off</td><td>What they are willing to sacrifice</td><td>Creates room for a coherent shared option</td></tr><tr><td>One comfort need</td><td>Sleep, food, mobility, privacy or downtime</td><td>Convert it into a room, vehicle or pace requirement</td></tr></tbody></table></div>
+            <div class="fw-output"><small>Stage output</small><b>A short trip brief that can judge an option without mentioning any destination by name.</b></div>
+          </div>
+        </section>
+
+        <section class="framework-panel" id="framework-options" role="tabpanel">
+          <div class="fw-hero"><div class="kick">Stage 03 · Generate options</div><h1>Put destination hypotheses on the table.</h1><p class="lede">Generate widely enough to create a real choice, but structure every idea in the same format. The goal is not a giant bucket list; it is a <b>small portfolio of different ways to satisfy the same brief.</b></p><div class="fw-rule"><b>Diversity rule:</b> if all options are similar hill stations, beaches or cities, you have produced variants—not alternatives. Include different trip shapes where the brief allows them.</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>Generate by trip family</h2></div>
+            <div class="fw-grid three">
+              <article class="fw-card"><span class="tag">One-base trip</span><h3>Stay and radiate</h3><p>City, resort, hill town or beach base with daily clusters and low hotel-change cost.</p></article>
+              <article class="fw-card"><span class="tag">Nature trip</span><h3>Landscape first</h3><p>Forest, coast, mountains, wildlife or lakes where season and access dominate feasibility.</p></article>
+              <article class="fw-card"><span class="tag">Route trip</span><h3>Movement is the experience</h3><p>Road, rail or multi-stop journey where transfer quality matters as much as stops.</p></article>
+              <article class="fw-card"><span class="tag">Purpose trip</span><h3>One strong anchor</h3><p>Concert, wedding, pilgrimage, festival, match, course or restaurant around which the rest is designed.</p></article>
+              <article class="fw-card"><span class="tag">Recovery trip</span><h3>Low decision load</h3><p>Wellness, quiet homestay, resort or familiar destination with deliberate empty time.</p></article>
+              <article class="fw-card"><span class="tag">Exploration trip</span><h3>Density and discovery</h3><p>Culture, food, museums, neighbourhoods or architecture with high experience per travel hour.</p></article>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Use a standard option card</h2></div><p>Every candidate should answer the same questions before anyone becomes emotionally committed to it.</p>
+            <div class="fw-table-wrap"><table class="fw-table"><thead><tr><th>Field</th><th>Question the card must answer</th></tr></thead><tbody><tr><td>Why this fits</td><td>Which sentence in the trip brief does this destination satisfy?</td></tr><tr><td>Signature experiences</td><td>What two or three experiences justify going there?</td></tr><tr><td>Access chain</td><td>How do travellers get from their doors to the base and back?</td></tr><tr><td>Minimum useful time</td><td>How many usable hours or nights make the trip worthwhile?</td></tr><tr><td>Cost band</td><td>What is the likely all-in total, with uncertainty noted?</td></tr><tr><td>Season fit</td><td>What is reliably open, compromised or unsafe on the dates?</td></tr><tr><td>Booking pressure</td><td>Which pieces are scarce, permit-controlled or price-sensitive?</td></tr><tr><td>Failure mode</td><td>What single event could damage the trip, and what is the fallback?</td></tr></tbody></table></div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">03</span><h2>Research in layers</h2></div>
+            <ul class="fw-list"><li><b>Discovery layer:</b> maps, saved posts, recommendations, broad search and official tourism pages generate hypotheses.</li><li><b>Reality layer:</b> live transport, actual travel time, seasonal closures, permits and representative stay prices test them.</li><li><b>Local layer:</b> recent traveller reports reveal friction, but must be checked against official operating status.</li><li><b>Decision layer:</b> stop collecting once each option card is comparable. More links are not more certainty.</li></ul>
+            <div class="fw-output"><small>Stage output</small><b>A manageable set of complete option cards—different enough to create a meaningful decision.</b></div>
+          </div>
+        </section>
+
+        <section class="framework-panel" id="framework-decide" role="tabpanel">
+          <div class="fw-hero"><div class="kick">Stage 04 · Choose a place</div><h1>Eliminate first. Score second. Discuss last.</h1><p class="lede">A weighted score should compare viable options; it should never rescue an option that violates a hard constraint. Use gates to remove impossibilities, then use weights to make trade-offs visible.</p><div class="fw-rule"><b>The decision rule:</b> the winner is not the destination with the most attractions. It is the option that best fulfils the brief per unit of time, money, effort and risk.</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>Pass the hard gates</h2></div>
+            <div class="fw-grid">
+              <article class="fw-card accent"><span class="tag">Gate A</span><h3>Reachable in the window?</h3><p>Door-to-door travel still leaves the minimum useful time at the destination.</p></article>
+              <article class="fw-card accent"><span class="tag">Gate B</span><h3>Inside the real budget?</h3><p>The likely total—including contingency—does not cross the absolute ceiling.</p></article>
+              <article class="fw-card accent"><span class="tag">Gate C</span><h3>Operational on the dates?</h3><p>The core reason to go is open, reachable and seasonally sensible.</p></article>
+              <article class="fw-card accent"><span class="tag">Gate D</span><h3>Acceptable to every traveller?</h3><p>No legal, health, accessibility or genuine veto condition is violated.</p></article>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Score the survivors</h2></div><p>Choose weights from the brief before scoring destinations. The example below shows the shape of a useful model; change the weights rather than pretending every trip values the same things.</p>
+            <div class="fw-card">
+              <div class="fw-score"><b>Purpose fit</b><div class="bar"><span style="width:100%"></span></div><em>high</em></div>
+              <div class="fw-score"><b>Usable time</b><div class="bar"><span style="width:88%"></span></div><em>high</em></div>
+              <div class="fw-score"><b>Season reliability</b><div class="bar"><span style="width:76%"></span></div><em>context</em></div>
+              <div class="fw-score"><b>Cost confidence</b><div class="bar"><span style="width:68%"></span></div><em>context</em></div>
+              <div class="fw-score"><b>Ease / comfort</b><div class="bar"><span style="width:58%"></span></div><em>choice</em></div>
+              <div class="fw-score"><b>Novelty</b><div class="bar"><span style="width:42%"></span></div><em>choice</em></div>
+            </div>
+            <div class="fw-formula"><span>Destination score</span><i>=</i><span>Σ (criterion score × agreed weight)</span><i>−</i><span>explicit risk penalty</span></div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">03</span><h2>Use clean tie-breakers</h2></div>
+            <ul class="fw-list"><li><b>Reversibility:</b> prefer the option with refundable commitments while important uncertainty remains.</li><li><b>Robustness:</b> prefer the trip that remains worthwhile if one attraction, activity or weather window disappears.</li><li><b>Time value:</b> prefer more meaningful destination time over more impressive distance travelled.</li><li><b>Future option value:</b> take the seasonal or rare opportunity now; leave the evergreen option for later.</li><li><b>Regret test:</b> imagine both options unavailable tomorrow—missing which one feels like the larger loss, and why?</li></ul>
+            <div class="fw-output"><small>Stage output</small><b>One chosen destination, one documented runner-up and a short statement explaining the trade-off.</b></div>
+          </div>
+        </section>
+
+        <section class="framework-panel" id="framework-feasibility" role="tabpanel">
+          <div class="fw-hero"><div class="kick">Stage 05 · Prove feasibility</div><h1>Test the whole chain, not the attractive centre.</h1><p class="lede">A place can be open while the trip is impossible. Feasibility lives in the chain from home to terminal to gateway to base to daily clusters and back again. <b>The weakest critical link determines whether the plan works.</b></p><div class="fw-rule"><b>Proof standard:</b> a critical fact is verified only when its source, date checked and operational implication are recorded.</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>Walk the access chain</h2></div>
+            <div class="fw-formula"><span>Home</span><i>→</i><span>Departure point</span><i>→</i><span>Main transport</span><i>→</i><span>Gateway</span><i>→</i><span>Base</span><i>→</i><span>Daily clusters</span><i>→</i><span>Return chain</span></div>
+            <div class="fw-grid three">
+              <article class="fw-card"><span class="tag">Time</span><h3>Can every connection breathe?</h3><p>Include traffic, reporting time, baggage, meal, check-in and delays—not only scheduled journey time.</p></article>
+              <article class="fw-card"><span class="tag">Operations</span><h3>Is the product actually open?</h3><p>Check seasonal calendars, weekly closures, permits, maintenance and local restrictions.</p></article>
+              <article class="fw-card"><span class="tag">Capacity</span><h3>Can the party be accommodated?</h3><p>Seats, rooms, safari vehicles, guides, child rules, luggage and accessibility must all fit.</p></article>
+              <article class="fw-card"><span class="tag">Weather</span><h3>What does weather disable?</h3><p>Translate forecast into consequences for roads, boats, trails, visibility and contingency days.</p></article>
+              <article class="fw-card"><span class="tag">Health / legal</span><h3>Is everyone cleared to go?</h3><p>Documents, visa/transit, insurance, medication, altitude, vaccination and local law where relevant.</p></article>
+              <article class="fw-card warn"><span class="tag">Single point of failure</span><h3>What breaks the entire trip?</h3><p>A sole flight, one mountain road, one permit or one weather-dependent anchor deserves special treatment.</p></article>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Build a risk register</h2></div>
+            <div class="fw-table-wrap"><table class="fw-table"><thead><tr><th>Risk</th><th>Probability</th><th>Impact</th><th>Prevention</th><th>Fallback trigger</th></tr></thead><tbody><tr><td>Transport disruption</td><td>Low / medium / high</td><td>Hours or trip loss</td><td>Buffer, alternative route, refundable fare</td><td>Official cancellation or delay threshold</td></tr><tr><td>Weather closure</td><td>Season-dependent</td><td>Anchor lost</td><td>Indoor or lower-risk parallel day</td><td>Official warning / operator closure</td></tr><tr><td>Health issue</td><td>Traveller-specific</td><td>Variable</td><td>Medication, insurance, pace, nearby care</td><td>Symptoms or medical guidance</td></tr><tr><td>Capacity failure</td><td>Booking-dependent</td><td>Group split</td><td>Written room/vehicle confirmation</td><td>Supplier misses confirmation deadline</td></tr><tr><td>Cost escalation</td><td>Market-dependent</td><td>Budget breach</td><td>Hold/refundable booking and expiry date</td><td>Price crosses absolute ceiling</td></tr></tbody></table></div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">03</span><h2>Decide what “go” means</h2></div>
+            <div class="fw-grid">
+              <article class="fw-card accent"><span class="tag">Go</span><h3>Critical links verified</h3><p>All hard constraints pass; core experience is operational; the access chain works; major risk has a fallback.</p></article>
+              <article class="fw-card warn"><span class="tag">Conditional go</span><h3>Uncertainty is bounded</h3><p>A weather or operational question remains, but bookings are refundable and an alternate trip shape still satisfies the brief.</p></article>
+              <article class="fw-card"><span class="tag">Hold</span><h3>One fact decides everything</h3><p>Set a deadline and owner for the missing permit, schedule or group confirmation; do not keep researching around it.</p></article>
+              <article class="fw-card"><span class="tag">No-go</span><h3>The trip only works optimistically</h3><p>If success requires several uncertain events to all go right, return to the runner-up destination.</p></article>
+            </div>
+            <div class="fw-output"><small>Stage output</small><b>A go / conditional-go / hold / no-go decision with named risks, sources, owners and triggers.</b></div>
+          </div>
+          <p class="fw-sources">For Indian weather and hazard checks: <a href="https://mausam.imd.gov.in/responsive/districtWiseWarningGIS.php" target="_blank" rel="noopener">IMD district warnings</a> · <a href="https://sachet.ndma.gov.in/" target="_blank" rel="noopener">NDMA SACHET</a>. International travellers should also verify current entry, transit, insurance and medicine requirements with official authorities.</p>
+        </section>
+
+        <section class="framework-panel" id="framework-itinerary" role="tabpanel">
+          <div class="fw-hero"><div class="kick">Stage 06 · Build the itinerary</div><h1>Design days around geography and energy.</h1><p class="lede">An itinerary is not a list of attractions divided by the number of days. It is a sequence of <b>geographic clusters</b>, each with one anchor, realistic movement, food, recovery and a fallback.</p><div class="fw-rule"><b>Capacity rule:</b> treat arrival and departure days as partial until the door-to-door timeline proves otherwise. Protect the core experience from transit optimism.</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>Calculate usable time</h2></div>
+            <div class="fw-formula"><span>Total trip window</span><i>−</i><span>Main travel</span><i>−</i><span>Check-in / check-out</span><i>−</i><span>Local transfers</span><i>−</i><span>Meals / recovery</span><i>−</i><span>Buffer</span><i>=</i><span>Usable experience time</span></div>
+            <ul class="fw-list"><li><b>Cluster before sequencing:</b> put places that share roads, neighbourhoods or gates on the same directional day.</li><li><b>Choose one anchor:</b> the day succeeds if this one experience happens; everything else is support or optional.</li><li><b>Alternate energy:</b> do not stack an early safari, long transfer and late nightlife simply because each fits on paper.</li><li><b>Place fragile activities intelligently:</b> use the best weather window and keep a movable replacement.</li></ul>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Use the daily block template</h2></div>
+            <div class="fw-table-wrap"><table class="fw-table"><thead><tr><th>Block</th><th>Planning question</th><th>What to record</th></tr></thead><tbody><tr><td>Start condition</td><td>Where did everyone sleep, eat and prepare?</td><td>Wake time, breakfast, pickup and luggage state</td></tr><tr><td>Anchor</td><td>What single experience makes the day worthwhile?</td><td>Slot, gate, duration, ticket and reporting time</td></tr><tr><td>Cluster support</td><td>What nearby experiences naturally belong?</td><td>Priority order, opening hours and skip rule</td></tr><tr><td>Movement</td><td>How long between real doors?</td><td>Route, vehicle, parking and transfer buffer</td></tr><tr><td>Food / recovery</td><td>When does energy get restored?</td><td>Meal area, reservation need and downtime</td></tr><tr><td>Fallback</td><td>What replaces the anchor if the trigger fires?</td><td>Alternate cluster and decision deadline</td></tr><tr><td>End condition</td><td>What must be true before tomorrow?</td><td>Return time, charging, packing and next pickup</td></tr></tbody></table></div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">03</span><h2>Three layers of itinerary</h2></div>
+            <div class="fw-grid three">
+              <article class="fw-card accent"><span class="tag">Locked</span><h3>Must occur at this time</h3><p>Flights, trains, safari slots, events, timed entry, permits and non-refundable reservations.</p></article>
+              <article class="fw-card"><span class="tag">Planned</span><h3>Expected sequence</h3><p>Geographic cluster, meals, viewpoints and museums that can move within the day.</p></article>
+              <article class="fw-card"><span class="tag">Optional</span><h3>Only if time and energy remain</h3><p>Cafés, shopping, extra viewpoints and duplicate experiences. These are the first things to cut.</p></article>
+            </div>
+            <div class="fw-output"><small>Stage output</small><b>A day-by-day plan where every day has a start condition, anchor, cluster, movement allowance, fallback and end condition.</b></div>
+          </div>
+        </section>
+
+        <section class="framework-panel" id="framework-booking" role="tabpanel">
+          <div class="fw-hero"><div class="kick">Stage 07 · Book in order</div><h1>Reserve by dependency, scarcity and reversibility.</h1><p class="lede">Do not book in the order tabs happen to be open. Secure the pieces whose absence destroys the trip, while keeping uncertain parts flexible for as long as useful.</p><div class="fw-rule"><b>Priority rises when:</b> the item is a hard dependency, supply is scarce, price is moving quickly, alternatives are weak or failure has a large consequence.</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>The booking dependency order</h2></div>
+            <div class="book-lanes">
+              <div class="book-lane"><b>1 · Eligibility</b><p>Passport, visa, transit rules, permits, health requirements and leave approval. Do not buy an irreversible trip that travellers are not yet allowed to take.</p></div>
+              <div class="book-lane"><b>2 · Main anchor</b><p>The fixed event, scarce safari, cruise, trek permit or other reason the destination was selected—when it determines the dates.</p></div>
+              <div class="book-lane"><b>3 · Long-haul transport</b><p>Flights or trains that define arrival and departure. Re-check the full access chain before payment.</p></div>
+              <div class="book-lane"><b>4 · Base stay</b><p>Correct location, room plan, cancellation deadline, access road and check-in reality.</p></div>
+              <div class="book-lane"><b>5 · Critical local movement</b><p>Airport pickup, remote transfer, driver, ferry or vehicle required to reach the base or anchor.</p></div>
+              <div class="book-lane"><b>6 · Timed experiences</b><p>Museums, shows, guides, restaurants and activities with real capacity or scheduling constraints.</p></div>
+              <div class="book-lane"><b>7 · Flexible layer</b><p>Abundant local transit, open-entry sights, weather-sensitive activities and ordinary meals can remain open unless peak demand changes the calculation.</p></div>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Before, later or there?</h2></div>
+            <div class="fw-table-wrap"><table class="fw-table"><thead><tr><th>When</th><th>Book this type</th><th>Reason</th></tr></thead><tbody><tr><td>Before committing</td><td>Eligibility checks and the destination-defining anchor</td><td>A failure changes the destination or dates</td></tr><tr><td>Immediately after decision</td><td>Scarce long-haul seats, limited rooms, permits and essential transfers</td><td>Supply loss would break the chosen plan</td></tr><tr><td>After the skeleton is fixed</td><td>Guides, timed attractions, special meals and optional upgrades</td><td>They depend on the confirmed daily structure</td></tr><tr><td>Near the date</td><td>Weather-dependent activities with flexible or refundable terms</td><td>Later information is worth more than early certainty</td></tr><tr><td>At the destination</td><td>Abundant local transport, ordinary meals and open-entry sites</td><td>Supply is plentiful and choice benefits from live conditions</td></tr></tbody></table></div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">03</span><h2>Maintain a booking ledger</h2></div>
+            <div class="fw-grid">
+              <article class="fw-card"><span class="tag">Identity</span><h3>What exactly was bought?</h3><p>Supplier, product, date, time, traveller names, confirmation number and contact channel.</p></article>
+              <article class="fw-card"><span class="tag">Money</span><h3>What is paid or due?</h3><p>Total, deposit, balance, payment method, currency, taxes and proof of payment.</p></article>
+              <article class="fw-card"><span class="tag">Reversibility</span><h3>When does flexibility expire?</h3><p>Free-cancellation deadline, change fee, refund route and non-refundable portion.</p></article>
+              <article class="fw-card warn"><span class="tag">Dependency</span><h3>What relies on it?</h3><p>If this booking changes, list the transfers, rooms or activities that must also be changed.</p></article>
+            </div>
+            <div class="fw-output"><small>Stage output</small><b>Every reservation is confirmed, assigned, financially recorded and linked to its cancellation deadline and downstream dependencies.</b></div>
+          </div>
+        </section>
+
+        <section class="framework-panel" id="framework-control" role="tabpanel">
+          <div class="fw-hero"><div class="kick">Stage 08 · Close the plan</div><h1>Create one source of truth.</h1><p class="lede">The final product is not a folder full of screenshots. It is a compact control sheet that lets any traveller understand the plan, recover a confirmation, contact a supplier or execute a fallback without asking the original planner.</p><div class="fw-rule"><b>Closure rule:</b> an open question must have an owner and a deadline. If it has neither, it is not a plan—it is hidden uncertainty.</div></div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">01</span><h2>The final control sheet</h2></div>
+            <div class="fw-grid three">
+              <article class="fw-card"><span class="tag">Trip brief</span><h3>Purpose and boundaries</h3><p>Dates, travellers, pace, budget ceiling, must-haves, vetoes and chosen destination logic.</p></article>
+              <article class="fw-card"><span class="tag">Master schedule</span><h3>What happens next</h3><p>Door-to-door timeline, daily anchors, reporting times, pickups, check-ins and buffers.</p></article>
+              <article class="fw-card"><span class="tag">Booking ledger</span><h3>Proof and deadlines</h3><p>Confirmations, contacts, paid/due amounts, refund rules and cancellation dates.</p></article>
+              <article class="fw-card"><span class="tag">Traveller file</span><h3>People and documents</h3><p>Names, emergency contacts, IDs, insurance, health or food needs and rooming plan.</p></article>
+              <article class="fw-card"><span class="tag">Location file</span><h3>Addresses and offline access</h3><p>Hotel, terminals, gates, meeting points, maps, parking and local emergency numbers.</p></article>
+              <article class="fw-card warn"><span class="tag">Fallback file</span><h3>Triggers and alternatives</h3><p>What changes in bad weather, missed transport, illness, closure or supplier failure—and who decides.</p></article>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">02</span><h2>Verification rhythm</h2></div>
+            <div class="fw-timeline">
+              <article class="fw-time"><b>After booking</b><p>Reconcile names, dates, amounts, cancellation deadlines and itinerary dependencies.</p></article>
+              <article class="fw-time"><b>One week out</b><p>Reconfirm suppliers, documents, weather trend, local operations, payments and packing needs.</p></article>
+              <article class="fw-time"><b>48 hours out</b><p>Check live warnings, transport status, online check-in, pickup contacts and fallback triggers.</p></article>
+              <article class="fw-time"><b>Departure day</b><p>Verify IDs, tickets, money, medication, chargers, luggage, first transfer and first address.</p></article>
+            </div>
+          </div>
+
+          <div class="fw-section"><div class="fw-section-head"><span class="num">03</span><h2>The final audit</h2></div>
+            <ul class="fw-list"><li><b>Identity:</b> every name matches the relevant document and booking.</li><li><b>Time:</b> all times use the correct date, timezone, terminal and reporting buffer.</li><li><b>Money:</b> paid, due, deposit and on-location cash requirements reconcile to the budget.</li><li><b>Access:</b> every gateway-to-base and base-to-anchor movement has a real method.</li><li><b>Operations:</b> closures, permits, weather and local alerts were checked from current sources.</li><li><b>Ownership:</b> every unresolved action has one owner and deadline.</li><li><b>Resilience:</b> the trip remains worthwhile if one non-critical item disappears.</li></ul>
+            <div class="fw-output"><small>Planning complete</small><b>The trip is ready when there is nothing important left to remember—only a clear system to follow.</b></div>
+          </div>
+          <p class="fw-sources">For international travel, MEA advises checking travel advisories, visas and transit rules, insurance, health requirements, document validity and secure copies of key records: <a href="https://www.mea.gov.in/dos-and-donts-for-foreign-travel.htm" target="_blank" rel="noopener">MEA guidance</a>.</p>
+        </section>
+      </main>
+    </div>
+  </section>
+
+  <section class="mode-view" id="mode-places" aria-label="Places" hidden="">
+  <div class="app">
+    <aside class="sidebar" aria-label="Destination navigation">
+      <div class="brand"><span class="brand-mark" aria-hidden="true">⌖</span> Places</div>
+      <p class="nav-label">Destination guides</p>
+      <nav class="destination-nav" role="tablist" aria-label="Choose destination">
+        <button class="destination-tab" type="button" role="tab" data-destination="udaipur" aria-selected="true"><span class="tab-number">01</span><span><strong>Udaipur</strong><small>Lakes · heritage · hills</small></span></button>
+        <button class="destination-tab" type="button" role="tab" data-destination="corbett" aria-selected="false"><span class="tab-number">02</span><span><strong>Jim Corbett</strong><small>Safaris · river · forest</small></span></button>
+        <button class="destination-tab" type="button" role="tab" data-destination="ranthambore" aria-selected="false"><span class="tab-number">03</span><span><strong>Ranthambore</strong><small>Safaris · fort · lakes</small></span></button>
+        <button class="destination-tab" type="button" role="tab" data-destination="lonavala" aria-selected="false"><span class="tab-number">04</span><span><strong>Lonavala</strong><small>Monsoon · caves · forts</small></span></button>
+        <button class="destination-tab" type="button" role="tab" data-destination="coorg" aria-selected="false"><span class="tab-number">05</span><span><strong>Coorg</strong><small>Coffee · falls · viewpoints</small></span></button>
+        <button class="destination-tab" type="button" role="tab" data-destination="shoja" aria-selected="false"><span class="tab-number">06</span><span><strong>Shoja</strong><small>Forest · valleys · trails</small></span></button>
+        <button class="destination-tab" type="button" role="tab" data-destination="manali" aria-selected="false"><span class="tab-number">07</span><span><strong>Manali</strong><small>Valleys · heritage · passes</small></span></button>
+        <button class="destination-tab" type="button" role="tab" data-destination="goa" aria-selected="false"><span class="tab-number">08</span><span><strong>Goa</strong><small>Coast · heritage · forests</small></span></button>
+      </nav>
+      <p class="sidebar-note">Use the seasonal layer before booking. Monsoon access, safaris, treks, water activities and hill roads can remain conditional.</p>
+    </aside>
+
+    <main class="content" id="guide-content">
+      <div class="topbar"><button class="print-button" type="button" onclick="window.print()">↗ Print / save PDF</button></div>
+
+      <section class="hero" aria-labelledby="page-title">
+        <div><p class="eyebrow" id="hero-eyebrow">The city, properly structured</p><h1 id="page-title">Udaipur in five clear zones.</h1></div>
+        <div><p class="hero-copy" id="hero-copy"><strong>Two lake clusters, one hill cluster, and two optional extensions.</strong> Palaces belong mainly to Pichola; Fateh Sagar is for leisure; Sajjangarh gives you forest and panoramic views.</p><div class="formula" id="formula"><span>Pichola</span><span>Fateh Sagar</span><span>Sajjangarh</span><span>Badi</span><span>Gulab Bagh</span></div></div>
+      </section>
+
+      <section class="season-alert" aria-labelledby="season-title">
+        <span class="season-icon" aria-hidden="true">!</span>
+        <div><strong id="season-title">Early-September reality</strong><p id="season-copy">Boating, the Bahubali viewpoint and a clear Monsoon Palace sunset are weather-dependent. The principal city attractions remain practical in rain.</p></div>
+      </section>
+
+      <section aria-labelledby="cluster-title">
+        <div class="section-head"><h2 id="cluster-title">Explore the clusters</h2><p>Select a zone to see what belongs there and how long it takes.</p></div>
+        <div class="explorer">
+          <div class="cluster-canvas" aria-label="Schematic cluster explorer">
+            <span class="canvas-orbit" aria-hidden="true"></span><div class="hub" id="hub-label">Udaipur</div>
+            <div class="cluster-list" id="cluster-list"><button type="button" class="cluster-node" data-cluster="pichola" aria-pressed="true"><span class="node-kicker">Heritage core</span><strong>Lake Pichola</strong><small>1 full day</small><span class="availability ">Essential</span></button><button type="button" class="cluster-node" data-cluster="fateh" aria-pressed="false"><span class="node-kicker">Leisure lake</span><strong>Fateh Sagar</strong><small>½ day</small><span class="availability ">Easy in September</span></button><button type="button" class="cluster-node" data-cluster="sajjangarh" aria-pressed="false"><span class="node-kicker">Hill + forest</span><strong>Sajjangarh</strong><small>½ day</small><span class="availability weather">Weather-sensitive</span></button><button type="button" class="cluster-node" data-cluster="badi" aria-pressed="false"><span class="node-kicker">Nature extension</span><strong>Badi Lake</strong><small>3–4 hours</small><span class="availability weather">Weather-sensitive</span></button><button type="button" class="cluster-node" data-cluster="gulab" aria-pressed="false"><span class="node-kicker">City add-on</span><strong>Gulab Bagh</strong><small>1½–2½ hours</small><span class="availability ">Optional</span></button></div>
+            <span class="map-caption">Conceptual grouping · not to geographic scale</span>
+          </div>
+          <article class="detail" aria-live="polite" aria-atomic="true">
+            <div class="detail-head"><div><span class="detail-index" id="detail-index">Heritage core · Essential</span><h3 id="detail-title">Lake Pichola</h3><p class="detail-subtitle" id="detail-subtitle">The postcard version of Udaipur</p></div><span class="time-badge" id="detail-time">1 full day</span></div>
+            <p class="detail-thesis" id="detail-thesis">Palaces, ghats, old-city lanes, museums and the signature boat experience all meet here.</p><ul class="spot-list" id="spot-list"><li>City Palace Museum</li><li>Jagdish Temple</li><li>Bagore Ki Haveli</li><li>Gangaur &amp; Ambrai Ghats</li><li>Jagmandir Island Palace</li><li>Lake Pichola boat ride</li><li>Doodh Talai &amp; Karni Mata</li><li>Old-city cafés and lanes</li></ul><p class="detail-note" id="detail-note"><strong>Useful distinction:</strong> Taj Lake Palace, Taj Fateh Prakash, The Leela and Oberoi Udaivilas are primarily hotels—not four extra public monuments.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="truth-strip" id="truth-strip" aria-label="Important distinctions"><div class="truth"><span class="truth-number">01</span><strong>Pichola owns the palaces.</strong><p>It is the heritage-heavy lake and deserves most of your sightseeing time.</p></div><div class="truth"><span class="truth-number">02</span><strong>Fateh Sagar is not Pichola 2.0.</strong><p>It is about promenades, gardens, cafés, boating and local evening life.</p></div><div class="truth"><span class="truth-number">03</span><strong>Sajjangarh is a hill cluster.</strong><p>The palace and biological park overlook the lakes; they are not arranged around another lake.</p></div></section>
+
+      <section class="key-section" aria-labelledby="key-title">
+        <div><p class="eyebrow" id="key-eyebrow">Avoid double counting</p><h2 id="key-title">Palace, hotel or viewpoint?</h2><p id="key-copy">Several grand names on the map are accommodation properties rather than ordinary sightseeing stops.</p></div>
+        <div><table class="key-table"><thead><tr><th id="key-col-one">Place</th><th id="key-col-two">Category</th><th>How to treat it</th></tr></thead><tbody id="key-body"><tr><td>City Palace</td><td class="key-muted">Museum complex</td><td>Main paid attraction</td></tr><tr><td>Jagmandir</td><td class="key-muted">Island palace</td><td>Visit using the correct boat service</td></tr><tr><td>Taj Lake Palace</td><td class="key-muted">Luxury hotel</td><td>Usually admire from the water</td></tr><tr><td>Taj Fateh Prakash</td><td class="key-muted">Palace hotel</td><td>Crystal Gallery is the visitor attraction</td></tr><tr><td>Monsoon Palace</td><td class="key-muted">Hilltop palace</td><td>Visit mainly for the panorama</td></tr><tr><td>Leela / Udaivilas</td><td class="key-muted">Luxury hotels</td><td>Count only with a stay or reservation</td></tr></tbody></table></div>
+      </section>
+
+      <section class="itinerary" aria-labelledby="itinerary-title">
+        <div class="itinerary-top"><div><p class="eyebrow">A route that follows the structure</p><h2 id="itinerary-title">Turn the clusters into a trip.</h2></div><div class="plan-switch" role="group" aria-label="Choose trip duration"><button type="button" data-plan="two" aria-pressed="false">2 days</button><button type="button" data-plan="three" aria-pressed="true">3 days</button></div></div>
+        <div class="day-grid" id="day-grid" data-columns="3"><article class="day"><span class="day-label">Day 1 · Essential</span><h3>Pichola</h3><p>City Palace → Jagdish → old city → Bagore/Gangaur → boat ride → Ambrai or folk show.</p></article><article class="day"><span class="day-label">Day 2 · Combined</span><h3>Fateh Sagar + Sajjangarh</h3><p>Saheliyon Ki Bari → Fateh Sagar → Biological Park → Monsoon Palace near sunset.</p></article><article class="day"><span class="day-label">Day 3 · Choose one</span><h3>Nature or museum</h3><p>Badi Lake for landscape, or Gulab Bagh + Vintage Car Museum for an easy morning.</p></article></div>
+        <div class="trip-note"><div id="trip-note"><strong>September rule:</strong> Keep boating, Bahubali and the sunset plan interchangeable.</div><span id="transport-note">Match the vehicle to party size; expect to walk or use smaller local access inside the old city</span></div>
+      </section>
+      <p class="sources" id="sources">Official references: <a href="https://www.tourism.rajasthan.gov.in/udaipur.html">Rajasthan Tourism</a> · <a href="https://www.incredibleindia.gov.in/en/rajasthan/udaipur">Incredible India</a></p>
+    </main>
+  </div>
+  </section>
+
+  <section class="mode-view" id="mode-travel" aria-label="Travel booking guide" hidden="">
+    <div class="travel-shell">
+      <aside class="travel-rail">
+        <h2>Travel desk</h2>
+        <p>Choose one part of the journey.</p>
+        <nav class="travel-nav" role="tablist" aria-label="Travel arrangements">
+          <button class="travel-tab" type="button" role="tab" data-travel="flights" aria-selected="true"><span aria-hidden="true">✈</span> Flights</button>
+          <button class="travel-tab" type="button" role="tab" data-travel="trains" aria-selected="false"><span aria-hidden="true">↟</span> Trains</button>
+          <button class="travel-tab" type="button" role="tab" data-travel="cabs" aria-selected="false"><span aria-hidden="true">⌁</span> Cabs</button>
+          <button class="travel-tab" type="button" role="tab" data-travel="traveller" aria-selected="false"><span aria-hidden="true">▰</span> Tempo Travellers</button>
+          <button class="travel-tab" type="button" role="tab" data-travel="stays" aria-selected="false"><span aria-hidden="true">⌂</span> Stays</button>
+        </nav>
+      </aside>
+
+      <main class="travel-main">
+        <div class="trip-context" aria-label="Inputs for any trip"><span>Origin + destination</span><span>Dates + flexibility</span><span>Traveller count</span><span>Trip duration</span><span>Budget + cancellation</span></div>
+
+        <section class="travel-panel active" id="travel-flights" role="tabpanel">
+          <div class="travel-hero"><div><p class="eyebrow">Air travel</p><h1>Search broad. Book carefully.</h1></div><p><strong>Use Skyscanner to compare the market, then verify the exact fare on the airline’s own website.</strong> The cheapest headline fare is not always the cheapest complete journey after baggage, seats and transfers.</p></div>
+          <div class="booking-rule"><small>The default workflow</small><strong>Skyscanner → airline website → group desk, if relevant</strong></div>
+          <div class="travel-grid">
+            <article class="travel-card"><span class="step">01</span><h3>Find the useful airports</h3><p>Search from your origin to every practical destination airport. Compare total door-to-door time—not only the flight duration or ticket price.</p></article>
+            <article class="travel-card"><span class="step">02</span><h3>Compare the complete fare</h3><p>Match the same flight, baggage allowance, cancellation terms, seat fees and arrival time. Compare the final total for every traveller.</p></article>
+            <article class="travel-card"><span class="step">03</span><h3>Check the airline directly</h3><p>Reprice the identical itinerary on the airline website. Prefer direct booking when the total is close and the change or support terms are clearer.</p></article>
+            <article class="travel-card"><span class="step">04</span><h3>Use the group desk when useful</h3><p>For a larger party, request the airline’s group price and compare it with the live retail total. A group fare offers coordination; it is not automatically cheaper.</p></article>
+          </div>
+          <div class="travel-check"><h3>Before anyone pays</h3><ul><li>Names match government ID exactly</li><li>Every traveller is on the intended flight</li><li>Baggage matches the actual packing plan</li><li>Arrival leaves realistic road-transfer time</li><li>Cancellation terms are saved</li><li>One person owns the booking record</li></ul></div>
+          <div class="tool-links"><a href="https://www.skyscanner.co.in/" target="_blank" rel="noopener">Open Skyscanner ↗</a><a href="https://www.airindia.com/" target="_blank" rel="noopener">Air India ↗</a><a href="https://www.goindigo.in/" target="_blank" rel="noopener">IndiGo ↗</a></div>
+        </section>
+
+        <section class="travel-panel" id="travel-trains" role="tabpanel">
+          <div class="travel-hero"><div><p class="eyebrow">Rail travel</p><h1>Discover anywhere. Book on IRCTC.</h1></div><p><strong>Use maps or comparison apps to understand routes, but make IRCTC the booking source of truth.</strong> Station choice, arrival time and confirmation status matter more than a small fare difference.</p></div>
+          <div class="booking-rule"><small>The default workflow</small><strong>Route shortlist → IRCTC availability → confirmed PNRs</strong></div>
+          <div class="travel-grid">
+            <article class="travel-card"><span class="step">01</span><h3>Choose stations first</h3><p>Check the correct origin station and the most practical destination-side station. Add the hotel transfer time before deciding that a train is convenient.</p></article>
+            <article class="travel-card"><span class="step">02</span><h3>Keep two train options</h3><p>Shortlist a preferred train and a backup with workable arrival times. Avoid a schedule that consumes most of either sightseeing day.</p></article>
+            <article class="travel-card"><span class="step">03</span><h3>Coordinate passenger details</h3><p>Prepare names, ages, berth preferences and IDs in one checked sheet. The party may require more than one booking, so nominate one coordinator.</p></article>
+            <article class="travel-card"><span class="step">04</span><h3>Treat status honestly</h3><p>Record every PNR and coach/class. A waitlisted option is a risk, not a confirmed transport plan; preserve a refundable alternative when possible.</p></article>
+          </div>
+          <div class="travel-check"><h3>Rail checklist</h3><ul><li>Correct origin and destination stations</li><li>Arrival and departure fit hotel timings</li><li>All passenger names are checked</li><li>PNRs are saved in one trip note</li><li>Food and local transfer are planned</li><li>A backup exists until seats confirm</li></ul></div>
+          <div class="tool-links"><a href="https://www.irctc.co.in/nget/train-search" target="_blank" rel="noopener">Book on IRCTC ↗</a><a href="https://contents.irctc.co.in/en/bookEticket.html" target="_blank" rel="noopener">IRCTC booking guide ↗</a></div>
+        </section>
+
+        <section class="travel-panel" id="travel-cabs" role="tabpanel">
+          <div class="travel-hero"><div><p class="eyebrow">Local and intercity cabs</p><h1>Match the vehicle to the journey.</h1></div><p><strong>App cabs are excellent for airport, station and short city transfers.</strong> For several travellers moving together all day, compare multiple cars with one dedicated vehicle before deciding.</p></div>
+          <div class="booking-rule"><small>The default workflow</small><strong>App estimate → written operator quote → all-in comparison</strong></div>
+          <div class="travel-grid">
+            <article class="travel-card"><span class="step">01</span><h3>Use apps as the baseline</h3><p>Check Uber or another locally available service for airport and intercity estimates. Availability differs by city and time, so never make an early pickup dependent on an unreserved ride.</p></article>
+            <article class="travel-card"><span class="step">02</span><h3>Count vehicles and luggage</h3><p>Eleven adults usually means several ordinary cars. Price the complete convoy, including airport surcharges, luggage space and the risk of the cars separating.</p></article>
+            <article class="travel-card"><span class="step">03</span><h3>Get the inclusions in writing</h3><p>Ask whether tolls, state tax, parking, waiting, night allowance and driver charges are included. Record the kilometre and hour limits.</p></article>
+            <article class="travel-card"><span class="step">04</span><h3>Assign one trip lead</h3><p>Share hotel pins and stops with the driver before departure. For a party, one person should handle calls and payments so the itinerary stays coordinated.</p></article>
+          </div>
+          <div class="travel-check"><h3>Quote comparison fields</h3><ul><li>Vehicle model and actual seat count</li><li>Air-conditioning and luggage capacity</li><li>Tolls, permits and parking</li><li>Daily kilometre and hour limits</li><li>Driver allowance and accommodation</li><li>Cancellation and replacement policy</li></ul></div>
+          <div class="tool-links"><a href="https://www.uber.com/in/en/ride/intercity/" target="_blank" rel="noopener">Uber Intercity ↗</a><a href="https://www.google.com/maps" target="_blank" rel="noopener">Check road time ↗</a></div>
+        </section>
+
+        <section class="travel-panel" id="travel-traveller" role="tabpanel">
+          <div class="travel-hero"><div><p class="eyebrow">One vehicle for a party</p><h1>Size for people, luggage and road type.</h1></div><p><strong>A Tempo Traveller can be the cleanest solution when a party wants to move together.</strong> Choose capacity from the real load rather than matching the seat count exactly.</p></div>
+          <div class="booking-rule"><small>The sizing rule</small><strong>People + luggage + comfort margin + route conditions</strong></div>
+          <div class="travel-grid">
+            <article class="travel-card"><span class="step">01</span><h3>Specify the real load</h3><p>State the traveller count plus the actual number and size of bags. Ask for current interior and luggage-area photos, not only a generic vehicle image.</p></article>
+            <article class="travel-card"><span class="step">02</span><h3>Match the driver to the route</h3><p>For Himachal, Coorg or monsoon ghat roads, request a driver experienced on that corridor. Avoid a schedule built around night driving on unfamiliar hill roads.</p></article>
+            <article class="travel-card"><span class="step">03</span><h3>Define the duty clearly</h3><p>List pickup, final drop, sightseeing days and expected start times. Confirm whether the vehicle stays with the group throughout the trip.</p></article>
+            <article class="travel-card"><span class="step">04</span><h3>Compare three written quotes</h3><p>Use the same itinerary and inclusion list for every operator. The lowest daily rate can become the highest final bill once extras are added.</p></article>
+          </div>
+          <div class="travel-check"><h3>Non-negotiables</h3><ul><li>Registration and commercial permit</li><li>Insurance and driver licence</li><li>Working seat belts where fitted</li><li>Tyre condition and basic breakdown kit</li><li>Hill or interstate permits as required</li><li>Replacement vehicle commitment</li></ul></div>
+        </section>
+
+        <section class="travel-panel" id="travel-stays" role="tabpanel">
+          <div class="travel-hero"><div><p class="eyebrow">Hotels and homestays</p><h1>Choose the location before the property.</h1></div><p><strong>For a two-night trip, a beautiful hotel in the wrong direction costs more than money—it consumes the itinerary.</strong> Decide the base, rooming and cancellation needs before comparing listings.</p></div>
+          <div class="booking-rule"><small>The default workflow</small><strong>Cluster map → room plan → comparison site → direct call</strong></div>
+          <div class="travel-grid">
+            <article class="travel-card"><span class="step">01</span><h3>Pick the correct base</h3><p>Choose the neighbourhood nearest the majority of your planned clusters. Avoid changing hotels during a three-day trip unless the route truly requires it.</p></article>
+            <article class="travel-card"><span class="step">02</span><h3>Freeze the rooming plan</h3><p>Decide who shares before searching. Compare the total for all required rooms—not an attractive per-room headline rate that cannot house everyone.</p></article>
+            <article class="travel-card"><span class="step">03</span><h3>Compare like with like</h3><p>Match taxes, breakfast, cancellation deadline, extra beds, check-in time and room category. Read recent reviews about access roads and monsoon conditions.</p></article>
+            <article class="travel-card"><span class="step">04</span><h3>Call the property directly</h3><p>Ask for a group total and written confirmation of room types, early luggage storage, vehicle parking and driver accommodation if needed.</p></article>
+          </div>
+          <div class="travel-check"><h3>Stay checklist</h3><ul><li>Enough confirmed beds for everyone</li><li>Total includes taxes and extra beds</li><li>Breakfast timing fits departure</li><li>Refund deadline is recorded</li><li>Your chosen vehicle can reach and park</li><li>Power backup and road access checked</li></ul></div>
+          <div class="tool-links"><a href="https://www.google.com/travel/hotels" target="_blank" rel="noopener">Google Hotels ↗</a><a href="https://www.booking.com/" target="_blank" rel="noopener">Booking.com ↗</a><a href="https://www.makemytrip.com/hotels/" target="_blank" rel="noopener">MakeMyTrip ↗</a></div>
+        </section>
+      </main>
+    </div>
+  </section>
+
+  <script>
+    const guides = {
+      udaipur: {
+        name:'Udaipur', eyebrow:'The city, properly structured', title:'Udaipur in five clear zones.',
+        copy:'<strong>Two lake clusters, one hill cluster, and two optional extensions.</strong> Palaces belong mainly to Pichola; Fateh Sagar is for leisure; Sajjangarh gives you forest and panoramic views.',
+        formula:['Pichola','Fateh Sagar','Sajjangarh','Badi','Gulab Bagh'],
+        season:'Boating, the Bahubali viewpoint and a clear Monsoon Palace sunset are weather-dependent. The principal city attractions remain practical in rain.',
+        clusters:[
+          {id:'pichola',kicker:'Heritage core',name:'Lake Pichola',time:'1 full day',status:'Essential',tone:'open',subtitle:'The postcard version of Udaipur',thesis:"Palaces, ghats, old-city lanes, museums and the signature boat experience all meet here.",spots:['City Palace Museum','Jagdish Temple','Bagore Ki Haveli','Gangaur & Ambrai Ghats','Jagmandir Island Palace','Lake Pichola boat ride','Doodh Talai & Karni Mata','Old-city cafés and lanes'],note:'<strong>Useful distinction:</strong> Taj Lake Palace, Taj Fateh Prakash, The Leela and Oberoi Udaivilas are primarily hotels—not four extra public monuments.'},
+          {id:'fateh',kicker:'Leisure lake',name:'Fateh Sagar',time:'½ day',status:'Easy in September',tone:'open',subtitle:'The relaxed, local side of the city',thesis:'This cluster trades palace interiors for an open promenade, gardens, boating, cafés and evening atmosphere.',spots:['Fateh Sagar promenade','Lake boating','Nehru Garden island','Saheliyon Ki Bari','Moti Magri memorial','Aquarium, if interested','Lakeside cafés','Evening street food'],note:'<strong>Do not double-count it:</strong> Fateh Sagar is a separate lake experience, but it does not contain a second group of grand palaces.'},
+          {id:'sajjangarh',kicker:'Hill + forest',name:'Sajjangarh',time:'½ day',status:'Weather-sensitive',tone:'weather',subtitle:'Nature, wildlife and the widest views',thesis:'A forested uphill circuit combining the biological park with Monsoon Palace and panoramas across the lake system.',spots:['Sajjangarh Biological Park','Monsoon Palace','Forested approach road','Aravalli landscape','Pichola panorama','Fateh Sagar panorama','Badi Lake views','Sunset, if visible'],note:'<strong>Best sequence:</strong> Biological Park first, then drive to Monsoon Palace. Cloud and rain can remove the sunset view entirely.'},
+          {id:'badi',kicker:'Nature extension',name:'Badi Lake',time:'3–4 hours',status:'Weather-sensitive',tone:'weather',subtitle:'A quieter Aravalli escape',thesis:'A landscape excursion rather than a monument circuit: lake, hills, open views and a slower pace.',spots:['Badi Lake shoreline','Aravalli scenery','Early-morning light','Countryside drive','Bahubali viewpoint','Photography stops'],note:'<strong>Monsoon caution:</strong> Attempt Bahubali viewpoint only when the trail is dry. Badi remains worthwhile without the climb.'},
+          {id:'gulab',kicker:'City add-on',name:'Gulab Bagh',time:'1½–2½ hours',status:'Optional',tone:'open',subtitle:'A garden and specialist museum stop',thesis:'A compact central add-on pairing Udaipur’s historic rose garden with its royal collection of vintage automobiles.',spots:['Gulab Bagh','Vintage Car Museum','Garden walk','Royal automobile collection','Nearby city museums'],note:'<strong>Priority:</strong> Keep this optional unless your group particularly enjoys gardens, museums or classic cars.'}
+        ],
+        truths:[['Pichola owns the palaces.','It is the heritage-heavy lake and deserves most of your sightseeing time.'],['Fateh Sagar is not Pichola 2.0.','It is about promenades, gardens, cafés, boating and local evening life.'],['Sajjangarh is a hill cluster.','The palace and biological park overlook the lakes; they are not arranged around another lake.']],
+        key:{eyebrow:'Avoid double counting',title:'Palace, hotel or viewpoint?',copy:'Several grand names on the map are accommodation properties rather than ordinary sightseeing stops.',columns:['Place','Category'],rows:[['City Palace','Museum complex','Main paid attraction'],['Jagmandir','Island palace','Visit using the correct boat service'],['Taj Lake Palace','Luxury hotel','Usually admire from the water'],['Taj Fateh Prakash','Palace hotel','Crystal Gallery is the visitor attraction'],['Monsoon Palace','Hilltop palace','Visit mainly for the panorama'],['Leela / Udaivilas','Luxury hotels','Count only with a stay or reservation']]},
+        plans:{two:[['Day 1 · Essential','Pichola','City Palace → Jagdish → old city → Bagore/Gangaur → boat ride → Ambrai or folk show.'],['Day 2 · Combined','Fateh Sagar + Sajjangarh','Saheliyon Ki Bari → Fateh Sagar → Biological Park → Monsoon Palace.']],three:[['Day 1 · Essential','Pichola','City Palace → Jagdish → old city → Bagore/Gangaur → boat ride → Ambrai or folk show.'],['Day 2 · Combined','Fateh Sagar + Sajjangarh','Saheliyon Ki Bari → Fateh Sagar → Biological Park → Monsoon Palace near sunset.'],['Day 3 · Choose one','Nature or museum','Badi Lake for landscape, or Gulab Bagh + Vintage Car Museum for an easy morning.']]},
+        tripNote:'<strong>September rule:</strong> Keep boating, Bahubali and the sunset plan interchangeable.',transport:'Match the vehicle to party size; expect to walk or use smaller local access inside the old city',
+        sources:'Official references: <a href="https://www.tourism.rajasthan.gov.in/udaipur.html">Rajasthan Tourism</a> · <a href="https://www.incredibleindia.gov.in/en/rajasthan/udaipur">Incredible India</a>'
+      },
+      corbett: {
+        name:'Jim Corbett',eyebrow:'The reserve, properly structured',title:'Corbett in six clear zones.',
+        copy:'<strong>Three kinds of experience matter: safari zones, the Kosi resort belt, and the wider Corbett landscape.</strong> “Jim Corbett” is not one gate or one continuous sightseeing loop.',
+        formula:['Dhikala','Bijrani','Jhirna–Dhela','Garjiya–Kosi','Sitabani','Kaladhungi'],
+        season:'In early September, Dhikala and Bijrani are closed. Jhirna and Dhela normally accept day safaris year-round, but only when roads and weather are safe. Corbett Waterfall is closed July–September.',
+        clusters:[
+          {id:'dhikala',kicker:'Deep reserve',name:'Dhikala',time:'1 full day or 1–2 nights',status:'Closed in September',tone:'closed',subtitle:'Grasslands, Ramganga and forest rest houses',thesis:'The reserve’s most immersive cluster, reached through Dhangarhi Gate and best understood as a full-day canter or an inside-forest stay.',spots:['Dhangarhi Gate','Patli Dun grasslands','Ramganga river landscape','Watchtowers and chaur','Dhikala Forest Rest House','Conducted canter day tour','Elephant and deer habitat','Long internal forest drive'],note:'<strong>Season rule:</strong> Dhikala day visits close from 16 June to 14 November; all inside-reserve night halts close during the monsoon.'},
+          {id:'bijrani',kicker:'Classic jeep safari',name:'Bijrani',time:'3½–4 hours',status:'Closed in September',tone:'closed',subtitle:'The popular Amdanda-gate safari',thesis:'A classic jeep-safari zone with sal forest, grassland and open wildlife-viewing country close to Ramnagar.',spots:['Amdanda Gate','Sal forest','Open grasslands','Forest tracks','Bird and deer sightings','Morning or afternoon jeep slot'],note:'<strong>Season rule:</strong> Bijrani is closed for day visits from 30 June to 14 October, so it cannot anchor an early-September trip.'},
+          {id:'south',kicker:'Southern safari',name:'Jhirna–Dhela',time:'3½–4 hours per safari',status:'Possible in September',tone:'weather',subtitle:'The practical monsoon safari choice',thesis:'Two separate southern zones—each needs its own permit and safari slot—but together they form the realistic early-September wildlife option.',spots:['Jhirna tourism zone','Dhela eco-tourism zone','Dense mixed forest','Grassland patches','Birdlife and herbivores','Morning or afternoon jeep','Separate permits by zone','Weather-dependent tracks'],note:'<strong>Do not combine the names into one booking:</strong> Jhirna and Dhela are separate safaris. Both are listed as year-round, subject to safe roads and weather.'},
+          {id:'kosi',kicker:'River + resort belt',name:'Garjiya–Kosi',time:'2–4 hours',status:'Easy add-on',tone:'open',subtitle:'The non-safari Corbett experience',thesis:'The main resort corridor combines river scenery, Garjiya Devi Temple and easy access toward Dhangarhi.',spots:['Garjiya Devi Temple','Kosi river views','Dhikuli resort belt','Dhangarhi museum area','Riverside cafés','Short birding stops'],note:'<strong>Monsoon caution:</strong> Enjoy the river from safe banks and established properties; do not enter the Kosi during high flow.'},
+          {id:'sitabani',kicker:'Landscape forest',name:'Sitabani',time:'3–4 hours',status:'Confirm locally',tone:'weather',subtitle:'Birding and forest outside core CTR',thesis:'A separate forest landscape near Ramnagar, valued for birding, forest drives and the Sitabani temple rather than a core tiger-reserve safari.',spots:['Sitabani forest landscape','Birdwatching','Forest drive','Sitabani temple','Village-edge scenery','Separate local access'],note:'<strong>Important:</strong> Sitabani is outside the core Corbett Tiger Reserve. Confirm current permit, gate and monsoon access before planning it.'},
+          {id:'kaladhungi',kicker:'Legacy circuit',name:'Kaladhungi',time:'4–5 hours',status:'Museum viable',tone:'open',subtitle:'Jim Corbett’s life beyond the park',thesis:'A heritage-oriented half day linking Jim Corbett’s former home, Choti Haldwani and the forested Kaladhungi road.',spots:['Corbett Museum','Corbett’s 1922 bungalow','Choti Haldwani village','Interpretive heritage circuit','Kaladhungi road','Corbett Waterfall area'],note:'<strong>Season rule:</strong> The museum and heritage circuit remain useful; Uttarakhand Tourism lists Corbett Waterfall as closed from July through September.'}
+        ],
+        truths:[['A zone is a booking choice.','You do not roam freely between Dhikala, Bijrani, Jhirna and Dhela on one ordinary permit.'],['One safari takes half a day.','Allow roughly four hours including reporting, gate formalities and the forest drive.'],['Corbett is still worthwhile without Dhikala.','For September, build the trip around Jhirna/Dhela plus river and heritage experiences.']],
+        key:{eyebrow:'Avoid booking confusion',title:'Reserve, zone or outside forest?',copy:'The names appear together in travel packages, but they follow different permits and seasonal rules.',columns:['Name','What it is'],rows:[['Dhikala','CTR tourism zone','Canter day visit or inside stay; monsoon closed'],['Bijrani','CTR tourism zone','Separate jeep permit; monsoon closed'],['Jhirna / Dhela','CTR tourism zones','Separate permits; year-round subject to safety'],['Sitabani','Forest landscape','Outside core CTR; confirm local access'],['Garjiya–Dhikuli','Resort corridor','River, temple and accommodation—not a safari zone'],['Kaladhungi','Heritage town','Museum and Corbett legacy circuit']]},
+        plans:{two:[['Day 1 · Wildlife','Jhirna or Dhela','Morning safari → resort breakfast/rest → Garjiya and Kosi river viewpoints.'],['Day 2 · Second perspective','Other safari or heritage','Book the other open zone, or choose Kaladhungi Museum + Choti Haldwani if rain affects safaris.']],three:[['Day 1 · Wildlife','Jhirna safari','Morning safari → resort rest → Garjiya–Kosi in the late afternoon.'],['Day 2 · Wildlife','Dhela safari','Use a separate permit for a second landscape; keep the rest of the day relaxed.'],['Day 3 · Context','Kaladhungi or Sitabani','Choose the Corbett heritage circuit, or Sitabani only after confirming access and weather.']]},
+        tripNote:'<strong>September rule:</strong> Book refundable lodging and treat every safari as conditional until the gate confirms operation.',transport:'Safari vehicles and permits are separate from the vehicle used to reach the resort or park gate',
+        sources:'Official references: <a href="https://corbettgov.org/">Corbett Tiger Reserve</a> · <a href="https://www.corbetttigerreserve.in/faqs-corbett-tiger-reserve.php">CTR visitor FAQ</a> · <a href="https://uttarakhandtourism.gov.in/destination/corbett-national-park">Uttarakhand Tourism</a>'
+      },
+      ranthambore: {
+        name:'Ranthambore',eyebrow:'The tiger landscape, properly structured',title:'Ranthambore in five clear zones.',
+        copy:'<strong>Two safari groups, one major fort cluster, and two quieter town-and-nature add-ons.</strong> The numbered safari zones are routes—not ten separate attractions to tick off.',
+        formula:['Zones 1–5','Zones 6–10','Fort + Temple','Sawai Madhopur','Surwal countryside'],
+        season:'In early September, the main park zones 1–5 are closed. Zones 6–10 may operate in the monsoon, but permits and drives can be suspended after heavy rain. This makes Ranthambore a conditional safari trip.',
+        clusters:[
+          {id:'core',kicker:'Main park safaris',name:'Zones 1–5',time:'3½ hours per safari',status:'Closed in September',tone:'closed',subtitle:'Lakes, ruins and classic park scenery',thesis:'The best-known routes through the principal park landscape, including combinations of lakes, old structures, valleys and dry forest.',spots:['Zone 1: Singh Dwar side','Zone 2: Jogi Mahal sector','Zone 3: Padam/Rajbagh lakes','Zone 4: Lakarda–Berda side','Zone 5: Kachida–Bakola side','Gypsy or canter slot'],note:'<strong>Season rule:</strong> Zones 1–5 close from July through September. Do not book Ranthambore expecting Padam Talao and the classic core-zone experience.'},
+          {id:'buffer',kicker:'Monsoon safaris',name:'Zones 6–10',time:'3½ hours per safari',status:'Possible in September',tone:'weather',subtitle:'The realistic early-September safari group',thesis:'The wider reserve landscape remains the only potential safari option in early September, subject to official release, rain and track conditions.',spots:['Zone 6: Kundal side','Zone 7: Chidikho side','Zone 8: Balas side','Zone 9: Qualji side','Zone 10: Halonda side','Morning or afternoon slot','Gypsy/canter allocation','Weather-dependent access'],note:'<strong>Expectation setting:</strong> These are legitimate wildlife zones, but sightings are never guaranteed and a monsoon closure can happen at short notice.'},
+          {id:'fort',kicker:'Heritage anchor',name:'Fort + Trinetra Ganesh',time:'3–4 hours',status:'Essential non-safari',tone:'open',subtitle:'The destination’s strongest guaranteed experience',thesis:'A hill-fort complex of gates, walls, tanks, temples and viewpoints overlooking the Ranthambore landscape.',spots:['Ranthambore Fort','Trinetra Ganesh Temple','Fort gates and ramparts','Tanks and historic structures','Forest panoramas','Pilgrimage activity'],note:'<strong>Timing:</strong> Allow half a day including the drive and climb. Start early in September and expect more visitors around temple occasions.'},
+          {id:'town',kicker:'Town + interpretation',name:'Sawai Madhopur',time:'2–3 hours',status:'Easy backup',tone:'open',subtitle:'Museum, crafts and local context',thesis:'A low-risk urban cluster that explains the ecology and culture around the reserve when a safari is cancelled or delayed.',spots:['Rajiv Gandhi Natural History Museum','Shilpgram area','Local market','Block-print and craft shopping','Sawai Madhopur food stops','Railway-town atmosphere'],note:'<strong>Use it as a buffer:</strong> This cluster is helpful on arrival/departure day or when rain removes a safari slot.'},
+          {id:'surwal',kicker:'Quiet extension',name:'Surwal countryside',time:'2–3 hours',status:'Weather-sensitive',tone:'weather',subtitle:'Seasonal water, birding and open landscape',thesis:'A quieter early-morning countryside excursion built around Surwal Lake and agricultural scenery outside the main park gates.',spots:['Surwal Lake','Seasonal wetland views','Birdwatching','Village landscape','Sunrise photography','Countryside drive'],note:'<strong>Monsoon caution:</strong> Road edges can be muddy and birding varies by water level and season. Treat this as optional, not a substitute for a confirmed safari.'}
+        ],
+        truths:[['Ten zones do not mean ten sights.','Each numbered zone is an allocated safari route; one ordinary safari covers only its assigned zone.'],['September changes the product.','The famous zones 1–5 are closed, leaving only conditional monsoon operation in zones 6–10.'],['The fort is a genuine second anchor.','Unlike many wildlife towns, Ranthambore has a substantial half-day heritage experience beyond safari.']],
+        key:{eyebrow:'Avoid safari confusion',title:'Zone, attraction or town?',copy:'Treat the destination as safari slots plus independent non-safari clusters—not as a continuous park drive.',columns:['Name','What it is'],rows:[['Zones 1–5','Main park routes','Closed July–September'],['Zones 6–10','Wider reserve routes','May operate in monsoon, weather permitting'],['Ranthambore Fort','Independent attraction','Visit without a safari permit'],['Trinetra Ganesh','Temple inside fort','Combine with the fort'],['Sawai Madhopur','Gateway town','Hotels, museum, market and station'],['Surwal Lake','Countryside wetland','Optional early-morning add-on']]},
+        plans:{two:[['Day 1 · Conditional safari','Zones 6–10 + town','Morning monsoon safari if operating → rest → Natural History Museum or local market.'],['Day 2 · Guaranteed anchor','Fort + Trinetra Ganesh','Early fort visit → temple and viewpoints → optional Surwal countryside before departure.']],three:[['Day 1 · Conditional safari','First zones 6–10 slot','Morning safari if operating → museum/market after rest.'],['Day 2 · Heritage','Fort + Trinetra Ganesh','Give the fort a full half day; use the remaining time for the resort or town.'],['Day 3 · Second chance','Safari or Surwal','A second monsoon safari improves your chance of one operating; otherwise use the countryside backup.']]},
+        tripNote:'<strong>September rule:</strong> Do not commit unless zones 6–10 show official availability and you accept short-notice weather cancellation.',transport:'Safari vehicle type and allocation follow the permit; arrival transport is a separate planning decision',
+        sources:'Official references: <a href="https://forest.rajasthan.gov.in/content/raj/forest/en/citizen-services/safari-zoo-ticket-booking.html">Rajasthan Forest booking</a> · <a href="https://www.tourism.rajasthan.gov.in/ranthambore.html">Rajasthan Tourism</a> · <a href="https://www.tourism.rajasthan.gov.in/ranthambore-fort.html">Ranthambore Fort</a>'
+      },
+      lonavala: {
+        name:'Lonavala',eyebrow:'The monsoon hill station, properly structured',title:'Lonavala in six clear circuits.',
+        copy:'<strong>One town-and-dam circuit, one viewpoint belt, two heritage-and-fort directions, and two countryside extensions.</strong> Lonavala is a collection of ghat drives and trail choices—not one waterfall stop.',
+        formula:['Town + Bhushi','Khandala ridge','Karla–Bhaja','Lohagad–Visapur','Pawna–Tikona','Rajmachi'],
+        season:'Early September is peak-green monsoon country. Water levels, fog, weekend crowds and district safety orders can change access quickly; never enter dam overflow, waterfall pools or fast streams.',
+        clusters:[
+          {id:'town',kicker:'Town + monsoon icon',name:'Lonavala–Bhushi',time:'3–4 hours',status:'Crowded / regulated',tone:'weather',subtitle:'The easiest first look at Lonavala',thesis:'A compact circuit combining the town, gardens, local food and a controlled look at the famous monsoon dam landscape.',spots:['Lonavala town','Ryewood Park','Local chikki shops','Bhushi Dam viewing area','Tungarli Lake viewpoint','Short café stops','Monsoon greenery','Easy arrival-day loop'],note:'<strong>Weekend reality:</strong> Expect heavy crowds near Bhushi Dam. Follow barriers and police instructions; viewing the overflow is not permission to enter the current.'},
+          {id:'khandala',kicker:'Cliffs + viewpoints',name:'Khandala ridge',time:'2–3 hours',status:'Visibility-dependent',tone:'weather',subtitle:'Big ghat views with little walking',thesis:'A ridge-and-cliff drive linking Lonavala’s most recognisable panoramas, best when low cloud briefly clears.',spots:['Tiger’s Leap','Lion’s Point','Rajmachi Point','Khandala valley views','Duke’s Nose exterior view','Ghat railway scenery','Sunrise or late afternoon','Roadside tea stops'],note:'<strong>Reality check:</strong> Fog can erase the view, while wet cliff edges are dangerous. Keep this cluster flexible and stay behind established barriers.'},
+          {id:'caves',kicker:'Rock-cut heritage',name:'Karla–Bhaja caves',time:'4–5 hours',status:'Strong rainy-day option',tone:'open',subtitle:'Ancient Buddhist caves on two separate hills',thesis:'A heritage circuit pairing two major rock-cut cave groups, their stair approaches and the Ekvira temple precinct.',spots:['Karla Caves','Great Chaitya hall','Ekvira temple precinct','Bhaja Caves','Rock-cut stupas','Historic façades','Valley outlooks','Stepped hill approaches'],note:'<strong>Do not rush both:</strong> Karla and Bhaja are separate sites. Their stone steps become slick in rain, so use footwear with grip and allow transfer time.'},
+          {id:'forts',kicker:'Fort day',name:'Lohagad–Visapur',time:'5–7 hours',status:'Choose one in rain',tone:'weather',subtitle:'Two forts, not one combined monument',thesis:'A serious hill-and-heritage cluster where the main decision is which fort suits the day’s rain, trail condition and group energy.',spots:['Lohagad Fort','Vinchu Kata ridge','Visapur Fort','Bhaja village approach','Fort walls and gates','Plateau views','Guided monsoon walk','Local breakfast or lunch'],note:'<strong>Best decision:</strong> Choose one fort for a short trip. Use a local guide, skip exposed sections during active rain and obey any temporary trekking restriction.'},
+          {id:'pawna',kicker:'Lake countryside',name:'Pawna–Tikona',time:'4–6 hours',status:'Drive-first in monsoon',tone:'weather',subtitle:'Reservoir views and open rural landscape',thesis:'A scenic countryside circuit west of Lonavala built around Pawna reservoir, village roads and an optional fort walk.',spots:['Pawna Lake viewpoints','Tikona village','Tikona Fort, if dry','Countryside drive','Reservoir panoramas','Local cafés','Tung Fort views','Slow photography stops'],note:'<strong>Monsoon version:</strong> Treat Pawna as a scenic drive, not a swimming or camping plan. Attempt Tikona only if the trail and local access are clearly safe.'},
+          {id:'rajmachi',kicker:'Advanced extension',name:'Rajmachi',time:'1 full day',status:'Guided / weather-only',tone:'weather',subtitle:'Remote fort country beyond the easy circuits',thesis:'A longer forest-and-fort outing through Udhewadi toward the twin forts, requiring more time, better logistics and dependable conditions.',spots:['Udhewadi village','Shrivardhan Fort','Manaranjan Fort','Forest track','Valley views','Historic gateways','Kondhane direction','Full-day guided outing'],note:'<strong>Not a casual add-on:</strong> Road and trail conditions vary sharply in monsoon. Use an experienced local operator and drop it entirely during heavy-rain warnings.'}
+        ],
+        truths:[['Lonavala is several ghat circuits.','The town, Khandala, caves, forts and Pawna point in different directions; they do not form one neat loop.'],['Beauty and access change together.','The rain creates the waterfalls and greenery, but also fog, slippery trails, crowd controls and sudden closures.'],['Choose one trek cluster.','For a 2–3 day trip, Lohagad, Tikona or Rajmachi should be alternatives—not a checklist.']],
+        key:{eyebrow:'Avoid route confusion',title:'Viewpoint, cave or trek?',copy:'The destination works best when each place is treated according to the time, effort and monsoon exposure it actually needs.',columns:['Place','Type'],rows:[['Bhushi Dam','Dam viewpoint','Short, crowded and strictly safety-controlled'],['Tiger’s / Lion’s Point','Road viewpoints','Combine when visibility is good'],['Karla / Bhaja','Cave complexes','Separate sites; allow stairs and transfer time'],['Lohagad / Visapur','Hill forts','Choose one in wet weather'],['Pawna','Reservoir landscape','Use as a countryside drive in monsoon'],['Rajmachi','Remote fort outing','Reserve a full guided day']]},
+        plans:{two:[['Day 1 · Easy monsoon','Town + Khandala','Ryewood Park → Bhushi viewing area → Tiger’s/Lion’s Point when visibility allows → relaxed town evening.'],['Day 2 · Choose your anchor','Caves or one fort','Karla + Bhaja for heritage, or Lohagad with a guide if rain and access are safe.']],three:[['Day 1 · Easy monsoon','Town + Khandala','Bhushi and the ridge viewpoints, paced around traffic, cloud and rain.'],['Day 2 · Heritage + landscape','Karla–Bhaja + Pawna','Visit both cave groups, then use remaining daylight for a Pawna countryside drive.'],['Day 3 · One active choice','Lohagad, Tikona or Rajmachi','Pick only one; Rajmachi needs the whole day and the strongest weather window.']]},
+        tripNote:'<strong>September rule:</strong> Check Pune district and local police orders 48 hours before departure; keep one non-trek day fully interchangeable.',transport:'Use Pune or Mumbai as the main gateways; match onward vehicle size to the party and avoid late-night ghat driving',
+        sources:'Official references: <a href="https://maharashtratourism.gov.in/nature/lonavala/">Maharashtra Tourism: Lonavala</a> · <a href="https://maharashtratourism.gov.in/tourist-intrests/caves/">Maharashtra Tourism: caves</a> · <a href="https://maharashtratourism.gov.in/monsoon-tourism/">Monsoon tourism guidance</a>'
+      },
+      coorg: {
+        name:'Coorg',eyebrow:'The hill district, properly structured',title:'Coorg in five clear regions.',
+        copy:'<strong>One Madikeri core, two nearby nature circuits, and two longer directional day trips.</strong> Coorg is an entire district, so choosing a base and grouping drives matters more than counting attractions.',
+        formula:['Madikeri core','Abbey + coffee','Mandalpatti','Kushalnagar–Dubare','Bhagamandala–Talacauvery'],
+        season:'June to September is Coorg’s wet, intensely green season. Waterfalls are full, but estate paths, viewpoints, river activities and winding roads remain conditional in heavy rain.',
+        clusters:[
+          {id:'madikeri',kicker:'Town core',name:'Madikeri',time:'½ day',status:'Reliable base',tone:'open',subtitle:'History, gardens and the district’s best base',thesis:'A compact hill-town cluster that combines easy heritage stops, sunset views, local food and access to the surrounding circuits.',spots:['Raja’s Seat','Madikeri Fort','Omkareshwara Temple','Gaddige tombs','Local market','Kodagu food stops','Town cafés','Evening valley views'],note:'<strong>Best use:</strong> Combine this on arrival day or after Abbey Falls. Raja’s Seat is worthwhile for atmosphere even when cloud hides the distant view.'},
+          {id:'abbey',kicker:'Falls + estates',name:'Abbey–coffee country',time:'4–5 hours',status:'Excellent in monsoon',tone:'open',subtitle:'The classic nature circuit near Madikeri',thesis:'A short countryside loop through coffee-and-spice landscapes to Coorg’s best-known waterfall viewing area.',spots:['Abbey Falls','Coffee estate tour','Pepper and cardamom plants','Plantation cafés','Madikeri countryside','Rainforest vegetation','Estate viewpoints','Local produce shopping'],note:'<strong>Monsoon caution:</strong> Use the official viewing area and stay out of the water. Confirm that any plantation walk is operating during active rain.'},
+          {id:'mandalpatti',kicker:'High viewpoint',name:'Mandalpatti',time:'4–5 hours',status:'Jeep + weather-dependent',tone:'weather',subtitle:'Open ridges above the coffee country',thesis:'A highland viewpoint excursion reached by authorised local jeeps, prized for broad ridges, wind and layered hill scenery.',spots:['Mandalpatti viewpoint','4x4 jeep ride','Pushpagiri foothills','Rolling grass ridges','Cloud movement','Forest approach','Photography stops','Optional Kote Betta direction'],note:'<strong>Go only for a clear safety window:</strong> Rain can mean rough tracks, zero visibility or closure. Do not force the trip because a jeep has been pre-arranged.'},
+          {id:'east',kicker:'River + culture',name:'Kushalnagar–Dubare',time:'1 full day',status:'Activities conditional',tone:'weather',subtitle:'Cauvery landscape and Tibetan heritage',thesis:'A long eastern circuit combining river-edge forest, family recreation areas and the major monastic complex at Bylakuppe.',spots:['Dubare forest area','Cauvery river viewpoints','Kaveri Nisargadhama','Namdroling Golden Temple','Bylakuppe monastery precinct','Kushalnagar food stops','Bamboo landscape','Craft and produce shops'],note:'<strong>Important distinction:</strong> Dubare river crossings and activities depend on flow and official operation. The Golden Temple remains the reliable cultural anchor.'},
+          {id:'west',kicker:'Source of Cauvery',name:'Bhagamandala–Talacauvery',time:'5–6 hours',status:'Road + visibility-dependent',tone:'weather',subtitle:'Pilgrimage, high hills and a winding western drive',thesis:'A directional excursion from Madikeri to the sacred confluence at Bhagamandala and the high landscape around Talacauvery.',spots:['Bhagamandala temple','Triveni Sangama','Talacauvery shrine','Brahmagiri hillside','Highland viewpoints','Forested road','Kodagu cultural context','Local meal stops'],note:'<strong>Wet-road rule:</strong> Start early, use daylight and turn back if rain or visibility worsens. The temples still provide value when the panorama disappears.'}
+        ],
+        truths:[['Coorg is a district, not one town.','Madikeri, Kushalnagar, Dubare and Talacauvery require substantial driving between clusters.'],['Madikeri is the efficient short-trip base.','It keeps the town, Abbey Falls and Mandalpatti close while leaving one full day for a directional excursion.'],['Rain changes activities, not just views.','Jeep access, estate walks and river experiences can pause even when the main roads remain open.']],
+        key:{eyebrow:'Avoid distance surprises',title:'Town stop or day circuit?',copy:'Coorg itineraries often look short on a list but become full days once wet, winding roads are included.',columns:['Cluster','How to treat it'],rows:[['Madikeri','Compact town core','Half day or arrival/departure window'],['Abbey + coffee','Nearby nature circuit','Combine in four to five hours'],['Mandalpatti','Jeep viewpoint','Separate weather-dependent half day'],['Dubare + Bylakuppe','Eastern day trip','Allow a full day from Madikeri'],['Talacauvery','Western day trip','Allow five to six hours'],['South Coorg / Iruppu','Distant extension','Better with four or more days']]},
+        plans:{two:[['Day 1 · Central Coorg','Madikeri + Abbey','Abbey Falls and a short estate experience → Madikeri Fort/Omkareshwara → Raja’s Seat.'],['Day 2 · Eastern circuit','Dubare + Bylakuppe','Dubare if safely operating → Nisargadhama → Golden Temple → return to Madikeri.']],three:[['Day 1 · Central Coorg','Madikeri + Abbey','Waterfall, plantation landscape and the hill-town core.'],['Day 2 · Eastern circuit','Dubare + Bylakuppe','Use the river activities only if officially open; keep the monastery as the fixed anchor.'],['Day 3 · Choose west or highland','Talacauvery or Mandalpatti','Choose Talacauvery for culture and a long drive, or Mandalpatti for a shorter weather-dependent jeep outing.']]},
+        tripNote:'<strong>September rule:</strong> Keep Mandalpatti and Dubare flexible; do not place both of Coorg’s long directional circuits on the same day.',transport:'Compare Bengaluru, Mysuru and Kannur as gateways; choose the base and vehicle from the selected Coorg circuits',
+        sources:'Official references: <a href="https://karnatakatourism.org/en/destinations/coorg">Karnataka Tourism: Coorg</a> · <a href="https://kodagu.nic.in/en/tourism/">Kodagu district tourism</a> · <a href="https://kodagu.nic.in/en/tourist-place/abbey-falls/">Kodagu district: Abbey Falls</a>'
+      },
+      shoja: {
+        name:'Shoja',eyebrow:'The quiet valley base, properly structured',title:'Shoja in five clear layers.',
+        copy:'<strong>One tiny forest base, one pass-and-trail direction, and two neighbouring valley circuits.</strong> Shoja is about stillness and landscape—not a dense list of conventional attractions.',
+        formula:['Shoja village','Jalori Pass','Serolsar trail','Jibhi belt','Tirthan valley'],
+        season:'Early September is lush but high-risk for road disruption. The narrow Banjar–Shoja–Jalori road can face fog, rockfall and landslides; travel only in daylight and cancel the pass or trail on heavy-rain alerts.',
+        clusters:[
+          {id:'village',kicker:'Forest base',name:'Shoja village',time:'2–3 hours',status:'Slow and easy',tone:'open',subtitle:'Orchards, cedar forest and quiet valley views',thesis:'A small walking-and-rest cluster around the village itself, best enjoyed without trying to manufacture a long attraction list.',spots:['Shoja village lanes','Apple orchards','Cedar and deodar forest','Valley viewpoints','Guesthouse cafés','Short forest walks','Cloud and bird watching','Unhurried evening'],note:'<strong>Set expectations:</strong> Shoja is the experience. It works best for people who enjoy silence, weather, reading, food and short walks.'},
+          {id:'jalori',kicker:'Mountain pass',name:'Jalori Pass',time:'3–4 hours',status:'Road-dependent',tone:'weather',subtitle:'The high directional anchor above Shoja',thesis:'A steep uphill drive from Shoja to a high pass with ridge views, temples and trailheads toward the surrounding mountains.',spots:['Jalori Pass','Mahakali temple area','Ridge viewpoints','Forest road','Trailheads','Roadside dhabas, if open','Cloud breaks','Mountain landscape'],note:'<strong>Do not treat access as guaranteed:</strong> Check local road status immediately before leaving. Turn back early if fog, falling rock or active rain makes the ascent unsafe.'},
+          {id:'serolsar',kicker:'Forest trail',name:'Serolsar Lake',time:'5–7 hours with Jalori',status:'Dry-window only',tone:'weather',subtitle:'A long forest walk beyond the pass',thesis:'A sustained out-and-back trail from Jalori through forest to a small sacred lake, suitable only when the path and weather are stable.',spots:['Jalori trailhead','Forest ridge walk','Serolsar Lake','Budhi Nagin temple','Mountain meadows','Birdlife','Packed lunch stops','Return to Jalori'],note:'<strong>Your monsoon filter:</strong> Skip it during rain, thunder, dense fog or fresh landslide reports. Use a local guide and carry proper footwear and layers.'},
+          {id:'jibhi',kicker:'Neighbouring village belt',name:'Jibhi–Gadagushaini',time:'3–4 hours',status:'Flexible valley option',tone:'open',subtitle:'Village cafés, forest and easy scenery',thesis:'A lower, more developed valley circuit offering cafés, traditional houses and short nature stops without committing to a high pass.',spots:['Jibhi village','Jibhi waterfall viewpoint','Gadagushaini','Traditional wooden homes','Riverside scenery from safe banks','Forest cafés','Local food','Short village walks'],note:'<strong>River rule:</strong> Stay well away from swollen channels and waterfall pools. Use this as the safer replacement when Jalori is not sensible.'},
+          {id:'tirthan',kicker:'Valley extension',name:'Tirthan–Gushaini',time:'½ to 1 full day',status:'Guide useful',tone:'weather',subtitle:'River valley and the edge of the national park',thesis:'A lower-valley nature day around Gushaini, villages and the Great Himalayan National Park buffer rather than a rushed deep trek.',spots:['Gushaini village','Tirthan valley','GHNP buffer landscape','Village paths','Birdwatching','Short guided nature walk','Local trout cuisine','Safe river viewpoints'],note:'<strong>Monsoon version:</strong> Choose a short guided village or buffer walk. Avoid deep treks, river crossing, angling or sitting on low riverbanks during high flow.'}
+        ],
+        truths:[['Shoja is a base, not a checklist.','Its appeal is forest, weather and quiet; Jibhi and Tirthan supply most of the named stops.'],['Jalori and Serolsar are one direction.','Serolsar begins from the pass, so they normally form one combined active day.'],['The approach road is the key risk.','A dry hotel forecast does not guarantee safe conditions on the long Delhi–Aut–Banjar–Shoja route.']],
+        key:{eyebrow:'Avoid over-planning',title:'Base, drive or trail?',copy:'Each Shoja-area name implies a very different commitment, especially in the monsoon.',columns:['Place','Type'],rows:[['Shoja','Forest village base','Slow half day and accommodation'],['Jalori Pass','High road excursion','Conditional three to four hours'],['Serolsar Lake','Forest hike','Five to seven hours with Jalori'],['Jibhi','Lower village belt','Flexible cafés and short walks'],['Tirthan / Gushaini','Valley nature circuit','Half or full day'],['GHNP interior','Serious trekking area','Not for a casual monsoon short trip']]},
+        plans:{two:[['Day 1 · Settle into the valley','Shoja + Jibhi','Shoja forest time → Jibhi village and waterfall viewpoint → relaxed evening.'],['Day 2 · Conditional high day','Jalori or Tirthan','Use Jalori only after a safe road check; otherwise spend the day around Gushaini and Tirthan.']],three:[['Day 1 · Lower valley','Jibhi + Shoja','Easy villages, cafés and forest after the long approach.'],['Day 2 · Weather choice','Jalori + optional Serolsar','Reach the pass if safe; add Serolsar only in a genuinely stable dry window.'],['Day 3 · Nature day','Tirthan + Gushaini','A short guided nature or village walk before the return journey.']]},
+        tripNote:'<strong>September rule:</strong> Book refundable stays, verify road and weather reports 48 hours and again 6 hours before departure, and keep Jalori optional.',transport:'The final approach is long and narrow; use an experienced hill driver, travel in daylight and protect a disruption buffer',
+        sources:'Official references: <a href="https://himachaltourism.gov.in/destination/kullu-2/">Himachal Tourism: Kullu, Shoja and Jalori</a> · <a href="https://himachaltourism.gov.in/travel-safety-tips/">Himachal Tourism safety guidance</a>'
+      },
+      manali: {
+        name:'Manali',eyebrow:'The valley resort, properly structured',title:'Manali in five clear directions.',
+        copy:'<strong>One full local-town day, one short Vashisht side, and three directional road circuits.</strong> Solang, Sissu, Naggar and Rohtang are not all casual add-ons to Mall Road.',
+        formula:['Old Manali–Dhungri','Vashisht–Jogini','Solang–Atal–Sissu','Naggar–Kullu','Rohtang Pass'],
+        season:'The destination is green in early September, but the Mandi–Kullu–Manali corridor and side valleys remain exposed to landslides, rockfall and flooding. Treat every long road day as conditional.',
+        clusters:[
+          {id:'local',kicker:'Town + cedar forest',name:'Manali–Dhungri',time:'1 full day',status:'Reliable core',tone:'open',subtitle:'The essential local experience',thesis:'A walkable-and-short-drive circuit joining Manali’s temples, cedar forest, old village streets, river atmosphere and evening town life.',spots:['Hadimba Devi Temple','Dhungri cedar forest','Old Manali','Manu Temple area','Mall Road','Van Vihar','Beas river viewpoints','Cafés and local food'],note:'<strong>Best first day:</strong> Keep the route compact after the long journey. Visit the river only from established promenades or high, safe banks.'},
+          {id:'vashisht',kicker:'Village side',name:'Vashisht–Jogini',time:'3–4 hours',status:'Trail conditional',tone:'weather',subtitle:'Temple village and a short waterfall direction',thesis:'A half-day eastern-bank cluster around Vashisht village, its temples and an optional walk toward Jogini Falls.',spots:['Vashisht village','Vashisht temples','Hot-spring precinct','Village lanes','Jogini Falls direction','Valley views','Small cafés','Short local walk'],note:'<strong>Monsoon choice:</strong> The village remains useful, but attempt the waterfall trail only when dry and locally confirmed safe. Avoid slippery edges and water channels.'},
+          {id:'north',kicker:'North valley road',name:'Solang–Atal–Sissu',time:'1 full day',status:'Road-dependent',tone:'weather',subtitle:'Adventure valley, tunnel and Lahaul option',thesis:'One directional day north of Manali, combining Solang Valley with the Atal Tunnel and—if roads remain open—the contrasting Lahaul landscape at Sissu.',spots:['Nehru Kund direction','Solang Valley','Atal Tunnel','North Portal landscape','Sissu village','Sissu waterfall viewpoint','Lahaul scenery','Weather-dependent activities'],note:'<strong>One circuit, not three days:</strong> Solang, the tunnel and Sissu align on the same road. Paragliding and other activities may stop in rain, wind or poor visibility.'},
+          {id:'naggar',kicker:'Heritage valley',name:'Naggar–Kullu',time:'5–7 hours',status:'Good backup day',tone:'open',subtitle:'Castles, art and old valley settlements',thesis:'A heritage-oriented drive south through the Kullu valley, useful when high passes are unsuitable but the main corridor is functioning.',spots:['Naggar Castle','Nicholas Roerich Art Gallery','Naggar temples','Traditional village lanes','Kullu valley views','Shawl and craft stops','Local cafés','Daylight valley drive'],note:'<strong>Best rainy-day substitute:</strong> Prioritise Naggar’s heritage stops and omit minor waterfall detours when roads or slopes look unstable.'},
+          {id:'rohtang',kicker:'High-pass day',name:'Rohtang Pass',time:'1 full day',status:'Permit + weather-only',tone:'weather',subtitle:'A separate regulated mountain excursion',thesis:'A high-altitude road day above Manali requiring the correct permit, functioning road access and a stable weather window.',spots:['Rohtang road','Gulaba direction','Marhi, if operating','Pass landscape','Snow remnants, seasonal','High mountain views','Permit checkpoint','Acclimatisation-aware pacing'],note:'<strong>Never assume it is included:</strong> Permits, vehicle rules, congestion controls and weather govern access. Do not pair Rohtang with Sissu as an ordinary single-day plan.'}
+        ],
+        truths:[['Manali town fills a real day.','Hadimba, Old Manali, Vashisht and the town are not merely evening filler after a pass excursion.'],['Solang–Atal–Sissu share one road.','They make one north-valley circuit when the road and weather cooperate.'],['The route to Manali is the largest risk.','For a two-night trip, disruption on the Mandi–Kullu corridor can consume the entire schedule.']],
+        key:{eyebrow:'Avoid directional confusion',title:'Local cluster or road day?',copy:'A short Manali plan succeeds by choosing one major road direction per day and preserving a local fallback.',columns:['Cluster','How to treat it'],rows:[['Dhungri / Old Manali','Local core','One relaxed full day'],['Vashisht / Jogini','Local half day','Trail only in safe conditions'],['Solang / Atal / Sissu','North road circuit','One conditional full day'],['Naggar / Kullu','South heritage circuit','Five to seven hours'],['Rohtang Pass','Regulated high-pass trip','Separate permit and full day'],['Beas river activities','Adventure product','Do not depend on them in monsoon']]},
+        plans:{two:[['Day 1 · Local Manali','Dhungri + Old Manali','Hadimba and cedar forest → Old Manali → Vashisht or Mall Road, paced gently after arrival.'],['Day 2 · One road direction','Solang–Atal–Sissu or Naggar','Take the north-valley circuit only if confirmed safe; otherwise use Naggar’s heritage route.']],three:[['Day 1 · Local Manali','Dhungri + Old Manali','Temple, forest, village streets and the town evening.'],['Day 2 · Conditional north','Solang–Atal–Sissu','A full road day if the corridor and activities are operating safely.'],['Day 3 · Heritage backup','Naggar–Kullu','Castle, art gallery and temples; use Vashisht as a shorter alternative before departure.']]},
+        tripNote:'<strong>September rule:</strong> Do not make Rohtang or Sissu essential. Check IMD, Himachal traffic and district road updates before departure and again en route.',transport:'Compare flight-plus-road, bus and private road options from the origin; use a reputable hill operator and retain a disruption buffer',
+        sources:'Official references: <a href="https://himachaltourism.gov.in/manali">Himachal Tourism: Manali</a> · <a href="https://himachaltourism.gov.in/travel-safety-tips/">Himachal Tourism safety guidance</a> · <a href="https://www.pib.gov.in/PressReleasePage.aspx?PRID=2280407&amp;lang=2&amp;reg=48">NHAI monsoon preparedness</a>'
+      },
+      goa: {
+        name:'Goa',eyebrow:'The coast and hinterland, properly structured',title:'Goa in six clear belts.',
+        copy:'<strong>Two heritage-and-city clusters, two separate coast belts, and two inland nature-and-culture circuits.</strong> Goa is a state, not one uninterrupted beach strip.',
+        formula:['Panaji–Fontainhas','Old Goa–islands','North coast','South coast','Ponda hinterland','Mollem forest'],
+        season:'September remains monsoon season, with lush landscapes and intermittent heavy rain. Build around heritage, food, drives and forests; swimming, watersports, boat trips and waterfall access may be restricted.',
+        clusters:[
+          {id:'panaji',kicker:'Capital + Latin quarter',name:'Panaji–Fontainhas',time:'½ to 1 full day',status:'Best all-weather core',tone:'open',subtitle:'Architecture, riverfront and urban Goa',thesis:'A compact central cluster of colourful lanes, civic heritage, museums, food and the Mandovi waterfront.',spots:['Fontainhas lanes','Panaji churches','Mandovi promenade','Miramar Beach viewpoint','Goa State Museum options','Local bakeries','Markets and cafés','Evening riverfront'],note:'<strong>Rain-friendly anchor:</strong> Walk Fontainhas in a light shower, but move indoors during intense rain. Treat Miramar as a coastal view, not a swimming stop.'},
+          {id:'oldgoa',kicker:'Sacred heritage + islands',name:'Old Goa–islands',time:'1 full day',status:'Strong monsoon day',tone:'open',subtitle:'Monuments, ferries and a quieter river landscape',thesis:'A heritage day around Goa’s monumental church complex, with an optional ferry extension to Divar or Chorao when services and weather cooperate.',spots:['Basilica of Bom Jesus','Sé Cathedral','Church of St Francis of Assisi','Old Goa museums','Divar Island','Chorao village','Salim Ali birding area','Ferry crossings'],note:'<strong>Structure it correctly:</strong> Old Goa is the guaranteed anchor. Add only one island and confirm ferry, sanctuary and boat access on the day.'},
+          {id:'north',kicker:'Fort + lively coast',name:'North Goa coast',time:'1 full day',status:'Coastal viewing only',tone:'weather',subtitle:'The busier beach and fort belt',thesis:'A north-coast drive joining the established resort beaches with Chapora’s fort landscape and the markets and cafés around Anjuna.',spots:['Candolim','Calangute','Baga','Anjuna','Vagator','Chapora Fort','Reis Magos or Aguada direction','Cafés and markets'],note:'<strong>Monsoon version:</strong> Choose three or four stops, not every beach. Swim only where lifeguards explicitly permit it; many watersports and seasonal shacks may not operate.'},
+          {id:'south',kicker:'Quieter coast',name:'South Goa coast',time:'1 full day',status:'Choose one sub-belt',tone:'weather',subtitle:'Longer beaches and a slower pace',thesis:'A spacious coastal day that should focus either on the central-south belt or the far-south coves rather than trying to connect all of them.',spots:['Colva–Benaulim belt','Varca–Cavelossim belt','Palolem','Agonda','Galgibaga direction','Margao food stop','Coastal village roads','Sunset if visible'],note:'<strong>Pick one:</strong> From a north-Goa base, Palolem is a long road day. Monsoon sea conditions apply equally here—enjoy the shore from safe, guarded areas.'},
+          {id:'ponda',kicker:'Temples + spice country',name:'Ponda hinterland',time:'1 full day',status:'Excellent alternative',tone:'open',subtitle:'Cultural Goa beyond the shoreline',thesis:'An inland circuit combining major temple complexes, cultivated spice landscapes and regional food in Goa’s green interior.',spots:['Shri Mangueshi Temple','Shantadurga Temple','Spice plantation visit','Ponda countryside','Traditional Goan meal','Farm interpretation','Local produce','Rainforest vegetation'],note:'<strong>Good bad-weather choice:</strong> Confirm plantation tours during heavy rain and dress appropriately for temple visits; this circuit does not depend on the sea.'},
+          {id:'mollem',kicker:'Forest + ancient temple',name:'Mollem–Tambdi Surla',time:'1 full day',status:'Access-dependent',tone:'weather',subtitle:'Wildlife sanctuary and Western Ghats scenery',thesis:'A full inland nature day through the Bhagwan Mahavir landscape toward the medieval Tambdi Surla temple and forest viewpoints.',spots:['Bhagwan Mahavir sanctuary','Mollem landscape','Tambdi Surla Temple','Western Ghats forest','Birding stops','Guided nature options','Forest roads','Dudhsagar direction'],note:'<strong>Do not promise Dudhsagar:</strong> Monsoon jeep and trail access can be restricted. Confirm official operation; the forest and Tambdi Surla remain the better-planned anchors.'}
+        ],
+        truths:[['Goa has four travel directions.','North coast, South coast, Panaji–Old Goa and the hinterland each need their own route logic.'],['One base changes the entire itinerary.','Crossing from the far north to far south repeatedly wastes a short trip in traffic.'],['Monsoon Goa is a different product.','Culture, food, green drives and forest are dependable themes; sea sports and waterfall access are not.']],
+        key:{eyebrow:'Avoid beach-list planning',title:'Coast belt or inland circuit?',copy:'The best two-night plan chooses one coast and one central or inland anchor instead of collecting distant beach names.',columns:['Cluster','How to treat it'],rows:[['Panaji / Fontainhas','Capital heritage','Half or full day'],['Old Goa / islands','Monuments + ferry','Full day with one optional island'],['North coast','Busy beach belt','One directional day'],['South coast','Quiet beach belt','Choose central-south or far-south'],['Ponda','Temple + spice circuit','Reliable inland full day'],['Mollem / Dudhsagar','Forest direction','Full day; waterfall access conditional']]},
+        plans:{two:[['Day 1 · Central heritage','Panaji + Old Goa','Fontainhas and Panaji → Old Goa churches → Mandovi evening; add no island if arrival is late.'],['Day 2 · Choose your Goa','One coast or Ponda','Select North Coast, South Coast or the Ponda spice-and-temple circuit based on your base and rain.']],three:[['Day 1 · Capital + heritage','Panaji + Old Goa','Fontainhas, central food and the monumental church complex.'],['Day 2 · One coast belt','North or South Goa','Choose the belt nearest your accommodation and limit the number of beach stops.'],['Day 3 · Green interior','Ponda or Mollem','Temples and spice country for reliability, or Mollem–Tambdi Surla after confirming forest access.']]},
+        tripNote:'<strong>September rule:</strong> Choose your hotel after choosing North, Central or South Goa; treat sea activities and Dudhsagar as bonuses, never anchors.',transport:'Compare the most practical flight or train gateway, then size local transport to the party and keep one geographic belt per day',
+        sources:'Official references: <a href="https://goa-tourism.com/seasons/the-monsoons-hidden-treasures/">Goa Tourism: monsoon</a> · <a href="https://goatourism.gov.in/weather/">Goa Tourism weather</a> · <a href="https://www.forest.goa.gov.in/eco-tourism-sites-in-goa">Goa Forest eco-tourism</a> · <a href="https://www.goa.gov.in/places/bhagwan-mahavir-wildlife-sanctuary/">Bhagwan Mahavir Sanctuary</a>'
+      }
+    };
+
+    let activeDestination='udaipur';
+    let activePlan='three';
+    const byId=(id)=>document.getElementById(id);
+
+    function renderDestination(key){
+      activeDestination=key;
+      const guide=guides[key];
+      document.querySelectorAll('[data-destination]').forEach((tab)=>tab.setAttribute('aria-selected',String(tab.dataset.destination===key)));
+      byId('hero-eyebrow').textContent=guide.eyebrow;
+      byId('page-title').textContent=guide.title;
+      byId('hero-copy').innerHTML=guide.copy;
+      byId('formula').replaceChildren(...guide.formula.map((item)=>{const span=document.createElement('span');span.textContent=item;return span;}));
+      byId('season-copy').textContent=guide.season;
+      byId('hub-label').textContent=guide.name;
+      const list=byId('cluster-list');
+      list.replaceChildren(...guide.clusters.map((cluster,index)=>{
+        const button=document.createElement('button');button.type='button';button.className='cluster-node';button.dataset.cluster=cluster.id;button.setAttribute('aria-pressed',String(index===0));
+        const kicker=document.createElement('span');kicker.className='node-kicker';kicker.textContent=cluster.kicker;
+        const strong=document.createElement('strong');strong.textContent=cluster.name;
+        const small=document.createElement('small');small.textContent=cluster.time;
+        const availability=document.createElement('span');availability.className=`availability ${cluster.tone==='closed'?'closed':cluster.tone==='weather'?'weather':''}`;availability.textContent=cluster.status;
+        button.append(kicker,strong,small,availability);button.addEventListener('click',()=>selectCluster(cluster.id));return button;
+      }));
+      selectCluster(guide.clusters[0].id);
+      byId('truth-strip').replaceChildren(...guide.truths.map(([title,copy],index)=>{const div=document.createElement('div');div.className='truth';const number=document.createElement('span');number.className='truth-number';number.textContent=String(index+1).padStart(2,'0');const strong=document.createElement('strong');strong.textContent=title;const p=document.createElement('p');p.textContent=copy;div.append(number,strong,p);return div;}));
+      byId('key-eyebrow').textContent=guide.key.eyebrow;byId('key-title').textContent=guide.key.title;byId('key-copy').textContent=guide.key.copy;byId('key-col-one').textContent=guide.key.columns[0];byId('key-col-two').textContent=guide.key.columns[1];
+      byId('key-body').replaceChildren(...guide.key.rows.map((row)=>{const tr=document.createElement('tr');row.forEach((value,index)=>{const td=document.createElement('td');td.textContent=value;if(index===1)td.className='key-muted';tr.append(td);});return tr;}));
+      byId('trip-note').innerHTML=guide.tripNote;byId('transport-note').textContent=guide.transport;byId('sources').innerHTML=guide.sources;
+      renderPlan(activePlan);
+      document.title=`${guide.name} — Visual Cluster Guide`;
+    }
+
+    function selectCluster(id){
+      const guide=guides[activeDestination];const cluster=guide.clusters.find((item)=>item.id===id);if(!cluster)return;
+      document.querySelectorAll('[data-cluster]').forEach((button)=>button.setAttribute('aria-pressed',String(button.dataset.cluster===id)));
+      byId('detail-index').textContent=`${cluster.kicker} · ${cluster.status}`;byId('detail-title').textContent=cluster.name;byId('detail-subtitle').textContent=cluster.subtitle;byId('detail-time').textContent=cluster.time;byId('detail-thesis').textContent=cluster.thesis;
+      byId('spot-list').replaceChildren(...cluster.spots.map((spot)=>{const li=document.createElement('li');li.textContent=spot;return li;}));byId('detail-note').innerHTML=cluster.note;
+    }
+
+    function renderPlan(plan){
+      activePlan=plan;const rows=guides[activeDestination].plans[plan];
+      document.querySelectorAll('[data-plan]').forEach((button)=>button.setAttribute('aria-pressed',String(button.dataset.plan===plan)));
+      const grid=byId('day-grid');grid.dataset.columns=String(rows.length);grid.replaceChildren(...rows.map(([label,title,copy])=>{const article=document.createElement('article');article.className='day';const span=document.createElement('span');span.className='day-label';span.textContent=label;const h3=document.createElement('h3');h3.textContent=title;const p=document.createElement('p');p.textContent=copy;article.append(span,h3,p);return article;}));
+    }
+
+    function switchMode(mode){
+      document.querySelectorAll('[data-mode]').forEach((button)=>button.setAttribute('aria-selected',String(button.dataset.mode===mode)));
+      document.querySelectorAll('.mode-view').forEach((view)=>{view.hidden=view.id!==`mode-${mode}`;});
+      document.title=mode==='framework'?'Trip Planning Framework':mode==='places'?`${guides[activeDestination].name} — Visual Cluster Guide`:'Travel Desk — Trip Planning';
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+
+    function switchFramework(section){
+      document.querySelectorAll('[data-framework]').forEach((button)=>button.setAttribute('aria-selected',String(button.dataset.framework===section)));
+      document.querySelectorAll('.framework-panel').forEach((panel)=>panel.classList.toggle('active',panel.id===`framework-${section}`));
+      if(!byId('mode-framework').hidden){const selected=document.querySelector(`[data-framework="${section}"] b`);document.title=`${selected?selected.textContent.trim():'Framework'} — Trip Planning`;}
+      const main=document.querySelector('.framework-main');if(main)main.scrollIntoView({block:'start',behavior:'smooth'});
+    }
+
+    function switchTravel(section){
+      document.querySelectorAll('[data-travel]').forEach((button)=>button.setAttribute('aria-selected',String(button.dataset.travel===section)));
+      document.querySelectorAll('.travel-panel').forEach((panel)=>panel.classList.toggle('active',panel.id===`travel-${section}`));
+      const selected=document.querySelector(`[data-travel="${section}"]`);document.title=`${selected?selected.textContent.trim():'Travel'} — Trip Planning`;
+      const main=document.querySelector('.travel-main');if(main)main.scrollIntoView({block:'start',behavior:'smooth'});
+    }
+
+    function downloadGuide(){
+      const source='<!doctype html>\n'+document.documentElement.outerHTML;
+      const blob=new Blob([source],{type:'text/html;charset=utf-8'});
+      const url=URL.createObjectURL(blob);
+      const link=document.createElement('a');
+      link.href=url;link.download='trip-planning-guide.html';
+      document.body.append(link);link.click();link.remove();
+      setTimeout(()=>URL.revokeObjectURL(url),1000);
+    }
+
+    document.querySelectorAll('[data-destination]').forEach((tab)=>tab.addEventListener('click',()=>renderDestination(tab.dataset.destination)));
+    document.querySelectorAll('[data-plan]').forEach((button)=>button.addEventListener('click',()=>renderPlan(button.dataset.plan)));
+    document.querySelectorAll('[data-mode]').forEach((button)=>button.addEventListener('click',()=>switchMode(button.dataset.mode)));
+    document.querySelectorAll('[data-framework]').forEach((button)=>button.addEventListener('click',()=>switchFramework(button.dataset.framework)));
+    document.querySelectorAll('[data-travel]').forEach((button)=>button.addEventListener('click',()=>switchTravel(button.dataset.travel)));
+    renderDestination('udaipur');
+    switchMode('framework');
+  </script>
+
+
+</body><div id="codex-browser-sidebar-comments-root" style="position: fixed; inset: 0px; pointer-events: none; z-index: 2147483647;"></div></html>
