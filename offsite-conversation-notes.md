@@ -816,3 +816,33 @@ Not everyone clicks (funnel: ~15 talked-to → ~6 connect). Tried fishing + offe
 **Stop collecting the map — go walk the terrain.** The feel only comes from doing it.
 
 **Optional extensions (add-ons, not holes — park for later):** group conversations vs 1:1 · the vibe/nonverbal layer (tone, energy, body language) · keeping connections alive long-term beyond one trip.
+
+---
+
+## 31. The "current interest" card — deep dive
+
+**What it is (vs a story):** a story is a *closed loop* (happened, has an ending, you tell it). A current interest is *live & open* — a show you're deep in, a trek, an AI thing you're building, a book/anime, a rabbit-hole. Because it's present-tense & unfinished it does what a story can't:
+- **Invites them in** (share *with*, not perform *at*).
+- **#1 overlap-finder** — the "wait, you too?" bond almost always comes from a shared *interest*, not a shared story.
+- **Shows aliveness** — someone lit up about a thing they love is magnetic regardless of topic. Enthusiasm is the payload.
+
+**Where it fits (the most versatile card — rides the whole live arc):**
+- Prime → pre-load 1–2 interests, tagged.
+- **Spark = its home** → offering your interest both *probes for overlap* (find their spark) and *generates a spark* (bring your own enthusiasm). "I've been really into X lately—" = probe + gift in one line.
+- Deepen → a *shared* interest is the fast lane to a bond (dwell, geek out, plan); a solo one deepens when you go *what* → *why it grips you*.
+- Hook / Follow-up → built-in thread ("send me that show", "we should do that trek") — unlike a closed story, inherently continuable; becomes the reconnection message.
+- (A story lives mostly at Deepen; an interest lives Spark → Follow-up.)
+
+**How to articulate it well:**
+1. Lead with the *feeling*, not the encyclopedia. "Fallen down a rabbit hole with X, can't stop" >> a lecture.
+2. Open short + open-ended, then STOP. Pause, let them react. Never monologue.
+3. Give a way in — no jargon; add the human hook for niche stuff.
+4. Tag a question on it ("you watch much sci-fi?") — turns a broadcast into an offer.
+5. Show the *why* — it reveals you ("I love trekking because it's the only time my head goes quiet"). That's the Deepen move.
+6. Read the bite, match depth. Light up → geek out; flat → one beat then pivot. Forcing passion on a flat audience is the bore move.
+
+**Template:** enthusiasm hook (1 line) → optional why → invitation question. → "Been obsessed with Dark lately, bent my brain — you watch much sci-fi?"
+
+**Carry two:** one **broad** (popular show, travel, mainstream AI tool) = reliable spark with anyone; one **niche** (your side-project, a philosophy rabbit-hole, a specific anime) = rare but strong, memorable bond. For Satyam: broad = travel/treks, a show/anime, an AI tool; niche = an AI thing you're building, a philosophy/audiobook rabbit-hole.
+
+**Two failure modes:** the **info-dump** (enthusiasm ≠ length) and the **flex** (sharing to signal status — reads as showing off). Genuine excitement = magnetic; performed sophistication = repellent.
