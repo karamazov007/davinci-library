@@ -1,3 +1,18 @@
+# Da Vinci Library — global working rules (ALL projects)
+
+**Changes are ADDITIVE by default.** When Satyam asks to add or edit content in the knowledge
+hub (`knowledge-hub.html`) or any of its pages, ADD to what's there — new sections, new tabs, new
+diagrams — and never delete, replace, or trim existing content unless he explicitly says to remove
+or rewrite it. Preserve every existing section, nav item, and diagram. If a change seems to
+conflict with something, ask before removing.
+
+> Note on the hub build: `knowledge-hub.html` is a GENERATED file. A separate Cowork session runs
+> the real `build_master.py` (its paths point at another session), regenerates the hub, and can
+> overwrite hand-added pages/sections. Durable additions must be registered in that build's
+> `TOP_PAGES` / page-source list, not only hand-embedded here.
+
+---
+
 # Swimming — Project Instructions
 
 This project is a swimming skill-acquisition partnership between Satyam and Claude. These
