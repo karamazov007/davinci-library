@@ -69,6 +69,7 @@ figcaption{color:var(--muted);font-size:13.5px;margin-top:10px;line-height:1.55;
     <a class="nav" href="#counterfactuals">5 · Counterfactuals</a>
     <div class="navgroup">The map</div>
     <a class="nav" href="#tree">Character &amp; family tree</a>
+    <a class="nav" href="#map">Character map &middot; S1</a>
     <a class="nav" href="#log">The running log</a>
 </nav>
   <div class="foot">A living note. Fear · Respect · Usefulness → Incentives → Second-order → Influence → Counterfactuals.</div>
@@ -200,6 +201,42 @@ figcaption{color:var(--muted);font-size:13.5px;margin-top:10px;line-height:1.55;
       <div class="note"><b>fears / owes</b> &mdash; the leverage lines &mdash; who holds something over whom.</div>
     </div>
     <div class="callout"><b>Tell me after each episode</b> who appeared and what they did, and I&rsquo;ll render the graph &mdash; nodes for people, coloured edges for these links &mdash; growing it session by session, strictly behind where you are.</div>
+  </section>
+
+  <section id="map">
+    <div class="kick">The map · after Episode 1</div>
+    <h2>Character map &mdash; the Pilot</h2>
+    <p class="lede">Everyone we&rsquo;ve met so far, with Tony at the centre and each relationship named. Colour = which world they belong to. <b>This grows as you watch</b> &mdash; new faces and new links get added episode by episode.</p>
+    <figure class="fig"><span class="tag">🕸 Who&rsquo;s who after S1E1</span><div class="svgbox" id="c-charMapS1"></div><figcaption>Tony sits at the centre of three overlapping worlds. Orange = the household · teal = therapy · pink = the other woman · purple = the Family (his crew &amp; bosses) · green = his civilian life. Dashed lines mark the late father and the secret.</figcaption></figure>
+    <div class="mini">🏠 The household</div>
+    <div class="notes">
+      <div class="note"><b>Tony Soprano</b> &mdash; our man: a New Jersey &ldquo;waste-management consultant&rdquo; who is really a mob captain. The pilot opens with him collapsing from <b>panic attacks</b> &mdash; the crack that sends him to therapy.</div>
+      <div class="note"><b>Carmela</b> &mdash; his wife. Runs the home, devoutly Catholic, and knows far more about his &ldquo;work&rdquo; than she ever says out loud.</div>
+      <div class="note"><b>Meadow</b> &mdash; teenage daughter, sharp and already testing the boundaries.</div>
+      <div class="note"><b>A.J. (Anthony Jr.)</b> &mdash; the younger son; still a kid, oblivious to what his father does.</div>
+      <div class="note"><b>Livia</b> &mdash; Tony&rsquo;s mother: difficult, guilt-wielding, impossible to please. He tries to move her to a retirement community (Green Grove); she is the reason he&rsquo;s really in therapy.</div>
+      <div class="note"><b>Uncle Junior (Corrado)</b> &mdash; Tony&rsquo;s uncle and a senior mobster. Proud and old-school, and already quietly at odds with Tony over rank and respect.</div>
+      <div class="note wide"><b>Johnny Boy Soprano</b> (dashed &mdash; deceased) &mdash; Tony&rsquo;s late father, a made man himself. Present only in memory, but he shaped everything about how Tony sees the life.</div>
+    </div>
+    <div class="mini">🛋 Therapy &nbsp;·&nbsp; 💋 the other woman</div>
+    <div class="notes">
+      <div class="note"><b>Dr. Jennifer Melfi</b> &mdash; the psychiatrist Tony secretly starts seeing for the panic attacks. Her office is the show&rsquo;s confession booth &mdash; where we get the truth he can&rsquo;t say anywhere else.</div>
+      <div class="note"><b>Irina</b> (dashed &mdash; the secret) &mdash; Tony&rsquo;s mistress, his &ldquo;goomar.&rdquo; The double life running quietly alongside the marriage.</div>
+    </div>
+    <div class="mini">👔 The Family &mdash; his crew &amp; bosses</div>
+    <div class="notes">
+      <div class="note"><b>Christopher Moltisanti</b> &mdash; Tony&rsquo;s young protégé (nephew by marriage). Hungry for a bigger role, impatient, and prone to trouble.</div>
+      <div class="note"><b>Silvio Dante</b> &mdash; trusted lieutenant; runs the Bada Bing, the club that doubles as the crew&rsquo;s headquarters.</div>
+      <div class="note"><b>Paulie Gualtieri (&ldquo;Walnuts&rdquo;)</b> &mdash; old-school soldier: superstitious, loyal, quick to take offence.</div>
+      <div class="note"><b>Big Pussy Bonpensiero</b> &mdash; crew member and one of Tony&rsquo;s closest old friends.</div>
+      <div class="note"><b>Hesh</b> &mdash; Tony&rsquo;s older advisor and money man. Not Italian, not &ldquo;made,&rdquo; but trusted like family.</div>
+      <div class="note"><b>Jackie Aprile Sr.</b> &mdash; the acting boss of the family, and gravely ill. His illness hangs over everyone &mdash; and over the question of who comes next.</div>
+    </div>
+    <div class="mini">🍝 The civilian world</div>
+    <div class="notes">
+      <div class="note wide"><b>Artie Bucco</b> &mdash; Tony&rsquo;s boyhood friend and a straight, legitimate restaurateur (Vesuvio). He&rsquo;s the living tug between Tony&rsquo;s two worlds &mdash; the life he has and the one he might have had.</div>
+    </div>
+    <div class="callout"><b>Next time we talk episode 1,</b> we&rsquo;ll run these people through the lenses &mdash; who holds fear vs. respect vs. usefulness over whom, what each one actually wants, and the first cracks (Tony&rsquo;s panic, Livia, the Junior tension). Tell me when you&rsquo;re ready and I&rsquo;ll add episode-2 faces and any new links to this map.</div>
   </section>
 
   <section id="log">
@@ -1543,6 +1580,48 @@ FIGS.famScaffold = genPyramid([
   {label:'Soldiers', sub:'made members', color:C.a6},
   {label:'Associates', sub:'not made', color:C.a3},
 ],{w:900,h:440});
+
+// Character map — state after S1E1 (Pilot). Tony at centre; groups by colour.
+// Household=a4 · Therapy=a2 · Mistress=a3 · The Family/crew=a6 · Civilian=a5.
+FIGS.charMapS1 = genGraph([
+  {id:'tony',x:.50,y:.50,shape:'round',w:150,h:56,label:'TONY',fill:C.a1,fs:15},
+  // household (orange)
+  {id:'johnny',x:.13,y:.13,shape:'round',w:118,h:42,label:'Johnny Boy',fill:C.a4,hollow:true},
+  {id:'livia',x:.31,y:.07,shape:'round',w:110,h:42,label:'Livia',fill:C.a4},
+  {id:'carm',x:.50,y:.05,shape:'round',w:118,h:42,label:'Carmela',fill:C.a4},
+  {id:'mead',x:.66,y:.08,shape:'round',w:110,h:42,label:'Meadow',fill:C.a4},
+  {id:'aj',x:.79,y:.14,shape:'round',w:96,h:42,label:'A.J.',fill:C.a4},
+  {id:'junior',x:.91,y:.25,shape:'round',w:120,h:42,label:'Uncle Junior',fill:C.a4},
+  // therapy (teal)
+  {id:'melfi',x:.06,y:.42,shape:'round',w:118,h:42,label:'Dr. Melfi',fill:C.a2},
+  // civilian (green)
+  {id:'artie',x:.07,y:.28,shape:'round',w:120,h:42,label:'Artie Bucco',fill:C.a5},
+  // mistress (pink)
+  {id:'irina',x:.07,y:.62,shape:'round',w:104,h:42,label:'Irina',fill:C.a3},
+  // the family / crew (purple)
+  {id:'chris',x:.24,y:.87,shape:'round',w:126,h:42,label:'Christopher',fill:C.a6},
+  {id:'sil',x:.42,y:.93,shape:'round',w:104,h:42,label:'Silvio',fill:C.a6},
+  {id:'paul',x:.60,y:.93,shape:'round',w:104,h:42,label:'Paulie',fill:C.a6},
+  {id:'pussy',x:.77,y:.87,shape:'round',w:118,h:42,label:'Big Pussy',fill:C.a6},
+  {id:'hesh',x:.93,y:.62,shape:'round',w:96,h:42,label:'Hesh',fill:C.a6},
+  {id:'jackie',x:.94,y:.44,shape:'round',w:110,h:42,label:'Jackie Sr.',fill:C.a6},
+],[
+  {from:'tony',to:'carm',color:C.mut,label:'wife'},
+  {from:'tony',to:'mead',color:C.mut,label:'daughter'},
+  {from:'tony',to:'aj',color:C.mut,label:'son'},
+  {from:'tony',to:'livia',color:C.mut,label:'mother'},
+  {from:'tony',to:'junior',color:C.mut,label:'uncle'},
+  {from:'tony',to:'johnny',color:C.mut,label:'late father',dash:'4 4'},
+  {from:'tony',to:'melfi',color:C.mut,label:'therapist'},
+  {from:'tony',to:'artie',color:C.mut,label:'old friend'},
+  {from:'tony',to:'irina',color:C.mut,label:'mistress',dash:'4 4'},
+  {from:'tony',to:'chris',color:C.mut,label:'protégé'},
+  {from:'tony',to:'sil',color:C.mut,label:'crew'},
+  {from:'tony',to:'paul',color:C.mut,label:'crew'},
+  {from:'tony',to:'pussy',color:C.mut,label:'crew'},
+  {from:'tony',to:'hesh',color:C.mut,label:'advisor'},
+  {from:'tony',to:'jackie',color:C.mut,label:'his boss'},
+],{w:1200,h:820,pad:30});
 
 (function(){
   [].forEach.call(document.querySelectorAll('.svgbox'),function(el){
