@@ -1,0 +1,1561 @@
+<!DOCTYPE html>
+<html lang="en"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1">
+<title>The Sopranos — a behaviour lab</title>
+<style>
+:root{--bg:#fbfaf8;--panel:#fff;--soft:#f4f5f7;--soft1:#eef0ff;--ink:#1d2126;--ink2:#3a4048;--muted:#727a86;--line:#e9eaee;--line2:#f0f1f4;
+--a1:#4f46e5;--a2:#0891b2;--a3:#db2777;--a4:#ea580c;--a5:#16a34a;--a6:#9333ea;
+--shadow:0 1px 2px rgba(16,24,40,.04),0 8px 28px rgba(16,24,40,.06);--shadow2:0 12px 40px rgba(16,24,40,.12)}
+*{box-sizing:border-box}html{scroll-behavior:smooth}
+body{margin:0;background:var(--bg);color:var(--ink);font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,Inter,Arial,sans-serif;line-height:1.6;-webkit-font-smoothing:antialiased}
+a{color:var(--a1);text-decoration:none}
+.layout{display:flex;gap:0;align-items:flex-start;max-width:1400px;margin:0 auto}
+.side{position:sticky;top:0;height:100vh;flex:0 0 264px;overflow-y:auto;padding:26px 18px 40px;border-right:1px solid var(--line);background:linear-gradient(180deg,#fff,#fbfaf8)}
+.side .brand{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--a1)}
+.side h1{font-size:19px;line-height:1.25;margin:6px 0 2px;letter-spacing:-.02em}
+.side .sub{font-size:12.5px;color:var(--muted);margin-bottom:20px}
+.side .navgroup{font-size:10.5px;font-weight:800;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);margin:18px 0 6px;padding-left:11px}
+.side a.nav{display:block;font-size:13.5px;color:var(--ink2);padding:7px 11px;border-radius:9px;transition:.13s;border-left:2px solid transparent}
+.side a.nav:hover{background:var(--soft);color:var(--ink)}
+.side a.nav.active{background:var(--soft1);color:var(--a1);font-weight:700;border-left-color:var(--a1)}
+.side .foot{margin-top:24px;font-size:11px;color:var(--muted);line-height:1.5;border-top:1px solid var(--line);padding-top:14px}
+@media(max-width:920px){.side{display:none}}
+main{flex:1;min-width:0;padding:0 clamp(20px,4vw,64px) 80px}
+.hero{padding:64px 0 34px;border-bottom:1px solid var(--line);margin-bottom:8px}
+.hero .ey{font-size:12px;font-weight:800;letter-spacing:.14em;text-transform:uppercase;color:var(--a3)}
+.hero h1{font-size:clamp(30px,5vw,46px);line-height:1.05;letter-spacing:-.03em;margin:10px 0 14px;max-width:18ch}
+.hero h1 em{font-style:normal;background:linear-gradient(120deg,var(--a1),var(--a3));-webkit-background-clip:text;background-clip:text;color:transparent}
+.hero p{font-size:18px;color:var(--ink2);max-width:62ch;margin:0}
+.hero .chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:22px}
+.hero .chips span{font-size:12.5px;font-weight:700;color:var(--ink2);background:var(--panel);border:1px solid var(--line);border-radius:999px;padding:6px 13px;box-shadow:var(--shadow)}
+section{padding:46px 0 8px;scroll-margin-top:12px}
+section>.kick{font-size:12px;font-weight:800;letter-spacing:.12em;text-transform:uppercase;color:var(--a1);margin-bottom:6px}
+section>h2{font-size:clamp(23px,3.4vw,32px);letter-spacing:-.02em;margin:0 0 6px;line-height:1.15}
+section>.lede{font-size:16.5px;color:var(--ink2);max-width:66ch;margin:0 0 22px}
+.prose{font-size:15.5px;color:var(--ink2);max-width:70ch;margin:0 0 16px}
+.prose b,.lede b{color:var(--ink)}
+figure.fig{background:var(--panel);border:1px solid var(--line);border-radius:18px;padding:18px 18px 12px;margin:8px 0 22px;box-shadow:var(--shadow)}
+figure.fig .tag{display:inline-block;font-size:11.5px;font-weight:800;letter-spacing:.02em;color:var(--a1);background:var(--soft1);padding:5px 12px;border-radius:999px;margin-bottom:10px}
+.svgbox{width:100%;overflow:hidden}.svgbox svg{display:block;width:100%;height:auto}
+figcaption{color:var(--muted);font-size:13.5px;margin-top:10px;line-height:1.55;max-width:80ch}figcaption b{color:var(--ink2)}
+.callout{background:linear-gradient(180deg,#fff,#f7f8ff);border:1px solid var(--line);border-left:4px solid var(--a1);border-radius:13px;padding:16px 19px;margin:14px 0 20px;font-size:15.5px;color:var(--ink2);max-width:80ch;box-shadow:var(--shadow)}
+.callout b{color:var(--ink)}.callout.warm{border-left-color:var(--a4);background:linear-gradient(180deg,#fff,#fff8f3)}
+.callout.green{border-left-color:var(--a5);background:linear-gradient(180deg,#fff,#f4fbf6)}
+.notes{display:grid;grid-template-columns:1fr 1fr;gap:13px;margin:6px 0 18px}@media(max-width:760px){.notes{grid-template-columns:1fr}}
+.note{background:var(--panel);border:1px solid var(--line);border-left:3px solid var(--a1);border-radius:12px;padding:13px 16px;font-size:14px;color:var(--ink2);line-height:1.55;box-shadow:var(--shadow)}
+.note.wide{grid-column:1/-1;border-left-color:var(--a5)}.note b{color:var(--ink)}
+.mini{font-size:13px;font-weight:800;letter-spacing:.02em;color:var(--ink);margin:26px 0 10px;display:flex;align-items:center;gap:8px}
+.mini::before{content:"";width:7px;height:7px;border-radius:2px;background:var(--a1)}
+.formula{font-family:ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:14px;background:#1d2230;color:#e6e9f2;border-radius:12px;padding:14px 18px;line-height:1.6;overflow-x:auto;margin:10px 0 16px}
+.pull{font-size:22px;line-height:1.35;font-weight:600;color:var(--ink);border-left:4px solid var(--a3);padding:6px 0 6px 20px;margin:22px 0;max-width:60ch;letter-spacing:-.01em}
+.backtop{position:fixed;right:20px;bottom:20px;width:44px;height:44px;border-radius:50%;background:var(--a1);color:#fff;border:none;font-size:20px;cursor:pointer;box-shadow:var(--shadow2);opacity:0;pointer-events:none;transition:.25s;z-index:40}
+.backtop.on{opacity:1;pointer-events:auto}
+</style></head>
+<body>
+<div class="layout">
+<aside class="side">
+  <div class="brand">Behaviour lab</div>
+  <h1>The Sopranos</h1>
+  <div class="sub">Reading a mob drama as a laboratory for power, incentives and influence.</div>
+  <nav id="nav">
+    <div class="navgroup">Start here</div>
+    <a class="nav" href="#premise">Why this page exists</a>
+    <a class="nav" href="#lenses">The five lenses</a>
+    <div class="navgroup">The lenses</div>
+    <a class="nav" href="#power">1 · Fear · Respect · Usefulness</a>
+    <a class="nav" href="#incentives">2 · Incentive analysis</a>
+    <a class="nav" href="#secondorder">3 · Second-order thinking</a>
+    <a class="nav" href="#influence">4 · Communication &amp; influence</a>
+    <a class="nav" href="#counterfactuals">5 · Counterfactuals</a>
+    <div class="navgroup">The map</div>
+    <a class="nav" href="#tree">Character &amp; family tree</a>
+    <a class="nav" href="#log">The running log</a>
+</nav>
+  <div class="foot">A living note. Fear · Respect · Usefulness → Incentives → Second-order → Influence → Counterfactuals.</div>
+</aside>
+<main>
+
+  <header class="hero" id="top">
+    <div class="ey">Watching &middot; a human-behaviour lab</div>
+    <h1>The Sopranos, read as a <em>behaviour lab</em>.</h1>
+    <p>A mob drama is really a laboratory for human behaviour under pressure &mdash; power, loyalty, fear, money, family. This page is where watching turns into thinking: a fixed set of lenses now, and a character map we grow together as the show unfolds.</p>
+    <div class="chips"><span>⚖️ Fear · Respect · Usefulness</span><span>🎯 Incentives</span><span>🔗 Second-order</span><span>🗣 Influence</span><span>🔀 Counterfactuals</span></div>
+  </header>
+
+  <section id="premise">
+    <div class="kick">Why this page exists</div>
+    <h2>Watch → discuss → record</h2>
+    <p class="lede">Every episode gives us raw material &mdash; a threat, a favour, a betrayal, a silence &mdash; and we run it through a fixed set of <b>lenses</b> so patterns start to show.</p>
+    <p class="prose">Over time this becomes two things at once: a <b>toolkit</b> of behavioural models you can carry into real life, and a <b>living map</b> of the show&rsquo;s people and how they move.</p>
+    <div class="notes">
+      <div class="note"><b>Built now (spoiler-free).</b> The frameworks below are general tools &mdash; safe to read at any point in the show.</div>
+      <div class="note"><b>Grown as you watch.</b> The character &amp; family tree stays an empty scaffold until you meet people on screen. A name goes in only after it appears, and events are logged as they happen &mdash; no spoilers ahead of you.</div>
+      <div class="note wide"><b>The loop:</b> after an episode, tell me what happened and who did what. I slot it onto the tree, tag the behaviour with a lens, and we argue the <i>why</i> and the <i>what-if</i>.</div>
+    </div>
+  </section>
+
+  <section id="lenses">
+    <div class="kick">The reading toolkit</div>
+    <h2>Five questions we ask of every scene</h2>
+    <p class="lede">Learn these once and the show stops being a story and starts being <b>data</b>.</p>
+    <figure class="fig"><span class="tag">🔎 The five lenses</span><div class="svgbox" id="c-sopLenses"></div><figcaption>Every scene runs through five lenses — the three currencies of power, what each person really wants, what it sets in motion, how they move each other, and what would have happened otherwise.</figcaption></figure>
+    <div class="notes">
+      <div class="note"><b>⚖️ Fear · Respect · Usefulness.</b> The three currencies that buy influence &mdash; which one is really doing the work here?</div>
+      <div class="note"><b>🎯 Incentives.</b> Forget what they <i>say</i> &mdash; what are they optimising for, and what does that predict?</div>
+      <div class="note"><b>🔗 Second-order.</b> This move solves today&rsquo;s problem &mdash; <i>and then what?</i></div>
+      <div class="note"><b>🗣 Influence.</b> How is one person <i>moving</i> another &mdash; leverage, a favour, a threat, a silence, a frame?</div>
+      <div class="note wide"><b>🔀 Counterfactuals.</b> Change one decision &mdash; how does the scene, and the season, bend?</div>
+    </div>
+  </section>
+
+  <section id="power">
+    <div class="kick">Lens 1</div>
+    <h2>Fear, Respect &amp; Usefulness</h2>
+    <p class="lede">Almost every hold one person has over another is some mix of three currencies. Naming which one is in play &mdash; and how fragile it is &mdash; explains most of the power moves you&rsquo;ll see.</p>
+    <figure class="fig"><span class="tag">⚖️ The three currencies</span><div class="svgbox" id="c-powerTriad"></div><figcaption>Fear, respect and usefulness each buy influence — but they behave very differently over time.</figcaption></figure>
+    <div class="notes">
+      <div class="note"><b>😨 Fear</b> &mdash; &ldquo;I can hurt you.&rdquo; <b>Fast and reliable, but brittle.</b> It breeds resentment, invites betrayal the moment it slips, and has to keep escalating. Rule by fear alone and you spend your life watching your back.</div>
+      <div class="note"><b>🫡 Respect</b> &mdash; &ldquo;I admire / believe in you.&rdquo; <b>Slow to build, durable, self-reinforcing.</b> It buys loyalty that survives bad days &mdash; but it&rsquo;s earned, easily spent, and one humiliating act can burn years of it.</div>
+      <div class="note"><b>🔧 Usefulness</b> &mdash; &ldquo;you need what I provide.&rdquo; <b>Transactional and conditional.</b> Strong while you&rsquo;re the supply &mdash; gone the instant someone cheaper, safer or closer appears. Being <i>only</i> useful makes you replaceable.</div>
+      <div class="note wide"><b>The real skill is the mix.</b> The most secure figures combine all three &mdash; feared enough not to be crossed, respected enough to be followed, useful enough to be kept. Watch for who leans on just one &mdash; that&rsquo;s exactly where they&rsquo;re fragile.</div>
+    </div>
+    <div class="callout"><b>Question to hold:</b> for any relationship on screen &mdash; is this fear, respect, or usefulness doing the work? And what happens the day that one currency runs out?</div>
+  </section>
+
+  <section id="incentives">
+    <div class="kick">Lens 2</div>
+    <h2>Incentive analysis</h2>
+    <p class="lede">&ldquo;Show me the incentive and I&rsquo;ll show you the outcome.&rdquo; People rarely tell you what they want &mdash; but their situation does. Decode the incentive and the behaviour stops being surprising.</p>
+    <figure class="fig"><span class="tag">🎯 Decoding a want</span><div class="svgbox" id="c-incChain"></div><figcaption>Peel the stated want down to the real one, add the constraint they live under, and the likely move falls out.</figcaption></figure>
+    <div class="notes">
+      <div class="note"><b>1 · Surface want.</b> What they <i>claim</i> &mdash; the respectable, sayable version.</div>
+      <div class="note"><b>2 · Real want.</b> What the situation rewards &mdash; money, status, safety, control, being seen.</div>
+      <div class="note"><b>3 · Constraint.</b> What they <i>can&rsquo;t</i> do &mdash; who they answer to, what they fear losing, the code they can&rsquo;t be seen breaking.</div>
+      <div class="note"><b>4 · Likely move.</b> Real want, routed around the constraint, gives you a prediction &mdash; often better than the character&rsquo;s own.</div>
+    </div>
+    <div class="callout"><b>Watch for conflicting incentives</b> &mdash; the person who owes loyalty up <i>and</i> down the ladder, or whose money and safety pull opposite ways. That gap is where the double-crosses live.</div>
+  </section>
+
+  <section id="secondorder">
+    <div class="kick">Lens 3</div>
+    <h2>Second-order thinking</h2>
+    <p class="lede">First-order thinking asks &ldquo;does this solve my problem now?&rdquo; Second-order thinking asks &ldquo;<i>and then what?</i>&rdquo; Most tragedy here is a smart first-order move with a brutal second-order cost.</p>
+    <figure class="fig"><span class="tag">🔗 And then what?</span><div class="svgbox" id="c-secondOrder"></div><figcaption>Trace a move past its immediate payoff — the ripple two and three steps out is where the real price shows up.</figcaption></figure>
+    <div class="notes">
+      <div class="note"><b>1st order</b> &mdash; the immediate, intended result. As far as impulsive characters ever look.</div>
+      <div class="note"><b>2nd order</b> &mdash; the reaction to the result. Who&rsquo;s now angry, afraid, in debt to you, or gunning for you?</div>
+      <div class="note"><b>3rd order</b> &mdash; the world you now live in. Trust eroded, a rival created, a rule broken that can&rsquo;t be un-broken.</div>
+      <div class="note wide"><b>The pattern to spot:</b> a move that&rsquo;s <b>+1 now, &minus;5 later</b>. When a character &ldquo;wins&rdquo; a scene, ask what that win will cost them by the finale.</div>
+    </div>
+  </section>
+
+  <section id="influence">
+    <div class="kick">Lens 4</div>
+    <h2>Communication &amp; influence</h2>
+    <p class="lede">How does one person actually <i>move</i> another? The show is a masterclass in leverage that&rsquo;s rarely stated out loud. These are the levers to name when you see them.</p>
+    <div class="notes">
+      <div class="note"><b>Leverage.</b> Something they need or fear losing &mdash; money owed, a secret held, protection given. The quietest and strongest lever.</div>
+      <div class="note"><b>Reciprocity &amp; favours.</b> A gift or an &ldquo;I did this for you&rdquo; that creates a debt to be called in later.</div>
+      <div class="note"><b>The frame.</b> Defining the situation first &mdash; &ldquo;this is about respect,&rdquo; &ldquo;this is just business.&rdquo; Whoever sets the frame usually wins the room.</div>
+      <div class="note"><b>Loyalty tests.</b> Small asks that measure where someone really stands, long before the big ask comes.</div>
+      <div class="note"><b>Silence &amp; omertà.</b> What&rsquo;s <i>not</i> said &mdash; the withheld approval, the pause, the code of not talking.</div>
+      <div class="note"><b>Displays.</b> Generosity, rage, calm, a public reward or punishment &mdash; performed <i>for the room</i> as much as the target.</div>
+    </div>
+    <div class="callout"><b>The tell:</b> the most powerful influence is usually indirect &mdash; nobody says &ldquo;do this or else.&rdquo; When you feel the pressure in a scene but can&rsquo;t point to a threat, name the lever. That&rsquo;s the one to learn from.</div>
+  </section>
+
+  <section id="counterfactuals">
+    <div class="kick">Lens 5</div>
+    <h2>Counterfactuals</h2>
+    <p class="lede">&ldquo;What if he&rsquo;d done the other thing?&rdquo; Counterfactuals test whether a choice actually mattered &mdash; and they&rsquo;re some of the best conversations we&rsquo;ll have.</p>
+    <div class="formula">Change ONE decision &nbsp;→&nbsp; trace the ripple forward &nbsp;→&nbsp; compare to what actually happened</div>
+    <div class="notes">
+      <div class="note"><b>Change one variable.</b> Hold everything else fixed and flip a single choice. Change too much and it&rsquo;s fan-fiction, not analysis.</div>
+      <div class="note"><b>Trace the ripple.</b> Run it through the other lenses &mdash; whose incentives shift, whose fear/respect changes, what second-order costs appear.</div>
+      <div class="note"><b>Compare honestly.</b> Was the real outcome <i>inevitable</i> given who these people are, or a genuine fork? Character as destiny vs. chance.</div>
+      <div class="note wide"><b>Why it&rsquo;s worth it:</b> counterfactuals separate the choices that mattered from the ones that only <i>felt</i> dramatic &mdash; and train you to see the forks in your own decisions before they close.</div>
+    </div>
+    <div class="callout"><b>We&rsquo;ll log the good ones here</b> with both branches written out. <i>Kept spoiler-safe &mdash; only on scenes you&rsquo;ve already watched.</i></div>
+  </section>
+
+  <section id="tree">
+    <div class="kick">The map we build together</div>
+    <h2>Character &amp; family tree</h2>
+    <p class="lede">Deliberately empty for now. Below is the <b>skeleton</b> we&rsquo;ll hang real people on, and the kinds of links we&rsquo;ll record.</p>
+    <div class="callout"><b>Not built yet &mdash; on purpose.</b> We grow this live: a character goes in only once you&rsquo;ve met them on screen, and events (&ldquo;X made Y,&rdquo; &ldquo;X crossed Y&rdquo;) get logged as they happen. So there are <b>no names and no spoilers here yet</b> &mdash; just the frame.</div>
+    <figure class="fig"><span class="tag">🌳 The empty skeleton</span><div class="svgbox" id="c-famScaffold"></div><figcaption>A crime family&rsquo;s structure is a fixed pyramid of roles — Boss down to Associates. We drop real characters into these slots as they appear, and add the household and rival families alongside.</figcaption></figure>
+    <div class="mini">The slots we&rsquo;ll fill</div>
+    <div class="notes">
+      <div class="note"><b>🏛 The organisation.</b> The pyramid above &mdash; boss, underboss, consigliere, capos and crews, soldiers, associates.</div>
+      <div class="note"><b>🏠 The household.</b> The family <i>at home</i> &mdash; spouse, kids, parents, siblings, in-laws. Often the real engine.</div>
+      <div class="note"><b>🤝 Allies &amp; rivals.</b> Other families, friends, and outsiders (law, business, the therapist&rsquo;s office).</div>
+    </div>
+    <div class="mini">The links we&rsquo;ll draw</div>
+    <div class="notes">
+      <div class="note"><b>made / mentored</b> &mdash; who brought whom up, who vouches for whom.</div>
+      <div class="note"><b>reports to</b> &mdash; the chain of command, crew by crew.</div>
+      <div class="note"><b>allied / rivals</b> &mdash; who&rsquo;s with whom, who&rsquo;s circling.</div>
+      <div class="note"><b>betrayed / crossed</b> &mdash; the breaks, once they happen on screen.</div>
+      <div class="note"><b>family tie</b> &mdash; blood and marriage links across the household.</div>
+      <div class="note"><b>fears / owes</b> &mdash; the leverage lines &mdash; who holds something over whom.</div>
+    </div>
+    <div class="callout"><b>Tell me after each episode</b> who appeared and what they did, and I&rsquo;ll render the graph &mdash; nodes for people, coloured edges for these links &mdash; growing it session by session, strictly behind where you are.</div>
+  </section>
+
+  <section id="log">
+    <div class="kick">The lab notebook</div>
+    <h2>The running log</h2>
+    <p class="lede">A dated record of what we discuss &mdash; the calls, the patterns, the counterfactuals &mdash; so the thinking accumulates instead of evaporating.</p>
+    <p class="prose">Each entry: <b>what happened</b>, the <b>lens</b> it best illustrates, our <b>read</b>, and any <b>counterfactual</b> we ran. Over a full watch this becomes a compact theory of how these people operate &mdash; and a set of models you can lift into real life.</p>
+    <div class="callout green"><b>Empty for now.</b> Want me to keep this as a running notes file too &mdash; appended after every substantive Sopranos discussion, and mirrored here? Say the word. <i>Nothing logged yet.</i></div>
+    <div class="pull">A show is just people making choices under pressure. Learn to read the choices, and you learn to read people.</div>
+  </section>
+
+</main>
+</div>
+<button class="backtop" id="backtop" title="Back to top">↑</button>
+<script>
+const C={ink:'#1f2933',mut:'#5b6572',line:'#c3cbd8',a1:'#4f46e5',a2:'#0891b2',a3:'#db2777',a4:'#ea580c',a5:'#16a34a',a6:'#9333ea'};
+const P=[C.a1,C.a2,C.a4,C.a5,C.a6,C.a3];
+const escT=s=>String(s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+
+const MK=`<defs>
+<marker id="mA" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.mut}"/></marker>
+<marker id="mR" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.a3}"/></marker>
+<marker id="mB" markerWidth="9" markerHeight="9" refX="7" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6z" fill="${C.a1}"/></marker></defs>`;
+function SV(inner,w=680,h=460){return `<svg viewBox="0 0 ${w} ${h}" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,Arial">${MK}${inner}</svg>`;}
+function T(x,y,txt,{fill=C.ink,fs=12,fw=400,anchor='middle',tr=''}={}){return `<text x="${x}" y="${y}" text-anchor="${anchor}" fill="${fill}" font-size="${fs}" font-weight="${fw}"${tr?` transform="${tr}"`:''}>${escT(txt)}</text>`;}
+function ML(x,y,label,o={}){const lines=String(label).split('\n');const lh=o.lh||13;const off=(lines.length-1)*lh/2;return lines.map((ln,i)=>T(x,y-off+i*lh,ln,o)).join('');}
+function boxN(x,y,w,h,label,{fill=C.a1,tc='#fff',fs=12,r=9,stroke='',sw=0}={}){const lines=String(label).split('\n');const startY=y+h/2-((lines.length-1)*7)+4;return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="${r}" fill="${fill}"${stroke?` stroke="${stroke}" stroke-width="${sw}"`:''}/>`+lines.map((ln,i)=>T(x+w/2,startY+i*14,ln,{fill:tc,fs,fw:600})).join('');}
+function cir(cx,cy,r,label,col,hollow){return `<circle cx="${cx}" cy="${cy}" r="${r}" fill="${hollow?'#fff':col}"${hollow?` stroke="${col}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,label,{fill:hollow?C.ink:'#fff',fs:11,fw:600});}
+function arr(x1,y1,x2,y2,o={}){let X1=x1,Y1=y1,X2=x2,Y2=y2;if(o.trim){const dx=X2-X1,dy=Y2-Y1,d=Math.hypot(dx,dy)||1;X1+=dx/d*o.trim;Y1+=dy/d*o.trim;X2-=dx/d*o.trim;Y2-=dy/d*o.trim;}const col=o.color||C.mut,mk=o.arrow===false?'':`marker-end="url(#${o.mk||'mA'})"`;let path,lmx,lmy;if(o.curve){const dx=X2-X1,dy=Y2-Y1,d=Math.hypot(dx,dy)||1,mxp=(X1+X2)/2-dy/d*o.curve,myp=(Y1+Y2)/2+dx/d*o.curve;path=`<path d="M${X1},${Y1} Q${mxp},${myp} ${X2},${Y2}" fill="none" stroke="${col}" stroke-width="${o.w||2}" ${o.dash?`stroke-dasharray="${o.dash}"`:''} ${mk}/>`;lmx=(X1+2*mxp+X2)/4;lmy=(Y1+2*myp+Y2)/4;}else{path=`<line x1="${X1}" y1="${Y1}" x2="${X2}" y2="${Y2}" stroke="${col}" stroke-width="${o.w||2}" ${o.dash?`stroke-dasharray="${o.dash}"`:''} ${mk}/>`;lmx=(X1+X2)/2;lmy=(Y1+Y2)/2;}let s=path;if(o.label){const t=String(o.label),lw=t.length*6+10;s+=`<rect x="${lmx-lw/2}" y="${lmy-9}" width="${lw}" height="17" rx="4" fill="#fff" opacity=".95"/>`+T(lmx,lmy+3,t,{fill:o.lc||C.mut,fs:t.length<3?12:9.5,fw:t.length<3?800:600});}return s;}
+function zone(x,y,w,h,label){return `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="16" fill="none" stroke="${C.line}" stroke-width="1.5" stroke-dasharray="7 6"/>`+`<rect x="${x+14}" y="${y-11}" width="${label.length*7+18}" height="22" rx="11" fill="#fff"/>`+T(x+23,y+4,label,{fill:C.a1,fs:12,fw:700,anchor:'start'});}
+function genGraph(nodes,edges,{w=700,h=460,pad=26}={}){
+  const px=n=>pad+n.x*(w-2*pad), py=n=>pad+n.y*(h-2*pad); const byId={}; nodes.forEach(n=>byId[n.id]=n); let s='';
+  (edges||[]).forEach(e=>{const a=byId[e.from],b=byId[e.to]; if(!a||!b)return; let x1=px(a),y1=py(a),x2=px(b),y2=py(b);
+    const dx=x2-x1,dy=y2-y1,d=Math.hypot(dx,dy)||1;
+    const o1=(a.r||(a.w?Math.max(a.w,a.h)/2:26))+2, o2=(b.r||(b.w?Math.max(b.w,b.h)/2:26))+7;
+    x1+=dx/d*o1; y1+=dy/d*o1; x2-=dx/d*o2; y2-=dy/d*o2;
+    const mk=e.arrow===false?'':`marker-end="url(#${e.mk||'mA'})"`, col=e.color||C.mut; let lmx,lmy;
+    if(e.curve){const mxp=(x1+x2)/2-dy/d*e.curve, myp=(y1+y2)/2+dx/d*e.curve; s+=`<path d="M${x1},${y1} Q${mxp},${myp} ${x2},${y2}" fill="none" stroke="${col}" stroke-width="${e.w||1.7}" ${e.dash?`stroke-dasharray="${e.dash}"`:''} ${mk}/>`; lmx=(x1+2*mxp+x2)/4; lmy=(y1+2*myp+y2)/4;}
+    else {s+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="${col}" stroke-width="${e.w||1.7}" ${e.dash?`stroke-dasharray="${e.dash}"`:''} ${mk}/>`; lmx=(x1+x2)/2; lmy=(y1+y2)/2;}
+    if(e.label){const lw=String(e.label).length*6+8; s+=`<rect x="${lmx-lw/2}" y="${lmy-9}" width="${lw}" height="16" rx="4" fill="#fff" opacity=".92"/>`+T(lmx,lmy+3,e.label,{fill:e.lc||C.mut,fs:e.label.length<3?12:9.5,fw:e.label.length<3?800:400});}
+  });
+  nodes.forEach((n,i)=>{const cx=px(n),cy=py(n),fill=n.fill||P[i%P.length],tc=n.tc||'#fff',shape=n.shape||'round';
+    if(shape==='circle'){const r=n.r||30; s+=`<circle cx="${cx}" cy="${cy}" r="${r}" fill="${n.hollow?'#fff':fill}"${n.hollow?` stroke="${fill}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,n.label,{fill:n.hollow?C.ink:tc,fs:n.fs||11,fw:600});}
+    else if(shape==='diamond'){const ww=n.w||96,hh=n.h||64; s+=`<polygon points="${cx},${cy-hh/2} ${cx+ww/2},${cy} ${cx},${cy+hh/2} ${cx-ww/2},${cy}" fill="${n.hollow?'#fff':fill}"${n.hollow?` stroke="${fill}" stroke-width="2.5"`:''}/>`+ML(cx,cy+4,n.label,{fill:n.hollow?C.ink:tc,fs:n.fs||10,fw:600});}
+    else {const ww=n.w||110,hh=n.h||44; s+=boxN(cx-ww/2,cy-hh/2,ww,hh,n.label,{fill,tc,fs:n.fs||11,r:shape==='rect'?4:12});
+      if(n.sub){const subs=String(n.sub).split('\n');const yy=cy+hh/2+12;subs.forEach((ln,k)=>{s+=T(cx,yy+k*12,ln,{fill:C.mut,fs:9,fw:600});});}}
+  });
+  return SV(s,w,h);
+}
+function genMindMap(center,branches,{w=780,h=540}={}){const cx=w/2,cy=h/2,R1=Math.min(w,h)*0.29,rr=Math.min(w,h)*0.185,n=branches.length; let s='';
+  branches.forEach((br,i)=>{const ang=-Math.PI/2+i*2*Math.PI/n,bx=cx+Math.cos(ang)*R1,by=cy+Math.sin(ang)*R1,col=P[i%P.length];
+    s+=`<path d="M${cx},${cy} Q${(cx+bx)/2},${(cy+by)/2} ${bx},${by}" fill="none" stroke="${col}" stroke-width="2.5"/>`;
+    const kids=br.children||[],spread=Math.PI/2.6;
+    kids.forEach((k,j)=>{const ka=ang+(kids.length>1?(-spread/2+j*spread/(kids.length-1)):0),kx=bx+Math.cos(ka)*rr,ky=by+Math.sin(ka)*rr;
+      s+=`<line x1="${bx}" y1="${by}" x2="${kx}" y2="${ky}" stroke="${col}" stroke-width="1.4" opacity=".65"/>`;
+      s+=`<rect x="${kx-48}" y="${ky-13}" width="96" height="26" rx="13" fill="#fff" stroke="${col}" stroke-width="1.4"/>`+ML(kx,ky+4,k,{fill:C.ink,fs:9.5,fw:600});});
+    s+=boxN(bx-58,by-19,116,38,br.label,{fill:col,fs:11,r:19});});
+  s+=`<circle cx="${cx}" cy="${cy}" r="48" fill="${C.ink}"/>`+ML(cx,cy+4,center,{fill:'#fff',fs:13,fw:700});
+  return SV(s,w,h);}
+function genTree(root,{w=720,h=440,pad=44,boxW=104,boxH=40}={}){let leaves=[];const levels=[];
+  (function walk(n,d){n._d=d;levels[d]=1;if(!n.children||!n.children.length)leaves.push(n);else n.children.forEach(c=>walk(c,d+1));})(root,0);
+  const maxD=levels.length-1,xGap=(w-2*pad)/Math.max(1,leaves.length-1);
+  leaves.forEach((lf,i)=>lf._x=leaves.length===1?w/2:pad+i*xGap);
+  const yGap=(h-2*pad-boxH)/Math.max(1,maxD);
+  (function setx(n){if(n.children&&n.children.length){n.children.forEach(setx);n._x=(n.children[0]._x+n.children[n.children.length-1]._x)/2;}n._y=pad+n._d*yGap;})(root);
+  let s='';const pal=[C.a2,C.a4,C.a5,C.a6,C.a3];
+  (function ed(n){if(n.children)n.children.forEach(c=>{s+=`<path d="M${n._x},${n._y+boxH} C${n._x},${(n._y+boxH+c._y)/2} ${c._x},${(n._y+boxH+c._y)/2} ${c._x},${c._y}" fill="none" stroke="${C.line}" stroke-width="1.6"/>`;
+    if(c.road){const mx=(n._x+c._x)/2,my=(n._y+boxH+c._y)/2,t=String(c.road),lw=t.length*5.4+10;s+=`<rect x="${mx-lw/2}" y="${my-8}" width="${lw}" height="15" rx="4" fill="#fff" opacity=".96" stroke="${C.line}" stroke-width=".8"/>`+T(mx,my+3,t,{fill:C.mut,fs:8.5,fw:700});}
+    ed(c);});})(root);
+  (function nd(n){const col=n._d===0?C.a1:pal[(n._d-1)%pal.length];s+=boxN(n._x-boxW/2,n._y,boxW,boxH,n.label,{fill:n._d===0?C.a1:'#fff',tc:n._d===0?'#fff':C.ink,stroke:n._d===0?'':col,sw:1.8,fs:10.5,r:8});if(n.children)n.children.forEach(nd);})(root);
+  return SV(s,w,h);}
+function genPyramid(levels,{w=680,h=460}={}){const n=levels.length,top=44,botW=w-160,ax=w/2,H=h-100,lh=H/n;let s='';
+  levels.forEach((lv,i)=>{const y0=top+i*lh,y1=top+(i+1)*lh,wt=botW*i/n,wb=botW*(i+1)/n;
+    s+=`<polygon points="${ax-wt/2},${y0} ${ax+wt/2},${y0} ${ax+wb/2},${y1} ${ax-wb/2},${y1}" fill="${lv.color||P[i%P.length]}"/>`;
+    s+=ML(ax,(y0+y1)/2+4,lv.label,{fill:'#fff',fs:12,fw:700});
+    if(lv.sub)s+=T(ax+wb/2+10,(y0+y1)/2+4,lv.sub,{fill:C.mut,fs:10,anchor:'start'});});
+  return SV(s,w,h);}
+function genTreemap(items,{w=680,h=440,pad=8}={}){const total=items.reduce((a,b)=>a+b.weight,0);let it=items.slice().sort((a,b)=>b.weight-a.weight);
+  const x=pad,rw=w-2*pad,rh=h-2*pad;let curY=pad,s='',rem=it.slice();
+  while(rem.length){const rc=Math.min(rem.length,rem.length<=3?rem.length:2),row=rem.splice(0,rc),rowW=row.reduce((a,b)=>a+b.weight,0),rowH=rh*(rowW/total);let curX=x;
+    row.forEach(item=>{const cw=rw*(item.weight/rowW);s+=`<rect x="${curX}" y="${curY}" width="${cw-4}" height="${rowH-4}" rx="6" fill="${item.color||C.a1}"/>`;
+      s+=ML(curX+(cw-4)/2,curY+rowH/2-2,item.label,{fill:'#fff',fs:11.5,fw:700});
+      s+=T(curX+(cw-4)/2,curY+rowH/2+16,Math.round(item.weight/total*100)+'%',{fill:'rgba(255,255,255,.85)',fs:10});curX+=cw;});curY+=rowH;}
+  return SV(s,w,h);}
+function genTimeline(events,{w=780,h=420}={}){const y=h/2,x0=80,x1=w-80,n=events.length;let s=`<line x1="${x0}" y1="${y}" x2="${x1}" y2="${y}" stroke="${C.line}" stroke-width="3"/>`;
+  events.forEach((e,i)=>{const x=x0+(x1-x0)*(n===1?0.5:i/(n-1)),dir=i%2===0?-1:1,col=P[i%P.length];
+    s+=`<circle cx="${x}" cy="${y}" r="7" fill="${col}"/>`;const ly=y+dir*74;
+    s+=`<line x1="${x}" y1="${y}" x2="${x}" y2="${ly+(dir<0?24:-24)}" stroke="${col}" stroke-width="1.6"/>`;
+    s+=`<rect x="${x-72}" y="${ly-24}" width="144" height="54" rx="9" fill="#fff" stroke="${col}" stroke-width="1.6"/>`;
+    s+=T(x,ly-6,e.when,{fill:col,fs:11.5,fw:700})+ML(x,ly+13,e.label,{fill:C.ink,fs:9.5,fw:600,lh:11});});
+  return SV(s,w,h);}
+function genCycle(stages,{w=620,h=560,center=''}={}){const cx=w/2,cy=h/2,R=Math.min(w,h)*0.30,n=stages.length;let s=`<circle cx="${cx}" cy="${cy}" r="${R}" fill="none" stroke="${C.line}" stroke-width="1.5" stroke-dasharray="5 5"/>`;
+  const pts=stages.map((st,i)=>{const a=-Math.PI/2+i*2*Math.PI/n;return{x:cx+Math.cos(a)*R,y:cy+Math.sin(a)*R,a};});
+  for(let i=0;i<n;i++){const p=pts[i],q=pts[(i+1)%n],a1=p.a+0.44,a2=q.a-0.44,x1=cx+Math.cos(a1)*R,y1=cy+Math.sin(a1)*R,x2=cx+Math.cos(a2)*R,y2=cy+Math.sin(a2)*R;
+    s+=`<path d="M${x1},${y1} A${R},${R} 0 0 1 ${x2},${y2}" fill="none" stroke="${C.mut}" stroke-width="2" marker-end="url(#mA)"/>`;}
+  stages.forEach((st,i)=>{const p=pts[i],col=P[i%P.length];s+=`<circle cx="${p.x}" cy="${p.y}" r="46" fill="${col}"/>`+ML(p.x,p.y+4,st.label,{fill:'#fff',fs:11,fw:700});
+    if(st.note){const ox=cx+(p.x-cx)*1.62,oy=cy+(p.y-cy)*1.62;s+=ML(ox,oy,st.note,{fill:C.mut,fs:9,lh:10});}});
+  if(center)s+=ML(cx,cy,center,{fill:C.ink,fs:12,fw:700});
+  return SV(s,w,h);}
+function genSankey(source,flows,{w=740,h=460}={}){const total=flows.reduce((a,b)=>a+b.value,0),pad=34,barX=64,barW=28,sy0=pad,sy1=h-pad,H=sy1-sy0;
+  let s=`<rect x="${barX}" y="${sy0}" width="${barW}" height="${H}" rx="5" fill="${C.a1}"/>`+ML(barX+barW/2,sy0-14,source,{fill:C.ink,fs:12,fw:700,lh:12});
+  const rightX=w-250;let cur=sy0;
+  flows.forEach((f,i)=>{const th=H*(f.value/total),col=f.color||P[i%P.length],x1=barX+barW,x2=rightX;
+    s+=`<path d="M${x1},${cur} C${(x1+x2)/2},${cur} ${(x1+x2)/2},${cur} ${x2},${cur} L${x2},${cur+th} C${(x1+x2)/2},${cur+th} ${(x1+x2)/2},${cur+th} ${x1},${cur+th} Z" fill="${col}" opacity=".5"/>`;
+    s+=`<rect x="${x2}" y="${cur}" width="15" height="${th}" fill="${col}"/>`;
+    s+=T(x2+24,cur+th/2+4,`${f.label} (${Math.round(f.value/total*100)}%)`,{fill:C.ink,fs:11,anchor:'start',fw:600});cur+=th;});
+  return SV(s,w,h);}
+function genFishbone(effect,bones,{w=800,h=470}={}){const y=h/2,x0=40,xEnd=w-170;let s=`<line x1="${x0}" y1="${y}" x2="${xEnd}" y2="${y}" stroke="${C.ink}" stroke-width="2.5"/>`;
+  s+=`<polygon points="${xEnd},${y-9} ${xEnd+22},${y} ${xEnd},${y+9}" fill="${C.ink}"/>`+boxN(xEnd+26,y-27,132,54,effect,{fill:C.a4,fs:11});
+  const ups=bones.filter((_,i)=>i%2===0),downs=bones.filter((_,i)=>i%2===1);
+  const place=(arr,dir)=>{const m=arr.length;arr.forEach((b,k)=>{const bx=x0+90+(xEnd-x0-150)*((k+0.5)/m),tipx=bx-64,tipy=y+dir*150,col=P[bones.indexOf(b)%P.length];
+    s+=`<line x1="${bx}" y1="${y}" x2="${tipx}" y2="${tipy}" stroke="${col}" stroke-width="2.2"/>`+T(tipx,tipy+(dir<0?-9:20),b.name,{fill:col,fs:11,fw:700});
+    (b.causes||[]).forEach((c,j)=>{const t=(j+1)/(b.causes.length+1),cxp=bx+(tipx-bx)*t,cyp=y+(tipy-y)*t;s+=`<line x1="${cxp}" y1="${cyp}" x2="${cxp+28}" y2="${cyp}" stroke="${col}" stroke-width="1.1" opacity=".7"/>`+T(cxp+32,cyp+3,c,{fill:C.ink,fs:9,anchor:'start'});});});};
+  place(ups,-1);place(downs,1);return SV(s,w,h);}
+function genVenn3(sets,regions={},title,{w=640,h=560}={}){const cx=w/2,cy=h/2-16,R=142,pos=[[cx,cy-72],[cx-82,cy+62],[cx+82,cy+62]];let s='';
+  sets.forEach((st,i)=>{s+=`<circle cx="${pos[i][0]}" cy="${pos[i][1]}" r="${R}" fill="${st.color||P[i]}" opacity=".28"/>`;});
+  const lp=[[cx,cy-198],[cx-208,cy+156],[cx+208,cy+156]];
+  sets.forEach((st,i)=>{s+=ML(lp[i][0],lp[i][1],st.label,{fill:st.color||P[i],fs:14,fw:700});});
+  const RT=(x,y,t)=>t?ML(x,y,t,{fill:C.ink,fs:10.5,fw:700,lh:11}):'';
+  s+=RT(cx,cy-96,regions.a)+RT(cx-118,cy+96,regions.b)+RT(cx+118,cy+96,regions.c);
+  s+=RT(cx-74,cy-2,regions.ab)+RT(cx+74,cy-2,regions.ca)+RT(cx,cy+98,regions.bc)+RT(cx,cy+18,regions.abc);
+  if(title)s+=ML(cx,h-22,title,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+function genMatrix(xLab,yLab,quads,{w=690,h=560}={}){const pad=76,gx=w-24,gy0=44,gy1=h-72,cw=(gx-pad)/2,ch=(gy1-gy0)/2,midX=pad+cw,midY=gy0+ch;let s='';
+  const cells=[['tl',pad,gy0,C.a4],['tr',midX,gy0,C.a3],['bl',pad,midY,C.a2],['br',midX,midY,C.a5]];
+  cells.forEach(([k,x,y,col])=>{const q=quads[k]||{};s+=`<rect x="${x}" y="${y}" width="${cw}" height="${ch}" fill="${col}" opacity=".12" stroke="#fff" stroke-width="2"/>`;
+    s+=ML(x+12,y+22,q.title||'',{fill:col,fs:12,fw:700,anchor:'start'});
+    (q.items||[]).forEach((it,i)=>{s+=T(x+12,y+44+i*15,'• '+it,{fill:C.ink,fs:10,anchor:'start'});});});
+  s+=`<line x1="${pad}" y1="${gy0}" x2="${pad}" y2="${gy1}" stroke="${C.ink}" stroke-width="1.6"/>`;
+  s+=`<line x1="${pad}" y1="${gy1}" x2="${gx}" y2="${gy1}" stroke="${C.ink}" stroke-width="1.6"/>`;
+  s+=`<line x1="${pad}" y1="${midY}" x2="${gx}" y2="${midY}" stroke="${C.line}" stroke-width="1.2"/>`;
+  s+=`<line x1="${midX}" y1="${gy0}" x2="${midX}" y2="${gy1}" stroke="${C.line}" stroke-width="1.2"/>`;
+  s+=T((pad+gx)/2,gy1+32,xLab,{fill:C.mut,fs:12,fw:700});
+  s+=T(pad-48,midY,yLab,{fill:C.mut,fs:12,fw:700,tr:`rotate(-90 ${pad-48} ${midY})`});
+  return SV(s,w,h);}
+function genRadar(axes,series,{w=620,h=560}={}){const cx=w/2,cy=h/2+6,R=Math.min(w,h)*0.30,n=axes.length;let s='';
+  [0.25,0.5,0.75,1].forEach(f=>{let p=[];for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;p.push(`${cx+Math.cos(a)*R*f},${cy+Math.sin(a)*R*f}`);}s+=`<polygon points="${p.join(' ')}" fill="none" stroke="${C.line}" stroke-width="1"/>`;});
+  for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n,x=cx+Math.cos(a)*R,y=cy+Math.sin(a)*R;s+=`<line x1="${cx}" y1="${cy}" x2="${x}" y2="${y}" stroke="${C.line}" stroke-width="1"/>`;
+    const lx=cx+Math.cos(a)*(R+30),ly=cy+Math.sin(a)*(R+22);s+=ML(lx,ly+4,axes[i],{fill:C.mut,fs:10,fw:600});}
+  series.forEach(se=>{let p=[];for(let i=0;i<n;i++){const a=-Math.PI/2+i*2*Math.PI/n;p.push(`${cx+Math.cos(a)*R*se.vals[i]},${cy+Math.sin(a)*R*se.vals[i]}`);}s+=`<polygon points="${p.join(' ')}" fill="${se.color}" opacity=".22" stroke="${se.color}" stroke-width="2.5"/>`;});
+  series.forEach((se,k)=>{s+=`<rect x="26" y="${26+k*20}" width="12" height="12" rx="3" fill="${se.color}"/>`+T(44,36+k*20,se.name,{fill:C.ink,fs:11,anchor:'start'});});
+  return SV(s,w,h);}
+function genSpectrum(left,right,markers,{w=780,h=300,title=''}={}){const y=h/2,x0=64,x1=w-64;let s=`<defs><linearGradient id="spg" x1="0" x2="1"><stop offset="0" stop-color="${C.a2}"/><stop offset="1" stop-color="${C.a3}"/></linearGradient></defs>`;
+  s+=`<rect x="${x0}" y="${y-9}" width="${x1-x0}" height="18" rx="9" fill="url(#spg)"/>`;
+  s+=T(x0,y-26,left,{fill:C.ink,fs:13,fw:700,anchor:'start'})+T(x1,y-26,right,{fill:C.ink,fs:13,fw:700,anchor:'end'});
+  markers.forEach((m,i)=>{const x=x0+(x1-x0)*m.pos,dir=i%2===0?1:-1;s+=`<circle cx="${x}" cy="${y}" r="8" fill="#fff" stroke="${m.color||C.a1}" stroke-width="2.5"/>`;
+    s+=`<line x1="${x}" y1="${y+dir*10}" x2="${x}" y2="${y+dir*36}" stroke="${C.mut}" stroke-width="1"/>`+ML(x,y+dir*52,m.label,{fill:C.ink,fs:10,fw:600,lh:11});});
+  if(title)s+=T(w/2,h-16,title,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+function genTriad(corners,el={},center,{w=620,h=540}={}){const cx=w/2,top=74,bot=h-96,A=[cx,top],B=[w-96,bot],Cc=[96,bot],pts=[A,B,Cc];let s='';
+  s+=`<polygon points="${A[0]},${A[1]} ${B[0]},${B[1]} ${Cc[0]},${Cc[1]}" fill="none" stroke="${C.line}" stroke-width="1.8"/>`;
+  const mid=(p,q)=>[(p[0]+q[0])/2,(p[1]+q[1])/2];const eL=(p,q,t)=>{if(!t)return'';const m=mid(p,q);return `<rect x="${m[0]-t.length*3.3-5}" y="${m[1]-9}" width="${t.length*6.6+10}" height="17" rx="4" fill="#fff"/>`+T(m[0],m[1]+3,t,{fill:C.mut,fs:9.5});};
+  s+=eL(A,B,el.ab)+eL(B,Cc,el.bc)+eL(Cc,A,el.ca);
+  corners.forEach((c,i)=>{const p=pts[i];s+=`<circle cx="${p[0]}" cy="${p[1]}" r="48" fill="${c.color||P[i]}"/>`+ML(p[0],p[1]+4,c.label,{fill:'#fff',fs:12,fw:700});});
+  if(center)s+=ML(cx,(top+bot)/2+70,center,{fill:C.ink,fs:12,fw:700,lh:13});
+  return SV(s,w,h);}
+function genConcentric(rings,{w=600,h=560,caption=''}={}){const cx=w/2,cy=h/2-8,n=rings.length,Rmax=Math.min(w,h)*0.35;let s='';
+  rings.forEach((r,i)=>{const rad=Rmax*(n-i)/n,op=(0.2+0.62*(i/Math.max(1,n-1))).toFixed(2);s+=`<circle cx="${cx}" cy="${cy}" r="${rad}" fill="${r.color||C.a1}" opacity="${op}"/>`;});
+  rings.forEach((r,i)=>{const rad=Rmax*(n-i)/n,y=i===n-1?cy:cy-rad+(Rmax/n)/2+8;s+=ML(cx,y+4,r.label,{fill:i>=n-2?'#fff':C.ink,fs:12,fw:700});});
+  if(caption)s+=T(cx,h-22,caption,{fill:C.mut,fs:12,fw:700});
+  return SV(s,w,h);}
+/* ============================================================
+   FIGURE DATA — each concept matched to its best-fit viz type
+   ============================================================ */
+const FIGS = {};
+
+/* ---------- §0 OVERVIEW ---------- */
+// Master map (radial) — the whole framework at a glance
+// branch order matters: 4-child systems sit left/right (vertical fan), ≤3-child sit top/bottom
+FIGS.masterMind = genMindMap("TRIP",[
+  {label:"MOVE",children:["Big move","Small move"]},
+  {label:"EXPERIENCE",children:["What","Where","How long","When"]},
+  {label:"STAY",children:["Bases","Base changes","Accommodation"]},
+  {label:"EAT",children:["Structure","Where","When","Logistics"]}
+],{w:900,h:680});
+
+// Full structural tree (the framework as drawn)
+FIGS.masterTree = genTree({label:"TRIP",children:[
+  {label:"MOVE",children:[
+    {label:"Big move",children:[{label:"Home→Dest"},{label:"Dest→Home"}]},
+    {label:"Small move",children:[{label:"Base→Activity"},{label:"Activity→Activity"},{label:"Activity→Food"},{label:"Food→Base"}]}
+  ]},
+  {label:"STAY",children:[
+    {label:"Bases",children:[{label:"One base"},{label:"Per cluster"},{label:"Multi/base"}]},
+    {label:"Base changes",children:[{label:"When?"},{label:"Why?"}]},
+    {label:"Accommodation",children:[{label:"Location"},{label:"Price"},{label:"Quality"},{label:"Breakfast"},{label:"Facilities"}]}
+  ]},
+  {label:"EXPERIENCE",children:[
+    {label:"What?",children:[{label:"See"},{label:"Do"},{label:"Explore"},{label:"Learn"},{label:"Relax"}]},
+    {label:"Where?",children:[{label:"Cluster 1"},{label:"Cluster 2"},{label:"Cluster 3"}]},
+    {label:"How long?",children:[{label:"Fixed"},{label:"Flexible"},{label:"Passive"}]},
+    {label:"When?",children:[{label:"Morn"},{label:"Aft"},{label:"Eve"},{label:"Night"}]}
+  ]},
+  {label:"EAT",children:[
+    {label:"Structure",children:[{label:"Breakfast"},{label:"Lunch"},{label:"Snacks"},{label:"Dinner"}]},
+    {label:"Where?",children:[{label:"Hotel"},{label:"Restaurant"},{label:"Café"},{label:"Street"},{label:"Activity"}]},
+    {label:"When?",children:[{label:"At base"},{label:"Transit"},{label:"Between"},{label:"At dest"}]},
+    {label:"Logistics",children:[{label:"Eat there"},{label:"Packed"},{label:"En route"},{label:"Hotel meal"}]}
+  ]}
+]},{w:960,h:620,boxW:96,boxH:34});
+
+/* ---------- §1 MOVE ---------- */
+// Big move — there-and-back linear flow
+FIGS.bigMove = genGraph([
+  {id:'h1',x:.08,y:.28,shape:'round',w:120,h:44,label:'HOME',fill:C.a1},
+  {id:'s1',x:.5,y:.28,shape:'rect',w:150,h:44,label:'Airport /\nStation',fill:C.a4},
+  {id:'d',x:.9,y:.5,shape:'round',w:130,h:50,label:'DESTINATION',fill:C.a5},
+  {id:'s2',x:.5,y:.72,shape:'rect',w:150,h:44,label:'Airport /\nStation',fill:C.a4},
+  {id:'h2',x:.08,y:.72,shape:'round',w:120,h:44,label:'HOME',fill:C.a1}
+],[
+  {from:'h1',to:'s1',label:'out'},
+  {from:'s1',to:'d'},
+  {from:'d',to:'s2'},
+  {from:'s2',to:'h2',label:'back'}
+],{w:760,h:360});
+
+// Small move — the on-trip loop
+FIGS.smallMove = genCycle([
+  {label:'Base'},{label:'Activity A'},{label:'Activity B'},{label:'Lunch'},{label:'Activity C'}
+],{center:'Minimise\ndead\nmovement',w:600,h:520});
+
+// Clusters — network of activities grouped in space
+FIGS.clusters = genGraph([
+  {id:'base',x:.5,y:.5,shape:'round',w:110,h:44,label:'BASE',fill:C.a1},
+  {id:'a1',x:.16,y:.22,shape:'rect',w:90,h:34,label:'A1',fill:C.a2},
+  {id:'a2',x:.28,y:.5,shape:'rect',w:90,h:34,label:'A2',fill:C.a2},
+  {id:'a3',x:.16,y:.78,shape:'rect',w:90,h:34,label:'A3',fill:C.a2},
+  {id:'b1',x:.84,y:.24,shape:'rect',w:90,h:34,label:'B1',fill:C.a4},
+  {id:'b2',x:.84,y:.6,shape:'rect',w:90,h:34,label:'B2',fill:C.a4}
+],[
+  {from:'base',to:'a2',arrow:false},{from:'a2',to:'a1',arrow:false},{from:'a2',to:'a3',arrow:false},
+  {from:'base',to:'b1',arrow:false},{from:'b1',to:'b2',arrow:false}
+],{w:720,h:420});
+
+/* ---------- §2 STAY ---------- */
+// Base strategies compared — three spatial layouts
+function stayStrategy(bases){
+  // bases: array describing which cluster each base serves
+  return bases;
+}
+// Strategy A: one base
+FIGS.stayOne = genGraph([
+  {id:'base',x:.5,y:.15,shape:'round',w:120,h:44,label:'One base',fill:C.a1},
+  {id:'A',x:.2,y:.8,shape:'rect',w:100,h:38,label:'Cluster A',fill:C.a5},
+  {id:'B',x:.5,y:.8,shape:'rect',w:100,h:38,label:'Cluster B',fill:C.a5},
+  {id:'Cc',x:.8,y:.8,shape:'rect',w:100,h:38,label:'Cluster C',fill:C.a5}
+],[
+  {from:'base',to:'A',label:'commute'},{from:'base',to:'B',label:'commute'},{from:'base',to:'Cc',label:'long commute',color:C.a3}
+],{w:700,h:380});
+// Strategy B: two bases
+FIGS.stayTwo = genGraph([
+  {id:'b1',x:.28,y:.18,shape:'round',w:110,h:42,label:'Base 1',fill:C.a1},
+  {id:'b2',x:.75,y:.18,shape:'round',w:110,h:42,label:'Base 2',fill:C.a1},
+  {id:'A',x:.14,y:.8,shape:'rect',w:96,h:36,label:'Cluster A',fill:C.a5},
+  {id:'B',x:.42,y:.8,shape:'rect',w:96,h:36,label:'Cluster B',fill:C.a5},
+  {id:'Cc',x:.75,y:.8,shape:'rect',w:96,h:36,label:'Cluster C',fill:C.a5}
+],[
+  {from:'b1',to:'A'},{from:'b1',to:'B'},{from:'b2',to:'Cc'},
+  {from:'b1',to:'b2',label:'1 move',color:C.a4,curve:38}
+],{w:720,h:380});
+// Strategy C: three bases
+FIGS.stayThree = genGraph([
+  {id:'b1',x:.16,y:.25,shape:'round',w:96,h:40,label:'Base 1',fill:C.a1},
+  {id:'b2',x:.5,y:.25,shape:'round',w:96,h:40,label:'Base 2',fill:C.a1},
+  {id:'b3',x:.84,y:.25,shape:'round',w:96,h:40,label:'Base 3',fill:C.a1},
+  {id:'A',x:.16,y:.82,shape:'rect',w:90,h:34,label:'Cluster A',fill:C.a5},
+  {id:'B',x:.5,y:.82,shape:'rect',w:90,h:34,label:'Cluster B',fill:C.a5},
+  {id:'Cc',x:.84,y:.82,shape:'rect',w:90,h:34,label:'Cluster C',fill:C.a5}
+],[
+  {from:'b1',to:'A'},{from:'b2',to:'B'},{from:'b3',to:'Cc'},
+  {from:'b1',to:'b2',label:'move',color:C.a4},{from:'b2',to:'b3',label:'move',color:C.a4}
+],{w:740,h:380});
+// The trade-off — one axis
+FIGS.staySpectrum = genSpectrum('Fewer bases','More bases',[
+  {label:'Least\npacking\nfriction',pos:.08,color:C.a1},
+  {label:'Most\ncommuting',pos:.2,color:C.a3},
+  {label:'Balance',pos:.5,color:C.a5},
+  {label:'Least\ncommuting',pos:.8,color:C.a2},
+  {label:'Most check-in\n/packing',pos:.92,color:C.a3}
+],{title:'Every base you add trades commuting for packing & check-in friction',w:820,h:300});
+// Accommodation profile — radar across the 5 criteria
+FIGS.accomRadar = genRadar(['Location','Price','Quality','Breakfast','Facilities'],[
+  {name:'Hotel A — central',color:C.a1,vals:[.95,.4,.7,.6,.5]},
+  {name:'Hotel B — value',color:C.a5,vals:[.55,.9,.6,.9,.75]}
+],{w:660,h:560});
+// Base changes — when & why
+FIGS.baseChange = genTree({label:"Base change",children:[
+  {label:"WHEN?",children:[{label:"Morning"},{label:"Afternoon"},{label:"Night"}]},
+  {label:"WHY?",children:[{label:"Distance"},{label:"Time efficiency"},{label:"Experience"}]}
+]},{w:640,h:340,boxW:120,boxH:38});
+
+/* ---------- §3 EXPERIENCE ---------- */
+// Verb-based taxonomy — radial mind map
+FIGS.expMind = genMindMap("EXPERIENCE\n(what to do?)",[
+  {label:"SEE"},{label:"DO"},{label:"EXPLORE"},{label:"LEARN"},{label:"RELAX"}
+],{w:760,h:560});
+// The three operational questions — linear flow
+FIGS.expOps = genGraph([
+  {id:'w',x:.1,y:.5,shape:'round',w:130,h:52,label:'An\nexperience',fill:C.a1},
+  {id:'q1',x:.38,y:.5,shape:'rect',w:140,h:52,label:'WHERE?\n(cluster)',fill:C.a2},
+  {id:'q2',x:.66,y:.5,shape:'rect',w:150,h:52,label:'HOW LONG?\nfixed·flex·passive',fill:C.a4},
+  {id:'q3',x:.93,y:.5,shape:'rect',w:150,h:52,label:'WHEN?\nmorn·aft·eve·night',fill:C.a5}
+],[
+  {from:'w',to:'q1'},{from:'q1',to:'q2'},{from:'q2',to:'q3'}
+],{w:900,h:210});
+// Duration — a spectrum
+FIGS.expDuration = genSpectrum('Passive viewing','Fixed-duration',[
+  {label:'Sunset\nlookout',pos:.1,color:C.a2},
+  {label:'Wander\na market',pos:.45,color:C.a1},
+  {label:'Booked\ntrek slot',pos:.88,color:C.a4}
+],{title:'How much does the activity lock your clock?',w:800,h:290});
+
+/* ---------- §4 EAT ---------- */
+// Purpose — experience vs fuel spectrum
+FIGS.eatSpectrum = genSpectrum('Food as FUEL','Food as EXPERIENCE',[
+  {label:'Maggi at a\nviewpoint',pos:.12,color:C.a4},
+  {label:'Packed\ntrek lunch',pos:.28,color:C.a2},
+  {label:'Local\ncafé',pos:.6,color:C.a1},
+  {label:'Famous\nrestaurant',pos:.9,color:C.a3}
+],{title:'Every meal is planned differently depending on why you are eating it',w:820,h:300});
+// EAT structure — tree
+FIGS.eatTree = genTree({label:"EAT",children:[
+  {label:"Purpose",children:[{label:"Experience"},{label:"Fuel"}]},
+  {label:"Meal",children:[{label:"Breakfast"},{label:"Lunch"},{label:"Snack"},{label:"Dinner"}]},
+  {label:"Execution",children:[{label:"Hotel"},{label:"Restaurant"},{label:"Café"},{label:"Street"},{label:"En route"},{label:"Packed"}]}
+]},{w:820,h:380,boxW:92,boxH:34});
+// A day's food strategy — timeline
+FIGS.eatDay = genTimeline([
+  {when:'Morning',label:'Breakfast at hotel'},
+  {when:'Midday',label:'Packed lunch on trek'},
+  {when:'Afternoon',label:'Roadside snack'},
+  {when:'Night',label:'Dinner at restaurant'}
+],{w:820,h:360});
+
+/* ---------- §5 THE FOUR INTERACT ---------- */
+// Concept map — directed dependencies between the four
+FIGS.interact = genGraph([
+  {id:'exp',x:.5,y:.14,shape:'round',w:140,h:50,label:'EXPERIENCE',fill:C.a3},
+  {id:'move',x:.14,y:.55,shape:'round',w:120,h:48,label:'MOVE',fill:C.a1},
+  {id:'stay',x:.86,y:.55,shape:'round',w:120,h:48,label:'STAY',fill:C.a2},
+  {id:'eat',x:.5,y:.9,shape:'round',w:120,h:48,label:'EAT',fill:C.a5}
+],[
+  {from:'exp',to:'move',label:'sets timing → shapes',color:C.a3,curve:20},
+  {from:'stay',to:'exp',label:'reach → enables/kills',color:C.a2,curve:20},
+  {from:'exp',to:'eat',label:'long day → fuel plan',color:C.a3,curve:-20},
+  {from:'move',to:'eat',label:'transit → meal window',color:C.a1,curve:-20},
+  {from:'exp',to:'stay',label:'anchors base',color:C.mut,curve:30}
+],{w:760,h:520});
+
+/* ---------- §6 THE PLANNING ENGINE ---------- */
+// Iteration loop
+FIGS.engine = genCycle([
+  {label:'Destination'},{label:'Clusters'},{label:'Bases'},{label:'Experiences'},
+  {label:'Movement'},{label:'Meals'},{label:'Schedule'}
+],{center:'iterate',w:640,h:600});
+// Convergence — time & geography under everything
+FIGS.substrate = genPyramid([
+  {label:'Itinerary'},
+  {label:'Meals placed in the gaps'},
+  {label:'Movement connects experiences'},
+  {label:'Experiences inside clusters'},
+  {label:'Bases chosen · Clusters identified'}
+],{w:760,h:460});
+
+/* ---------- §7 PACKAGE vs DIY ---------- */
+// Package = pre-solved linear chain
+FIGS.pkg = genGraph([
+  {id:'f1',x:.09,y:.5,shape:'round',w:92,h:40,label:'Flight',fill:C.a1},
+  {id:'t1',x:.27,y:.5,shape:'rect',w:92,h:38,label:'Transfer',fill:C.mut},
+  {id:'h1',x:.45,y:.3,shape:'rect',w:92,h:38,label:'Hotel',fill:C.a2},
+  {id:'s1',x:.45,y:.7,shape:'rect',w:100,h:38,label:'Sightsee',fill:C.a4},
+  {id:'h2',x:.66,y:.3,shape:'rect',w:92,h:38,label:'Hotel',fill:C.a2},
+  {id:'s2',x:.66,y:.7,shape:'rect',w:100,h:38,label:'Sightsee',fill:C.a4},
+  {id:'f2',x:.9,y:.5,shape:'round',w:100,h:40,label:'Flight home',fill:C.a1}
+],[
+  {from:'f1',to:'t1'},{from:'t1',to:'h1'},{from:'h1',to:'s1'},{from:'s1',to:'h2'},
+  {from:'h2',to:'s2'},{from:'s2',to:'f2'}
+],{w:820,h:360});
+// DIY = you solve all four
+FIGS.diy = genMindMap("YOU\n(DIY trip)",[
+  {label:"Solve MOVE"},{label:"Solve STAY"},{label:"Solve EXPERIENCE"},{label:"Solve EAT"}
+],{w:640,h:420});
+
+/* ============================================================
+   ADDED: figures that genuinely earn their place (v2 rework)
+   ============================================================ */
+
+// Stay — the actual decision, as a flowchart (replaces the forced spectrum)
+FIGS.baseDecision = genGraph([
+  {id:'s',x:.12,y:.5,shape:'round',w:140,h:48,label:'A cluster\nto reach',fill:C.a1},
+  {id:'d',x:.46,y:.5,shape:'diamond',w:180,h:104,label:'Far AND\nthere 2+ days?',fill:C.a4,hollow:true},
+  {id:'move',x:.84,y:.24,shape:'rect',w:180,h:48,label:'Move base nearer',fill:C.a5},
+  {id:'day',x:.84,y:.76,shape:'rect',w:190,h:48,label:'Day-trip, keep base',fill:C.a2}
+],[
+  {from:'s',to:'d'},
+  {from:'d',to:'move',label:'yes'},
+  {from:'d',to:'day',label:'no'}
+],{w:840,h:340});
+
+// Experience — trip energy rhythm (peak-end). A genuine curve over time.
+FIGS.energyRhythm = (function(){
+  var w=860,h=330,padL=30,padR=24,padT=44,padB=52, y0=h-padB;
+  var pts=[{d:'Arrive',v:.32},{d:'Warm up',v:.62},{d:'PEAK',v:.96},{d:'Recover',v:.40},{d:'Build',v:.70},{d:'Cruise',v:.55},{d:'Strong end',v:.82}];
+  var n=pts.length, X=function(i){return padL+i/(n-1)*(w-padL-padR);}, Y=function(v){return y0 - v*(y0-padT);};
+  var line='', area='M'+X(0)+','+y0;
+  pts.forEach(function(p,i){ var x=X(i),y=Y(p.v); line+=(i?'L':'M')+x+','+y+' '; area+='L'+x+','+y+' '; });
+  area+='L'+X(n-1)+','+y0+' Z';
+  var s='';
+  s+='<line x1="'+padL+'" y1="'+y0+'" x2="'+(w-padR)+'" y2="'+y0+'" stroke="'+C.line+'" stroke-width="1.5"/>';
+  s+='<path d="'+area+'" fill="'+C.a1+'" opacity="0.08"/>';
+  s+='<path d="'+line+'" fill="none" stroke="'+C.a1+'" stroke-width="2.6" stroke-linejoin="round" stroke-linecap="round"/>';
+  pts.forEach(function(p,i){ var x=X(i),y=Y(p.v); var peak=(p.d==='PEAK'), end=(i===n-1);
+    var col=peak?C.a3:(end?C.a5:C.a1), r=(peak||end)?7:4.5;
+    s+='<circle cx="'+x+'" cy="'+y+'" r="'+r+'" fill="'+col+'"/>';
+    var anc=(i===0)?'start':(i===n-1)?'end':'middle';
+    s+=T(x,y0+18,p.d,{fill:(peak||end)?col:C.mut,fs:11,fw:(peak||end)?700:500,anchor:anc});
+  });
+  s+=T((w-padR),padT-14,'what you will remember',{fill:C.mut,fs:11,anchor:'end',fw:600});
+  return SV(s,w,h);
+})();
+
+// Worked example — one full day, all four systems on one timeline
+FIGS.dayPlan = genTimeline([
+  {when:'7:00',label:'Move to trailhead'},
+  {when:'8:00',label:'Anchor: sunrise trek'},
+  {when:'12:30',label:'Packed lunch · fuel'},
+  {when:'15:00',label:'Old-town wander'},
+  {when:'18:00',label:'Sunset viewpoint'},
+  {when:'20:00',label:'Dinner · experience'}
+],{w:900,h:400});
+
+// Package vs DIY — the decision, as a flowchart
+FIGS.pkgDecision = genGraph([
+  {id:'s',x:.11,y:.5,shape:'round',w:130,h:46,label:'A trip\nto plan',fill:C.a1},
+  {id:'d',x:.45,y:.5,shape:'diamond',w:200,h:110,label:'Complex logistics,\nor little time/appetite?',fill:C.a4,hollow:true},
+  {id:'pkg',x:.84,y:.24,shape:'rect',w:180,h:48,label:'Buy the package',fill:C.a3},
+  {id:'diy',x:.84,y:.76,shape:'rect',w:180,h:48,label:'Plan it yourself',fill:C.a5}
+],[
+  {from:'s',to:'d'},
+  {from:'d',to:'pkg',label:'yes'},
+  {from:'d',to:'diy',label:'no'}
+],{w:860,h:360});
+
+/* ============================================================
+   LONAVALA 3-DAY WORKED TRIP
+   ============================================================ */
+
+// The move arc across the whole trip (two overnight bases highlighted)
+FIGS.lonMove = genGraph([
+  {id:'m1',x:.05,y:.5,shape:'round',w:90,h:44,label:'Mumbai',fill:C.mut},
+  {id:'l1',x:.21,y:.5,shape:'round',w:104,h:46,label:'Lonavala\n★ Night 1',fill:C.a1},
+  {id:'k',x:.37,y:.5,shape:'rect',w:96,h:40,label:'Khandala\ncircuit',fill:C.a2},
+  {id:'f',x:.52,y:.5,shape:'rect',w:96,h:40,label:'Malavli\nforts',fill:C.a4},
+  {id:'p',x:.68,y:.5,shape:'round',w:104,h:46,label:'Pawna\n★ Night 2',fill:C.a1},
+  {id:'l2',x:.84,y:.5,shape:'rect',w:92,h:40,label:'Lonavala',fill:C.a2},
+  {id:'m2',x:.97,y:.5,shape:'round',w:80,h:44,label:'Mumbai',fill:C.mut}
+],[
+  {from:'m1',to:'l1'},{from:'l1',to:'k'},{from:'k',to:'f'},{from:'f',to:'p'},{from:'p',to:'l2'},{from:'l2',to:'m2'}
+],{w:1020,h:180});
+
+// Day 1 — arrival + hill-station circuit, food woven in
+FIGS.day1 = genTimeline([
+  {when:'Late AM',label:'Arrive\nLonavala'},
+  {when:'Noon',label:'Misal lunch\n· local'},
+  {when:'2 PM',label:'Check-in +\nBhushi Dam'},
+  {when:'4 PM',label:'Chikki +\nvada pav'},
+  {when:'5 PM',label:"Tiger's &\nLion's Pt"},
+  {when:'6 PM',label:'Maggi +\ncorn + chai'},
+  {when:'7 PM',label:'Sunset'},
+  {when:'9 PM',label:'Dinner +\nhotel night'}
+],{w:1000,h:430});
+
+// Day 2 — forts + Pawna, the anchor day
+FIGS.day2 = genTimeline([
+  {when:'8 AM',label:'Breakfast'},
+  {when:'9 AM',label:'Drive to\nMalavli'},
+  {when:'10 AM',label:'Fort trek\n· anchor'},
+  {when:'1 PM',label:'Caves\n· optional'},
+  {when:'2 PM',label:'Thali near\nMalavli'},
+  {when:'4 PM',label:'Drive to\nPawna'},
+  {when:'6 PM',label:'Boating +\nsunset'},
+  {when:'8 PM',label:'Camp +\nbonfire'}
+],{w:1000,h:430});
+
+// Day 3 — easy exit
+FIGS.day3 = genTimeline([
+  {when:'6 AM',label:'Sunrise +\nbreakfast'},
+  {when:'9 AM',label:'Checkout,\ndrive out'},
+  {when:'11 AM',label:'Mapro\nGarden'},
+  {when:'1 PM',label:'Lunch in\nLonavala'},
+  {when:'2 PM',label:'Chikki\nshopping'},
+  {when:'3 PM',label:'Coffee +\ndessert'},
+  {when:'4 PM',label:'Drive to\nMumbai'}
+],{w:980,h:430});
+
+// Fort day — pick ONE, not both
+FIGS.fortChoice = genGraph([
+  {id:'s',x:.12,y:.5,shape:'round',w:120,h:46,label:'Fort day',fill:C.a1},
+  {id:'d',x:.46,y:.5,shape:'diamond',w:190,h:104,label:'Want a longer,\nharder climb?',fill:C.a4,hollow:true},
+  {id:'vis',x:.85,y:.26,shape:'rect',w:200,h:48,label:'Visapur · higher,\nlonger trek',fill:C.a3},
+  {id:'loh',x:.85,y:.75,shape:'rect',w:200,h:48,label:'Lohagad · ~5 km,\niconic gates',fill:C.a5}
+],[
+  {from:'s',to:'d'},{from:'d',to:'vis',label:'yes'},{from:'d',to:'loh',label:'no'}
+],{w:900,h:340});
+
+// The eating rhythm of a day — the four kinds in sequence
+FIGS.foodRhythm = genGraph([
+  {id:'b',x:.07,y:.5,shape:'round',w:104,h:46,label:'Breakfast\n· base',fill:C.a1},
+  {id:'t',x:.26,y:.5,shape:'rect',w:100,h:44,label:'Transit\nbite',fill:C.mut},
+  {id:'s1',x:.45,y:.5,shape:'rect',w:104,h:44,label:'Chikki /\ntrail snack',fill:C.a4},
+  {id:'l',x:.64,y:.5,shape:'rect',w:100,h:44,label:'Proper\nlunch',fill:C.a3},
+  {id:'s2',x:.82,y:.5,shape:'rect',w:104,h:44,label:'Viewpoint\nmaggi',fill:C.a4},
+  {id:'d',x:.97,y:.5,shape:'round',w:80,h:46,label:'Dinner',fill:C.a1}
+],[
+  {from:'b',to:'t'},{from:'t',to:'s1'},{from:'s1',to:'l'},{from:'l',to:'s2'},{from:'s2',to:'d'}
+],{w:1000,h:180});
+
+/* ============================================================
+   DEEP-DIVE TABS — Move / Stay / Experience / Eat
+   ============================================================ */
+
+// MOVE — distance → mode ladder (distance is a genuine continuum)
+FIGS.distanceLadder = (function(){
+  var w=980,h=210,x0=60,x1=w-60,y=104,bh=46,total=x1-x0;
+  var segs=[
+    {f:0.17,c:C.a1,t:'CAR',s:'door-to-door, flexible'},
+    {f:0.27,c:C.a5,t:'TRAIN / BUS',s:'comfortable, cheap'},
+    {f:0.28,c:C.a2,t:'OVERNIGHT TRAIN / FLIGHT',s:'sleep through it, or fly'},
+    {f:0.28,c:C.a3,t:'FLIGHT',s:'time beats everything'}
+  ];
+  var bounds=['~150 km','~500 km','~1000 km'], s='', cx=x0;
+  segs.forEach(function(sg){var wseg=total*sg.f;
+    s+='<rect x="'+cx+'" y="'+(y-bh/2)+'" width="'+wseg+'" height="'+bh+'" fill="'+sg.c+'"/>';
+    s+=T(cx+wseg/2,y-2,sg.t,{fill:'#fff',fs:11.5,fw:800});
+    s+=T(cx+wseg/2,y+14,sg.s,{fill:'#fff',fs:9.5,fw:500});
+    cx+=wseg;});
+  cx=x0;
+  for(var i=0;i<segs.length-1;i++){cx+=total*segs[i].f;
+    s+='<line x1="'+cx+'" y1="'+(y+bh/2)+'" x2="'+cx+'" y2="'+(y+bh/2+9)+'" stroke="'+C.mut+'" stroke-width="1.5"/>';
+    s+=T(cx,y+bh/2+24,bounds[i],{fill:C.mut,fs:11,fw:700});}
+  s+=T(x0,y-bh/2-12,'0 km',{fill:C.mut,fs:11,anchor:'start',fw:600});
+  s+=T(x1,y-bh/2-12,'farther →',{fill:C.mut,fs:11,anchor:'end',fw:600});
+  return SV(s,w,h);
+})();
+
+// MOVE — small-move decision: traveller / self-drive / spontaneous
+FIGS.smallMoveDecision = genGraph([
+  {id:'s',x:.08,y:.5,shape:'round',w:120,h:48,label:'Getting\naround',fill:C.a1},
+  {id:'d1',x:.34,y:.5,shape:'diamond',w:180,h:104,label:'Fixed multi-stop\nplan, as a group?',fill:C.a4,hollow:true},
+  {id:'trav',x:.66,y:.16,shape:'rect',w:190,h:48,label:'Book a traveller\n+ driver',fill:C.a5},
+  {id:'d2',x:.62,y:.66,shape:'diamond',w:170,h:100,label:'Happy to drive,\nwant freedom?',fill:C.a4,hollow:true},
+  {id:'self',x:.9,y:.5,shape:'rect',w:150,h:48,label:'Self-drive\n(rent a car)',fill:C.a2},
+  {id:'spont',x:.9,y:.86,shape:'rect',w:170,h:48,label:'Spontaneous\ncabs / autos',fill:C.a6}
+],[
+  {from:'s',to:'d1'},
+  {from:'d1',to:'trav',label:'yes'},
+  {from:'d1',to:'d2',label:'no'},
+  {from:'d2',to:'self',label:'yes'},
+  {from:'d2',to:'spont',label:'no'}
+],{w:940,h:440});
+
+// EXPERIENCE — how to find experiences (a funnel)
+FIGS.expFind = genGraph([
+  {id:'src',x:.15,y:.5,shape:'rect',w:210,h:74,label:'Sources: tourism sites,\nYouTube / Instagram,\nReddit / blogs, locals',fill:C.a2},
+  {id:'sl',x:.52,y:.5,shape:'rect',w:160,h:56,label:'Shortlist by the\nverbs you want',fill:C.a1},
+  {id:'an',x:.86,y:.5,shape:'round',w:160,h:56,label:'One anchor\nper day',fill:C.a5}
+],[
+  {from:'src',to:'sl'},{from:'sl',to:'an'}
+],{w:940,h:200});
+
+// EAT — how to find good food (a funnel)
+FIGS.eatFind = genGraph([
+  {id:'scan',x:.15,y:.5,shape:'rect',w:210,h:74,label:'Scan: Google Maps,\nZomato, ask your\ndriver & locals',fill:C.a2},
+  {id:'flt',x:.52,y:.5,shape:'rect',w:180,h:56,label:'Filter: ratings, photos,\npopular times',fill:C.a1},
+  {id:'pick',x:.86,y:.5,shape:'round',w:170,h:56,label:'One meal that is\nthe destination',fill:C.a3}
+],[
+  {from:'scan',to:'flt'},{from:'flt',to:'pick'}
+],{w:940,h:200});
+
+/* ============================================================
+   BUDGETING tab
+   ============================================================ */
+
+// Guesstimate → Estimate → Budget (rising precision)
+FIGS.bgStages = genGraph([
+  {id:'g',x:.17,y:.5,shape:'rect',w:210,h:70,label:'GUESSTIMATE\nquick range · assumptions',fill:C.a4},
+  {id:'e',x:.5,y:.5,shape:'rect',w:210,h:70,label:'ESTIMATE\nresearched · real prices',fill:C.a2},
+  {id:'b',x:.84,y:.5,shape:'round',w:200,h:70,label:'BUDGET\napproved limit + buffer',fill:C.a5}
+],[
+  {from:'g',to:'e',label:'research'},{from:'e',to:'b',label:'+ contingency'}
+],{w:980,h:210});
+
+// Door-to-door cost chain (generalized) — every arrow can cost money
+FIGS.bgChain = genGraph([
+  {id:'h1',x:.05,y:.5,shape:'round',w:80,h:44,label:'Home',fill:C.mut},
+  {id:'s1',x:.2,y:.5,shape:'rect',w:96,h:42,label:'Airport /\nstation',fill:C.a4},
+  {id:'main',x:.37,y:.5,shape:'rect',w:100,h:42,label:'Intercity\ntransport',fill:C.a1},
+  {id:'gw',x:.54,y:.5,shape:'rect',w:100,h:42,label:'Gateway\ntransfer',fill:C.a4},
+  {id:'base',x:.7,y:.5,shape:'round',w:92,h:46,label:'Base\n(stay)',fill:C.a2},
+  {id:'act',x:.85,y:.5,shape:'rect',w:92,h:42,label:'Local\nmoves',fill:C.a5},
+  {id:'h2',x:.97,y:.5,shape:'round',w:80,h:44,label:'…home',fill:C.mut}
+],[
+  {from:'h1',to:'s1'},{from:'s1',to:'main'},{from:'main',to:'gw'},{from:'gw',to:'base'},{from:'base',to:'act'},{from:'act',to:'h2'}
+],{w:1020,h:170});
+
+// Group vs individual — sort every expense into three cost types
+FIGS.bgTypes = genGraph([
+  {id:'all',x:.09,y:.5,shape:'round',w:130,h:56,label:'Every\nexpense',fill:C.a1},
+  {id:'pp',x:.5,y:.18,shape:'rect',w:210,h:48,label:'Per-person  (× N)',fill:C.a3},
+  {id:'sh',x:.5,y:.5,shape:'rect',w:210,h:48,label:'Shared group  (÷ N)',fill:C.a4},
+  {id:'rm',x:.5,y:.82,shape:'rect',w:210,h:48,label:'Room-based  (R × L)',fill:C.a2},
+  {id:'tot',x:.9,y:.5,shape:'round',w:130,h:56,label:'Fair\nsplit',fill:C.a5}
+],[
+  {from:'all',to:'pp'},{from:'all',to:'sh'},{from:'all',to:'rm'},
+  {from:'pp',to:'tot'},{from:'sh',to:'tot'},{from:'rm',to:'tot'}
+],{w:980,h:360});
+
+// The master calculation pipeline
+FIGS.bgMaster = genGraph([
+  {id:'in',x:.14,y:.5,shape:'rect',w:210,h:96,label:'(per-person × N)\n+ shared group\n+ (rooms × nights)\n+ optional',fill:C.a1},
+  {id:'sub',x:.44,y:.5,shape:'round',w:150,h:60,label:'Group\nsubtotal',fill:C.a2},
+  {id:'safe',x:.7,y:.5,shape:'round',w:160,h:60,label:'Safe\nbudget',fill:C.a4},
+  {id:'pp',x:.93,y:.5,shape:'round',w:150,h:60,label:'Per-person\nshare',fill:C.a5}
+],[
+  {from:'in',to:'sub'},{from:'sub',to:'safe',label:'+ contingency'},{from:'safe',to:'pp',label:'÷ N'}
+],{w:1010,h:240});
+
+// Contingency band — buffer % by how uncertain the trip is
+FIGS.contingencyLadder = (function(){
+  var w=980,h=210,x0=60,x1=w-60,y=104,bh=46,total=x1-x0;
+  var segs=[
+    {f:0.33,c:C.a5,t:'SIMPLE CITY TRIP',s:'+5–8%'},
+    {f:0.34,c:C.a4,t:'MULTI-LEG · MONSOON · GROUP',s:'+10–15%'},
+    {f:0.33,c:C.a3,t:'REMOTE · WEATHER · UNCERTAIN',s:'+15–20%'}
+  ];
+  var s='',cx=x0;
+  segs.forEach(function(sg){var wseg=total*sg.f;
+    s+='<rect x="'+cx+'" y="'+(y-bh/2)+'" width="'+wseg+'" height="'+bh+'" fill="'+sg.c+'"/>';
+    s+=T(cx+wseg/2,y-2,sg.t,{fill:'#fff',fs:10.5,fw:800});
+    s+=T(cx+wseg/2,y+15,sg.s,{fill:'#fff',fs:12,fw:800});
+    cx+=wseg;});
+  s+=T(x0,y-bh/2-12,'predictable',{fill:C.mut,fs:11,anchor:'start',fw:600});
+  s+=T(x1,y-bh/2-12,'uncertain →',{fill:C.mut,fs:11,anchor:'end',fw:600});
+  return SV(s,w,h);
+})();
+
+// Three-point estimate — Low / Realistic / High range bars
+FIGS.rangeBars = (function(){
+  var w=920,h=300,x0=160,x1=w-40,y0=70,rowH=54;
+  var rows=[{n:'Main transport',lo:.45,re:.6,hi:.9},{n:'Stay share',lo:.28,re:.4,hi:.6},{n:'Local movement',lo:.22,re:.34,hi:.62},{n:'Food',lo:.3,re:.43,hi:.56}];
+  var X=function(f){return x0+f*(x1-x0);}, s='';
+  var ly=y0-34;
+  s+='<circle cx="'+X(rows[0].lo)+'" cy="'+ly+'" r="4" fill="'+C.a2+'"/>'+T(X(rows[0].lo),ly-9,'Low',{fill:C.mut,fs:10,fw:700});
+  s+='<circle cx="'+X(rows[0].re)+'" cy="'+ly+'" r="6" fill="'+C.a1+'"/>'+T(X(rows[0].re),ly-11,'Realistic',{fill:C.a1,fs:10,fw:800});
+  s+='<circle cx="'+X(rows[0].hi)+'" cy="'+ly+'" r="4" fill="'+C.a3+'"/>'+T(X(rows[0].hi),ly-9,'High',{fill:C.mut,fs:10,fw:700});
+  rows.forEach(function(r,i){var y=y0+i*rowH;
+    s+=T(x0-14,y+4,r.n,{fill:C.ink,fs:12.5,fw:600,anchor:'end'});
+    s+='<line x1="'+x0+'" y1="'+y+'" x2="'+x1+'" y2="'+y+'" stroke="'+C.line+'" stroke-width="2"/>';
+    s+='<line x1="'+X(r.lo)+'" y1="'+y+'" x2="'+X(r.hi)+'" y2="'+y+'" stroke="'+C.a1+'" stroke-width="7" stroke-linecap="round" opacity="0.28"/>';
+    s+='<circle cx="'+X(r.lo)+'" cy="'+y+'" r="4.5" fill="'+C.a2+'"/>';
+    s+='<circle cx="'+X(r.hi)+'" cy="'+y+'" r="4.5" fill="'+C.a3+'"/>';
+    s+='<circle cx="'+X(r.re)+'" cy="'+y+'" r="6.5" fill="'+C.a1+'"/>';
+  });
+  return SV(s,w,h);
+})();
+
+/* ============================================================
+   LONAVALA BUDGETING (11 people, 3D/2N off-site)
+   ============================================================ */
+
+// Where the group money goes (Sankey)
+FIGS.lonBudgetSankey = genSankey("Safe budget\n₹2.64L · 11 pax",[
+  {label:'Move ₹1.45L (flight-led)',value:145300,color:C.a1},
+  {label:'Stay ₹46.7k',value:46700,color:C.a2},
+  {label:'Eat ₹22.0k',value:22000,color:C.a5},
+  {label:'Experience ₹5.5k',value:5500,color:C.a3},
+  {label:'Personal ₹16.5k',value:16500,color:C.a6},
+  {label:'Contingency ₹28.3k',value:28320,color:C.a4}
+],{w:820,h:470});
+
+// Per-person plan vs the ₹14,000 allowance — with the Delhi flight, the whole band clears it
+FIGS.lonBudgetVs = (function(){
+  var w=920,h=210,x0=70,x1=w-50,y=118,lo=12000,hi=34000;
+  var X=function(v){return x0+(v-lo)/(hi-lo)*(x1-x0);};
+  var s='';
+  s+='<line x1="'+x0+'" y1="'+y+'" x2="'+x1+'" y2="'+y+'" stroke="'+C.line+'" stroke-width="3"/>';
+  s+='<line x1="'+X(19200)+'" y1="'+y+'" x2="'+X(32000)+'" y2="'+y+'" stroke="'+C.a1+'" stroke-width="8" stroke-linecap="round" opacity="0.22"/>';
+  function mark(v,label,col,r){s+='<circle cx="'+X(v)+'" cy="'+y+'" r="'+r+'" fill="'+col+'"/>';s+=T(X(v),y+24,label,{fill:col,fs:11,fw:800});s+=T(X(v),y+38,'₹'+(v/1000).toFixed(1).replace('.0','')+'k',{fill:C.mut,fs:10,fw:600});}
+  mark(19200,'Low',C.a2,5);
+  mark(24000,'Realistic',C.a1,7);
+  mark(32000,'High',C.a3,5);
+  var ax=X(14000);
+  s+='<line x1="'+ax+'" y1="'+(y-46)+'" x2="'+ax+'" y2="'+(y+42)+'" stroke="'+C.a5+'" stroke-width="2.5" stroke-dasharray="5 4"/>';
+  s+=T(ax,y-54,'Company ₹14,000  ≈  on-ground per head',{fill:C.a5,fs:11.5,fw:800,anchor:'start'});
+  s+=T(ax+4,y+56,'the ₹10k flight is the whole gap →',{fill:C.mut,fs:10,fw:600,anchor:'start'});
+  s+=T(x0,y-30,'₹12k',{fill:C.mut,fs:10,anchor:'start',fw:600});
+  s+=T(x1,y-30,'per person, all-in →',{fill:C.mut,fs:10,anchor:'end',fw:600});
+  return SV(s,w,h);
+})();
+
+/* ============================================================
+   DECIDING WHERE TO GO — the 8-stage decision pipeline
+   (converted from the guide's framework chapters into diagrams)
+   ============================================================ */
+
+// §0 — the eight-stage pipeline, as a snaking flow (2 rows of 4)
+FIGS.dwPipeline = genGraph([
+  {id:'s1',x:.11,y:.26,shape:'rect',w:150,h:60,label:'01 · FIX\nConstraints',fill:C.a1},
+  {id:'s2',x:.37,y:.26,shape:'rect',w:150,h:60,label:'02 · DEFINE\nBrief',fill:C.a1},
+  {id:'s3',x:.63,y:.26,shape:'rect',w:150,h:60,label:'03 · DIVERGE\nOptions',fill:C.a2},
+  {id:'s4',x:.89,y:.26,shape:'rect',w:150,h:60,label:'04 · CONVERGE\nDecision',fill:C.a2},
+  {id:'s5',x:.89,y:.74,shape:'rect',w:150,h:60,label:'05 · VERIFY\nFeasibility',fill:C.a4},
+  {id:'s6',x:.63,y:.74,shape:'rect',w:150,h:60,label:'06 · DESIGN\nItinerary',fill:C.a4},
+  {id:'s7',x:.37,y:.74,shape:'rect',w:150,h:60,label:'07 · RESERVE\nBookings',fill:C.a5},
+  {id:'s8',x:.11,y:.74,shape:'round',w:150,h:60,label:'08 · CLOSE\nControl sheet',fill:C.a5}
+],[
+  {from:'s1',to:'s2'},{from:'s2',to:'s3'},{from:'s3',to:'s4'},
+  {from:'s4',to:'s5',label:'then',curve:-30},
+  {from:'s5',to:'s6'},{from:'s6',to:'s7'},{from:'s7',to:'s8'}
+],{w:1020,h:320});
+
+// §0 — the governing rule: decide cheap/reversible early, dear/irreversible late
+FIGS.dwGovern = genSpectrum('EARLY in planning','LATE in planning',[
+  {label:'Cheap,\nreversible\ndecisions',pos:.14,color:C.a5},
+  {label:'Facts get\nverified',pos:.5,color:C.a1},
+  {label:'Expensive,\nirreversible\ncommitments',pos:.86,color:C.a3}
+],{title:'Make cheap, reversible decisions first; delay costly, locked-in ones until their facts are proven',w:860,h:300});
+
+// §0 — three kinds of input (the vocabulary of a decision)
+FIGS.dwInputs = genTriad([
+  {label:'HARD\nCONSTRAINT',color:C.a3},
+  {label:'PREFERENCE',color:C.a1},
+  {label:'OPEN\nQUESTION',color:C.a4}
+],{ab:'trade against',bc:'verify to settle',ca:'must be true'},
+  'Must be true · Improves the trip · Must be verified',{w:680,h:520});
+
+// §5 — the four hard gates, in series (any NO eliminates the option)
+FIGS.dwGates = genGraph([
+  {id:'opt',x:.09,y:.5,shape:'round',w:110,h:52,label:'An\noption',fill:C.a1},
+  {id:'a',x:.28,y:.5,shape:'diamond',w:130,h:92,label:'A · Reachable\nin the window?',fill:C.a4,hollow:true},
+  {id:'b',x:.48,y:.5,shape:'diamond',w:130,h:92,label:'B · Inside the\nreal budget?',fill:C.a4,hollow:true},
+  {id:'c',x:.68,y:.5,shape:'diamond',w:130,h:92,label:'C · Open on\nthe dates?',fill:C.a4,hollow:true},
+  {id:'d',x:.86,y:.5,shape:'diamond',w:130,h:92,label:'D · OK for\neveryone?',fill:C.a4,hollow:true},
+  {id:'pass',x:.955,y:.5,shape:'round',w:88,h:52,label:'SCORE\nit',fill:C.a5},
+  {id:'out',x:.57,y:.9,shape:'rect',w:150,h:44,label:'Eliminated',fill:C.a3}
+],[
+  {from:'opt',to:'a'},{from:'a',to:'b',label:'yes'},{from:'b',to:'c',label:'yes'},
+  {from:'c',to:'d',label:'yes'},{from:'d',to:'pass',label:'yes'},
+  {from:'a',to:'out',label:'no',color:C.a3,curve:40},
+  {from:'c',to:'out',label:'no',color:C.a3,curve:-20}
+],{w:1040,h:400});
+
+// §5 — score the survivors on the brief's weighted criteria
+FIGS.dwScore = genRadar(['Purpose fit','Usable time','Season','Cost confidence','Ease','Novelty'],[
+  {name:'Chosen place',color:C.a1,vals:[.92,.85,.7,.6,.55,.5]},
+  {name:'Runner-up',color:C.a4,vals:[.6,.65,.85,.8,.7,.75]}
+],{w:660,h:560});
+
+// §6 — the go / conditional-go / hold / no-go decision
+FIGS.dwGo = genGraph([
+  {id:'s',x:.1,y:.5,shape:'round',w:120,h:52,label:'Feasibility\nproven?',fill:C.a1},
+  {id:'q1',x:.36,y:.5,shape:'diamond',w:150,h:96,label:'Critical links\nall verified?',fill:C.a4,hollow:true},
+  {id:'go',x:.68,y:.16,shape:'round',w:150,h:46,label:'GO',fill:C.a5},
+  {id:'q2',x:.62,y:.6,shape:'diamond',w:150,h:92,label:'Uncertainty\nbounded &\nrefundable?',fill:C.a4,hollow:true},
+  {id:'cond',x:.9,y:.42,shape:'rect',w:150,h:46,label:'CONDITIONAL\nGO',fill:C.a2},
+  {id:'q3',x:.62,y:.9,shape:'diamond',w:150,h:82,label:'One fact\ndecides all?',fill:C.a4,hollow:true},
+  {id:'hold',x:.9,y:.78,shape:'rect',w:130,h:44,label:'HOLD\n(owner + deadline)',fill:C.a4},
+  {id:'no',x:.9,y:.98,shape:'rect',w:150,h:40,label:'NO-GO → runner-up',fill:C.a3}
+],[
+  {from:'s',to:'q1'},{from:'q1',to:'go',label:'yes'},{from:'q1',to:'q2',label:'no'},
+  {from:'q2',to:'cond',label:'yes'},{from:'q2',to:'q3',label:'no'},
+  {from:'q3',to:'hold',label:'yes'},{from:'q3',to:'no',label:'no'}
+],{w:1040,h:440});
+
+// §6 — walk the whole access chain, home to anchor and back
+FIGS.dwChain = genGraph([
+  {id:'h',x:.05,y:.5,shape:'round',w:78,h:44,label:'Home',fill:C.mut},
+  {id:'dep',x:.19,y:.5,shape:'rect',w:92,h:42,label:'Departure\npoint',fill:C.a4},
+  {id:'main',x:.34,y:.5,shape:'rect',w:96,h:42,label:'Main\ntransport',fill:C.a1},
+  {id:'gw',x:.49,y:.5,shape:'rect',w:92,h:42,label:'Gateway',fill:C.a4},
+  {id:'base',x:.63,y:.5,shape:'round',w:84,h:46,label:'Base',fill:C.a2},
+  {id:'cl',x:.78,y:.5,shape:'rect',w:96,h:42,label:'Daily\nclusters',fill:C.a5},
+  {id:'ret',x:.94,y:.5,shape:'round',w:92,h:44,label:'Return\nchain',fill:C.mut}
+],[
+  {from:'h',to:'dep'},{from:'dep',to:'main'},{from:'main',to:'gw'},
+  {from:'gw',to:'base'},{from:'base',to:'cl'},{from:'cl',to:'ret'}
+],{w:1020,h:170});
+
+// §7 — three layers of an itinerary
+FIGS.dwLayers = genPyramid([
+  {label:'LOCKED — fixed times'},
+  {label:'PLANNED — expected sequence'},
+  {label:'OPTIONAL — only if time & energy remain'}
+],{w:760,h:420});
+
+// §8 — the booking dependency order (priority descends)
+FIGS.dwBooking = genGraph([
+  {id:'b1',x:.5,y:.07,shape:'rect',w:360,h:38,label:'1 · Eligibility — visas, permits, leave',fill:C.a3},
+  {id:'b2',x:.5,y:.22,shape:'rect',w:360,h:38,label:'2 · Main anchor — the reason you chose it',fill:C.a3},
+  {id:'b3',x:.5,y:.37,shape:'rect',w:360,h:38,label:'3 · Long-haul transport — flights / trains',fill:C.a4},
+  {id:'b4',x:.5,y:.52,shape:'rect',w:360,h:38,label:'4 · Base stay — right location, cancellable',fill:C.a4},
+  {id:'b5',x:.5,y:.67,shape:'rect',w:360,h:38,label:'5 · Critical local movement — transfers',fill:C.a1},
+  {id:'b6',x:.5,y:.82,shape:'rect',w:360,h:38,label:'6 · Timed experiences — guides, shows',fill:C.a2},
+  {id:'b7',x:.5,y:.96,shape:'round',w:360,h:38,label:'7 · Flexible layer — book late / on arrival',fill:C.a5}
+],[
+  {from:'b1',to:'b2'},{from:'b2',to:'b3'},{from:'b3',to:'b4'},
+  {from:'b4',to:'b5'},{from:'b5',to:'b6'},{from:'b6',to:'b7'}
+],{w:640,h:560});
+
+// §9 — the control sheet: one source of truth, six files
+FIGS.dwControl = genMindMap("CONTROL\nSHEET",[
+  {label:"Trip brief"},{label:"Master schedule"},{label:"Booking ledger"},
+  {label:"Traveller file"},{label:"Location file"},{label:"Fallback file"}
+],{w:820,h:600});
+
+// §9 — the verification rhythm from booking to departure
+FIGS.dwRhythm = genTimeline([
+  {when:'After booking',label:'Reconcile names,\ndates, amounts'},
+  {when:'One week out',label:'Reconfirm suppliers,\ndocs, weather'},
+  {when:'48 hours out',label:'Live warnings,\ncheck-in, pickups'},
+  {when:'Departure day',label:'IDs, tickets, money,\nfirst transfer'}
+],{w:940,h:380});
+
+// §4 — research in layers: each ring narrows toward a decision
+FIGS.dwResearch = genConcentric([
+  {label:'DECISION\nstop when comparable',color:C.a1},
+  {label:'Local layer\nrecent reports',color:C.a2},
+  {label:'Reality layer\nlive prices, access',color:C.a4},
+  {label:'Discovery layer\nmaps, posts, ideas',color:C.a5}
+],{w:600,h:560,caption:'Move inward: more links are not more certainty'});
+
+/* ============================================================
+   PLANNING — personal / social pre-trip prep
+   ============================================================ */
+
+// A day's capture rhythm — catch it fast, then put the phone down
+FIGS.planContentRhythm = genTimeline([
+  {when:'Morning',label:'Story: raw\n"we’re off"'},
+  {when:'Midday',label:'One reel clip\nat the anchor'},
+  {when:'Afternoon',label:'Photos +\nposes, quick'},
+  {when:'Golden hour',label:'Hero shot\nfor the post'},
+  {when:'Night',label:'Post + a few\ncandid stories'}
+],{w:940,h:380});
+
+// The connection loop — how you actually get close to people
+FIGS.planConnect = genCycle([
+  {label:'Notice\nsomething'},{label:'Ask\nabout it'},{label:'Listen\nfully'},
+  {label:'Remember\nit'},{label:'Call it\nback later'}
+],{center:'Real\nconnection',w:640,h:600});
+
+// Three ways people come to value you
+FIGS.planValued = genTriad([
+  {label:'BE\nUSEFUL',color:C.a1},
+  {label:'BE\nFUN',color:C.a4},
+  {label:'BE\nPRESENT',color:C.a5}
+],{ab:'the good hang',bc:'they feel seen',ca:'quiet trust'},
+  'People remember\nhow you made\nthem feel',{w:680,h:540});
+
+// PLANNING — cross-platform media flow: every phone → one shared album → everyone
+FIGS.planMediaFlow = genGraph([
+  {id:'p1',x:.09,y:.2,shape:'rect',w:110,h:40,label:'iPhone',fill:C.a1},
+  {id:'p2',x:.09,y:.5,shape:'rect',w:110,h:40,label:'Android',fill:C.a5},
+  {id:'p3',x:.09,y:.8,shape:'rect',w:110,h:40,label:'iPhone',fill:C.a1},
+  {id:'hub',x:.5,y:.5,shape:'round',w:180,h:78,label:'Shared\nGoogle Photos\nalbum',fill:C.a4},
+  {id:'all',x:.9,y:.5,shape:'round',w:160,h:64,label:'Everyone gets\neverything',fill:C.a2}
+],[
+  {from:'p1',to:'hub',label:'add'},{from:'p2',to:'hub',label:'add'},{from:'p3',to:'hub',label:'add'},
+  {from:'hub',to:'all',label:'download'}
+],{w:920,h:360});
+
+// PLANNING — the trip life-cycle: before → during → after (and it loops)
+FIGS.planLifecycle = genGraph([
+  {id:'b',x:.15,y:.4,shape:'round',w:150,h:62,label:'BEFORE\nprepare',fill:C.a1},
+  {id:'d',x:.5,y:.4,shape:'round',w:150,h:62,label:'DURING\nshow up',fill:C.a5},
+  {id:'a',x:.85,y:.4,shape:'round',w:150,h:62,label:'AFTER\nmake it last',fill:C.a4}
+],[
+  {from:'b',to:'d'},{from:'d',to:'a'},
+  {from:'a',to:'b',label:'next trip is easier',color:C.mut,curve:-96,dash:'5 5'}
+],{w:900,h:300});
+
+// PLANNING — the debrief loop: capture during → review after → sharper next plan
+FIGS.planDebrief = genGraph([
+  {id:'c',x:.15,y:.5,shape:'rect',w:180,h:64,label:'Field notes\n(during the trip)',fill:C.a5},
+  {id:'d',x:.5,y:.5,shape:'round',w:170,h:64,label:'Debrief\n(back home)',fill:C.a4},
+  {id:'n',x:.86,y:.5,shape:'round',w:180,h:64,label:'Sharper plan\n(next trip)',fill:C.a1}
+],[
+  {from:'c',to:'d',label:'review'},{from:'d',to:'n',label:'fold in'}
+],{w:900,h:220});
+
+// OFFSITE — the planning pipeline (form group → ... → go)
+FIGS.offFlow = genGraph([
+  {id:'s1',x:.12,y:.28,shape:'rect',w:150,h:58,label:'1 · Form group\n(≥2 teams)',fill:C.a1},
+  {id:'s2',x:.37,y:.28,shape:'rect',w:150,h:58,label:'2 · Choose DRI\n(+ sub-DRIs)',fill:C.a1},
+  {id:'s3',x:.63,y:.28,shape:'rect',w:150,h:58,label:'3 · Pick\ndestination',fill:C.a2},
+  {id:'s4',x:.88,y:.28,shape:'rect',w:150,h:58,label:'4 · Confirm\nheadcount',fill:C.a2},
+  {id:'s5',x:.88,y:.74,shape:'rect',w:150,h:58,label:'5 · Budget\nlocks',fill:C.a4},
+  {id:'s6',x:.6,y:.74,shape:'rect',w:170,h:58,label:'6 · Bulk-book\n(company / DRI pays)',fill:C.a5},
+  {id:'s7',x:.3,y:.74,shape:'round',w:150,h:58,label:'7 · Offsite\nSep 5–7',fill:C.a5}
+],[
+  {from:'s1',to:'s2'},{from:'s2',to:'s3'},{from:'s3',to:'s4'},
+  {from:'s4',to:'s5',label:'then',curve:-30},
+  {from:'s5',to:'s6'},{from:'s6',to:'s7'}
+],{w:1020,h:320});
+
+// GROUP DYNAMICS — large-group federation: a coordinator, pod leads who coordinate, pods
+FIGS.dynPods = genGraph([
+  {id:'c',x:.5,y:.12,shape:'round',w:180,h:54,label:'Trip coordinator\n(lead of leads)',fill:C.a1},
+  {id:'l1',x:.18,y:.5,shape:'rect',w:120,h:46,label:'Pod A lead',fill:C.a2},
+  {id:'l2',x:.5,y:.5,shape:'rect',w:120,h:46,label:'Pod B lead',fill:C.a2},
+  {id:'l3',x:.82,y:.5,shape:'rect',w:120,h:46,label:'Pod C lead',fill:C.a2},
+  {id:'m1',x:.18,y:.86,shape:'rect',w:120,h:40,label:'5–8 people',fill:C.a5},
+  {id:'m2',x:.5,y:.86,shape:'rect',w:120,h:40,label:'5–8 people',fill:C.a5},
+  {id:'m3',x:.82,y:.86,shape:'rect',w:120,h:40,label:'5–8 people',fill:C.a5}
+],[
+  {from:'c',to:'l1'},{from:'c',to:'l2'},{from:'c',to:'l3'},
+  {from:'l1',to:'m1'},{from:'l2',to:'m2'},{from:'l3',to:'m3'},
+  {from:'l1',to:'l2',arrow:false,color:C.a4,dash:'4 4',curve:24},
+  {from:'l2',to:'l3',arrow:false,color:C.a4,dash:'4 4',curve:24}
+],{w:840,h:430});
+
+// GROUP DYNAMICS — the trip life-cycle; friction lives on the "move" edges, not the nodes
+FIGS.dynJourney = genGraph([
+  {id:'s1',x:.06,y:.5,shape:'round',w:96,h:48,label:'STAY',fill:C.a2},
+  {id:'e1',x:.3,y:.5,shape:'rect',w:120,h:46,label:'EXPERIENCE',fill:C.a1},
+  {id:'ea',x:.52,y:.5,shape:'rect',w:78,h:40,label:'EAT',fill:C.a5},
+  {id:'e2',x:.74,y:.5,shape:'rect',w:120,h:46,label:'EXPERIENCE',fill:C.a1},
+  {id:'s2',x:.96,y:.5,shape:'round',w:96,h:48,label:'STAY',fill:C.a2}
+],[
+  {from:'s1',to:'e1',label:'move',color:C.a4},
+  {from:'e1',to:'ea',label:'move',color:C.a4},
+  {from:'ea',to:'e2',label:'move',color:C.a4},
+  {from:'e2',to:'s2',label:'move',color:C.a4}
+],{w:1000,h:190});
+
+// GROUP DYNAMICS — fishbone: most trip friction is a People cause
+FIGS.dynFish = genFishbone('Trip\nfriction',[
+  {name:'PEOPLE (most of it)',causes:['Decision paralysis','Loudest voice wins','Pace / energy mismatch','Flaking / no commitment','Sub-group friction']},
+  {name:'PROCESS / METHOD',causes:['No owner per move','Comms chaos','One-planner burnout','No meeting-time ritual']},
+  {name:'MONEY',causes:['Who-paid-what','Uneven split','Deposits / cash-flow']},
+  {name:'ENVIRONMENT',causes:['Weather / closures','Traffic / delays','Capacity / terrain']}
+],{w:920,h:470});
+
+/* ---------- Places · Himachal Overview ---------- */
+// The natural skeleton — a realistic 3-lane artery map. Plains at the bottom,
+// three gateways, then each belt climbs its own river with the road named on
+// every edge and its main towns listed beneath the belt. Junctions (Aut,
+// Bhuntar) are the real points where side-valleys branch off the Beas.
+FIGS.ovArteries = genGraph([
+  {id:'plains',x:.5,y:.955,shape:'rect',w:300,h:42,label:'DELHI / CHANDIGARH — the plains',fill:C.ink,fs:12},
+  // gateways
+  {id:'pkot',x:.135,y:.82,shape:'diamond',w:128,h:60,label:'Pathankot /\nKangra',fill:C.a6,fs:10.5},
+  {id:'mandi',x:.5,y:.82,shape:'diamond',w:104,h:58,label:'Mandi',fill:C.a1,fs:11.5},
+  {id:'kalka',x:.865,y:.82,shape:'diamond',w:128,h:60,label:'Kalka /\nParwanoo',fill:C.a2,fs:10.5},
+  // WEST — Ravi (purple)
+  {id:'kangra',x:.125,y:.6,shape:'round',w:118,h:38,label:'Kangra',fill:C.a6,sub:'Dharamshala · McLeodganj\nBir-Billing · Palampur'},
+  {id:'chamba',x:.125,y:.34,shape:'round',w:118,h:38,label:'Chamba',fill:C.a6,sub:'Dalhousie · Khajjiar\nChamba · Bharmour'},
+  // CENTRE — Beas (indigo), with real junctions
+  {id:'mandix',x:.315,y:.6,shape:'round',w:108,h:38,label:'Mandi belt',fill:C.a1,sub:'Rewalsar · Prashar\nBarot · Karsog'},
+  {id:'aut',x:.5,y:.63,shape:'circle',r:17,label:'Aut',fill:C.a1,fs:9},
+  {id:'jibhi',x:.375,y:.44,shape:'round',w:118,h:38,label:'Banjar / Jibhi',fill:C.a1,sub:'Jibhi · Shoja · Jalori\nTirthan · Sainj'},
+  {id:'bhuntar',x:.585,y:.5,shape:'circle',r:19,label:'Bhuntar',fill:C.a1,fs:8.5},
+  {id:'parvati',x:.72,y:.37,shape:'round',w:104,h:38,label:'Parvati',fill:C.a1,sub:'Kasol · Manikaran\nTosh · Kheerganga'},
+  {id:'kullu',x:.5,y:.36,shape:'round',w:118,h:38,label:'Kullu–Manali',fill:C.a1,sub:'Kullu · Naggar\nManali · Solang'},
+  // rain-shadow (orange)
+  {id:'spiti',x:.62,y:.11,shape:'round',w:120,h:42,label:'Spiti & Lahaul',fill:C.a4,fs:10.5,sub:'Sissu · Keylong · Kaza\nChandratal · Pin'},
+  // EAST — Sutlej (cyan)
+  {id:'shimla',x:.875,y:.6,shape:'round',w:118,h:38,label:'Shimla belt',fill:C.a2,sub:'Shimla · Kasauli · Chail\nKufri · Narkanda'},
+  {id:'kinnaur',x:.875,y:.34,shape:'round',w:118,h:38,label:'Kinnaur',fill:C.a2,sub:'Sangla · Chitkul\nKalpa · Nako'},
+],[
+  {from:'plains',to:'pkot',color:C.a6,w:2.8,label:'NH-154'},
+  {from:'plains',to:'mandi',color:C.a1,w:2.8,label:'NH-3'},
+  {from:'plains',to:'kalka',color:C.a2,w:2.8,label:'NH-5'},
+  // west
+  {from:'pkot',to:'kangra',color:C.a6,w:2.4,label:'NH-154'},
+  {from:'kangra',to:'chamba',color:C.a6,w:2.2,label:'NH-154A'},
+  // centre
+  {from:'mandi',to:'mandix',color:C.a1,w:2,label:'local'},
+  {from:'mandi',to:'aut',color:C.a1,w:2.6,label:'NH-3'},
+  {from:'aut',to:'jibhi',color:C.a1,w:2.2,label:'NH-305'},
+  {from:'aut',to:'bhuntar',color:C.a1,w:2.6,label:'NH-3'},
+  {from:'bhuntar',to:'kullu',color:C.a1,w:2.4,label:'NH-3'},
+  {from:'bhuntar',to:'parvati',color:C.a1,w:2.2,label:'Parvati rd'},
+  // east
+  {from:'kalka',to:'shimla',color:C.a2,w:2.4,label:'NH-5'},
+  {from:'shimla',to:'kinnaur',color:C.a2,w:2.4,label:'NH-5 · Sutlej'},
+  // LATERAL crossings — dashed = a named pass / link road you can hop across
+  // (everywhere else you must come back down to the gateway and climb the next artery)
+  {from:'kullu',to:'spiti',color:C.mut,w:1.9,dash:'7 5',label:'Atal Tunnel'},
+  {from:'kinnaur',to:'spiti',color:C.mut,w:1.9,dash:'7 5',label:'Kunzum La'},
+  {from:'jibhi',to:'shimla',color:C.mut,w:1.8,dash:'7 5',curve:-90,label:'Jalori · NH-305'},
+  {from:'mandix',to:'kangra',color:C.mut,w:1.8,dash:'7 5',curve:70,label:'NH-154 · Jogindernagar'},
+  {from:'shimla',to:'mandi',color:C.mut,w:1.8,dash:'7 5',curve:120,label:'NH-205 · via Bilaspur'},
+],{w:1180,h:900,pad:40});
+
+// The access tree — Delhi root, three trunk gateways, valleys as branches,
+// villages as leaves. Road named on every edge; depth = risk compounding.
+FIGS.ovTree = genTree({label:"DELHI",children:[
+  {label:"Kalka /\nParwanoo",road:"NH-5",children:[
+    {label:"Shimla belt",road:"NH-5",children:[
+      {label:"Chail",road:"SH"},{label:"Narkanda",road:"NH-5"},
+      {label:"Kinnaur",road:"NH-5",children:[{label:"Chitkul",road:"Baspa rd"}]}
+    ]}
+  ]},
+  {label:"Mandi",road:"NH-3",children:[
+    {label:"Kullu–\nManali",road:"NH-3",children:[
+      {label:"Solang",road:"local"},
+      {label:"Spiti",road:"Atal Tunnel"}
+    ]},
+    {label:"Banjar /\nJibhi",road:"NH-305",children:[{label:"Shoja",road:"Jalori rd"}]},
+    {label:"Parvati",road:"Bhuntar rd",children:[{label:"Kasol",road:"valley rd",children:[{label:"Kheerganga",road:"trek"}]}]}
+  ]},
+  {label:"Pathankot",road:"NH-154",children:[
+    {label:"Kangra",road:"NH-154",children:[{label:"Bir-Billing",road:"SH"}]},
+    {label:"Chamba",road:"NH-154A",children:[{label:"Dalhousie",road:"local"}]}
+  ]}
+]},{w:1180,h:600,pad:66,boxW:96,boxH:38});
+
+/* ---------- Places · Overview — illustrations ---------- */
+// Gateway ↔ river: each trunk road climbs ONE river; the road (colour) hugs the river (blue).
+(function(){
+  function lane(cx,rc,river,nh,gw,belts){
+    var bot=392, top=96, s='';
+    function wig(off){var A=16;return 'M'+(cx+off)+','+bot+' C'+(cx+off-A)+','+(bot-55)+' '+(cx+off+A)+','+(bot-95)+' '+(cx+off)+','+(bot-150)+' C'+(cx+off-A)+','+(bot-205)+' '+(cx+off+A)+','+(bot-245)+' '+(cx+off)+','+top;}
+    s+='<path d="'+wig(-8)+'" fill="none" stroke="#5aa2f7" stroke-width="7" stroke-linecap="round" opacity=".9"/>';
+    s+='<path d="'+wig(8)+'" fill="none" stroke="'+rc+'" stroke-width="3.4" stroke-linecap="round"/>';
+    s+='<polygon points="'+cx+','+(bot-2)+' '+(cx+46)+','+(bot+22)+' '+cx+','+(bot+46)+' '+(cx-46)+','+(bot+22)+'" fill="'+rc+'"/>'+T(cx,bot+26,gw,{fill:'#fff',fs:10.5,fw:700});
+    s+=T(cx,top-30,river,{fill:'#2563eb',fs:13,fw:800})+T(cx,top-14,'along '+nh,{fill:rc,fs:11,fw:800});
+    var n=belts.length;
+    belts.forEach(function(b,i){var y=bot-46-i*((bot-46-(top+6))/Math.max(1,n-1));
+      s+='<circle cx="'+cx+'" cy="'+y+'" r="5.5" fill="#fff" stroke="'+rc+'" stroke-width="2.6"/>';
+      s+=T(cx+16,y+4,b,{fill:C.ink,fs:11,fw:700,anchor:'start'});});
+    return s;
+  }
+  var s=lane(200,C.a6,'Ravi / Beas-low','NH-154','Pathankot',['Kangra','Chamba'])
+       +lane(560,C.a1,'Beas','NH-3','Mandi',['Mandi','Banjar / Jibhi','Parvati','Kullu–Manali'])
+       +lane(920,C.a2,'Sutlej','NH-5','Kalka',['Shimla','Kinnaur']);
+  s+='<rect x="360" y="10" width="420" height="26" rx="8" fill="#fff7ed" stroke="'+C.a4+'" stroke-width="1"/>'+T(570,27,'Spiti has no river-road of its own — reached over passes (Atal · Kunzum)',{fill:C.a4,fs:11,fw:700});
+  s+=T(60,446,'— blue = river   — colour = road   ◆ = gateway on the plains',{fill:C.mut,fs:11,fw:600,anchor:'start'});
+  FIGS.ovRivers = SV(s,1120,470);
+})();
+
+// P1 — a river already found the gentle path
+FIGS.pr1 = (function(){var s='';
+  s+='<polygon points="30,150 150,34 270,150" fill="#eef0f2" stroke="'+C.line+'"/>';
+  s+='<path d="M14,146 C90,150 210,150 306,146" fill="none" stroke="#5aa2f7" stroke-width="6" stroke-linecap="round"/>';
+  s+='<path d="M14,141 C90,145 210,145 306,141" fill="none" stroke="'+C.a5+'" stroke-width="3"/>';
+  s+='<path d="M96,150 L128,110 L112,102 L146,66 L132,58 L150,40" fill="none" stroke="'+C.a3+'" stroke-width="2.2" stroke-dasharray="4 3"/>';
+  s+='<path d="M150,40 L168,58 L154,66 L188,102 L172,110 L204,150" fill="none" stroke="'+C.a3+'" stroke-width="2.2" stroke-dasharray="4 3"/>';
+  s+=T(150,30,'✗ straight over',{fill:C.a3,fs:10,fw:800});
+  s+=T(160,171,'river + road = the gentle valley-floor line',{fill:C.a5,fs:10.5,fw:700});
+  return SV(s,320,182);})();
+
+// P2 — one valley, one road, one lifeline
+FIGS.pr2 = (function(){var s='';
+  s+='<rect x="14" y="20" width="232" height="66" rx="6" fill="#fdf0f2" opacity=".8"/>'+T(130,32,'everything above = cut off',{fill:C.a3,fs:10,fw:800});
+  s+='<line x1="70" y1="150" x2="70" y2="30" stroke="'+C.a1+'" stroke-width="3"/>';
+  [ [150,'gateway'],[120,'town'],[64,'village'],[40,'trek'] ].forEach(function(p){s+='<circle cx="70" cy="'+p[0]+'" r="6" fill="#fff" stroke="'+C.a1+'" stroke-width="2.6"/>'+T(84,p[0]+4,p[1],{fill:C.ink,fs:10.5,fw:700,anchor:'start'});});
+  s+='<g stroke="'+C.a3+'" stroke-width="3"><line x1="58" y1="92" x2="82" y2="104"/><line x1="82" y1="92" x2="58" y2="104"/></g>';
+  s+=T(150,101,'✗ one landslide',{fill:C.a3,fs:10,fw:800,anchor:'start'});
+  return SV(s,260,172);})();
+
+// P3 — passes & tunnels = watershed seams
+FIGS.pr3 = (function(){var s='';
+  s+='<path d="M10,150 L95,50 L170,88 L245,50 L330,150" fill="none" stroke="'+C.line+'" stroke-width="2"/>';
+  s+='<path d="M170,88 C130,110 80,135 44,150" fill="none" stroke="#5aa2f7" stroke-width="4.5"/>';
+  s+='<path d="M170,88 C210,110 260,135 296,150" fill="none" stroke="#5aa2f7" stroke-width="4.5"/>';
+  s+='<path d="M60,150 C110,130 150,108 170,88 C190,108 230,130 280,150" fill="none" stroke="'+C.a4+'" stroke-width="2.6" stroke-dasharray="5 3"/>';
+  s+='<circle cx="170" cy="88" r="6" fill="#fff" stroke="'+C.a4+'" stroke-width="2.6"/>'+T(170,78,'pass',{fill:C.a4,fs:10,fw:800});
+  s+=T(70,166,'watershed A',{fill:C.mut,fs:10,fw:700})+T(272,166,'watershed B',{fill:C.mut,fs:10,fw:700});
+  return SV(s,340,178);})();
+
+// P5 — read it yourself on the map
+FIGS.pr5 = (function(){var s='';
+  s+='<rect x="8" y="8" width="304" height="150" rx="10" fill="#f6f8fc" stroke="'+C.line+'"/>';
+  s+='<path d="M20,150 C70,120 60,90 110,78 C150,68 150,52 176,44" fill="none" stroke="#5aa2f7" stroke-width="6" stroke-linecap="round"/>';
+  s+='<path d="M26,150 C76,120 66,90 116,78 C150,70 152,56 176,48" fill="none" stroke="'+C.a1+'" stroke-width="2.8"/>';
+  s+='<path d="M176,46 L206,64 L188,72 L222,90 L204,98 L236,116" fill="none" stroke="'+C.a1+'" stroke-width="2.6"/>';
+  s+='<circle cx="176" cy="46" r="6" fill="#fff" stroke="'+C.a4+'" stroke-width="2.6"/>'+T(176,34,'pass',{fill:C.a4,fs:10,fw:800});
+  s+=T(70,150,'river',{fill:'#2563eb',fs:10.5,fw:800})+T(120,64,'road',{fill:C.a1,fs:10.5,fw:800});
+  s+=T(250,120,'hairpins →',{fill:C.a1,fs:10,fw:700})+T(258,134,'next valley',{fill:C.mut,fs:9.5,fw:700});
+  return SV(s,320,166);})();
+
+// Truth 01 — valley = river = road = fate
+FIGS.t1 = (function(){var s='',lbl=['Valley','River','Road','Fate'],col=[C.a5,'#2563eb',C.a1,C.a3];
+  lbl.forEach(function(t,i){var x=8+i*76;s+=boxN(x,32,60,30,t,{fill:col[i],fs:11,r:8});if(i<3)s+=T(x+68,52,'=',{fill:C.mut,fs:15,fw:800});});
+  s+=T(160,20,'one thing, four names',{fill:C.mut,fs:10.5,fw:700});
+  return SV(s,320,80);})();
+
+// Truth 02 — three gateways
+FIGS.t2 = (function(){var s='';s+=boxN(70,92,100,24,'the plains',{fill:C.ink,fs:10,r:6});
+  var g=[[45,34,'Kalka',C.a2],[120,28,'Mandi',C.a1],[195,34,'Pathankot',C.a6]];
+  g.forEach(function(d){s+='<line x1="120" y1="92" x2="'+d[0]+'" y2="'+(d[1]+16)+'" stroke="'+d[3]+'" stroke-width="2"/>';s+='<circle cx="'+d[0]+'" cy="'+(d[1]+8)+'" r="7" fill="'+d[3]+'"/>'+T(d[0],d[1]-2,d[2],{fill:C.ink,fs:9.5,fw:700});});
+  return SV(s,240,124);})();
+
+// Truth 03 — risk compounds down the tree
+FIGS.t3 = (function(){var s='',v=['90%','81%','73%','66%'],h=[70,58,48,40],col=[C.a5,C.a5,C.a4,C.a3];
+  v.forEach(function(t,i){var x=22+i*56,y=110-h[i];s+='<rect x="'+x+'" y="'+y+'" width="40" height="'+h[i]+'" rx="4" fill="'+col[i]+'"/>'+T(x+20,y-4,t,{fill:C.ink,fs:10,fw:800})+T(x+20,124,'hop '+(i+1),{fill:C.mut,fs:9,fw:600});});
+  s+=T(130,16,'chance of reaching (×0.9 each hop)',{fill:C.mut,fs:9.5,fw:700});
+  return SV(s,270,132);})();
+
+// Truth 04 — siblings share a fate; separate arteries diversify
+FIGS.t4 = (function(){var s='';
+  s+='<line x1="152" y1="14" x2="152" y2="120" stroke="'+C.line+'" stroke-width="1" stroke-dasharray="3 3"/>';
+  s+='<circle cx="70" cy="30" r="12" fill="'+C.a1+'"/>'+T(70,34,'M',{fill:'#fff',fs:11,fw:800});
+  s+='<line x1="70" y1="42" x2="40" y2="78" stroke="'+C.a1+'" stroke-width="2"/><line x1="70" y1="42" x2="100" y2="78" stroke="'+C.a1+'" stroke-width="2"/>';
+  s+='<circle cx="40" cy="88" r="9" fill="#fff" stroke="'+C.a1+'" stroke-width="2"/><circle cx="100" cy="88" r="9" fill="#fff" stroke="'+C.a1+'" stroke-width="2"/>';
+  s+='<path d="M40,100 C55,116 85,116 100,100" fill="none" stroke="'+C.a3+'" stroke-width="2" stroke-dasharray="3 2"/>'+T(70,126,'shared fate',{fill:C.a3,fs:9.5,fw:800});
+  s+='<circle cx="205" cy="30" r="10" fill="'+C.a6+'"/><circle cx="275" cy="30" r="10" fill="'+C.a2+'"/>';
+  s+='<line x1="205" y1="40" x2="205" y2="78" stroke="'+C.a6+'" stroke-width="2"/><line x1="275" y1="40" x2="275" y2="78" stroke="'+C.a2+'" stroke-width="2"/>';
+  s+='<circle cx="205" cy="88" r="9" fill="#fff" stroke="'+C.a6+'" stroke-width="2"/><circle cx="275" cy="88" r="9" fill="#fff" stroke="'+C.a2+'" stroke-width="2"/>';
+  s+=T(240,126,'independent',{fill:C.a5,fs:9.5,fw:800});
+  s+=T(70,12,'same artery',{fill:C.mut,fs:9.5,fw:700})+T(240,12,'separate arteries',{fill:C.mut,fs:9.5,fw:700});
+  return SV(s,310,134);})();
+
+// Truth 05 — altitude picks the season
+FIGS.t5 = (function(){var s='',x0=54,x1=286,W=x1-x0;function mx(m){return x0+W*m/12;}
+  s+='<line x1="'+x0+'" y1="104" x2="'+x1+'" y2="104" stroke="'+C.line+'" stroke-width="1.5"/>';
+  ['J','F','M','A','M','J','J','A','S','O','N','D'].forEach(function(m,i){s+=T(mx(i+0.5),118,m,{fill:C.mut,fs:8});});
+  s+='<rect x="'+mx(2)+'" y="34" width="'+(mx(11)-mx(2))+'" height="20" rx="5" fill="'+C.a5+'"/>'+T((mx(2)+mx(11))/2,48,'Mar–Nov',{fill:'#fff',fs:10,fw:700});
+  s+=T(48,48,'Low belts',{fill:C.ink,fs:10,fw:700,anchor:'end'});
+  s+='<rect x="'+mx(5)+'" y="66" width="'+(mx(10)-mx(5))+'" height="20" rx="5" fill="'+C.a4+'"/>'+T((mx(5)+mx(10))/2,80,'Jun–Oct',{fill:'#fff',fs:10,fw:700});
+  s+=T(48,80,'High belts',{fill:C.ink,fs:10,fw:700,anchor:'end'});
+  return SV(s,300,128);})();
+
+// Truth 06 — rain shadow flips the logic
+FIGS.t6 = (function(){var s='';
+  s+='<polygon points="150,26 250,120 50,120" fill="#eef0f2" stroke="'+C.line+'"/>';
+  s+='<ellipse cx="82" cy="40" rx="26" ry="12" fill="#c7d2e8"/>';
+  ['70','86','102'].forEach(function(x){s+='<line x1="'+x+'" y1="52" x2="'+(x-4)+'" y2="66" stroke="#5aa2f7" stroke-width="2"/>';});
+  s+=T(82,30,'wet',{fill:'#2563eb',fs:10,fw:800});
+  s+='<circle cx="228" cy="40" r="10" fill="#f6c453"/>'+T(228,74,'dry — Spiti',{fill:C.a4,fs:10.5,fw:800});
+  s+='<path d="M60,118 C120,70 170,60 214,52" fill="none" stroke="'+C.a1+'" stroke-width="2" stroke-dasharray="4 3" marker-end="url(#mB)"/>'+T(96,110,'Manali door',{fill:C.a1,fs:9,fw:700});
+  s+='<path d="M270,120 C258,96 246,74 236,56" fill="none" stroke="'+C.a2+'" stroke-width="2" stroke-dasharray="4 3"/>'+T(276,112,'Kinnaur door',{fill:C.a2,fs:9,fw:700,anchor:'end'});
+  return SV(s,300,138);})();
+
+// P4 — the trunk roads are historic spines
+FIGS.pr4 = (function(){var s='';s+=boxN(70,120,160,24,'the plains',{fill:C.ink,fs:10,r:6});
+  var sp=[[100,'NH-5','Sutlej',C.a2],[150,'NH-3','Beas',C.a1],[200,'NH-154','Ravi',C.a6]];
+  sp.forEach(function(d){s+='<line x1="'+d[0]+'" y1="120" x2="'+d[0]+'" y2="30" stroke="'+d[3]+'" stroke-width="4"/>';s+=T(d[0],24,d[1],{fill:d[3],fs:10.5,fw:800})+T(d[0],118,'',{});s+='<text x="'+d[0]+'" y="80" transform="rotate(-90 '+d[0]+' 80)" text-anchor="middle" fill="#2563eb" font-size="9" font-weight="700">'+d[2]+'</text>';});
+  s+=T(150,166,'three numbers = the whole skeleton',{fill:C.mut,fs:10,fw:700});
+  return SV(s,300,178);})();
+
+/* ---------- Group dynamics · going big (60-person, participant lens) ---------- */
+// Depth-not-coverage funnel: you can't know 60 — aim energy up the pyramid.
+FIGS.bigFunnel = genPyramid([
+  {label:'1–2 you keep', sub:'lasting', color:C.a3},
+  {label:'~6 real connections', sub:'go deep — your energy here', color:C.a1},
+  {label:'~15 good chats', sub:'warm acquaintances', color:C.a2},
+  {label:'all ~60 — you share the trip', sub:'be known', color:C.mut},
+],{w:820,h:380});
+
+// Where you sit: anchor at the centre, venture outward.
+FIGS.bigRings = genConcentric([
+  {label:'The ~60 — the whole company', color:C.a2},
+  {label:'Mixers you meet (~15)', color:C.a1},
+  {label:'Your team — base camp', color:C.a6},
+  {label:'You', color:C.a3},
+],{w:600,h:520,caption:'Anchor at the centre to recharge; venture into the outer rings to connect.'});
+
+// A day in a big group — the rhythm, and where you meet people.
+FIGS.bigDay = genTimeline([
+  {when:'Breakfast', label:'ease in · low stakes'},
+  {when:'AM activity', label:'MIX · new pod'},
+  {when:'Lunch', label:'grouped for you'},
+  {when:'Afternoon', label:'visit · side-by-side'},
+  {when:'Recover', label:'reset with your team'},
+  {when:'Dinner', label:'social peak · new table'},
+  {when:'Evening', label:'games · fire · real bonding'},
+],{w:980,h:340});
+
+// Strength of weak ties — your dense team + new bridges into other teams.
+FIGS.bigTies = genGraph([
+  {id:'you',x:.19,y:.5,shape:'circle',r:26,label:'YOU',fill:C.a1},
+  {id:'t1',x:.08,y:.24,shape:'circle',r:12,label:'',fill:C.a1},
+  {id:'t2',x:.06,y:.66,shape:'circle',r:12,label:'',fill:C.a1},
+  {id:'t3',x:.2,y:.84,shape:'circle',r:12,label:'',fill:C.a1},
+  {id:'eng',x:.64,y:.15,shape:'round',w:112,h:38,label:'Engineering',fill:C.a2},
+  {id:'des',x:.82,y:.42,shape:'round',w:96,h:38,label:'Design',fill:C.a5},
+  {id:'sal',x:.72,y:.72,shape:'round',w:110,h:38,label:'Sales / GTM',fill:C.a4},
+  {id:'led',x:.5,y:.9,shape:'round',w:110,h:38,label:'Leadership',fill:C.a6},
+],[
+  {from:'you',to:'t1',color:C.a1,w:1.8,arrow:false},
+  {from:'you',to:'t2',color:C.a1,w:1.8,arrow:false},
+  {from:'you',to:'t3',color:C.a1,w:1.8,arrow:false},
+  {from:'you',to:'eng',color:C.a2,w:1.6,dash:'6 4',arrow:false,label:'trek'},
+  {from:'you',to:'des',color:C.a5,w:1.6,dash:'6 4',arrow:false,label:'dinner'},
+  {from:'you',to:'sal',color:C.a4,w:1.6,dash:'6 4',arrow:false,label:'cards'},
+  {from:'you',to:'led',color:C.a6,w:1.6,dash:'6 4',arrow:false,label:'Q&A'},
+],{w:820,h:440,pad:40});
+
+// After the offsite — turn faces into a network (realised in the week after).
+FIGS.bigAfter = genCycle([
+  {label:'Follow up\n<48 h', note:'photo · coffee · promise kept'},
+  {label:'Convert', note:'use the warm door\nonce, soon'},
+  {label:'Log it', note:'who · one detail ·\none follow-up'},
+  {label:'Compound', note:'reputation +\nbelonging'},
+],{w:600,h:500,center:'faces →\nnetwork'});
+
+/* ---------- Group dynamics · what people talk about ---------- */
+// The conversation ladder — safe & universal at the base, personal & rare at the apex.
+FIGS.talkLadder = genPyramid([
+  {label:'Personal', sub:'roots · dreams · dating — the few, late night', color:C.a3},
+  {label:'Interests — travel · tech · sport', sub:'find the spark, follow it', color:C.a1},
+  {label:'Work & company (+ gossip)', sub:'shared ground', color:C.a2},
+  {label:'Openers — the plan, food, view, "which team?"', sub:'safe · universal', color:C.mut},
+],{w:840,h:380});
+
+// The topic map — what 23–28 y/o tech folks actually talk about.
+FIGS.talkMap = genMindMap('What we\ntalk about',[
+  {label:'Work & gossip', children:['what you build','manager stories','who left / joined']},
+  {label:'Money & career', children:['switching jobs','startups / ESOPs','MS / MBA?']},
+  {label:'Tech & AI', children:['Claude / ChatGPT','new launches','AI & jobs']},
+  {label:'Investing', children:['stocks / MFs','crypto','real estate']},
+  {label:'Travel & food', children:['places been','next trip','street food']},
+  {label:'Fitness & sport', children:['gym / running','cricket · IPL','football · F1']},
+  {label:'Cars & gadgets', children:['dream car','bikes / EVs','cameras · keebs']},
+  {label:'Hobbies', children:['photography','music / gaming','side-projects']},
+  {label:'Screens', children:['OTT shows','reels / memes','anime · music']},
+  {label:'Roots & life', children:['hometown','family / marriage','city life']},
+],{w:1000,h:820});
+
+/* ---------- Group dynamics · the conversation journey ---------- */
+// Stranger → lasting tie. The tricks hang off each stage; connections leak on the edges.
+FIGS.talkJourney = genGraph([
+  {id:'prime',  x:.06,y:.5,shape:'round',w:104,h:46,label:'1 Prime',fill:C.a1},
+  {id:'approach',x:.20,y:.5,shape:'round',w:104,h:46,label:'2 Approach',fill:C.a2},
+  {id:'open',   x:.34,y:.5,shape:'round',w:104,h:46,label:'3 Open',fill:C.a5},
+  {id:'spark',  x:.49,y:.5,shape:'round',w:104,h:46,label:'4 Spark',fill:C.a4},
+  {id:'deepen', x:.64,y:.5,shape:'round',w:104,h:46,label:'5 Deepen',fill:C.a6},
+  {id:'hook',   x:.79,y:.5,shape:'round',w:104,h:46,label:'6 Hook',fill:C.a3},
+  {id:'follow', x:.93,y:.5,shape:'round',w:104,h:46,label:'7 Follow up',fill:C.a1},
+],[
+  {from:'prime',to:'approach',color:C.mut,w:2},
+  {from:'approach',to:'open',color:C.mut,w:2},
+  {from:'open',to:'spark',color:C.mut,w:2},
+  {from:'spark',to:'deepen',color:C.mut,w:2},
+  {from:'deepen',to:'hook',color:C.mut,w:2},
+  {from:'hook',to:'follow',color:C.mut,w:2},
+],{w:1080,h:150,pad:20});
+
+/* ---------- Talking & connecting · cards + learnability ---------- */
+// The practice flywheel — reps compound into ease.
+FIGS.practiceFlywheel = genCycle([
+  {label:'Role-play', note:'safe reps +\ninstant feedback'},
+  {label:'Small real\nreps', note:'one focus\nat a time'},
+  {label:'In the wild', note:'the offsite,\nlunches, trips'},
+  {label:'Confidence', note:'a win → a\nbetter next try'},
+],{w:600,h:480,center:'it compounds'});
+
+// The ladder — climb from 1:1 up to working a room.
+FIGS.roomLadder = genPyramid([
+  {label:'Work a room', sub:'the peak — earn it last', color:C.a3},
+  {label:'Host a small thing', sub:'run a game, organise the dinner', color:C.a4},
+  {label:'Small groups', sub:'3–5 people at a table', color:C.a1},
+  {label:'One-on-one', sub:'start here — get this easy first', color:C.a5},
+],{w:820,h:380});
+
+/* ---------- Offsite logistics · how it's booked ---------- */
+FIGS.rfqFlow = genGraph([
+  {id:'a',x:.06,y:.5,shape:'round',w:112,h:48,label:'Shortlist\nresorts',fill:C.a1},
+  {id:'b',x:.24,y:.5,shape:'round',w:112,h:48,label:'Send RFQ',fill:C.a2},
+  {id:'c',x:.42,y:.5,shape:'round',w:112,h:48,label:'Collect\nquotes',fill:C.a5},
+  {id:'d',x:.60,y:.5,shape:'round',w:112,h:48,label:'Compare',fill:C.a4},
+  {id:'e',x:.78,y:.5,shape:'round',w:112,h:48,label:'Negotiate',fill:C.a6},
+  {id:'f',x:.95,y:.5,shape:'round',w:112,h:48,label:'Book +\nadvance',fill:C.a3},
+],[
+  {from:'a',to:'b',color:C.mut,w:2},{from:'b',to:'c',color:C.mut,w:2},
+  {from:'c',to:'d',color:C.mut,w:2},{from:'d',to:'e',color:C.mut,w:2},{from:'e',to:'f',color:C.mut,w:2},
+],{w:1120,h:150,pad:24});
+
+/* ---------- Offsite logistics · the self-demo dry-run ---------- */
+FIGS.demoFlow = genGraph([
+  {id:'a',x:.05,y:.5,shape:'round',w:120,h:52,label:'Pick a\nplace',fill:C.a1},
+  {id:'b',x:.20,y:.5,shape:'round',w:120,h:52,label:'Find the\nresorts',fill:C.a2},
+  {id:'c',x:.35,y:.5,shape:'round',w:120,h:52,label:'Study\nfacilities',fill:C.a5},
+  {id:'d',x:.50,y:.5,shape:'round',w:120,h:52,label:'Make the\nask',fill:C.a4},
+  {id:'e',x:.65,y:.5,shape:'round',w:120,h:52,label:'Get a\nquote',fill:C.a6},
+  {id:'f',x:.80,y:.5,shape:'round',w:120,h:52,label:'Negotiate',fill:C.a1},
+  {id:'g',x:.95,y:.5,shape:'round',w:120,h:52,label:'Debrief',fill:C.a3},
+],[
+  {from:'a',to:'b',color:C.mut,w:2},{from:'b',to:'c',color:C.mut,w:2},
+  {from:'c',to:'d',color:C.mut,w:2},{from:'d',to:'e',color:C.mut,w:2},
+  {from:'e',to:'f',color:C.mut,w:2},{from:'f',to:'g',color:C.mut,w:2},
+],{w:1280,h:150,pad:24});
+
+// The daily action-items loop — capture → sort → morning email → act → repeat.
+FIGS.actionLoop = genCycle([
+  {label:'Capture', note:'jot as you go /\ntell Claude'},
+  {label:'Sort', note:'rank by\npriority'},
+  {label:'7 AM email', note:'top items in\nyour inbox'},
+  {label:'Review & act', note:'clear them,\nfeed tomorrow'},
+],{w:600,h:480,center:'daily loop'});
+
+/* ========================================================================
+   THE SOPRANOS — behaviour lab. Spoiler-free framework figures.
+   ======================================================================== */
+// The five lenses we read every scene through.
+FIGS.sopLenses = genMindMap('Read every\nscene', [
+  {label:'Fear·Respect·Use', children:['3 currencies']},
+  {label:'Incentives', children:['what they want']},
+  {label:'Second-order', children:['& then what?']},
+  {label:'Influence', children:['how they move you']},
+  {label:'Counterfactuals', children:['what if…']},
+],{w:840,h:600});
+
+// The three currencies of power — a triad around your hold on people.
+FIGS.powerTriad = genGraph([
+  {id:'c',x:.5,y:.5,shape:'round',w:128,h:50,label:'Your hold\non people',fill:C.a2},
+  {id:'f',x:.5,y:.14,shape:'round',w:120,h:46,label:'FEAR',fill:C.a6},
+  {id:'r',x:.15,y:.86,shape:'round',w:120,h:46,label:'RESPECT',fill:C.a4},
+  {id:'u',x:.85,y:.86,shape:'round',w:130,h:46,label:'USEFULNESS',fill:C.a5},
+],[
+  {from:'c',to:'f',color:C.mut,w:2},{from:'c',to:'r',color:C.mut,w:2},{from:'c',to:'u',color:C.mut,w:2},
+],{w:660,h:460,pad:30});
+
+// Decode a character's incentive.
+FIGS.incChain = genGraph([
+  {id:'a',x:.06,y:.5,shape:'round',w:150,h:52,label:'Surface\nwant',fill:C.a1},
+  {id:'b',x:.37,y:.5,shape:'round',w:150,h:52,label:'Real\nwant',fill:C.a4},
+  {id:'c',x:.68,y:.5,shape:'round',w:150,h:52,label:'Constraint',fill:C.a6},
+  {id:'d',x:.97,y:.5,shape:'round',w:150,h:52,label:'Likely\nmove',fill:C.a3},
+],[
+  {from:'a',to:'b',color:C.mut,w:2},{from:'b',to:'c',color:C.mut,w:2},{from:'c',to:'d',color:C.mut,w:2},
+],{w:1040,h:150,pad:26});
+
+// Second-order thinking — and then what?
+FIGS.secondOrder = genGraph([
+  {id:'a',x:.06,y:.5,shape:'round',w:150,h:54,label:'The move',fill:C.a2},
+  {id:'b',x:.37,y:.5,shape:'round',w:150,h:54,label:'1st order\nimmediate',fill:C.a5},
+  {id:'c',x:.68,y:.5,shape:'round',w:150,h:54,label:'2nd order\nthe ripple',fill:C.a4},
+  {id:'d',x:.97,y:.5,shape:'round',w:150,h:54,label:'3rd order\nlong game',fill:C.a6},
+],[
+  {from:'a',to:'b',color:C.mut,w:2},{from:'b',to:'c',color:C.mut,w:2},{from:'c',to:'d',color:C.mut,w:2},
+],{w:1040,h:150,pad:26});
+
+// The empty mafia-org skeleton — roles only, no characters (we fill it as we watch).
+FIGS.famScaffold = genPyramid([
+  {label:'Boss', sub:'sets direction', color:C.a1},
+  {label:'Underboss  ·  Consigliere', sub:'2nd + counsel', color:C.a4},
+  {label:'Capos', sub:'run the crews', color:C.a5},
+  {label:'Soldiers', sub:'made members', color:C.a6},
+  {label:'Associates', sub:'not made', color:C.a3},
+],{w:900,h:440});
+
+(function(){
+  [].forEach.call(document.querySelectorAll('.svgbox'),function(el){
+    var k=el.id.replace(/^c-/,''); if(typeof FIGS!=='undefined'&&FIGS[k])el.innerHTML=FIGS[k];
+  });
+  var links=[].slice.call(document.querySelectorAll('#nav a.nav'));
+  var secs=links.map(function(a){return document.getElementById(a.getAttribute('href').slice(1));});
+  function spy(){var y=window.pageYOffset+140,idx=0;secs.forEach(function(s,i){if(s&&s.offsetTop<=y)idx=i;});
+    links.forEach(function(a,i){a.classList.toggle('active',i===idx);});
+    var bt=document.getElementById('backtop');bt.classList.toggle('on',window.pageYOffset>600);}
+  links.forEach(function(a){a.addEventListener('click',function(e){e.preventDefault();var el=document.getElementById(a.getAttribute('href').slice(1));if(el)el.scrollIntoView({behavior:'smooth',block:'start'});});});
+  document.getElementById('backtop').addEventListener('click',function(){window.scrollTo({top:0,behavior:'smooth'});});
+  window.addEventListener('scroll',spy,{passive:true});spy();
+})();
+</script>
+</body></html>
