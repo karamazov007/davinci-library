@@ -1,0 +1,1241 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><title>Finding Content</title><style>
+:root{--bg:#f6f7f9;--ink:#1c2431;--dim:#6b7280;--line:#e7e9ee;--line2:#dcdfe6;--accent:#4f46e5;--accent2:#7c6cff;--soft:rgba(79,70,229,.08);--card:#fff;--shadow:0 1px 2px rgba(20,25,40,.05),0 8px 24px rgba(20,25,40,.06);--good:#16a34a;--gold:#d97706;--bad:#e11d48;--teal:#0d9488;--purple:#9333ea;}
+*{box-sizing:border-box}html,body{margin:0}
+body{font-family:-apple-system,BlinkMacSystemFont,"Segoe UI",Inter,Roboto,Helvetica,Arial,sans-serif;background:radial-gradient(1200px 600px at 12% -10%,rgba(79,70,229,.08),transparent 60%),radial-gradient(1000px 520px at 100% 0%,rgba(22,163,74,.06),transparent 55%),var(--bg);color:var(--ink);-webkit-font-smoothing:antialiased;line-height:1.62}
+.app{display:flex;align-items:flex-start;min-height:100vh}
+.side{flex:0 0 252px;width:252px;position:sticky;top:0;height:100vh;overflow:auto;border-right:1px solid var(--line);padding:22px 14px;background:color-mix(in srgb,var(--card) 62%,transparent);backdrop-filter:blur(6px)}
+.side .sbrand{font-weight:850;font-size:15px;letter-spacing:-.01em;padding:6px 10px 2px}.side .sbrand span{color:var(--accent)}
+.side .sblurb{font-size:11.5px;color:var(--dim);padding:0 10px 8px}
+.side .slabel{font-size:10.5px;font-weight:800;letter-spacing:.13em;text-transform:uppercase;color:var(--dim);padding:16px 12px 7px}
+.side nav{display:flex;flex-direction:column;gap:4px}
+.side nav button{display:flex;gap:10px;align-items:center;padding:11px 12px;border-radius:12px;font-size:14px;font-weight:700;color:var(--dim);cursor:pointer;text-align:left;line-height:1.3;border:1px solid transparent;background:transparent;font-family:inherit;width:100%}
+.side nav button:hover{background:var(--soft);color:var(--ink)}
+.side nav button.active{background:var(--soft);color:var(--accent);border-color:var(--line2)}
+.side nav button .si{font-size:16px;flex:0 0 auto}
+.main{flex:1;min-width:0}.wrap{max-width:1000px;margin:0 auto;padding:8px 40px 120px}
+.view{display:none}.view.active{display:block;animation:fade .25s ease}@keyframes fade{from{opacity:0;transform:translateY(4px)}to{opacity:1;transform:none}}
+.vhead{padding:48px 0 4px}
+.kick{font-size:12px;letter-spacing:.18em;text-transform:uppercase;color:var(--accent);font-weight:800}
+h1{font-size:clamp(28px,4.4vw,46px);line-height:1.06;letter-spacing:-1.1px;margin:12px 0 0;font-weight:850;background:linear-gradient(115deg,var(--ink),var(--accent) 66%,var(--good));-webkit-background-clip:text;background-clip:text;-webkit-text-fill-color:transparent}
+.lede{font-size:18px;color:var(--dim);max-width:740px;margin:15px 0 0}.lede b{color:var(--ink)}
+.dcard{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:20px;box-shadow:var(--shadow);margin-top:20px}
+.dk{font-size:11px;letter-spacing:.13em;text-transform:uppercase;color:var(--accent);font-weight:800}
+.dt{font-size:20px;font-weight:800;letter-spacing:-.4px;color:var(--ink);margin:3px 0 12px;line-height:1.2}
+.dp{font-size:14.5px;margin:12px 0 0;color:#2b3340;line-height:1.6}.dp b{color:var(--ink)}
+.dsvg{width:100%;height:auto;display:block;background:#fbfcfe;border:1px solid var(--line);border-radius:12px}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:14px}
+.chips span{font-size:12.5px;font-weight:700;color:var(--accent);background:var(--soft);border:1px solid #dfe1f5;border-radius:999px;padding:5px 12px}
+.cue{margin-top:14px;padding:12px 16px;border-left:4px solid var(--gold);background:rgba(217,119,6,.06);border-radius:0 10px 10px 0;font-size:14.5px}.cue b{color:var(--gold)}
+.warn{margin-top:14px;padding:12px 16px;border-left:4px solid var(--bad);background:rgba(225,29,72,.06);border-radius:0 10px 10px 0;font-size:14.5px}.warn b{color:var(--bad)}
+.take{margin-top:26px;padding:20px 22px;background:linear-gradient(120deg,rgba(79,70,229,.08),rgba(22,163,74,.06));border:1px solid var(--line2);border-radius:16px}
+.take h4{margin:0 0 6px;font-size:11px;letter-spacing:.14em;text-transform:uppercase;color:var(--accent);font-weight:800}
+.take p{margin:0;font-size:15.5px;color:var(--ink);line-height:1.6}.take b{color:var(--accent)}
+.stub{margin-top:22px;padding:20px 22px;border:1.5px dashed var(--line2);border-radius:16px;color:var(--dim);font-size:14px}.stub b{color:var(--ink)}
+@media(max-width:820px){.app{flex-direction:column}.side{position:static;width:auto;flex:none;height:auto;border-right:0;border-bottom:1px solid var(--line);padding:12px 14px}.side .slabel{display:none}.side nav{flex-direction:row;flex-wrap:wrap}.side nav button{width:auto}.wrap{padding:8px 20px 90px}}
+</style></head><body><div class="app"><aside class="side"><div class="sbrand">🔎 <span>Finding Content</span></div><div class="sblurb">How to actually find things — each platform as a discovery ecosystem, not a search box.</div>
+
+<div class="slabel">✈️ Telegram — Resources</div>
+<nav id="fcnav">
+<button class="active" data-view="overview"><span class="si">🌐</span> The Mental Model</button>
+<button data-view="objects"><span class="si">🧩</span> Telegram Objects</button>
+<button data-view="mistake"><span class="si">🎯</span> Object vs Ecosystem</button>
+<button data-view="search"><span class="si">🔍</span> Search, Properly</button>
+<button data-view="network"><span class="si">🕸️</span> Channel Networks</button>
+<button data-view="broaden"><span class="si">🪜</span> Broaden, Then Narrow</button>
+<button data-view="filter"><span class="si">✅</span> Filtering Good Channels</button>
+<button data-view="bots"><span class="si">🤖</span> Bots — Power &amp; Risk</button>
+<button data-view="webtele"><span class="si">🔗</span> Internet ↔ Telegram</button>
+<button data-view="hashtags"><span class="si">#️⃣</span> Hashtags as a Database</button>
+<button data-view="infra"><span class="si">🗂️</span> Personal Infrastructure</button>
+<button data-view="pipeline"><span class="si">🔁</span> The New Pipeline</button>
+<button data-view="boundary"><span class="si">⚖️</span> The Boundary</button>
+<button data-view="levels"><span class="si">🪧</span> Learning Roadmap</button>
+</nav>
+
+<div class="slabel">💬 Reddit — Ideas</div>
+<nav id="fcnav2">
+<button data-view="reddit-model"><span class="si">🕸️</span> Reddit: The Mental Model</button>
+<button data-view="reddit-vocab"><span class="si">📖</span> Reddit Vocabulary</button>
+<button data-view="reddit-discover"><span class="si">🧭</span> 6 Discovery Methods</button>
+<button data-view="reddit-culture"><span class="si">🎭</span> Evaluating Culture</button>
+<button data-view="reddit-karma"><span class="si">⬆️</span> Karma &amp; Upvotes</button>
+<button data-view="reddit-tree"><span class="si">🌳</span> The Comment Tree</button>
+<button data-view="reddit-post"><span class="si">✍️</span> Posting Well</button>
+<button data-view="reddit-people"><span class="si">🤝</span> From Stranger to Friend</button>
+<button data-view="reddit-compare"><span class="si">⚖️</span> Reddit vs Telegram vs Others</button>
+<button data-view="reddit-workflow"><span class="si">🔁</span> The Personal Workflow</button>
+</nav>
+
+<div class="slabel">📌 Pinterest — Taste</div>
+<nav id="fcnav3">
+<button data-view="pin-model"><span class="si">📌</span> Pinterest: The Mental Model</button>
+<button data-view="pin-vocab"><span class="si">📖</span> Pinterest Vocabulary</button>
+<button data-view="pin-boards"><span class="si">🗂️</span> The Killer Feature: Boards</button>
+<button data-view="pin-taste"><span class="si">🧪</span> The Taste Laboratory</button>
+<button data-view="pin-domains"><span class="si">🎨</span> Beyond Fashion</button>
+<button data-view="pin-visual-search"><span class="si">🔍</span> Visual Search &amp; Iterative Queries</button>
+<button data-view="pin-vs-others"><span class="si">⚖️</span> Pinterest vs Reddit vs Instagram</button>
+<button data-view="pin-loops"><span class="si">🔁</span> Worked Loops: Fashion, Photo, Cinema</button>
+<button data-view="pin-danger"><span class="si">⚠️</span> The Infinite-Inspiration Trap</button>
+</nav>
+
+<div class="slabel">📸 Instagram — People</div>
+<nav id="fcnav4">
+<button data-view="ig-model"><span class="si">📸</span> Instagram: The Mental Model</button>
+<button data-view="ig-functions"><span class="si">🧩</span> Four Functions + Identity</button>
+<button data-view="ig-discovery"><span class="si">🧭</span> People → People Discovery</button>
+<button data-view="ig-places"><span class="si">📍</span> Places &amp; Aesthetic Search</button>
+<button data-view="ig-taste"><span class="si">🎨</span> Taste-Discovery Engine</button>
+<button data-view="ig-broadcast"><span class="si">📡</span> Posts · Stories · Reels</button>
+<button data-view="ig-ladder"><span class="si">🪜</span> The Relationship Ladder</button>
+<button data-view="ig-trap"><span class="si">⚠️</span> Passive vs Active Mode</button>
+<button data-view="ig-following"><span class="si">🗂️</span> Structuring Who You Follow</button>
+</nav>
+
+<div class="slabel">🌐 Bringing It Together</div>
+<nav id="fcnav5">
+<button data-view="three-model"><span class="si">🌐</span> The Three-Platform Model</button>
+<button data-view="three-together"><span class="si">🔗</span> Bringing the Three Together</button>
+<button data-view="outward"><span class="si">🌍</span> Pointing Back Outward</button>
+<button data-view="four-model"><span class="si">🌐</span> The Four-Platform Model</button>
+<button data-view="full-os"><span class="si">🖥️</span> The Complete Internet OS</button>
+</nav>
+</aside><main class="main"><div class="wrap">
+
+<section class="view active" id="view-overview"><div class="vhead"><div class="kick">Why "bhai Telegram pe mil jayega" actually works</div><h1>Finding Content</h1><p class="lede">The skill your friends have isn't a magic search trick. It's a <b>discovery ecosystem</b> they built over years: find a community → find its trusted channels → follow the channel network → search inside those channels → follow forwards/references → end up with a personal media library. Search is step six, not step one.</p><div class="chips"><span>Old model: search → result → download</span><span>New model: discover → evaluate → join → explore → follow → search → navigate → archive</span></div></div>
+
+<div class="dcard"><div class="dk">The core reframe</div><div class="dt">Two completely different mental models</div><svg class="dsvg" viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="ov1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa2af"/></marker></defs>
+<text x="20" y="30" font-size="11" font-weight="800" fill="#be123c">WHAT YOU'RE DOING</text>
+<rect x="20" y="42" width="150" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="95" y="66" font-size="11" font-weight="700" fill="#be123c" text-anchor="middle">"I want X"</text>
+<rect x="210" y="42" width="150" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="285" y="66" font-size="11" font-weight="700" fill="#be123c" text-anchor="middle">Search "X" in Telegram</text>
+<rect x="400" y="42" width="150" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="475" y="60" font-size="10.5" font-weight="700" fill="#be123c" text-anchor="middle">garbage, dead links,</text><text x="475" y="73" font-size="10.5" font-weight="700" fill="#be123c" text-anchor="middle">scam bots, nothing</text>
+<g stroke="#e11d48" stroke-width="1.4"><line x1="170" y1="62" x2="208" y2="62" marker-end="url(#ov1)"/><line x1="360" y1="62" x2="398" y2="62" marker-end="url(#ov1)"/></g>
+<text x="20" y="118" font-size="11" font-weight="800" fill="#15803d">WHAT EXPERIENCED USERS DO</text>
+<g font-size="10" font-weight="700" fill="#15803d" text-anchor="middle">
+<rect x="20" y="130" width="105" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="72" y="153">Find a community</text>
+<rect x="145" y="130" width="105" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="197" y="153">Trusted channels</text>
+<rect x="270" y="130" width="105" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="322" y="153">Follow the network</text>
+<rect x="395" y="130" width="105" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="447" y="153">Search inside it</text>
+<rect x="520" y="130" width="105" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="572" y="153">Follow forwards</text>
+</g>
+<g stroke="#16a34a" stroke-width="1.4"><line x1="125" y1="150" x2="143" y2="150" marker-end="url(#ov1)"/><line x1="250" y1="150" x2="268" y2="150" marker-end="url(#ov1)"/><line x1="375" y1="150" x2="393" y2="150" marker-end="url(#ov1)"/><line x1="500" y1="150" x2="518" y2="150" marker-end="url(#ov1)"/></g>
+<rect x="230" y="188" width="260" height="38" rx="9" fill="#1c2431"/><text x="360" y="212" font-size="11.5" font-weight="800" fill="#fff" text-anchor="middle">→ a personal media library</text>
+<line x1="360" y1="170" x2="360" y2="186" stroke="#1c2431" stroke-width="1.4" marker-end="url(#ov1)"/>
+</svg><p class="dp">The mistake isn't lack of luck — it's <b>entering at the wrong layer</b>. Searching the object (the file/title) hits Telegram's weakest surface: a flat namespace full of noise. Searching the <b>ecosystem</b> — communities, trusted nodes, the graph between them — hits the layer where quality actually concentrates.</p></div>
+
+<div class="dcard"><div class="dk">The whole pipeline, end to end</div><div class="dt">Discover → Evaluate → Join → Explore → Follow → Search → Navigate → Archive</div><svg class="dsvg" viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="ov2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="10" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="4" y="30" width="84" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="46" y="55">Discover</text>
+<rect x="96" y="30" width="84" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="138" y="55">Evaluate</text>
+<rect x="188" y="30" width="84" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="230" y="55">Join</text>
+<rect x="280" y="30" width="84" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="322" y="55">Explore</text>
+<rect x="372" y="30" width="84" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="414" y="55">Follow</text>
+<rect x="464" y="30" width="84" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="506" y="55">Search</text>
+<rect x="556" y="30" width="84" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="598" y="55">Navigate</text>
+<rect x="648" y="30" width="68" height="42" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="682" y="55" fill="#15803d">Archive</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="88" y1="51" x2="94" y2="51" marker-end="url(#ov2)"/><line x1="180" y1="51" x2="186" y2="51" marker-end="url(#ov2)"/><line x1="272" y1="51" x2="278" y2="51" marker-end="url(#ov2)"/><line x1="364" y1="51" x2="370" y2="51" marker-end="url(#ov2)"/><line x1="456" y1="51" x2="462" y2="51" marker-end="url(#ov2)"/><line x1="548" y1="51" x2="554" y2="51" marker-end="url(#ov2)"/><line x1="640" y1="51" x2="646" y2="51" marker-end="url(#ov2)"/></g>
+<text x="360" y="102" font-size="10.5" fill="#6b7280" text-anchor="middle">Do it once per topic. After "Archive," you never search from zero again for that topic.</text>
+</svg><p class="dp">This replaces "Search → Result → Download." The payoff compounds: the first time you map a topic (say, anime) takes effort. After that, you have sources — not files — and new content simply arrives.</p></div>
+
+<div class="take"><h4>The takeaway</h4><p>Your friends are not luckier or more technical. They've spent time <b>building a map</b> of communities and channel networks, once, per topic. This section is that map-building skill, broken into pieces: what Telegram's objects actually are, how to search properly, how to read a channel network, how to filter signal from garbage, and how to turn all of it into a personal infrastructure you never have to rebuild.</p></div>
+</section>
+
+<section class="view" id="view-objects"><div class="vhead"><div class="kick">Vocabulary first</div><h1>Telegram Objects</h1><p class="lede">People say "channel," "group," "bot" interchangeably. They're structurally different objects with different jobs. Knowing which one you're looking at tells you how to use it.</p></div>
+
+<div class="dcard"><div class="dk">The object map</div><div class="dt">Seven things people casually call "a Telegram thing"</div><svg class="dsvg" viewBox="0 0 720 380" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="11" font-weight="800">
+<rect x="10" y="10" width="220" height="48" rx="10" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="30" fill="#4f46e5" text-anchor="middle">Channel</text><text x="120" y="45" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">one-to-many publishing feed</text>
+<rect x="250" y="10" width="220" height="48" rx="10" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="30" fill="#4f46e5" text-anchor="middle">Public channel</text><text x="360" y="45" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">has a @username, discoverable in search</text>
+<rect x="490" y="10" width="220" height="48" rx="10" fill="#eef0fb" stroke="#4f46e5"/><text x="600" y="30" fill="#4f46e5" text-anchor="middle">Private channel</text><text x="600" y="45" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">invite-only, closed community</text>
+
+<rect x="10" y="80" width="220" height="48" rx="10" fill="#e7f6ec" stroke="#16a34a"/><text x="120" y="100" fill="#15803d" text-anchor="middle">Group</text><text x="120" y="115" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">community / conversation, requests</text>
+<rect x="250" y="80" width="220" height="48" rx="10" fill="#fdf0e6" stroke="#d97706"/><text x="360" y="100" fill="#b45309" text-anchor="middle">Bot</text><text x="360" y="115" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">automated account: search / index / convert</text>
+<rect x="490" y="80" width="220" height="48" rx="10" fill="#e6f6f4" stroke="#0d9488"/><text x="600" y="100" fill="#0d9488" text-anchor="middle">Forwarded post</text><text x="600" y="115" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">content copied in from elsewhere — a discovery trail</text>
+
+<rect x="130" y="150" width="460" height="48" rx="10" fill="#fdecef" stroke="#e11d48"/><text x="360" y="170" fill="#be123c" text-anchor="middle">External directory / site</text><text x="360" y="185" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">a website indexing Telegram channels — an entry point from outside Telegram</text>
+</g>
+<text x="360" y="225" font-size="10.5" fill="#9aa2af" text-anchor="middle">Public channels are the searchable surface. Everything else is reached by navigating, not searching.</text>
+<line x1="20" y1="245" x2="700" y2="245" stroke="#e7e9ee"/>
+<g font-size="10.5" font-weight="800" fill="#42506a">
+<text x="20" y="270">Typical use, by object:</text>
+<text x="30" y="295" font-weight="600" fill="#2b3340">Channel → movies, anime, books, news, resource dumps</text>
+<text x="30" y="316" font-weight="600" fill="#2b3340">Group → recommendations, discussion, "does anyone have…" requests</text>
+<text x="30" y="337" font-weight="600" fill="#2b3340">Bot → search / indexing / file management / format conversion</text>
+<text x="30" y="358" font-weight="600" fill="#2b3340">Forwarded / private channel → the trail deeper into a network you can't search into directly</text>
+</g>
+</svg><p class="dp">When a friend says "Telegram pe mil jayega," decode it as: <b>"I know a network of channels/groups/bots where someone has already dealt with this."</b> That network — not a search box — is the actual object being referenced.</p></div>
+</section>
+
+<section class="view" id="view-mistake"><div class="vhead"><div class="kick">The single biggest fix</div><h1>Object vs Ecosystem</h1><p class="lede">Searching for the object (the exact title) hits Telegram's noisiest layer. Searching for the ecosystem around it — the community that would care about this — routes you to where quality concentrates.</p></div>
+
+<div class="dcard"><div class="dk">Two searches, two outcomes</div><div class="dt">Same goal — obscure anime — opposite paths</div><svg class="dsvg" viewBox="0 0 720 280" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="mm1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa2af"/></marker></defs>
+<text x="180" y="26" font-size="12" font-weight="800" fill="#be123c" text-anchor="middle">Beginner path</text>
+<rect x="60" y="38" width="240" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="180" y="63" font-size="11" font-weight="700" fill="#be123c" text-anchor="middle">Telegram search: "Anime Name"</text>
+<line x1="180" y1="78" x2="180" y2="96" stroke="#e11d48" stroke-width="1.4" marker-end="url(#mm1)"/>
+<rect x="40" y="98" width="280" height="72" rx="9" fill="#fff" stroke="#e7e9ee"/>
+<text x="180" y="118" font-size="10" font-weight="700" fill="#42506a" text-anchor="middle">garbage channels · dead links</text>
+<text x="180" y="136" font-size="10" font-weight="700" fill="#42506a" text-anchor="middle">unrelated results · scammy bots</text>
+<text x="180" y="154" font-size="10" font-weight="700" fill="#42506a" text-anchor="middle">hundreds of duplicates · nothing useful</text>
+
+<text x="540" y="26" font-size="12" font-weight="800" fill="#15803d" text-anchor="middle">Experienced path</text>
+<g font-size="10" font-weight="700" fill="#15803d" text-anchor="middle">
+<rect x="420" y="38" width="240" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="540" y="59">"obscure anime" → anime community</text>
+<rect x="420" y="80" width="240" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="540" y="101">high-quality anime archive channel</text>
+<rect x="420" y="122" width="240" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="540" y="143">that channel's internal search</text>
+<rect x="420" y="164" width="240" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="540" y="185">specific title → season/episode/file</text>
+</g>
+<g stroke="#16a34a" stroke-width="1.3"><line x1="540" y1="72" x2="540" y2="78" marker-end="url(#mm1)"/><line x1="540" y1="114" x2="540" y2="120" marker-end="url(#mm1)"/><line x1="540" y1="156" x2="540" y2="162" marker-end="url(#mm1)"/></g>
+
+<rect x="60" y="210" width="600" height="46" rx="10" fill="#1c2431"/><text x="360" y="230" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">The question that changes everything:</text><text x="360" y="246" font-size="11" font-weight="700" fill="#cfd4dd" text-anchor="middle">"What kind of community would already have this?"</text>
+</svg><p class="dp">Same logic for books: instead of <i>"Book Name PDF,"</i> think <i>English ebooks → ebook community → a particular archive/channel → author/title → EPUB/PDF.</i> The object is at the end of a chain, not at a search box.</p></div>
+<div class="take"><h4>The takeaway</h4><p>Every time the instinct is to type the exact title, pause and ask: <b>what community already cares about this category?</b> That question is the entire fix.</p></div>
+</section>
+
+<section class="view" id="view-search"><div class="vhead"><div class="kick">Telegram's search is bigger than a chat-name box</div><h1>Search, Properly</h1><p class="lede">Telegram's search has separate surfaces — Chats, Channels, Media, Files, Music, Links, Downloads — plus a genuinely powerful feature almost nobody uses: global search across public channel posts you haven't even joined.</p></div>
+
+<div class="dcard"><div class="dk">Two fundamentally different searches</div><div class="dt">"Find me a channel" vs "find me a post/file anywhere"</div><svg class="dsvg" viewBox="0 0 720 230" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="190" rx="14" fill="#eef0fb" stroke="#4f46e5"/>
+<text x="185" y="46" font-size="12.5" font-weight="800" fill="#4f46e5" text-anchor="middle">A · Find me a channel</text>
+<g font-size="10.5" font-weight="700" fill="#2b3340">
+<text x="42" y="76">Query style: category words</text>
+<text x="42" y="100">"anime archive"</text>
+<text x="42" y="122">"ebook community"</text>
+<text x="42" y="144">"classic cinema"</text>
+</g>
+<text x="185" y="185" font-size="9.5" fill="#6b7280" text-anchor="middle">Goal: a source to follow, not a file</text>
+
+<rect x="370" y="20" width="330" height="190" rx="14" fill="#e7f6ec" stroke="#16a34a"/>
+<text x="535" y="46" font-size="12.5" font-weight="800" fill="#15803d" text-anchor="middle">B · Find me a post, anywhere</text>
+<g font-size="10.5" font-weight="700" fill="#2b3340">
+<text x="392" y="76">Query style: exact phrase / title</text>
+<text x="392" y="100">"Monster" 1080p</text>
+<text x="392" y="122">"The Master and Margarita"</text>
+<text x="392" y="144">a specific hashtag</text>
+</g>
+<text x="535" y="185" font-size="9.5" fill="#6b7280" text-anchor="middle">Searches public channel posts even if you haven't joined</text>
+</svg><p class="dp">This is the search you thought Telegram was for — <b>global public-post search</b> — and it exists. But it's a scalpel for a known exact phrase, not a browsing tool for a vague need. Use it once you know enough to phrase the query precisely (an exact title, a quality tag, a hashtag).</p></div>
+
+<div class="dcard"><div class="dk">The search surfaces, laid out</div><div class="dt">Chats · Channels · Media · Files · Music · Links · Downloads</div><svg class="dsvg" viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="4" y="30" width="98" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="53" y="55">Chats</text>
+<rect x="106" y="30" width="98" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="155" y="55">Channels</text>
+<rect x="208" y="30" width="98" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="257" y="55">Media</text>
+<rect x="310" y="30" width="98" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="359" y="55">Files</text>
+<rect x="412" y="30" width="98" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="461" y="55">Music</text>
+<rect x="514" y="30" width="98" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="563" y="55">Links</text>
+<rect x="616" y="30" width="98" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="665" y="55">Downloads</text>
+</g>
+<text x="360" y="100" font-size="10.5" fill="#6b7280" text-anchor="middle">Inside any chat/channel you're already in, these filters narrow instantly — use them before scrolling manually.</text>
+</svg><p class="dp">Once you're inside a good channel, stop typing the title into global search. Use the <b>in-chat filters</b> — Media/Files/Links — plus exact-phrase search scoped to that one chat. This is the beginner → experienced transition point.</p></div>
+
+<div class="cue" style="margin:20px"><b>Cue —</b> Global search for "channel" queries when you're mapping a topic. Global public-post search for exact phrases once you know precisely what you want. In-channel filtered search once you've found a good source — and prefer that last one.</div>
+</section>
+
+<section class="view" id="view-network"><div class="vhead"><div class="kick">The real secret</div><h1>Channel Networks</h1><p class="lede">One genuinely good channel is a node, not a destination. Investigate what it forwards from, who its admins are, what it's mentioned alongside — and a graph of the whole ecosystem opens up.</p></div>
+
+<div class="dcard"><div class="dk">What to investigate, once you find one good channel</div><div class="dt">Nine signals that expand the graph</div><svg class="dsvg" viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<ellipse cx="360" cy="105" rx="96" ry="42" fill="#1c2431"/><text x="360" y="101" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">The one good</text><text x="360" y="116" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">channel you found</text>
+<g font-size="9.5" font-weight="700" fill="#4f46e5" text-anchor="middle">
+<rect x="10" y="10" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="85" y="30">Forwards from?</text>
+<rect x="10" y="46" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="85" y="66">Who are the admins?</text>
+<rect x="10" y="82" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="85" y="102">Related posts mention?</text>
+<rect x="10" y="118" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="85" y="138">Telegram's "similar channels"</text>
+<rect x="10" y="154" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="85" y="174">What hashtags does it use?</text>
+<rect x="560" y="10" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="635" y="30">Similar-term search results</text>
+<rect x="560" y="46" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="635" y="66">What are members discussing?</text>
+<rect x="560" y="82" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="635" y="102">Sister channels (languages/media)?</text>
+<rect x="560" y="118" width="150" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="635" y="138">Linked discussion group?</text>
+</g>
+<g stroke="#c3c8d2" stroke-width="1.1"><line x1="160" y1="25" x2="266" y2="80"/><line x1="160" y1="61" x2="266" y2="92"/><line x1="160" y1="97" x2="266" y2="104"/><line x1="160" y1="133" x2="266" y2="116"/><line x1="160" y1="169" x2="266" y2="128"/><line x1="560" y1="25" x2="454" y2="80"/><line x1="560" y1="61" x2="454" y2="92"/><line x1="560" y1="97" x2="454" y2="104"/><line x1="560" y1="133" x2="454" y2="116"/></g>
+</svg><p class="dp">Telegram itself supports <b>"similar channels"</b> recommendations as a first-party feature — you don't need external tools to start expanding. Every one of these nine questions turns one lucky find into a mapped ecosystem.</p></div>
+
+<div class="dcard"><div class="dk">The graph that forms</div><div class="dt">One node becomes a network</div><svg class="dsvg" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="800" fill="#fff" text-anchor="middle">
+<rect x="30" y="20" width="150" height="36" rx="9" fill="#4f46e5"/><text x="105" y="43">Anime Channel A</text>
+<rect x="30" y="74" width="150" height="36" rx="9" fill="#4f46e5"/><text x="105" y="97">Anime Channel B</text>
+<rect x="30" y="128" width="150" height="36" rx="9" fill="#16a34a"/><text x="105" y="151">Manga Channel</text>
+<rect x="30" y="182" width="150" height="36" rx="9" fill="#0d9488"/><text x="105" y="205">Discussion Group</text>
+</g>
+<rect x="290" y="100" width="150" height="40" rx="10" fill="#1c2431"/><text x="365" y="124" font-size="10.5" font-weight="800" fill="#fff" text-anchor="middle">Bot / Archive index</text>
+<g font-size="10" font-weight="800" fill="#fff" text-anchor="middle">
+<rect x="550" y="60" width="140" height="36" rx="9" fill="#d97706"/><text x="620" y="83">Channel C</text>
+<rect x="550" y="150" width="140" height="36" rx="9" fill="#d97706"/><text x="620" y="173">Channel D</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.2" fill="none">
+<path d="M180,38 C240,38 240,110 288,116"/><path d="M180,92 C240,92 240,116 288,120"/><path d="M180,146 C240,146 240,128 288,126"/><path d="M180,200 C240,200 240,136 288,132"/>
+<path d="M440,116 C480,100 500,90 548,78"/><path d="M440,124 C480,140 500,150 548,160"/>
+</g>
+<text x="365" y="230" font-size="10.5" fill="#9aa2af" text-anchor="middle">You entered from zero at one channel. Your friends traversed this graph for years — the map is the skill, not the search.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-broaden"><div class="vhead"><div class="kick">The most important technique</div><h1>Broaden, Then Narrow</h1><p class="lede">Don't start at the specific work — start at the medium, then genre, then community, and only then the title. This is the same funnel for films, books, anime, or anything else.</p></div>
+
+<div class="dcard"><div class="dk">The four levels</div><div class="dt">From medium to the exact file</div><svg class="dsvg" viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<defs><marker id="bn1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<polygon points="360,10 660,80 470,80 590,150 420,150 500,220 340,220 380,290 340,290 300,220 220,220 250,150 130,150 190,80 60,80" fill="none" opacity="0"/>
+<rect x="260" y="10" width="200" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="35" font-size="11" font-weight="800" fill="#4f46e5" text-anchor="middle">Level 1 — Medium</text>
+<text x="360" y="60" font-size="9.5" fill="#6b7280" text-anchor="middle">cinema · films · world cinema · independent cinema</text>
+<rect x="230" y="80" width="260" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="105" font-size="11" font-weight="800" fill="#15803d" text-anchor="middle">Level 2 — Genre</text>
+<text x="360" y="130" font-size="9.5" fill="#6b7280" text-anchor="middle">Japanese cinema · Iranian · French · experimental · arthouse</text>
+<rect x="200" y="150" width="320" height="40" rx="9" fill="#e6f6f4" stroke="#0d9488"/><text x="360" y="175" font-size="11" font-weight="800" fill="#0d9488" text-anchor="middle">Level 3 — Community</text>
+<text x="360" y="200" font-size="9.5" fill="#6b7280" text-anchor="middle">film archive · cinema archive · cinephile · film club</text>
+<rect x="170" y="220" width="380" height="40" rx="9" fill="#fdf0e6" stroke="#d97706"/><text x="360" y="245" font-size="11" font-weight="800" fill="#b45309" text-anchor="middle">Level 4 — Specific work</text>
+<text x="360" y="270" font-size="9.5" fill="#6b7280" text-anchor="middle">Director name · Film name — searched inside the Level-3 community</text>
+<g stroke="#9aa2af" stroke-width="1.3"><line x1="360" y1="50" x2="360" y2="78" marker-end="url(#bn1)"/><line x1="360" y1="120" x2="360" y2="148" marker-end="url(#bn1)"/><line x1="360" y1="190" x2="360" y2="218" marker-end="url(#bn1)"/></g>
+<text x="360" y="300" font-size="10" fill="#9aa2af" text-anchor="middle">Once inside a Level-3 community: STOP using global search. Search inside the channel from here on.</text>
+</svg><p class="dp">This is a funnel, not a leap. Widening the query at first feels backwards, but each level filters down to <b>people who already care about this exact niche</b> — which is precisely where the obscure title lives.</p></div>
+<div class="cue" style="margin:20px"><b>Cue —</b> Never type the title first. Type the medium, then the genre, then "archive/community/club," and only search the exact title once you're inside a Level-3 space.</div>
+</section>
+
+<section class="view" id="view-filter"><div class="vhead"><div class="kick">Not every channel is worth following</div><h1>Filtering Good Channels</h1><p class="lede">Garbage channels vastly outnumber good ones. Four signals separate a real archive from noise — and they matter more than subscriber count.</p></div>
+
+<div class="dcard"><div class="dk">The four signals</div><div class="dt">History · organisation · size (a red herring) · forwards</div><svg class="dsvg" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="11" font-weight="800" text-anchor="middle">
+<rect x="20" y="20" width="320" height="90" rx="12" fill="#e7f6ec" stroke="#16a34a"/><text x="180" y="44" fill="#15803d">Signal 1 — History</text>
+<text x="180" y="66" font-size="9.5" font-weight="600" fill="#2b3340">years of organised posts &gt;&gt;</text>
+<text x="180" y="82" font-size="9.5" font-weight="600" fill="#2b3340">"BEST MOVIES 2026 🔥" · 400 subs</text>
+
+<rect x="380" y="20" width="320" height="90" rx="12" fill="#eef0fb" stroke="#4f46e5"/><text x="540" y="44" fill="#4f46e5">Signal 2 — Organisation</text>
+<text x="540" y="64" font-size="9" font-weight="600" fill="#2b3340">consistent naming · hashtags · index posts</text>
+<text x="540" y="80" font-size="9" font-weight="600" fill="#2b3340">pinned lists · season/episode/author tags</text>
+
+<rect x="20" y="130" width="320" height="90" rx="12" fill="#fdf0e6" stroke="#d97706"/><text x="180" y="154" fill="#b45309">Signal 3 — Size is not signal</text>
+<text x="180" y="176" font-size="9.5" font-weight="600" fill="#2b3340">a small specialised channel can beat</text>
+<text x="180" y="192" font-size="9.5" font-weight="600" fill="#2b3340">a giant generic one for obscure material</text>
+
+<rect x="380" y="130" width="320" height="90" rx="12" fill="#e6f6f4" stroke="#0d9488"/><text x="540" y="154" fill="#0d9488">Signal 4 — Forwards</text>
+<text x="540" y="176" font-size="9.5" font-weight="600" fill="#2b3340">where do its posts come from?</text>
+<text x="540" y="192" font-size="9.5" font-weight="600" fill="#2b3340">good channels act as network nodes</text>
+</g>
+<text x="360" y="245" font-size="10.5" fill="#9aa2af" text-anchor="middle">Check all four before joining/relying on a channel — takes 30 seconds, saves hours of dead ends.</text>
+</svg></div>
+<div class="take"><h4>The takeaway</h4><p>A channel with a <b>disciplined index</b> — hashtags, pinned catalogues, consistent naming — is worth ten loud, subscriber-heavy channels with no structure. Organisation is the tell of a real archive.</p></div>
+</section>
+
+<section class="view" id="view-bots"><div class="vhead"><div class="kick">A whole extra layer — and a real risk</div><h1>Bots — Power &amp; Risk</h1><p class="lede">A bot is an automated account: send it a query, it returns a search/index/conversion result. Genuinely useful — and also one of the most common vectors for scams and malware.</p></div>
+
+<div class="dcard"><div class="dk">How a bot works</div><div class="dt">You → Bot → index/database → result → file/link/action</div><svg class="dsvg" viewBox="0 0 720 140" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="bt1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="10.5" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="10" y="45" width="110" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="65" y="70">You</text>
+<rect x="150" y="45" width="110" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="205" y="70">Bot</text>
+<rect x="290" y="45" width="140" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="65">search/index/</text><text x="360" y="78">database</text>
+<rect x="460" y="45" width="110" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="515" y="70">Result</text>
+<rect x="600" y="45" width="110" height="42" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="655" y="65" fill="#15803d">File / link</text><text x="655" y="78" fill="#15803d">/ action</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="120" y1="66" x2="148" y2="66" marker-end="url(#bt1)"/><line x1="260" y1="66" x2="288" y2="66" marker-end="url(#bt1)"/><line x1="430" y1="66" x2="458" y2="66" marker-end="url(#bt1)"/><line x1="570" y1="66" x2="598" y2="66" marker-end="url(#bt1)"/></g>
+<text x="360" y="120" font-size="10" fill="#6b7280" text-anchor="middle">Legitimate uses: file/archive search, format conversion, indexing, RSS/news, reminders, translation, automation.</text>
+</svg></div>
+
+<div class="dcard"><div class="dk">The risk</div><div class="dt">Never hand a bot these — no matter how "official" it looks</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="16" width="680" height="118" rx="14" fill="#fdecef" stroke="#e11d48"/>
+<text x="360" y="42" font-size="12" font-weight="800" fill="#be123c" text-anchor="middle">A bot can see whatever you send it. Shady "download" bots are a common scam/phishing/malware vector.</text>
+<g font-size="10.5" font-weight="700" fill="#be123c" text-anchor="middle">
+<text x="130" y="76">✗ Passwords</text><text x="130" y="98">✗ OTPs / login codes</text>
+<text x="360" y="76">✗ Banking info</text><text x="360" y="98">✗ Private documents</text>
+<text x="590" y="76">✗ API credentials</text><text x="590" y="98">✗ Random installed files</text>
+</g>
+<text x="360" y="122" font-size="9.5" fill="#9a2540" text-anchor="middle">If a bot asks for any of these to "unlock" a file — it's a scam. No legitimate archive bot needs them.</text>
+</svg><div class="warn"><b>Boundary —</b> Treat every bot as untrusted by default. It's an automated account run by a stranger, not a Telegram feature. Use it for lookups; never for credentials, and never install a file "because a bot offered it."</div></div>
+</section>
+
+<section class="view" id="view-webtele"><div class="vhead"><div class="kick">A huge blind spot</div><h1>Internet ↔ Telegram</h1><p class="lede">Discovery doesn't only happen inside Telegram's own search bar. People find channels through Google, Reddit, Discord, forums, blog posts, link aggregators — and public channel content is itself indexed by search engines.</p></div>
+
+<div class="dcard"><div class="dk">The real discovery loop</div><div class="dt">Internet ↔ Telegram, not Telegram → search bar</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="wt1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<rect x="20" y="20" width="300" height="150" rx="14" fill="#eef0fb" stroke="#4f46e5"/><text x="170" y="44" font-size="12" font-weight="800" fill="#4f46e5" text-anchor="middle">The Internet</text>
+<g font-size="10" font-weight="700" fill="#2b3340" text-anchor="middle">
+<text x="170" y="70">Google</text><text x="170" y="92">Reddit / forums</text><text x="170" y="114">Discord</text><text x="170" y="136">Blog posts / link aggregators</text><text x="170" y="158">A friend, directly</text>
+</g>
+<rect x="400" y="20" width="300" height="150" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="550" y="44" font-size="12" font-weight="800" fill="#15803d" text-anchor="middle">Telegram</text>
+<g font-size="10" font-weight="700" fill="#2b3340" text-anchor="middle">
+<text x="550" y="80">Channels · groups · bots</text><text x="550" y="105">the network you then traverse</text>
+</g>
+<line x1="320" y1="95" x2="398" y2="95" stroke="#9aa2af" stroke-width="1.6" marker-end="url(#wt1)"/>
+<line x1="398" y1="120" x2="320" y2="120" stroke="#9aa2af" stroke-width="1.6" marker-end="url(#wt1)"/>
+<text x="360" y="200" font-size="10" fill="#6b7280" text-anchor="middle">Public Telegram content is web-indexable — so a plain web search can hand you the exact channel to join.</text>
+</svg><p class="dp">The pipeline isn't a one-way funnel into Telegram. It's a loop: web search can surface a channel; a channel's pinned post can point back to a website; that website can list ten more channels. Treat the open web as an equal entry point, not a fallback.</p></div>
+</section>
+
+<section class="view" id="view-hashtags"><div class="vhead"><div class="kick">An underused index</div><h1>Hashtags as a Database</h1><p class="lede">In a well-organised channel, hashtags behave almost like database keys — letting you navigate an archive without knowing an exact filename.</p></div>
+
+<div class="dcard"><div class="dk">Hashtags as navigation</div><div class="dt">Global hashtag search across public posts</div><svg class="dsvg" viewBox="0 0 720 170" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="11" font-weight="800" fill="#fff" text-anchor="middle">
+<rect x="30" y="20" width="100" height="34" rx="17" fill="#4f46e5"/><text x="80" y="42">#Japanese</text>
+<rect x="150" y="20" width="90" height="34" rx="17" fill="#16a34a"/><text x="195" y="42">#Anime</text>
+<rect x="260" y="20" width="90" height="34" rx="17" fill="#0d9488"/><text x="305" y="42">#Manga</text>
+<rect x="370" y="20" width="110" height="34" rx="17" fill="#d97706"/><text x="425" y="42">#Philosophy</text>
+<rect x="500" y="20" width="100" height="34" rx="17" fill="#9333ea"/><text x="550" y="42">#History</text>
+<rect x="620" y="20" width="80" height="34" rx="17" fill="#e11d48"/><text x="660" y="42">#SciFi</text>
+</g>
+<rect x="120" y="76" width="480" height="70" rx="12" fill="#fbfcfe" stroke="#dcdfe6"/>
+<text x="360" y="100" font-size="10.5" font-weight="800" fill="#42506a" text-anchor="middle">Tap a hashtag inside a well-run channel →</text>
+<text x="360" y="122" font-size="10.5" font-weight="800" fill="#42506a" text-anchor="middle">get every post tagged with it — an instant filtered catalogue,</text>
+<text x="360" y="140" font-size="10.5" font-weight="800" fill="#42506a" text-anchor="middle">no exact title needed.</text>
+</svg><p class="dp">Look for a channel's <b>pinned tag legend</b> (often a message listing "how to use our hashtags"). If one exists, that channel has effectively built you a search index — use it before typing anything into global search.</p></div>
+</section>
+
+<section class="view" id="view-infra"><div class="vhead"><div class="kick">The endgame</div><h1>Personal Infrastructure</h1><p class="lede">The goal isn't to get better at searching — it's to stop searching from zero. Build folders of trusted sources once, and Telegram becomes a dashboard that feeds you, rather than a search box you interrogate.</p></div>
+
+<div class="dcard"><div class="dk">A starter folder structure</div><div class="dt">Subscribe to sources, not files</div><svg class="dsvg" viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10.5" font-weight="800">
+<rect x="10" y="10" width="220" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="30" fill="#4f46e5" text-anchor="middle">📚 BOOKS</text>
+<rect x="30" y="46" width="180" height="24" rx="6" fill="#f7f8fd" stroke="#dfe1f5"/><text x="120" y="62" font-size="9.5" fill="#42506a" text-anchor="middle">Fiction · Philosophy · History · Economics · Academic</text>
+
+<rect x="250" y="10" width="220" height="30" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="30" fill="#15803d" text-anchor="middle">🎬 CINEMA</text>
+<rect x="270" y="46" width="180" height="24" rx="6" fill="#f2fbf5" stroke="#cdeed9"/><text x="360" y="62" font-size="9.5" fill="#42506a" text-anchor="middle">World · Classics · Indian · Japanese · Documentary</text>
+
+<rect x="490" y="10" width="220" height="30" rx="8" fill="#e6f6f4" stroke="#0d9488"/><text x="600" y="30" fill="#0d9488" text-anchor="middle">📺 TELEVISION</text>
+<rect x="510" y="46" width="180" height="24" rx="6" fill="#f1faf9" stroke="#c7ece7"/><text x="600" y="62" font-size="9.5" fill="#42506a" text-anchor="middle">Prestige drama · Sitcoms · Animation</text>
+
+<rect x="10" y="100" width="220" height="30" rx="8" fill="#fdecef" stroke="#e11d48"/><text x="120" y="120" fill="#be123c" text-anchor="middle">🇯🇵 JAPAN</text>
+<rect x="30" y="136" width="180" height="24" rx="6" fill="#fdf3f4" stroke="#f8d3da"/><text x="120" y="152" font-size="9.5" fill="#42506a" text-anchor="middle">Anime · Manga · Learning · Culture</text>
+
+<rect x="250" y="100" width="220" height="30" rx="8" fill="#fdf0e6" stroke="#d97706"/><text x="360" y="120" fill="#b45309" text-anchor="middle">🧠 LEARNING</text>
+<rect x="270" y="136" width="180" height="24" rx="6" fill="#fdf6ec" stroke="#f5e0bf"/><text x="360" y="152" font-size="9.5" fill="#42506a" text-anchor="middle">AI/ML · Programming · Photography · Languages</text>
+</g>
+<rect x="150" y="190" width="420" height="46" rx="10" fill="#1c2431"/><text x="360" y="210" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">Subscribe to good SOURCES, not individual files</text><text x="360" y="226" font-size="9.5" fill="#cfd4dd" text-anchor="middle">Telegram becomes an information dashboard</text>
+<text x="360" y="270" font-size="10" fill="#9aa2af" text-anchor="middle">Use Telegram's own Folders feature to mirror this structure — one folder per topic above.</text>
+</svg></div>
+
+<div class="dcard"><div class="dk">The full stack</div><div class="dt">From Telegram down to Saved Messages / your library</div><svg class="dsvg" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="280" y="10" width="160" height="36" rx="9" fill="#1c2431"/><text x="360" y="33" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">TELEGRAM</text>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="360" y1="46" x2="150" y2="80"/><line x1="360" y1="46" x2="360" y2="80"/><line x1="360" y1="46" x2="570" y2="80"/></g>
+<g font-size="10" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="70" y="80" width="160" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="150" y="100">BOOKS</text>
+<rect x="280" y="80" width="160" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="100">CINEMA</text>
+<rect x="490" y="80" width="160" height="30" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="570" y="100">ANIME</text>
+</g>
+<g font-size="9" font-weight="700" fill="#6b7280" text-anchor="middle">
+<text x="150" y="128">channels</text><text x="360" y="128">channels</text><text x="570" y="128">channels</text>
+<text x="150" y="146">groups</text><text x="360" y="146">groups</text><text x="570" y="146">groups</text>
+<text x="150" y="164">bots</text><text x="360" y="164">bots</text><text x="570" y="164">bots</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.1"><line x1="150" y1="110" x2="150" y2="176"/><line x1="360" y1="110" x2="360" y2="176"/><line x1="570" y1="110" x2="570" y2="176"/><line x1="150" y1="176" x2="360" y2="200"/><line x1="360" y1="176" x2="360" y2="200"/><line x1="570" y1="176" x2="360" y2="200"/></g>
+<rect x="260" y="200" width="200" height="30" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="220" font-size="10.5" font-weight="800" fill="#15803d" text-anchor="middle">Saved Messages</text>
+<line x1="360" y1="230" x2="360" y2="244" stroke="#16a34a" stroke-width="1.4"/>
+<text x="360" y="256" font-size="11" font-weight="800" fill="#1c2431" text-anchor="middle">Your library</text>
+</svg><p class="dp"><b>Saved Messages</b> is the missing piece — the personal bucket where you drop anything worth keeping from any of the channels above, so it survives even if a channel later disappears.</p></div>
+<div class="take"><h4>The takeaway</h4><p><b>Discover once → keep the source → never search from zero again.</b> That's the actual productivity gain — not a faster search, a smaller need to search at all.</p></div>
+</section>
+
+<section class="view" id="view-pipeline"><div class="vhead"><div class="kick">Putting it together</div><h1>The New Pipeline</h1><p class="lede">This is the model to hold in your head permanently, replacing "search → result → download."</p></div>
+<div class="dcard"><div class="dk">Before → After</div><div class="dt">The one diagram to remember</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="pp1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa2af"/></marker></defs>
+<text x="30" y="30" font-size="11" font-weight="800" fill="#be123c">BEFORE</text>
+<g font-size="10.5" font-weight="700" fill="#be123c" text-anchor="middle">
+<rect x="30" y="40" width="120" height="34" rx="8" fill="#fdecef" stroke="#e11d48"/><text x="90" y="61">Search</text>
+<rect x="180" y="40" width="120" height="34" rx="8" fill="#fdecef" stroke="#e11d48"/><text x="240" y="61">Result</text>
+<rect x="330" y="40" width="120" height="34" rx="8" fill="#fdecef" stroke="#e11d48"/><text x="390" y="61">Download</text>
+</g>
+<g stroke="#e11d48" stroke-width="1.2"><line x1="150" y1="57" x2="178" y2="57" marker-end="url(#pp1)"/><line x1="300" y1="57" x2="328" y2="57" marker-end="url(#pp1)"/></g>
+<text x="600" y="57" font-size="9.5" fill="#6b7280" text-anchor="middle">no memory —</text><text x="600" y="70" font-size="9.5" fill="#6b7280" text-anchor="middle">repeats from zero</text>
+
+<line x1="30" y1="100" x2="700" y2="100" stroke="#e7e9ee"/>
+
+<text x="30" y="128" font-size="11" font-weight="800" fill="#15803d">AFTER</text>
+<g font-size="9.5" font-weight="700" fill="#15803d" text-anchor="middle">
+<rect x="30" y="140" width="88" height="36" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="74" y="162">Discover</text>
+<rect x="128" y="140" width="88" height="36" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="172" y="162">Evaluate</text>
+<rect x="226" y="140" width="88" height="36" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="270" y="162">Join</text>
+<rect x="324" y="140" width="88" height="36" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="368" y="162">Explore</text>
+<rect x="422" y="140" width="88" height="36" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="466" y="162">Follow</text>
+<rect x="520" y="140" width="88" height="36" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="564" y="162">Search</text>
+<rect x="618" y="140" width="88" height="36" rx="8" fill="#1c2431"/><text x="662" y="162" fill="#fff">Archive</text>
+</g>
+<g stroke="#16a34a" stroke-width="1.1"><line x1="118" y1="158" x2="126" y2="158" marker-end="url(#pp1)"/><line x1="216" y1="158" x2="224" y2="158" marker-end="url(#pp1)"/><line x1="314" y1="158" x2="322" y2="158" marker-end="url(#pp1)"/><line x1="412" y1="158" x2="420" y2="158" marker-end="url(#pp1)"/><line x1="510" y1="158" x2="518" y2="158" marker-end="url(#pp1)"/><line x1="608" y1="158" x2="616" y2="158" marker-end="url(#pp1)"/></g>
+<text x="360" y="205" font-size="10.5" fill="#9aa2af" text-anchor="middle">Discover once, keep the source — every future search inside it starts from a curated, trusted set, not zero.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-boundary"><div class="vhead"><div class="kick">Read this before applying any of it</div><h1>The Boundary</h1><p class="lede">The discovery skills above — channels, groups, global search, hashtags, bots, recommendations, forwarding networks, folders, Saved Messages, external discovery — are genuinely general. They work identically for legitimate, legal, public-domain, and authorised content.</p></div>
+<div class="dcard"><div class="dk">Where the line sits</div><div class="dt">Skill vs application</div><svg class="dsvg" viewBox="0 0 720 170" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="120" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="185" y="46" font-size="12" font-weight="800" fill="#15803d" text-anchor="middle">The general skill (this page)</text>
+<g font-size="10" font-weight="700" fill="#2b3340" text-anchor="middle"><text x="185" y="72">Communities · channel networks</text><text x="185" y="92">Global &amp; hashtag search</text><text x="185" y="112">Bots · folders · Saved Messages</text></g>
+<rect x="370" y="20" width="330" height="120" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="535" y="46" font-size="12" font-weight="800" fill="#be123c" text-anchor="middle">Out of scope here</text>
+<g font-size="10" font-weight="700" fill="#2b3340" text-anchor="middle"><text x="535" y="72">Locating pirate-specific channels</text><text x="535" y="92">Bypassing legitimate distribution</text><text x="535" y="112">Naming/pointing to specific piracy sources</text></g>
+</svg><p class="dp">Applied to legal/public-domain/authorised archives and to hard-to-locate legitimate releases, everything above is fair game and genuinely useful. This page teaches the map-building skill — where it's pointed is a separate, personal decision.</p></div>
+</section>
+
+<section class="view" id="view-levels"><div class="vhead"><div class="kick">If starting from scratch</div><h1>Learning Roadmap</h1><p class="lede">Telegram 101 → Power User, five levels — matches the structure above, ordered as a curriculum.</p></div>
+<div class="dcard"><div class="dk">Five levels</div><div class="dt">Navigation → Search → Discovery → Infrastructure → Personal system</div><svg class="dsvg" viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10.5" font-weight="800">
+<rect x="10" y="10" width="700" height="46" rx="10" fill="#eef0fb" stroke="#4f46e5"/><text x="30" y="30" fill="#4f46e5">Level 1 — Navigation</text><text x="30" y="46" font-size="9" font-weight="600" fill="#6b7280">chats vs groups vs channels · public vs private · usernames · t.me links · pinned messages</text>
+<rect x="10" y="64" width="700" height="46" rx="10" fill="#e7f6ec" stroke="#16a34a"/><text x="30" y="84" fill="#15803d">Level 2 — Search</text><text x="30" y="100" font-size="9" font-weight="600" fill="#6b7280">global search · channel search · media/file/link filters · hashtags · exact phrase · date/sender</text>
+<rect x="10" y="118" width="700" height="46" rx="10" fill="#e6f6f4" stroke="#0d9488"/><text x="30" y="138" fill="#0d9488">Level 3 — Discovery</text><text x="30" y="154" font-size="9" font-weight="600" fill="#6b7280">finding communities · similar channels · forwards · channel networks · external directories</text>
+<rect x="10" y="172" width="700" height="46" rx="10" fill="#fdf0e6" stroke="#d97706"/><text x="30" y="192" fill="#b45309">Level 4 — Infrastructure</text><text x="30" y="208" font-size="9" font-weight="600" fill="#6b7280">folders · Saved Messages · bookmarks · notifications · archive · bots · discussion groups</text>
+<rect x="10" y="226" width="700" height="46" rx="10" fill="#1c2431"/><text x="30" y="246" fill="#fff">Level 5 — Personal information system</text><text x="30" y="262" font-size="9" font-weight="600" fill="#cfd4dd">the folder tree + Saved Messages → your library, needs no fresh search per topic ever again</text>
+</g>
+</svg></div>
+<div class="take"><h4>The takeaway</h4><p>This isn't a secret trick — it's a five-level skill, learnable in order, each level unlocking the next. Once Level 5 exists, the "supernatural" friend effect is just <b>you</b>, from now on.</p></div>
+</section>
+
+<section class="view" id="view-reddit-model"><div class="vhead"><div class="kick">Stop treating it like Instagram</div><h1>Reddit: The Mental Model</h1><p class="lede">Reddit isn't a feed of accounts you follow. It's a giant collection of <b>topic-specific communities</b> — each with its own culture, rules, reputation system, and social network. You primarily follow communities, not people.</p></div>
+
+<div class="dcard"><div class="dk">The structure</div><div class="dt">Reddit → subreddits → posts/comments/users, all the way down</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="290" y="10" width="140" height="38" rx="9" fill="#1c2431"/><text x="360" y="34" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">REDDIT</text>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="360" y1="48" x2="120" y2="80"/><line x1="360" y1="48" x2="360" y2="80"/><line x1="360" y1="48" x2="600" y2="80"/></g>
+<g font-size="11" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="50" y="80" width="140" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="102">r/anime</text>
+<rect x="290" y="80" width="140" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="102">r/fitness</text>
+<rect x="530" y="80" width="140" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="600" y="102">r/books</text>
+</g>
+<g stroke="#c3c8d2" stroke-width="1"><line x1="80" y1="114" x2="50" y2="150"/><line x1="120" y1="114" x2="120" y2="150"/><line x1="160" y1="114" x2="190" y2="150"/>
+<line x1="320" y1="114" x2="290" y2="150"/><line x1="360" y1="114" x2="360" y2="150"/><line x1="400" y1="114" x2="430" y2="150"/>
+<line x1="560" y1="114" x2="530" y2="150"/><line x1="600" y1="114" x2="600" y2="150"/><line x1="640" y1="114" x2="670" y2="150"/></g>
+<g font-size="9.5" font-weight="700" fill="#42506a" text-anchor="middle">
+<text x="50" y="164">posts</text><text x="120" y="164">comments</text><text x="190" y="164">users</text>
+<text x="290" y="164">posts</text><text x="360" y="164">comments</text><text x="430" y="164">users</text>
+<text x="530" y="164">posts</text><text x="600" y="164">comments</text><text x="670" y="164">users</text>
+</g>
+<text x="360" y="200" font-size="10.5" fill="#9aa2af" text-anchor="middle">"Subreddit = community." If a friend says "I found a great subreddit for X," they mean: a community where people into X congregate.</text>
+</svg></div>
+
+<div class="take"><h4>The takeaway</h4><p>You don't primarily follow <b>people</b> on Reddit — you follow <b>communities</b>. That single reframe explains almost everything else about how the platform works and how it's meant to be used.</p></div>
+</section>
+
+<section class="view" id="view-reddit-vocab"><div class="vhead"><div class="kick">The words you need</div><h1>Reddit Vocabulary</h1><p class="lede">A compact map of Reddit's terms, grouped by what they actually do — content, reputation, moderation, and discovery.</p></div>
+<div class="dcard"><div class="dk">Grouped glossary</div><div class="dt">Content · Reputation · Moderation · Discovery</div><svg class="dsvg" viewBox="0 0 720 300" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="800">
+<rect x="10" y="10" width="340" height="130" rx="12" fill="#eef0fb" stroke="#4f46e5"/><text x="180" y="30" fill="#4f46e5" text-anchor="middle">CONTENT</text>
+<text x="26" y="52" font-size="9.5" font-weight="700" fill="#2b3340">Post — something published</text>
+<text x="26" y="70" font-size="9.5" font-weight="700" fill="#2b3340">Comment / Reply — response to post/comment</text>
+<text x="26" y="88" font-size="9.5" font-weight="700" fill="#2b3340">OP — original poster · OC — original content</text>
+<text x="26" y="106" font-size="9.5" font-weight="700" fill="#2b3340">Crosspost — re-shared into another subreddit</text>
+<text x="26" y="124" font-size="9.5" font-weight="700" fill="#2b3340">Flair · NSFW · Megathread · AMA</text>
+
+<rect x="370" y="10" width="340" height="90" rx="12" fill="#e7f6ec" stroke="#16a34a"/><text x="540" y="30" fill="#15803d" text-anchor="middle">REPUTATION</text>
+<text x="386" y="52" font-size="9.5" font-weight="700" fill="#2b3340">Upvote / Downvote — signal on a post/comment</text>
+<text x="386" y="70" font-size="9.5" font-weight="700" fill="#2b3340">Karma — accumulated reputation score</text>
+<text x="386" y="88" font-size="9.5" font-weight="700" fill="#2b3340">Award — legacy reward mechanism</text>
+
+<rect x="10" y="150" width="340" height="70" rx="12" fill="#fdf0e6" stroke="#d97706"/><text x="180" y="170" fill="#b45309" text-anchor="middle">MODERATION</text>
+<text x="26" y="192" font-size="9.5" font-weight="700" fill="#2b3340">Mod — volunteer who runs a subreddit</text>
+<text x="26" y="210" font-size="9.5" font-weight="700" fill="#2b3340">Admin — Reddit employee (platform-level)</text>
+
+<rect x="370" y="110" width="340" height="110" rx="12" fill="#e6f6f4" stroke="#0d9488"/><text x="540" y="130" fill="#0d9488" text-anchor="middle">DISCOVERY</text>
+<text x="386" y="152" font-size="9.5" font-weight="700" fill="#2b3340">Feed/Home — communities you follow</text>
+<text x="386" y="170" font-size="9.5" font-weight="700" fill="#2b3340">Popular/Explore — platform-wide discovery</text>
+<text x="386" y="188" font-size="9.5" font-weight="700" fill="#2b3340">Multireddit/custom feed — your own bundle</text>
+<text x="386" y="206" font-size="9.5" font-weight="700" fill="#2b3340">Wiki — community-maintained reference</text>
+
+<rect x="10" y="238" width="700" height="46" rx="10" fill="#1c2431"/><text x="360" y="258" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">DM / Chat — private conversation, separate from public post→comment→reply</text><text x="360" y="274" font-size="9" fill="#cfd4dd" text-anchor="middle">the bridge from public interaction to a private one</text>
+</g>
+</svg></div>
+</section>
+
+<section class="view" id="view-reddit-discover"><div class="vhead"><div class="kick">Search is only one of six</div><h1>6 Discovery Methods</h1><p class="lede">Experienced Redditors barely search "topic → subreddit." They discover communities through problems, comments, people, related-community surfacing, and even Google.</p></div>
+
+<div class="dcard"><div class="dk">Method 1 vs Method 2</div><div class="dt">Topic-search vs problem-search</div><svg class="dsvg" viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="120" rx="14" fill="#fbfcfe" stroke="#dcdfe6"/><text x="185" y="44" font-size="11.5" font-weight="800" fill="#6b7280" text-anchor="middle">Method 1 — the noun</text>
+<g font-size="10" font-weight="700" fill="#42506a" text-anchor="middle"><text x="185" y="70">"gym" · "anime" · "books"</text><text x="185" y="92">"dating" · "Delhi"</text></g>
+<text x="185" y="122" font-size="9.5" fill="#9aa2af" text-anchor="middle">useful, but not sufficient on its own</text>
+
+<rect x="370" y="20" width="330" height="120" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="535" y="44" font-size="11.5" font-weight="800" fill="#15803d" text-anchor="middle">Method 2 — the problem</text>
+<g font-size="10" font-weight="700" fill="#2b3340" text-anchor="middle"><text x="535" y="66">"beginner muscle gain"</text><text x="535" y="84">"anime recommendations"</text><text x="535" y="102">"books like Dostoevsky"</text><text x="535" y="120">"dating advice men" · "Delhi events"</text></g>
+</svg><p class="dp">Searching the <b>problem or need</b> around an interest routes you to the community that discusses exactly that — much more precise than the bare topic noun.</p></div>
+
+<div class="dcard"><div class="dk">Methods 3–6</div><div class="dt">Comments · profiles · related communities · Google</div><svg class="dsvg" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10.5" font-weight="800">
+<rect x="10" y="10" width="340" height="100" rx="12" fill="#eef0fb" stroke="#4f46e5"/><text x="180" y="32" fill="#4f46e5" text-anchor="middle">3 · Follow links from comments</text>
+<text x="26" y="56" font-size="9.5" font-weight="600" fill="#2b3340">"You should ask this in r/X."</text>
+<text x="26" y="74" font-size="9.5" font-weight="600" fill="#2b3340">"There's a whole subreddit for this."</text>
+<text x="26" y="92" font-size="9.5" font-weight="600" fill="#2b3340">Real user recommendations — often beats the algorithm.</text>
+
+<rect x="370" y="10" width="340" height="100" rx="12" fill="#e7f6ec" stroke="#16a34a"/><text x="540" y="32" fill="#15803d" text-anchor="middle">4 · Explore knowledgeable profiles</text>
+<text x="386" y="56" font-size="9.5" font-weight="600" fill="#2b3340">Good comment → click profile →</text>
+<text x="386" y="74" font-size="9.5" font-weight="600" fill="#2b3340">see every community they post in</text>
+<text x="386" y="92" font-size="9.5" font-weight="600" fill="#2b3340">You use a person as a map.</text>
+
+<rect x="10" y="126" width="340" height="100" rx="12" fill="#e6f6f4" stroke="#0d9488"/><text x="180" y="148" fill="#0d9488" text-anchor="middle">5 · Related communities</text>
+<text x="26" y="172" font-size="9.5" font-weight="600" fill="#2b3340">Reddit itself surfaces "related/</text>
+<text x="26" y="190" font-size="9.5" font-weight="600" fill="#2b3340">recommended" communities —</text>
+<text x="26" y="208" font-size="9.5" font-weight="600" fill="#2b3340">gives you a cluster, not one node.</text>
+
+<rect x="370" y="126" width="340" height="100" rx="12" fill="#fdf0e6" stroke="#d97706"/><text x="540" y="148" fill="#b45309" text-anchor="middle">6 · Google, not Reddit search</text>
+<text x="386" y="172" font-size="9" font-weight="600" fill="#2b3340">site:reddit.com/r/ "Japanese learning"</text>
+<text x="386" y="190" font-size="9" font-weight="600" fill="#2b3340">site:reddit.com/r/ anime recommendations</text>
+<text x="386" y="208" font-size="9" font-weight="600" fill="#2b3340">Often finds obscure threads Reddit's own search misses.</text>
+</g>
+<text x="360" y="248" font-size="10" fill="#9aa2af" text-anchor="middle">The person-as-map technique (Method 4) is the Reddit equivalent of the Telegram channel-network graph.</text>
+</svg></div>
+
+<div class="dcard"><div class="dk">The discovery chain in action</div><div class="dt">"I like anime" → a mapped cluster of communities</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="rd1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="9.5" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="4" y="45" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="51" y="69">"anime"</text>
+<rect x="106" y="45" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="153" y="69">r/anime</text>
+<rect x="208" y="45" width="110" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="263" y="63">comment on</text><text x="263" y="77">HxH post</text>
+<rect x="326" y="45" width="120" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="386" y="69">r/CharacterRant</text>
+<rect x="454" y="45" width="110" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="509" y="69">r/OnePiece</text>
+<rect x="572" y="45" width="94" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="619" y="69" fill="#15803d">r/Manga</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="98" y1="65" x2="104" y2="65" marker-end="url(#rd1)"/><line x1="200" y1="65" x2="206" y2="65" marker-end="url(#rd1)"/><line x1="318" y1="65" x2="324" y2="65" marker-end="url(#rd1)"/><line x1="446" y1="65" x2="452" y2="65" marker-end="url(#rd1)"/><line x1="564" y1="65" x2="570" y2="65" marker-end="url(#rd1)"/></g>
+<text x="360" y="115" font-size="9.5" fill="#9aa2af" text-anchor="middle">A single well-known Reddit joke lives at the end of chains like this: r/anime_titties is a news/politics subreddit, not anime.</text>
+</svg></div>
+<div class="cue" style="margin:20px"><b>Cue —</b> Search the problem, not the noun. Then read comments for "check out r/X," click into good commenters' profiles, and let Reddit's own related-community surface do the rest.</div>
+</section>
+
+<section class="view" id="view-reddit-culture"><div class="vhead"><div class="kick">Same topic, opposite experience</div><h1>Evaluating Culture</h1><p class="lede">Two subreddits about the exact same subject can have completely different cultures. Finding a subreddit isn't enough — you have to evaluate it before trusting it.</p></div>
+<div class="dcard"><div class="dk">Community A vs Community B</div><div class="dt">Same topic, same name pattern, opposite quality</div><svg class="dsvg" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="150" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="185" y="46" font-size="12" font-weight="800" fill="#15803d" text-anchor="middle">Community A</text>
+<g font-size="10" font-weight="700" fill="#15803d" text-anchor="middle"><text x="185" y="70">thoughtful discussion</text><text x="185" y="90">knowledgeable users</text><text x="185" y="110">disagreements handled well</text><text x="185" y="130">good moderation · little spam</text></g>
+<rect x="370" y="20" width="330" height="150" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="535" y="46" font-size="12" font-weight="800" fill="#be123c" text-anchor="middle">Community B</text>
+<g font-size="10" font-weight="700" fill="#be123c" text-anchor="middle"><text x="535" y="70">rage bait · memes</text><text x="535" y="90">repetitive questions</text><text x="535" y="110">circlejerking · ideological fights</text><text x="535" y="130">terrible advice</text></g>
+</svg><p class="dp">Both can technically be described as "a subreddit about X." Don't subscribe on name alone — <b>observe first</b>.</p></div>
+
+<div class="dcard"><div class="dk">The 5–10 minute evaluation</div><div class="dt">What to check before trusting a subreddit</div><svg class="dsvg" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="10" y="10" width="220" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="30" fill="#4f46e5">Posts — on-topic?</text>
+<rect x="250" y="10" width="220" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="30" fill="#4f46e5">Comments — intelligent?</text>
+<rect x="490" y="10" width="220" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="600" y="30" fill="#4f46e5">Moderators — active?</text>
+<rect x="10" y="60" width="220" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="80" fill="#4f46e5">Rules — exist &amp; read?</text>
+<rect x="250" y="60" width="460" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="480" y="80" fill="#15803d">Recurring threads — weekly/megathread/FAQ/wiki</text>
+</g>
+<text x="360" y="130" font-size="10.5" fill="#9aa2af" text-anchor="middle">Comments matter more than posts — they reveal whether the crowd inside is actually thoughtful.</text>
+<text x="360" y="152" font-size="10.5" fill="#9aa2af" text-anchor="middle">Recurring threads (weekly, megathread, recommendation, FAQ, wiki) usually hold the highest-value information in the whole subreddit.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-reddit-karma"><div class="vhead"><div class="kick">Not Instagram likes</div><h1>Karma &amp; Upvotes</h1><p class="lede">Karma is a reputation signal, not a currency — and an upvote means something different from a like: it's a vote on where a contribution should rank in a discussion.</p></div>
+<div class="dcard"><div class="dk">Like vs Upvote</div><div class="dt">"I enjoyed this" vs "this belongs higher"</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="100" rx="14" fill="#fbfcfe" stroke="#dcdfe6"/><text x="185" y="46" font-size="12" font-weight="800" fill="#6b7280" text-anchor="middle">Instagram like</text><text x="185" y="76" font-size="12" font-weight="700" fill="#42506a" text-anchor="middle">"I enjoyed this."</text><text x="185" y="98" font-size="9.5" fill="#9aa2af" text-anchor="middle">a reaction, not a ranking signal</text>
+<rect x="370" y="20" width="330" height="100" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="535" y="46" font-size="12" font-weight="800" fill="#15803d" text-anchor="middle">Reddit upvote</text><text x="535" y="76" font-size="12" font-weight="700" fill="#15803d" text-anchor="middle">"This should rank higher here."</text><text x="535" y="98" font-size="9.5" fill="#9aa2af" text-anchor="middle">collaborative information ranking</text>
+</svg></div>
+<div class="dcard"><div class="dk">Karma, honestly</div><div class="dt">A reputation signal — not a scoreboard of intelligence</div><svg class="dsvg" viewBox="0 0 720 170" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="120" rx="14" fill="#fdf0e6" stroke="#d97706"/><text x="185" y="46" font-size="11.5" font-weight="800" fill="#b45309" text-anchor="middle">Account A</text><text x="185" y="70" font-size="10.5" font-weight="700" fill="#2b3340" text-anchor="middle">2 karma · created yesterday</text>
+<rect x="370" y="20" width="330" height="120" rx="14" fill="#fdf0e6" stroke="#d97706"/><text x="535" y="46" font-size="11.5" font-weight="800" fill="#b45309" text-anchor="middle">Account B</text><text x="535" y="70" font-size="10.5" font-weight="700" fill="#2b3340" text-anchor="middle">80,000 karma · 10 years, active in-topic</text>
+<text x="360" y="110" font-size="10.5" fill="#42506a" text-anchor="middle" font-weight="700">Same-quality answer → people give B more credibility.</text>
+<text x="360" y="128" font-size="10" fill="#9aa2af" text-anchor="middle">Some subreddits require minimum karma/account-age to filter spam/bots — practical value, not a status score.</text>
+</svg><p class="dp">100,000 karma doesn't make someone smarter than someone with 500 — and a 5-karma account can write an extraordinary comment. Treat karma as a rough, gameable credibility hint, not a truth signal.</p></div>
+</section>
+
+<section class="view" id="view-reddit-tree"><div class="vhead"><div class="kick">Reddit's real advantage over a feed</div><h1>The Comment Tree</h1><p class="lede">Post → comments → replies → replies-to-replies creates a branching discussion. You're not just consuming content — you can enter an existing intellectual conversation at any depth.</p></div>
+<div class="dcard"><div class="dk">A branching thread</div><div class="dt">One post, many sub-conversations</div><svg class="dsvg" viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="290" y="10" width="140" height="34" rx="8" fill="#1c2431"/><text x="360" y="32" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">POST</text>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="360" y1="44" x2="130" y2="76"/><line x1="360" y1="44" x2="400" y2="76"/><line x1="360" y1="44" x2="620" y2="76"/></g>
+<g font-size="10" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="40" y="76" width="180" height="30" rx="7" fill="#eef0fb" stroke="#4f46e5"/><text x="130" y="96">Comment A</text>
+<rect x="310" y="76" width="180" height="30" rx="7" fill="#eef0fb" stroke="#4f46e5"/><text x="400" y="96">Comment B</text>
+<rect x="530" y="76" width="180" height="30" rx="7" fill="#eef0fb" stroke="#4f46e5"/><text x="620" y="96">Comment C</text>
+</g>
+<g stroke="#c3c8d2" stroke-width="1"><line x1="90" y1="106" x2="70" y2="136"/><line x1="170" y1="106" x2="190" y2="136"/><line x1="370" y1="106" x2="380" y2="136"/></g>
+<g font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">
+<rect x="20" y="136" width="100" height="26" rx="6" fill="#f7f8fd" stroke="#dfe1f5"/><text x="70" y="153">Reply A1</text>
+<rect x="140" y="136" width="100" height="26" rx="6" fill="#f7f8fd" stroke="#dfe1f5"/><text x="190" y="153">Reply A2</text>
+<rect x="330" y="136" width="100" height="26" rx="6" fill="#f7f8fd" stroke="#dfe1f5"/><text x="380" y="153">Reply B1</text>
+</g>
+<g stroke="#dfe1f5" stroke-width="1"><line x1="50" y1="162" x2="40" y2="186"/><line x1="90" y1="162" x2="100" y2="186"/></g>
+<g font-size="9" font-weight="700" fill="#6b7280" text-anchor="middle">
+<rect x="10" y="186" width="80" height="24" rx="6" fill="#fff" stroke="#e7e9ee"/><text x="50" y="202">Reply A1a</text>
+<rect x="100" y="186" width="80" height="24" rx="6" fill="#fff" stroke="#e7e9ee"/><text x="140" y="202">Reply A1b</text>
+</g>
+</svg><p class="dp">You can jump into any leaf of this tree with a genuinely useful reply and be part of the conversation immediately — no history required, unlike a chronological feed where being late means being buried.</p></div>
+</section>
+
+<section class="view" id="view-reddit-post"><div class="vhead"><div class="kick">Specificity is rewarded</div><h1>Posting Well</h1><p class="lede">Low-information posts get low-information answers. The fix is simple: give people something to actually think about.</p></div>
+<div class="dcard"><div class="dk">Low-info vs high-info</div><div class="dt">Same question, wildly different response quality</div><svg class="dsvg" viewBox="0 0 720 170" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="120" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="185" y="46" font-size="11.5" font-weight="800" fill="#be123c" text-anchor="middle">Low information</text><text x="185" y="80" font-size="11" font-weight="700" fill="#2b3340" text-anchor="middle">"Anime recommendations?"</text><text x="185" y="112" font-size="9.5" fill="#9a2540" text-anchor="middle">generic replies, no real thought possible</text>
+<rect x="370" y="20" width="330" height="120" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="535" y="46" font-size="11.5" font-weight="800" fill="#15803d" text-anchor="middle">High information</text><text x="386" y="72" font-size="9" font-weight="700" fill="#2b3340">"I've watched HxH, Ao Ashi, Haikyuu,</text><text x="386" y="88" font-size="9" font-weight="700" fill="#2b3340">Ping Pong. Want psychological growth/</text><text x="386" y="104" font-size="9" font-weight="700" fill="#2b3340">mastery over fantasy combat. What next?"</text><text x="535" y="126" font-size="9.5" fill="#15803d" text-anchor="middle">precise, thoughtful answers</text>
+</svg></div>
+<div class="dcard"><div class="dk">The low-friction alternative</div><div class="dt">You don't need to post — you can just comment well</div><svg class="dsvg" viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="rp1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="10" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="10" y="40" width="150" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="85" y="65">Find a good thread</text>
+<rect x="190" y="40" width="150" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="265" y="65">Add something useful</text>
+<rect x="370" y="40" width="150" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="445" y="65">Someone responds</text>
+<rect x="550" y="40" width="150" height="42" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="625" y="60" fill="#15803d">You're now a</text><text x="625" y="74" fill="#15803d">contributor</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="160" y1="61" x2="188" y2="61" marker-end="url(#rp1)"/><line x1="340" y1="61" x2="368" y2="61" marker-end="url(#rp1)"/><line x1="520" y1="61" x2="548" y2="61" marker-end="url(#rp1)"/></g>
+<text x="360" y="112" font-size="10.5" fill="#9aa2af" text-anchor="middle">You don't need to become "the guy who posts" — becoming "the guy who leaves unusually thoughtful comments" is a natural, low-friction identity.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-reddit-people"><div class="vhead"><div class="kick">It's not just information</div><h1>From Stranger to Friend</h1><p class="lede">Repeated interaction inside a niche community is a surprisingly reliable path to real friendship — especially in hobby, gaming, programming, sports, and local communities.</p></div>
+<div class="dcard"><div class="dk">The public-to-private path</div><div class="dt">Comment → recognize → reply → recognize again → DM → off-platform</div><svg class="dsvg" viewBox="0 0 720 140" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="rf1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="9.5" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="4" y="40" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="51" y="64">You comment</text>
+<rect x="106" y="40" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="153" y="58">Same person</text><text x="153" y="70">replies</text>
+<rect x="208" y="40" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="255" y="64">You reply</text>
+<rect x="310" y="40" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="357" y="58">Another</text><text x="357" y="70">thread</text>
+<rect x="412" y="40" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="459" y="58">You recognize</text><text x="459" y="70">each other</text>
+<rect x="514" y="40" width="94" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="561" y="64" fill="#15803d">Private chat</text>
+<rect x="616" y="40" width="100" height="40" rx="9" fill="#1c2431"/><text x="666" y="58" fill="#fff">Discord/WhatsApp</text><text x="666" y="70" fill="#fff">/Instagram</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.1"><line x1="98" y1="60" x2="104" y2="60" marker-end="url(#rf1)"/><line x1="200" y1="60" x2="206" y2="60" marker-end="url(#rf1)"/><line x1="302" y1="60" x2="308" y2="60" marker-end="url(#rf1)"/><line x1="404" y1="60" x2="410" y2="60" marker-end="url(#rf1)"/><line x1="506" y1="60" x2="512" y2="60" marker-end="url(#rf1)"/><line x1="608" y1="60" x2="614" y2="60" marker-end="url(#rf1)"/></g>
+<text x="360" y="112" font-size="10" fill="#9aa2af" text-anchor="middle">Especially reliable in: hobby · gaming · programming · sports · anime · books · local · university · niche professional communities.</text>
+</svg></div>
+<div class="warn" style="margin:20px"><b>Caution —</b> Reddit is not an escrow service. A subreddit existing for buy/sell/tickets/second-hand goods doesn't mean a transaction is trustworthy. Check seller history, subreddit rules, and payment protections — never send money, passwords, OTPs, or personal documents to a stranger to "confirm" a deal.</div>
+</section>
+
+<section class="view" id="view-reddit-compare"><div class="vhead"><div class="kick">A first-principles comparison</div><h1>Reddit vs Telegram vs Others</h1><p class="lede">These platforms overlap heavily in practice, but each has a dominant mode — knowing it tells you which one to reach for.</p></div>
+<div class="dcard"><div class="dk">Primary mode, by platform</div><div class="dt">Distribution · Discussion · Broadcasting · Algorithmic video · Persistent chat</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10.5" font-weight="800" text-anchor="middle">
+<rect x="10" y="10" width="220" height="60" rx="10" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="32" fill="#4f46e5">Telegram</text><text x="120" y="52" font-size="9" font-weight="600" fill="#6b7280">Distribution — publish/forward material</text>
+<rect x="250" y="10" width="220" height="60" rx="10" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="32" fill="#15803d">Reddit</text><text x="360" y="52" font-size="9" font-weight="600" fill="#6b7280">Discussion + discovery — ask, debate, recommend</text>
+<rect x="490" y="10" width="220" height="60" rx="10" fill="#e6f6f4" stroke="#0d9488"/><text x="600" y="32" fill="#0d9488">Instagram</text><text x="600" y="52" font-size="9" font-weight="600" fill="#6b7280">Social broadcasting + entertainment</text>
+<rect x="130" y="90" width="220" height="60" rx="10" fill="#fdf0e6" stroke="#d97706"/><text x="240" y="112" fill="#b45309">YouTube</text><text x="240" y="132" font-size="9" font-weight="600" fill="#6b7280">Algorithmic video discovery + creators</text>
+<rect x="370" y="90" width="220" height="60" rx="10" fill="#fdecef" stroke="#e11d48"/><text x="480" y="112" fill="#be123c">Discord</text><text x="480" y="132" font-size="9" font-weight="600" fill="#6b7280">Persistent community / chat</text>
+</g>
+<text x="360" y="190" font-size="10.5" fill="#9aa2af" text-anchor="middle">Heavy overlap in practice — but knowing the dominant mode tells you which platform to reach for first.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-reddit-workflow"><div class="vhead"><div class="kick">Putting it together</div><h1>The Personal Workflow</h1><p class="lede">Stop using Reddit like Instagram. Use it as a discovery engine that compounds — the same "discover once, keep the source" principle as the Telegram sections.</p></div>
+<div class="dcard"><div class="dk">The loop</div><div class="dt">Find an interest → ... → make friends</div><svg class="dsvg" viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="rw1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="10" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="270" y="10" width="180" height="34" rx="8" fill="#1c2431"/><text x="360" y="32" fill="#fff">Find an interest</text>
+<rect x="240" y="54" width="240" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="76">Search 3–5 variations</text>
+<rect x="240" y="98" width="240" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="120">Find 3–10 communities</text>
+<rect x="240" y="142" width="240" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="164">Observe their culture</text>
+<rect x="240" y="186" width="240" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="208" fill="#15803d">Keep the best 1–3</text>
+<rect x="240" y="230" width="240" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="252">Read comments → find knowledgeable users</text>
+<rect x="240" y="274" width="240" height="34" rx="8" fill="#1c2431"/><text x="360" y="296" fill="#fff">Explore their communities → new topics</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="360" y1="44" x2="360" y2="52" marker-end="url(#rw1)"/><line x1="360" y1="88" x2="360" y2="96" marker-end="url(#rw1)"/><line x1="360" y1="132" x2="360" y2="140" marker-end="url(#rw1)"/><line x1="360" y1="176" x2="360" y2="184" marker-end="url(#rw1)"/><line x1="360" y1="220" x2="360" y2="228" marker-end="url(#rw1)"/><line x1="360" y1="264" x2="360" y2="272" marker-end="url(#rw1)"/></g>
+</svg></div>
+<div class="take"><h4>The takeaway</h4><p>Don't ask "what should I search for?" Ask: <b>"where do people who care deeply about this thing congregate?"</b> Once you find them, their conversations become the map to the next community — on Reddit exactly as much as on Telegram.</p></div>
+</section>
+
+<section class="view" id="view-three-model"><div class="vhead"><div class="kick">Give each platform a job</div><h1>The Three-Platform Model</h1><p class="lede">Not what these platforms officially are — but a genuinely useful way to think about what each is good at: <b>Telegram = resources</b>, <b>Reddit = ideas</b>, <b>Instagram = people</b>.</p></div>
+<div class="dcard"><div class="dk">One tree, three branches</div><div class="dt">Internet → Telegram / Reddit / Instagram → their sub-functions</div><svg class="dsvg" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="290" y="10" width="140" height="34" rx="9" fill="#1c2431"/><text x="360" y="32" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">INTERNET</text>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="360" y1="44" x2="120" y2="80"/><line x1="360" y1="44" x2="360" y2="80"/><line x1="360" y1="44" x2="600" y2="80"/></g>
+<g font-size="11" font-weight="800" text-anchor="middle">
+<rect x="40" y="80" width="160" height="46" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="100" fill="#4f46e5">TELEGRAM</text><text x="120" y="116" font-size="8.5" font-weight="600" fill="#6b7280">Resources · files · distribution</text>
+<rect x="280" y="80" width="160" height="46" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="100" fill="#15803d">REDDIT</text><text x="360" y="116" font-size="8.5" font-weight="600" fill="#6b7280">Ideas · opinions · discussion</text>
+<rect x="520" y="80" width="160" height="46" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="600" y="100" fill="#be123c">INSTAGRAM</text><text x="600" y="116" font-size="8.5" font-weight="600" fill="#6b7280">People · identity · relationships</text>
+</g>
+<line x1="600" y1="126" x2="600" y2="150" stroke="#e11d48" stroke-width="1.2"/>
+<g stroke="#e11d48" stroke-width="1"><line x1="600" y1="150" x2="480" y2="176"/><line x1="600" y1="150" x2="600" y2="176"/><line x1="600" y1="150" x2="700" y2="176"/></g>
+<g font-size="9.5" font-weight="800" fill="#be123c" text-anchor="middle">
+<rect x="420" y="176" width="120" height="30" rx="7" fill="#fdf3f4" stroke="#f8d3da"/><text x="480" y="196">Discover</text>
+<rect x="560" y="176" width="80" height="30" rx="7" fill="#fdf3f4" stroke="#f8d3da"/><text x="600" y="196">Connect</text>
+<rect x="660" y="176" width="80" height="30" rx="7" fill="#fdf3f4" stroke="#f8d3da"/><text x="700" y="196">Broadcast</text>
+</g>
+<g font-size="9" font-weight="700" fill="#6b7280" text-anchor="middle"><text x="480" y="224">People</text><text x="600" y="224">DMs</text><text x="700" y="224">Stories</text></g>
+<text x="360" y="248" font-size="10.5" fill="#9aa2af" text-anchor="middle">Instagram's fundamental unit isn't the post — it's the person. You're navigating a network of people.</text>
+</svg></div>
+
+<div class="dcard"><div class="dk">The job table</div><div class="dt">Platform → primary job → the question it answers</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10.5" font-weight="800">
+<rect x="10" y="10" width="700" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="30" y="34" fill="#4f46e5">Telegram — Resource distribution</text><text x="500" y="34" font-size="9.5" font-weight="600" fill="#6b7280">"Where can I find the thing?"</text>
+<rect x="10" y="56" width="700" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="30" y="80" fill="#15803d">Reddit — Knowledge + discussion</text><text x="500" y="80" font-size="9.5" font-weight="600" fill="#6b7280">"What do people think about the thing?"</text>
+<rect x="10" y="102" width="700" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="30" y="126" fill="#be123c">Instagram — People + taste + relationships</text><text x="500" y="126" font-size="9.5" font-weight="600" fill="#6b7280">"Who cares, and what's their life like?"</text>
+</g>
+</svg></div>
+</section>
+
+<section class="view" id="view-ig-model"><div class="vhead"><div class="kick">Stop thinking "post photos, watch reels"</div><h1>Instagram: The Mental Model</h1><p class="lede">Instagram is a <b>visual social graph</b>. The fundamental unit isn't the post — it's the person. Every feature is really a way of navigating a network of people.</p></div>
+<div class="dcard"><div class="dk">Four functions, plus a fifth people miss</div><div class="dt">Discovery · Consumption · Broadcasting · Relationship · Identity construction</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10.5" font-weight="800">
+<rect x="10" y="10" width="170" height="70" rx="10" fill="#eef0fb" stroke="#4f46e5"/><text x="95" y="34" fill="#4f46e5" text-anchor="middle">Discovery</text><text x="95" y="54" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">people, places,</text><text x="95" y="68" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">aesthetics, interests</text>
+<rect x="195" y="10" width="170" height="70" rx="10" fill="#e7f6ec" stroke="#16a34a"/><text x="280" y="34" fill="#15803d" text-anchor="middle">Consumption</text><text x="280" y="54" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">Reels, posts,</text><text x="280" y="68" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">stories</text>
+<rect x="380" y="10" width="170" height="70" rx="10" fill="#e6f6f4" stroke="#0d9488"/><text x="465" y="34" fill="#0d9488" text-anchor="middle">Broadcasting</text><text x="465" y="54" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">showing your life,</text><text x="465" y="68" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">taste, personality</text>
+<rect x="565" y="10" width="145" height="70" rx="10" fill="#fdf0e6" stroke="#d97706"/><text x="637" y="34" fill="#b45309" text-anchor="middle">Relationship</text><text x="637" y="54" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">DMs, replies,</text><text x="637" y="68" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">reactions</text>
+</g>
+<rect x="150" y="110" width="420" height="80" rx="12" fill="#1c2431"/><text x="360" y="136" font-size="12" font-weight="800" fill="#fff" text-anchor="middle">Identity construction — the underestimated fifth</text>
+<text x="360" y="158" font-size="9.5" fill="#cfd4dd" text-anchor="middle">"What do you like? What do you do? Where do you go?</text>
+<text x="360" y="174" font-size="9.5" fill="#cfd4dd" text-anchor="middle">What kind of people do you know? What kind of life do you seem to live?"</text>
+<text x="360" y="212" font-size="10" fill="#9aa2af" text-anchor="middle">This is why Instagram is far more socially consequential than Telegram.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-ig-functions"><div class="vhead"><div class="kick">Search interests, not only names</div><h1>Discovery on Instagram</h1><p class="lede">Instagram's search covers people, hashtags, places, audio, and posts — but the deliberate move is to search interests and let clusters of people surface.</p></div>
+<div class="dcard"><div class="dk">Search the interest, not the person</div><div class="dt">Examples that surface clusters, not individuals</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="700" fill="#fff" text-anchor="middle">
+<rect x="10" y="20" width="150" height="34" rx="17" fill="#4f46e5"/><text x="85" y="42">Delhi photography</text>
+<rect x="170" y="20" width="150" height="34" rx="17" fill="#16a34a"/><text x="245" y="42">Japanese fashion</text>
+<rect x="330" y="20" width="130" height="34" rx="17" fill="#0d9488"/><text x="395" y="42">Noida events</text>
+<rect x="470" y="20" width="140" height="34" rx="17" fill="#d97706"/><text x="540" y="42">Indian menswear</text>
+<rect x="620" y="20" width="90" height="34" rx="17" fill="#9333ea"/><text x="665" y="42">swimming</text>
+<rect x="10" y="66" width="140" height="34" rx="17" fill="#e11d48"/><text x="80" y="88">film photography</text>
+<rect x="160" y="66" width="150" height="34" rx="17" fill="#4f46e5"/><text x="235" y="88">anime aesthetics</text>
+<rect x="320" y="66" width="150" height="34" rx="17" fill="#16a34a"/><text x="395" y="88">contemporary dance</text>
+<rect x="480" y="66" width="110" height="34" rx="17" fill="#0d9488"/><text x="535" y="88">pickleball</text>
+<rect x="600" y="66" width="110" height="34" rx="17" fill="#d97706"/><text x="655" y="88">cafes Delhi</text>
+</g>
+<text x="360" y="130" font-size="10.5" fill="#9aa2af" text-anchor="middle">You're looking for clusters of people, not a single named account.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-ig-discovery"><div class="vhead"><div class="kick">Instagram's version of "subreddit → user → subreddit"</div><h1>People → People Discovery</h1><p class="lede">The single most powerful mechanism. Find one great account, then walk their Following/Followers — visual taste creates unusually dense social clusters.</p></div>
+<div class="dcard"><div class="dk">One photographer becomes a whole cluster</div><div class="dt">Photographer A → B → Model → Designer → Cafe → Event → Attendees</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="ig1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e11d48"/></marker></defs>
+<g font-size="9" font-weight="800" fill="#be123c" text-anchor="middle">
+<rect x="4" y="45" width="96" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="52" y="63">Photographer</text><text x="52" y="75">A</text>
+<rect x="106" y="45" width="96" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="154" y="63">Photographer</text><text x="154" y="75">B</text>
+<rect x="208" y="45" width="80" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="248" y="69">Model C</text>
+<rect x="294" y="45" width="90" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="339" y="69">Designer D</text>
+<rect x="390" y="45" width="80" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="430" y="69">Cafe E</text>
+<rect x="476" y="45" width="80" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="516" y="69">Event F</text>
+<rect x="562" y="45" width="150" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="637" y="63" fill="#15803d">People attending</text><text x="637" y="75" fill="#15803d">F</text>
+</g>
+<g stroke="#e11d48" stroke-width="1.1"><line x1="100" y1="65" x2="104" y2="65" marker-end="url(#ig1)"/><line x1="202" y1="65" x2="206" y2="65" marker-end="url(#ig1)"/><line x1="288" y1="65" x2="292" y2="65" marker-end="url(#ig1)"/><line x1="384" y1="65" x2="388" y2="65" marker-end="url(#ig1)"/><line x1="470" y1="65" x2="474" y2="65" marker-end="url(#ig1)"/><line x1="556" y1="65" x2="560" y2="65" marker-end="url(#ig1)"/></g>
+<text x="360" y="115" font-size="10" fill="#9aa2af" text-anchor="middle">Repeat this: content → the people behind it → their network → a fresh social cluster.</text>
+</svg></div>
+<div class="cue" style="margin:20px"><b>Cue —</b> When you like a piece of content, don't just like it. Ask who made it, who's in it, who styled/organised it — and follow the people, not just the page.</div>
+</section>
+
+<section class="view" id="view-ig-places"><div class="vhead"><div class="kick">Discovering places means discovering people</div><h1>Places &amp; Aesthetic Search</h1><p class="lede">Searching a location surfaces the people who go there — cafes, events, outfits, photography, restaurants. Useful for exactly the kind of Delhi NCR exploring you already do.</p></div>
+<div class="dcard"><div class="dk">Location search, decoded</div><div class="dt">Khan Market / Hauz Khas / Mehrauli / Lodhi Colony / Shahpur Jat / CP</div><svg class="dsvg" viewBox="0 0 720 160" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="120" rx="14" fill="#eef0fb" stroke="#4f46e5"/><text x="185" y="46" font-size="11.5" font-weight="800" fill="#4f46e5" text-anchor="middle">You think you're discovering</text>
+<g font-size="10.5" font-weight="700" fill="#2b3340" text-anchor="middle"><text x="185" y="76">Khan Market · Hauz Khas Village</text><text x="185" y="98">Mehrauli · Lodhi Colony</text><text x="185" y="120">Shahpur Jat · CP</text></g>
+<rect x="370" y="20" width="330" height="120" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="535" y="46" font-size="11.5" font-weight="800" fill="#15803d" text-anchor="middle">You're actually discovering</text>
+<g font-size="10.5" font-weight="700" fill="#2b3340" text-anchor="middle"><text x="535" y="76">cafes · events · outfits</text><text x="535" y="98">photography · restaurants</text><text x="535" y="120">and the people who go there</text></g>
+</svg></div>
+<div class="dcard"><div class="dk">Search by aesthetic, not topic</div><div class="dt">Reddit tells you why; Instagram shows you what</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="100" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="185" y="46" font-size="11.5" font-weight="800" fill="#15803d" text-anchor="middle">Reddit: "menswear advice"</text><text x="185" y="76" font-size="10.5" font-weight="700" fill="#2b3340" text-anchor="middle">"Why is this good?"</text><text x="185" y="98" font-size="9.5" fill="#9aa2af" text-anchor="middle">explanation-first</text>
+<rect x="370" y="20" width="330" height="100" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="535" y="46" font-size="11.5" font-weight="800" fill="#be123c" text-anchor="middle">Instagram: "menswear"</text><text x="535" y="76" font-size="10.5" font-weight="700" fill="#2b3340" text-anchor="middle">"What does good look like?"</text><text x="535" y="98" font-size="9.5" fill="#9a2540" text-anchor="middle">image-first — you don't know what you want until you see it</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-ig-taste"><div class="vhead"><div class="kick">Instagram's real superpower</div><h1>Taste-Discovery Engine</h1><p class="lede">Fashion, photography, architecture, travel, food, interior design, art, fitness aesthetics, dance, music, nightlife, cafes, events — Instagram is where taste actually forms.</p></div>
+<div class="dcard"><div class="dk">A dozen taste domains</div><div class="dt">Where "what does good look like?" matters most</div><svg class="dsvg" viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="9.5" font-weight="700" fill="#fff" text-anchor="middle">
+<rect x="4" y="10" width="86" height="30" rx="15" fill="#4f46e5"/><text x="47" y="30">Fashion</text>
+<rect x="94" y="10" width="106" height="30" rx="15" fill="#16a34a"/><text x="147" y="30">Photography</text>
+<rect x="204" y="10" width="112" height="30" rx="15" fill="#0d9488"/><text x="260" y="30">Architecture</text>
+<rect x="320" y="10" width="80" height="30" rx="15" fill="#d97706"/><text x="360" y="30">Travel</text>
+<rect x="404" y="10" width="70" height="30" rx="15" fill="#e11d48"/><text x="439" y="30">Food</text>
+<rect x="478" y="10" width="60" height="30" rx="15" fill="#9333ea"/><text x="508" y="30">Art</text>
+<rect x="542" y="10" width="60" height="30" rx="15" fill="#4f46e5"/><text x="572" y="30">Dance</text>
+<rect x="606" y="10" width="70" height="30" rx="15" fill="#16a34a"/><text x="641" y="30">Music</text>
+<rect x="4" y="50" width="130" height="30" rx="15" fill="#0d9488"/><text x="69" y="70">Interior design</text>
+<rect x="138" y="50" width="130" height="30" rx="15" fill="#d97706"/><text x="203" y="70">Fitness aesthetics</text>
+<rect x="272" y="50" width="90" height="30" rx="15" fill="#e11d48"/><text x="317" y="70">Nightlife</text>
+<rect x="366" y="50" width="70" height="30" rx="15" fill="#9333ea"/><text x="401" y="70">Cafes</text>
+<rect x="440" y="50" width="70" height="30" rx="15" fill="#4f46e5"/><text x="475" y="70">Events</text>
+</g>
+<text x="360" y="106" font-size="10.5" fill="#9aa2af" text-anchor="middle">Reddit tells you why something is good; Instagram trains your eye for what good looks like — a genuinely different skill.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-ig-broadcast"><div class="vhead"><div class="kick">Your profile is a social résumé</div><h1>Posts · Stories · Reels</h1><p class="lede">Someone opens your profile after meeting you once. Within 20 seconds they should get a sense of your appearance, interests, social life, and taste. Each format plays a different role.</p></div>
+<div class="dcard"><div class="dk">Three tools, three jobs</div><div class="dt">Permanent signal · life rhythm · entertainment</div><svg class="dsvg" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="11" font-weight="800">
+<rect x="10" y="10" width="220" height="150" rx="12" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="34" fill="#4f46e5" text-anchor="middle">Posts</text>
+<text x="120" y="58" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">Relatively permanent</text>
+<text x="120" y="76" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">"I want this associated with me"</text>
+<text x="120" y="100" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">good photo · trip · achievement</text>
+<text x="120" y="116" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">event · outfit · creative work</text>
+
+<rect x="250" y="10" width="220" height="150" rx="12" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="34" fill="#15803d" text-anchor="middle">Stories</text>
+<text x="360" y="58" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">Temporary, low-pressure</text>
+<text x="360" y="76" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">"What am I doing these days?"</text>
+<text x="360" y="100" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">gym → coffee → office</text>
+<text x="360" y="116" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">→ swim → dinner → sunset</text>
+<text x="360" y="140" font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">where relationships actually happen</text>
+
+<rect x="490" y="10" width="220" height="150" rx="12" fill="#e6f6f4" stroke="#0d9488"/><text x="600" y="34" fill="#0d9488" text-anchor="middle">Reels</text>
+<text x="600" y="58" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">Discovery / entertainment</text>
+<text x="600" y="80" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">can broadcast humor,</text>
+<text x="600" y="96" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">personality, creativity</text>
+<text x="600" y="126" font-size="9" font-weight="700" fill="#0d9488" text-anchor="middle">don't centre your identity on</text>
+<text x="600" y="140" font-size="9" font-weight="700" fill="#0d9488" text-anchor="middle">these unless you enjoy making them</text>
+</g>
+</svg></div>
+<div class="dcard"><div class="dk">The Story-as-opener move</div><div class="dt">A tiny reply becomes a real conversational opening</div><svg class="dsvg" viewBox="0 0 720 140" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="700" fill="#2b3340" text-anchor="middle">
+<rect x="10" y="20" width="220" height="34" rx="8" fill="#f7f8fd" stroke="#dfe1f5"/><text x="120" y="41">"Finally watched The Sopranos."</text>
+<rect x="250" y="20" width="220" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="41" fill="#15803d">"How far in are you?"</text>
+<rect x="10" y="70" width="220" height="34" rx="8" fill="#f7f8fd" stroke="#dfe1f5"/><text x="120" y="91">[a café photo]</text>
+<rect x="250" y="70" width="220" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="91" fill="#15803d">"That looks great — where is this?"</text>
+<rect x="500" y="45" width="200" height="34" rx="8" fill="#1c2431"/><text x="600" y="66" fill="#fff">Natural DM opener created</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.1"><line x1="230" y1="37" x2="248" y2="37"/><line x1="230" y1="87" x2="248" y2="87"/><line x1="470" y1="45" x2="498" y2="55"/><line x1="470" y1="87" x2="498" y2="70"/></g>
+</svg><p class="dp">This is one of the reasons Instagram is so effective for maintaining <b>weak ties</b> — low-effort, low-pressure openings that a purely text platform rarely offers.</p></div>
+</section>
+
+<section class="view" id="view-ig-ladder"><div class="vhead"><div class="kick">Not every step happens, and that's fine</div><h1>The Relationship Ladder</h1><p class="lede">Instagram gives a low-friction mechanism for moving between levels of closeness — from a follow to an actual friendship — but nobody should be forced up every rung.</p></div>
+<div class="dcard"><div class="dk">Nine rungs</div><div class="dt">Follow → ... → actual friendship</div><svg class="dsvg" viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<defs><marker id="il1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#e11d48"/></marker></defs>
+<g font-size="10" font-weight="800" fill="#be123c" text-anchor="middle">
+<rect x="270" y="10" width="180" height="30" rx="15" fill="#fdecef" stroke="#e11d48"/><text x="360" y="30">Follow</text>
+<rect x="270" y="48" width="180" height="30" rx="15" fill="#fdecef" stroke="#e11d48"/><text x="360" y="68">Like</text>
+<rect x="270" y="86" width="180" height="30" rx="15" fill="#fdecef" stroke="#e11d48"/><text x="360" y="106">Story view</text>
+<rect x="270" y="124" width="180" height="30" rx="15" fill="#fdecef" stroke="#e11d48"/><text x="360" y="144">Story reaction</text>
+<rect x="270" y="162" width="180" height="30" rx="15" fill="#fdecef" stroke="#e11d48"/><text x="360" y="182">Story reply</text>
+<rect x="270" y="200" width="180" height="30" rx="15" fill="#fdf0e6" stroke="#d97706"/><text x="360" y="220" fill="#b45309">DM</text>
+<rect x="270" y="238" width="180" height="30" rx="15" fill="#fdf0e6" stroke="#d97706"/><text x="360" y="258" fill="#b45309">Regular DM conversation</text>
+<rect x="270" y="276" width="180" height="30" rx="15" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="296" fill="#15803d">Meet in real life</text>
+</g>
+<g stroke="#c3c8d2" stroke-width="1.2"><line x1="360" y1="40" x2="360" y2="46" marker-end="url(#il1)"/><line x1="360" y1="78" x2="360" y2="84" marker-end="url(#il1)"/><line x1="360" y1="116" x2="360" y2="122" marker-end="url(#il1)"/><line x1="360" y1="154" x2="360" y2="160" marker-end="url(#il1)"/><line x1="360" y1="192" x2="360" y2="198" marker-end="url(#il1)"/><line x1="360" y1="230" x2="360" y2="236" marker-end="url(#il1)"/><line x1="360" y1="268" x2="360" y2="274" marker-end="url(#il1)"/></g>
+</svg><p class="dp">Not every relationship should progress all the way — and forcing it usually backfires. The value is in the <b>low-friction mechanism</b>, not in maximizing every rung.</p></div>
+</section>
+
+<section class="view" id="view-ig-trap"><div class="vhead"><div class="kick">Same app, opposite value</div><h1>Passive vs Active Mode</h1><p class="lede">Instagram can be a one-hour void or a genuinely valuable social network. The app is identical either way — your behaviour decides which one you get.</p></div>
+<div class="dcard"><div class="dk">Mode A vs Mode B</div><div class="dt">Passive consumption vs active social network</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="im1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa2af"/></marker></defs>
+<text x="185" y="24" font-size="11.5" font-weight="800" fill="#be123c" text-anchor="middle">Mode A — Passive consumption</text>
+<g font-size="9.5" font-weight="700" fill="#be123c" text-anchor="middle">
+<rect x="20" y="36" width="60" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="50" y="55">Open</text>
+<rect x="90" y="36" width="60" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="120" y="55">Reel</text>
+<rect x="160" y="36" width="60" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="190" y="55">Reel</text>
+<rect x="230" y="36" width="60" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="260" y="55">Reel</text>
+<rect x="300" y="36" width="60" height="30" rx="7" fill="#1c2431"/><text x="330" y="55" fill="#fff">1 hr gone</text>
+</g>
+<g stroke="#e11d48" stroke-width="1"><line x1="80" y1="51" x2="88" y2="51" marker-end="url(#im1)"/><line x1="150" y1="51" x2="158" y2="51" marker-end="url(#im1)"/><line x1="220" y1="51" x2="228" y2="51" marker-end="url(#im1)"/><line x1="290" y1="51" x2="298" y2="51" marker-end="url(#im1)"/></g>
+<text x="185" y="90" font-size="10.5" font-weight="800" fill="#be123c" text-anchor="middle">Value: very low</text>
+
+<line x1="20" y1="112" x2="700" y2="112" stroke="#e7e9ee"/>
+
+<text x="185" y="136" font-size="11.5" font-weight="800" fill="#15803d" text-anchor="middle">Mode B — Active social network</text>
+<g font-size="9" font-weight="700" fill="#15803d" text-anchor="middle">
+<rect x="10" y="150" width="98" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="59" y="164">Discover</text><text x="59" y="176">interesting person</text>
+<rect x="118" y="150" width="70" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="153" y="171">Follow</text>
+<rect x="198" y="150" width="80" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="238" y="171">Observe</text>
+<rect x="288" y="150" width="80" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="328" y="171">Interact</text>
+<rect x="378" y="150" width="60" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="408" y="171">DM</text>
+<rect x="448" y="150" width="60" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="478" y="171">Meet</text>
+<rect x="518" y="150" width="150" height="34" rx="7" fill="#1c2431"/><text x="593" y="171" fill="#fff">Maintain relationship</text>
+</g>
+<g stroke="#16a34a" stroke-width="1"><line x1="108" y1="167" x2="116" y2="167" marker-end="url(#im1)"/><line x1="188" y1="167" x2="196" y2="167" marker-end="url(#im1)"/><line x1="278" y1="167" x2="286" y2="167" marker-end="url(#im1)"/><line x1="368" y1="167" x2="376" y2="167" marker-end="url(#im1)"/><line x1="438" y1="167" x2="446" y2="167" marker-end="url(#im1)"/><line x1="508" y1="167" x2="516" y2="167" marker-end="url(#im1)"/></g>
+<text x="360" y="206" font-size="10.5" font-weight="800" fill="#15803d" text-anchor="middle">Value: potentially enormous — same app, different behaviour</text>
+</svg></div>
+<div class="cue" style="margin:20px"><b>Cue —</b> You don't need less internet. You need to convert consumption time into discovery, learning, creation, and relationship time — same app, different mode.</div>
+</section>
+
+<section class="view" id="view-ig-following"><div class="vhead"><div class="kick">Optimize around five outcomes, not every feature</div><h1>Structuring Who You Follow</h1><p class="lede">Don't try to master every sticker and filter. Instead structure your following list around what actually compounds: people, interests, places, taste, and knowledge — with entertainment capped, not eliminated.</p></div>
+<div class="dcard"><div class="dk">The five outcomes</div><div class="dt">Discover people · discover places · develop taste · broadcast your life · maintain relationships</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="4" y="30" width="138" height="46" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="73" y="53">① Discover</text><text x="73" y="67">people</text>
+<rect x="150" y="30" width="138" height="46" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="219" y="53">② Discover</text><text x="219" y="67">places</text>
+<rect x="296" y="30" width="138" height="46" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="365" y="53">③ Develop</text><text x="365" y="67">taste</text>
+<rect x="442" y="30" width="138" height="46" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="511" y="53">④ Broadcast</text><text x="511" y="67">your life</text>
+<rect x="588" y="30" width="128" height="46" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="652" y="53" fill="#15803d">⑤ Maintain</text><text x="652" y="67" fill="#15803d">relationships</text>
+</g>
+<text x="360" y="115" font-size="10.5" fill="#9aa2af" text-anchor="middle">Entertainment (memes, reels, shitposting) can stay — just cap it, don't let it consume the whole network.</text>
+</svg></div>
+<div class="dcard"><div class="dk">A following structure</div><div class="dt">People · Interests · Places · Taste · Knowledge · Entertainment (capped)</div><svg class="dsvg" viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="800" text-anchor="middle">
+<rect x="4" y="10" width="112" height="60" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="60" y="32" fill="#4f46e5">People</text><text x="60" y="50" font-size="8" font-weight="600" fill="#6b7280">people you</text><text x="60" y="62" font-size="8" font-weight="600" fill="#6b7280">actually know</text>
+<rect x="122" y="10" width="112" height="60" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="178" y="32" fill="#15803d">Interests</text><text x="178" y="50" font-size="8" font-weight="600" fill="#6b7280">photography, anime,</text><text x="178" y="62" font-size="8" font-weight="600" fill="#6b7280">fitness, cinema</text>
+<rect x="240" y="10" width="112" height="60" rx="9" fill="#e6f6f4" stroke="#0d9488"/><text x="296" y="32" fill="#0d9488">Places</text><text x="296" y="50" font-size="8" font-weight="600" fill="#6b7280">venues, restaurants,</text><text x="296" y="62" font-size="8" font-weight="600" fill="#6b7280">events, travel</text>
+<rect x="358" y="10" width="112" height="60" rx="9" fill="#fdf0e6" stroke="#d97706"/><text x="414" y="32" fill="#b45309">Taste</text><text x="414" y="50" font-size="8" font-weight="600" fill="#6b7280">photographers,</text><text x="414" y="62" font-size="8" font-weight="600" fill="#6b7280">designers, filmmakers</text>
+<rect x="476" y="10" width="112" height="60" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="532" y="32" fill="#be123c">Knowledge</text><text x="532" y="50" font-size="8" font-weight="600" fill="#6b7280">creators who</text><text x="532" y="62" font-size="8" font-weight="600" fill="#6b7280">consistently teach</text>
+<rect x="594" y="10" width="122" height="60" rx="9" fill="#f4f4f5" stroke="#c9cbd1"/><text x="655" y="32" fill="#6b7280">Entertainment</text><text x="655" y="50" font-size="8" font-weight="600" fill="#9aa2af">memes, reels —</text><text x="655" y="62" font-size="8" font-weight="600" fill="#9aa2af">capped, not banned</text>
+</g>
+</svg></div>
+</section>
+
+<section class="view" id="view-three-together"><div class="vhead"><div class="kick">Not a funnel — a network</div><h1>Bringing the Three Together</h1><p class="lede">The Telegram → Reddit → Instagram pipeline is plausible, but don't force people (or yourself) through it in fixed order. It's a network with many valid entry and exit points.</p></div>
+<div class="dcard"><div class="dk">One plausible path</div><div class="dt">Resource → discussion → people → shared life</div><svg class="dsvg" viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="tg1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="9.5" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="4" y="40" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="51" y="64">TELEGRAM</text>
+<rect x="106" y="40" width="94" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="153" y="58">consume</text><text x="153" y="70">resource</text>
+<rect x="208" y="40" width="94" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="255" y="64" fill="#15803d">REDDIT</text>
+<rect x="310" y="40" width="94" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="357" y="58" fill="#15803d">discuss / meet</text><text x="357" y="70" fill="#15803d">interesting people</text>
+<rect x="412" y="40" width="60" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="442" y="64" fill="#be123c">DM</text>
+<rect x="480" y="40" width="94" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="527" y="64" fill="#be123c">INSTAGRAM</text>
+<rect x="582" y="40" width="134" height="40" rx="9" fill="#1c2431"/><text x="649" y="58" fill="#fff">real-world</text><text x="649" y="70" fill="#fff">interaction</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.1"><line x1="98" y1="60" x2="104" y2="60" marker-end="url(#tg1)"/><line x1="200" y1="60" x2="206" y2="60" marker-end="url(#tg1)"/><line x1="302" y1="60" x2="308" y2="60" marker-end="url(#tg1)"/><line x1="404" y1="60" x2="410" y2="60" marker-end="url(#tg1)"/><line x1="472" y1="60" x2="478" y2="60" marker-end="url(#tg1)"/><line x1="574" y1="60" x2="580" y2="60" marker-end="url(#tg1)"/></g>
+</svg></div>
+<div class="dcard"><div class="dk">But it's a network, not a funnel</div><div class="dt">Any platform can lead to any other</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="11" font-weight="800" text-anchor="middle">
+<rect x="40" y="90" width="150" height="42" rx="10" fill="#eef0fb" stroke="#4f46e5"/><text x="115" y="116" fill="#4f46e5">TELEGRAM</text>
+<rect x="285" y="90" width="150" height="42" rx="10" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="116" fill="#15803d">REDDIT</text>
+<rect x="530" y="90" width="150" height="42" rx="10" fill="#fdecef" stroke="#e11d48"/><text x="605" y="116" fill="#be123c">INSTAGRAM</text>
+</g>
+<g stroke="#c3c8d2" stroke-width="1.2" fill="none">
+<path d="M190,100 C240,60 310,60 358,88"/><path d="M358,134 C310,170 240,170 190,132"/>
+<path d="M435,100 C480,60 520,60 528,88"/><path d="M528,134 C520,170 480,170 435,132"/>
+<path d="M190,111 C300,150 420,150 528,111" />
+</g>
+<text x="360" y="200" font-size="10.5" fill="#9aa2af" text-anchor="middle">Reddit → Discord. Reddit → Instagram. Instagram → real life directly. Instagram → Reddit. Telegram → Reddit. All valid.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-outward"><div class="vhead"><div class="kick">The point of all of this</div><h1>Pointing Back Outward</h1><p class="lede">The highest-value loop isn't circulating between apps — it's the internet feeding real-world activity, which feeds back into the internet.</p></div>
+<div class="dcard"><div class="dk">The wrong loop vs the right loop</div><div class="dt">Content-to-content vs content-to-life</div><svg class="dsvg" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="ow1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa2af"/></marker></defs>
+<text x="360" y="22" font-size="11" font-weight="800" fill="#be123c" text-anchor="middle">Wrong loop — stays inside the internet</text>
+<g font-size="9.5" font-weight="700" fill="#be123c" text-anchor="middle">
+<rect x="20" y="34" width="130" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="85" y="53">Telegram</text>
+<rect x="180" y="34" width="130" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="245" y="53">Reddit</text>
+<rect x="340" y="34" width="130" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="405" y="53">Instagram</text>
+<rect x="500" y="34" width="130" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="565" y="53">Telegram…</text>
+</g>
+<g stroke="#e11d48" stroke-width="1"><line x1="150" y1="49" x2="178" y2="49" marker-end="url(#ow1)"/><line x1="310" y1="49" x2="338" y2="49" marker-end="url(#ow1)"/><line x1="470" y1="49" x2="498" y2="49" marker-end="url(#ow1)"/></g>
+
+<text x="360" y="100" font-size="11" font-weight="800" fill="#15803d" text-anchor="middle">Right loop — points outward and comes back richer</text>
+<g font-size="9.5" font-weight="700" fill="#15803d" text-anchor="middle">
+<rect x="10" y="112" width="110" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="65" y="133">Internet</text>
+<rect x="130" y="112" width="110" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="185" y="133">Knowledge</text>
+<rect x="250" y="112" width="90" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="295" y="133">People</text>
+<rect x="350" y="112" width="140" height="34" rx="7" fill="#1c2431"/><text x="420" y="129" fill="#fff">Real-world</text><text x="420" y="141" fill="#fff">activity</text>
+<rect x="500" y="112" width="110" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="555" y="133">Experience</text>
+<rect x="620" y="112" width="90" height="34" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="665" y="133">Internet</text>
+</g>
+<g stroke="#16a34a" stroke-width="1"><line x1="120" y1="129" x2="128" y2="129" marker-end="url(#ow1)"/><line x1="240" y1="129" x2="248" y2="129" marker-end="url(#ow1)"/><line x1="340" y1="129" x2="348" y2="129" marker-end="url(#ow1)"/><line x1="490" y1="129" x2="498" y2="129" marker-end="url(#ow1)"/><line x1="610" y1="129" x2="618" y2="129" marker-end="url(#ow1)"/></g>
+</svg></div>
+<div class="dcard"><div class="dk">Three worked examples</div><div class="dt">Swimming · cinema · photography — the loop closing each time</div><svg class="dsvg" viewBox="0 0 720 170" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="9" font-weight="700" fill="#2b3340">
+<rect x="10" y="10" width="700" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="30" y="35" fill="#4f46e5" font-weight="800">Swim →</text><text x="100" y="35">find a swimming community online → learn → meet people → swim together → discover another activity → document it → meet more people</text>
+<rect x="10" y="62" width="700" height="42" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="30" y="87" fill="#15803d" font-weight="800">Cinema →</text><text x="110" y="87">discover a cinema community → learn about a director → watch the films → discuss them → meet cinephiles → attend a screening together</text>
+<rect x="10" y="114" width="700" height="42" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="30" y="139" fill="#be123c" font-weight="800">Photo →</text><text x="105" y="139">discover Delhi photographers → follow them → find a photo walk → attend → meet people → Instagram → stay connected</text>
+</g>
+</svg></div>
+<div class="take"><h4>The takeaway</h4><p>You don't need less internet — you need to convert more of it from <b>consumption</b> into <b>discovery, learning, creation, and relationships</b>. That's the difference between an app that eats an hour and a network that builds a life.</p></div>
+</section>
+
+<section class="view" id="view-pin-model"><div class="vhead"><div class="kick">Not "Instagram for pictures"</div><h1>Pinterest: The Mental Model</h1><p class="lede">Pinterest is a <b>visual search engine + idea repository + personal inspiration library</b>. Its basic unit is the Pin — a visual idea, not a person. Instagram asks "who do you follow?" Pinterest asks "what are you interested in?"</p></div>
+<div class="dcard"><div class="dk">The structure</div><div class="dt">Pins · Boards · Profiles · Search</div><svg class="dsvg" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="290" y="10" width="140" height="34" rx="9" fill="#1c2431"/><text x="360" y="32" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">PINTEREST</text>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="360" y1="44" x2="90" y2="80"/><line x1="360" y1="44" x2="290" y2="80"/><line x1="360" y1="44" x2="490" y2="80"/><line x1="360" y1="44" x2="670" y2="80"/></g>
+<g font-size="10.5" font-weight="800" text-anchor="middle">
+<rect x="20" y="80" width="140" height="60" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="90" y="102" fill="#4f46e5">Pins</text><text x="90" y="120" font-size="8.5" font-weight="600" fill="#6b7280">individual ideas/images</text>
+<rect x="220" y="80" width="140" height="60" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="290" y="102" fill="#15803d">Boards</text><text x="290" y="120" font-size="8.5" font-weight="600" fill="#6b7280">collections of ideas</text>
+<rect x="420" y="80" width="140" height="60" rx="9" fill="#e6f6f4" stroke="#0d9488"/><text x="490" y="102" fill="#0d9488">Profiles</text><text x="490" y="120" font-size="8.5" font-weight="600" fill="#6b7280">people/creators</text>
+<rect x="600" y="80" width="120" height="60" rx="9" fill="#fdf0e6" stroke="#d97706"/><text x="660" y="102" fill="#b45309">Search</text><text x="660" y="120" font-size="8.5" font-weight="600" fill="#6b7280">visual/topic discovery</text>
+</g>
+<text x="360" y="176" font-size="10.5" fill="#9aa2af" text-anchor="middle">Pins can lead to a website, article, product, recipe, tutorial, creator, or another Pinterest page.</text>
+</svg></div>
+<div class="dcard"><div class="dk">Person-centric vs idea-centric</div><div class="dt">Same interest, completely different unit of attention</div><svg class="dsvg" viewBox="0 0 720 150" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="20" y="20" width="330" height="100" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="185" y="46" font-size="11.5" font-weight="800" fill="#be123c" text-anchor="middle">Instagram — person-centric</text><text x="185" y="76" font-size="10.5" font-weight="700" fill="#2b3340" text-anchor="middle">Follow @somefashionguy</text><text x="185" y="98" font-size="9.5" fill="#9a2540" text-anchor="middle">interested in who made it</text>
+<rect x="370" y="20" width="330" height="100" rx="14" fill="#e7f6ec" stroke="#16a34a"/><text x="535" y="46" font-size="11.5" font-weight="800" fill="#15803d" text-anchor="middle">Pinterest — idea-centric</text><text x="535" y="76" font-size="10.5" font-weight="700" fill="#2b3340" text-anchor="middle">Board: "Men's relaxed tailoring" · 300 saved</text><text x="535" y="98" font-size="9.5" fill="#15803d" text-anchor="middle">interested in the visual idea, not the source</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-pin-vocab"><div class="vhead"><div class="kick">Two words you actually need</div><h1>Pinterest Vocabulary</h1><p class="lede">Pin and Board carry almost the whole system. The rest is supporting cast.</p></div>
+<div class="dcard"><div class="dk">Glossary</div><div class="dt">Pin · Board · Section · Save · Related ideas · Visual search</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="800">
+<rect x="10" y="10" width="340" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="26" y="30" fill="#4f46e5">Pin</text><text x="26" y="46" font-size="8.5" font-weight="600" fill="#6b7280">individual piece of saved/discovered content</text>
+<rect x="370" y="10" width="340" height="42" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="386" y="30" fill="#15803d">Board</text><text x="386" y="46" font-size="8.5" font-weight="600" fill="#6b7280">collection of Pins around a theme</text>
+<rect x="10" y="60" width="340" height="42" rx="9" fill="#e6f6f4" stroke="#0d9488"/><text x="26" y="80" fill="#0d9488">Section</text><text x="26" y="96" font-size="8.5" font-weight="600" fill="#6b7280">subdivision within a Board</text>
+<rect x="370" y="60" width="340" height="42" rx="9" fill="#fdf0e6" stroke="#d97706"/><text x="386" y="80" fill="#b45309">Save</text><text x="386" y="96" font-size="8.5" font-weight="600" fill="#6b7280">add a Pin to one of your Boards</text>
+<rect x="10" y="110" width="340" height="42" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="26" y="130" fill="#be123c">Visual search</text><text x="26" y="146" font-size="8.5" font-weight="600" fill="#6b7280">search by an image's visual characteristics</text>
+<rect x="370" y="110" width="340" height="42" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="386" y="130" fill="#4f46e5">Related ideas</text><text x="386" y="146" font-size="8.5" font-weight="600" fill="#6b7280">visually/conceptually similar content</text>
+<rect x="10" y="160" width="700" height="42" rx="9" fill="#1c2431"/><text x="30" y="180" fill="#fff">Idea Pin</text><text x="30" y="196" font-size="8.5" fill="#cfd4dd">multi-page/interactive format — terminology &amp; availability evolve over time</text>
+</g>
+</svg></div>
+</section>
+
+<section class="view" id="view-pin-boards"><div class="vhead"><div class="kick">Your own visual database</div><h1>The Killer Feature: Boards</h1><p class="lede">Boards let you build a structured, growing collection of ideas around a theme — something Instagram's follow-based model simply doesn't do.</p></div>
+<div class="dcard"><div class="dk">A wardrobe redesign, as Boards</div><div class="dt">Nested boards become a personal visual database</div><svg class="dsvg" viewBox="0 0 720 260" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="10" y="10" width="180" height="34" rx="9" fill="#1c2431"/><text x="100" y="32" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">MY PINTEREST</text>
+<g stroke="#9aa2af" stroke-width="1.1"><line x1="100" y1="44" x2="100" y2="60"/><line x1="100" y1="60" x2="100" y2="60"/></g>
+<g font-size="10" font-weight="800" fill="#4f46e5">
+<rect x="10" y="60" width="200" height="30" rx="7" fill="#eef0fb" stroke="#4f46e5"/><text x="20" y="80">Men's Fashion</text>
+<rect x="30" y="98" width="150" height="26" rx="6" fill="#f7f8fd" stroke="#dfe1f5"/><text x="40" y="115" font-size="9" font-weight="700" fill="#42506a">Casual</text>
+<rect x="30" y="130" width="150" height="26" rx="6" fill="#f7f8fd" stroke="#dfe1f5"/><text x="40" y="147" font-size="9" font-weight="700" fill="#42506a">Smart Casual</text>
+<rect x="30" y="162" width="150" height="26" rx="6" fill="#f7f8fd" stroke="#dfe1f5"/><text x="40" y="179" font-size="9" font-weight="700" fill="#42506a">Summer / Winter</text>
+<rect x="240" y="60" width="130" height="30" rx="7" fill="#e7f6ec" stroke="#16a34a"/><text x="250" y="80" fill="#15803d">Trousers</text>
+<rect x="390" y="60" width="130" height="30" rx="7" fill="#e6f6f4" stroke="#0d9488"/><text x="400" y="80" fill="#0d9488">Shirts</text>
+<rect x="540" y="60" width="130" height="30" rx="7" fill="#fdf0e6" stroke="#d97706"/><text x="550" y="80" fill="#b45309">Sneakers</text>
+<rect x="390" y="98" width="280" height="30" rx="7" fill="#fdecef" stroke="#e11d48"/><text x="400" y="118" fill="#be123c">Accessories</text>
+</g>
+<text x="360" y="222" font-size="10.5" font-weight="800" fill="#42506a" text-anchor="middle">Every time you see something you like: Save → the right Board.</text>
+<text x="360" y="244" font-size="10" fill="#9aa2af" text-anchor="middle">Over months this becomes your own visual database — not "I liked this creator," but "I want to remember this idea."</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-pin-taste"><div class="vhead"><div class="kick">Its greatest value</div><h1>The Taste Laboratory</h1><p class="lede">Repeated selection — see, save, compare, notice patterns — is how you actually discover your own taste, not just consume someone else's.</p></div>
+<div class="dcard"><div class="dk">Pinterest's loop vs Instagram's loop</div><div class="dt">A curation loop vs a consumption loop</div><svg class="dsvg" viewBox="0 0 720 240" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="pt1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#16a34a"/></marker><marker id="pt2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#be123c"/></marker></defs>
+<text x="185" y="24" font-size="11.5" font-weight="800" fill="#15803d" text-anchor="middle">Pinterest — the curation loop</text>
+<g font-size="9.5" font-weight="800" fill="#15803d" text-anchor="middle">
+<rect x="55" y="36" width="90" height="30" rx="15" fill="#e7f6ec" stroke="#16a34a"/><text x="100" y="56">See</text>
+<rect x="155" y="36" width="90" height="30" rx="15" fill="#e7f6ec" stroke="#16a34a"/><text x="200" y="56">Save</text>
+<rect x="55" y="76" width="90" height="30" rx="15" fill="#e7f6ec" stroke="#16a34a"/><text x="100" y="96">Compare</text>
+<rect x="155" y="76" width="130" height="30" rx="15" fill="#e7f6ec" stroke="#16a34a"/><text x="220" y="96">Notice patterns</text>
+<rect x="55" y="116" width="90" height="30" rx="15" fill="#e7f6ec" stroke="#16a34a"/><text x="100" y="136">Refine</text>
+<rect x="155" y="116" width="130" height="30" rx="15" fill="#e7f6ec" stroke="#16a34a"/><text x="220" y="136">Save better examples</text>
+<rect x="55" y="156" width="90" height="30" rx="15" fill="#1c2431"/><text x="100" y="176" fill="#fff">Form taste</text>
+<rect x="155" y="156" width="130" height="30" rx="15" fill="#1c2431"/><text x="220" y="176" fill="#fff">Apply to real life</text>
+</g>
+<g stroke="#16a34a" stroke-width="1.1"><line x1="145" y1="51" x2="153" y2="51" marker-end="url(#pt1)"/><line x1="240" y1="66" x2="150" y2="76"/><line x1="145" y1="91" x2="153" y2="91" marker-end="url(#pt1)"/><line x1="285" y1="106" x2="150" y2="116"/><line x1="145" y1="131" x2="153" y2="131" marker-end="url(#pt1)"/><line x1="285" y1="146" x2="150" y2="156"/><line x1="145" y1="171" x2="153" y2="171" marker-end="url(#pt1)"/></g>
+
+<text x="565" y="24" font-size="11.5" font-weight="800" fill="#be123c" text-anchor="middle">Instagram — the consumption loop</text>
+<g font-size="9.5" font-weight="800" fill="#be123c" text-anchor="middle">
+<rect x="470" y="60" width="80" height="28" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="510" y="79">See</text>
+<rect x="560" y="60" width="80" height="28" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="600" y="79">Like</text>
+<rect x="470" y="100" width="80" height="28" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="510" y="119">Scroll</text>
+<rect x="560" y="100" width="80" height="28" rx="14" fill="#fdecef" stroke="#e11d48"/><text x="600" y="119">See</text>
+</g>
+<g stroke="#e11d48" stroke-width="1"><line x1="550" y1="74" x2="558" y2="74" marker-end="url(#pt2)"/><line x1="600" y1="88" x2="550" y2="100"/><line x1="550" y1="114" x2="558" y2="114" marker-end="url(#pt2)"/><line x1="600" y1="128" x2="510" y2="60" marker-end="url(#pt2)"/></g>
+<text x="565" y="210" font-size="10" fill="#9aa2af" text-anchor="middle">No refinement step — the loop repeats without narrowing.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-pin-domains"><div class="vhead"><div class="kick">Not just fashion</div><h1>Beyond Fashion</h1><p class="lede">The same see-save-compare system works for almost anything visual: photography, interiors, travel, food, art, fitness, events, even learning references.</p></div>
+<div class="dcard"><div class="dk">Eight domains, one system</div><div class="dt">Fashion · Photography · Interiors · Travel · Food · Art · Fitness · Events · Learning</div><svg class="dsvg" viewBox="0 0 720 170" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="700" fill="#fff" text-anchor="middle">
+<rect x="4" y="10" width="86" height="30" rx="15" fill="#4f46e5"/><text x="47" y="30">Fashion</text>
+<rect x="94" y="10" width="106" height="30" rx="15" fill="#16a34a"/><text x="147" y="30">Photography</text>
+<rect x="204" y="10" width="90" height="30" rx="15" fill="#0d9488"/><text x="249" y="30">Interiors</text>
+<rect x="298" y="10" width="80" height="30" rx="15" fill="#d97706"/><text x="338" y="30">Travel</text>
+<rect x="382" y="10" width="70" height="30" rx="15" fill="#e11d48"/><text x="417" y="30">Food</text>
+<rect x="456" y="10" width="60" height="30" rx="15" fill="#9333ea"/><text x="486" y="30">Art</text>
+<rect x="520" y="10" width="80" height="30" rx="15" fill="#4f46e5"/><text x="560" y="30">Fitness</text>
+<rect x="604" y="10" width="80" height="30" rx="15" fill="#16a34a"/><text x="644" y="30">Events</text>
+</g>
+<rect x="4" y="50" width="700" height="70" rx="12" fill="#fbfcfe" stroke="#dcdfe6"/>
+<g font-size="9.5" font-weight="600" fill="#42506a">
+<text x="20" y="72"><b>Fashion:</b> outfits, silhouettes, colour palettes, footwear, accessories</text>
+<text x="20" y="90"><b>Photography:</b> composition, lighting, poses, colour grading, locations</text>
+<text x="20" y="108"><b>Interiors → Learning:</b> furniture &amp; plants → destinations &amp; architecture → recipes &amp; plating → artist references → exercise refs → party/wedding ideas → visual study notes &amp; diagrams</text>
+</g>
+<text x="360" y="140" font-size="10.5" fill="#9aa2af" text-anchor="middle">Even language-learning diagrams and infographics can be a Pinterest board.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-pin-visual-search"><div class="vhead"><div class="kick">"Show me things that look like this"</div><h1>Visual Search &amp; Iterative Queries</h1><p class="lede">Pinterest's visual search skips "who posted this?" entirely — you search by the image itself. Combined with iterative text search, it teaches you the vocabulary of your own taste.</p></div>
+<div class="dcard"><div class="dk">Visual search, conceptually</div><div class="dt">Image → similar patterns → more examples → sharper taste</div><svg class="dsvg" viewBox="0 0 720 120" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="pv1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="9.5" font-weight="800" fill="#4f46e5" text-anchor="middle">
+<rect x="4" y="40" width="150" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="79" y="64">Image you like</text>
+<rect x="184" y="40" width="150" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="259" y="64">Visual search</text>
+<rect x="364" y="40" width="150" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="439" y="64">Similar patterns</text>
+<rect x="544" y="40" width="170" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="629" y="64" fill="#15803d">Sharper sense of taste</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.2"><line x1="154" y1="60" x2="182" y2="60" marker-end="url(#pv1)"/><line x1="334" y1="60" x2="362" y2="60" marker-end="url(#pv1)"/><line x1="514" y1="60" x2="542" y2="60" marker-end="url(#pv1)"/></g>
+</svg></div>
+<div class="dcard"><div class="dk">The narrowing search chain</div><div class="dt">Each query extracts more vocabulary from the last</div><svg class="dsvg" viewBox="0 0 720 130" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="pv2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#16a34a"/></marker></defs>
+<g font-size="8.5" font-weight="800" fill="#15803d" text-anchor="middle">
+<rect x="4" y="30" width="110" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="59" y="51">men's fashion</text>
+<rect x="122" y="30" width="120" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="182" y="51">relaxed fashion</text>
+<rect x="250" y="30" width="140" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="320" y="51">wide trousers men</text>
+<rect x="398" y="30" width="140" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="468" y="51">Japanese menswear</text>
+<rect x="546" y="30" width="170" height="34" rx="8" fill="#1c2431"/><text x="631" y="51" fill="#fff">relaxed tailoring</text>
+</g>
+<g stroke="#16a34a" stroke-width="1.1"><line x1="114" y1="47" x2="120" y2="47" marker-end="url(#pv2)"/><line x1="242" y1="47" x2="248" y2="47" marker-end="url(#pv2)"/><line x1="390" y1="47" x2="396" y2="47" marker-end="url(#pv2)"/><line x1="538" y1="47" x2="544" y2="47" marker-end="url(#pv2)"/></g>
+<text x="360" y="100" font-size="10" fill="#9aa2af" text-anchor="middle">"I consistently save this silhouette" · "I keep saving wide trousers" · "I don't actually like this as much as I thought" — taste discovered by pattern, not decree.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-pin-vs-others"><div class="vhead"><div class="kick">Same interest, three different gains</div><h1>Pinterest vs Reddit vs Instagram</h1><p class="lede">Take photography: each platform gives you something the others don't — and none of them alone is complete.</p></div>
+<div class="dcard"><div class="dk">Street photography, three ways</div><div class="dt">Conceptual knowledge · visual intuition · people + contemporary examples</div><svg class="dsvg" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="10" y="10" width="220" height="150" rx="12" fill="#e7f6ec" stroke="#16a34a"/><text x="120" y="34" font-size="11.5" font-weight="800" fill="#15803d" text-anchor="middle">Reddit</text>
+<text x="120" y="58" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">"How do I shoot better</text><text x="120" y="74" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">street photos?"</text>
+<text x="120" y="98" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">focal length · composition</text><text x="120" y="112" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">exposure · timing · zone focus</text>
+<text x="120" y="140" font-size="9.5" font-weight="800" fill="#15803d" text-anchor="middle">→ conceptual knowledge</text>
+
+<rect x="250" y="10" width="220" height="150" rx="12" fill="#eef0fb" stroke="#4f46e5"/><text x="360" y="34" font-size="11.5" font-weight="800" fill="#4f46e5" text-anchor="middle">Pinterest</text>
+<text x="360" y="58" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">"street photography</text><text x="360" y="74" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">composition"</text>
+<text x="360" y="98" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">500 compositions · framings</text><text x="360" y="112" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">lighting · subjects</text>
+<text x="360" y="140" font-size="9.5" font-weight="800" fill="#4f46e5" text-anchor="middle">→ visual intuition</text>
+
+<rect x="490" y="10" width="220" height="150" rx="12" fill="#fdecef" stroke="#e11d48"/><text x="600" y="34" font-size="11.5" font-weight="800" fill="#be123c" text-anchor="middle">Instagram</text>
+<text x="600" y="58" font-size="9.5" font-weight="700" fill="#2b3340" text-anchor="middle">Follow photographers</text>
+<text x="600" y="98" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">see what real photographers</text><text x="600" y="112" font-size="9" font-weight="600" fill="#6b7280" text-anchor="middle">do · maybe interact</text>
+<text x="600" y="140" font-size="9.5" font-weight="800" fill="#be123c" text-anchor="middle">→ people + contemporary examples</text>
+</svg><p class="dp">Telegram, in the same example, is where you'd find the books, courses, and manuals — the resource layer underneath all three.</p></div>
+</section>
+
+<section class="view" id="view-four-model"><div class="vhead"><div class="kick">Adding Pinterest to the model</div><h1>The Four-Platform Model</h1><p class="lede">Telegram = resource, Reddit = conversation, Pinterest = idea, Instagram = person. A surprisingly coherent system once you see it laid out.</p></div>
+<div class="dcard"><div class="dk">Core function → fundamental unit</div><div class="dt">The four-row table, visualised</div><svg class="dsvg" viewBox="0 0 720 190" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10.5" font-weight="800">
+<rect x="10" y="10" width="700" height="40" rx="9" fill="#eef0fb" stroke="#4f46e5"/><text x="30" y="34" fill="#4f46e5">Telegram — Resource distribution</text><text x="480" y="34" font-size="9.5" font-weight="600" fill="#6b7280">unit: Resource</text>
+<rect x="10" y="56" width="700" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="30" y="80" fill="#15803d">Reddit — Discussion &amp; collective knowledge</text><text x="480" y="80" font-size="9.5" font-weight="600" fill="#6b7280">unit: Conversation</text>
+<rect x="10" y="102" width="700" height="40" rx="9" fill="#e6f6f4" stroke="#0d9488"/><text x="30" y="126" fill="#0d9488">Pinterest — Visual discovery &amp; taste formation</text><text x="480" y="126" font-size="9.5" font-weight="600" fill="#6b7280">unit: Idea</text>
+<rect x="10" y="148" width="700" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="30" y="172" fill="#be123c">Instagram — Social discovery &amp; relationships</text><text x="480" y="172" font-size="9.5" font-weight="600" fill="#6b7280">unit: Person</text>
+</g>
+</svg></div>
+<div class="dcard"><div class="dk">One-sentence model</div><div class="dt">The whole ecosystem, compressed</div><svg class="dsvg" viewBox="0 0 720 110" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<rect x="10" y="10" width="700" height="90" rx="14" fill="#1c2431"/>
+<text x="360" y="42" font-size="11.5" font-weight="800" fill="#fff" text-anchor="middle">Telegram finds resources. Reddit understands/discusses them.</text>
+<text x="360" y="66" font-size="11.5" font-weight="800" fill="#fff" text-anchor="middle">Pinterest discovers &amp; develops taste. Instagram connects that taste</text>
+<text x="360" y="86" font-size="11.5" font-weight="800" fill="#fff" text-anchor="middle">to real people and your own life.</text>
+</svg></div>
+</section>
+
+<section class="view" id="view-pin-loops"><div class="vhead"><div class="kick">The four platforms working as one</div><h1>Worked Loops: Fashion, Photo, Cinema</h1><p class="lede">Three concrete chains showing inspiration → knowledge → social validation → action, and the loop closing back into more inspiration.</p></div>
+<div class="dcard"><div class="dk">Fashion</div><div class="dt">Discover the look → understand it → find people wearing it → act</div><svg class="dsvg" viewBox="0 0 720 110" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="wl1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="9.5" font-weight="800" text-anchor="middle">
+<rect x="4" y="30" width="150" height="40" rx="9" fill="#e6f6f4" stroke="#0d9488"/><text x="79" y="46" fill="#0d9488">Pinterest</text><text x="79" y="60" font-size="8" font-weight="600" fill="#6b7280">discover what looks good</text>
+<rect x="184" y="30" width="150" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="259" y="46" fill="#15803d">Reddit</text><text x="259" y="60" font-size="8" font-weight="600" fill="#6b7280">understand what works</text>
+<rect x="364" y="30" width="150" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="439" y="46" fill="#be123c">Instagram</text><text x="439" y="60" font-size="8" font-weight="600" fill="#6b7280">find people wearing it</text>
+<rect x="544" y="30" width="170" height="40" rx="9" fill="#1c2431"/><text x="629" y="46" fill="#fff">Real world</text><text x="629" y="60" font-size="8" fill="#cfd4dd">buy it / wear it / experiment</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.1"><line x1="154" y1="50" x2="182" y2="50" marker-end="url(#wl1)"/><line x1="334" y1="50" x2="362" y2="50" marker-end="url(#wl1)"/><line x1="514" y1="50" x2="542" y2="50" marker-end="url(#wl1)"/></g>
+</svg></div>
+<div class="dcard"><div class="dk">Photography</div><div class="dt">A feedback loop that publishes and re-inspires itself</div><svg class="dsvg" viewBox="0 0 720 210" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="wl2" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="9.5" font-weight="800" text-anchor="middle">
+<rect x="10" y="10" width="150" height="40" rx="9" fill="#e6f6f4" stroke="#0d9488"/><text x="85" y="26" fill="#0d9488">Pinterest</text><text x="85" y="40" font-size="8" font-weight="600" fill="#6b7280">composition, lighting,</text><text x="85" y="52" font-size="7.5" font-weight="600" fill="#6b7280">colour palettes, poses</text>
+<rect x="190" y="10" width="150" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="265" y="26" fill="#15803d">Reddit</text><text x="265" y="40" font-size="8" font-weight="600" fill="#6b7280">cameras, lenses,</text><text x="265" y="52" font-size="7.5" font-weight="600" fill="#6b7280">technique, editing</text>
+<rect x="370" y="10" width="150" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="445" y="26" fill="#be123c">Instagram</text><text x="445" y="40" font-size="8" font-weight="600" fill="#6b7280">photographers, walks,</text><text x="445" y="52" font-size="7.5" font-weight="600" fill="#6b7280">communities, locations</text>
+<rect x="550" y="10" width="160" height="40" rx="9" fill="#1c2431"/><text x="630" y="30" fill="#fff">Real world</text><text x="630" y="44" fill="#fff">Take photographs</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.1"><line x1="160" y1="30" x2="188" y2="30" marker-end="url(#wl2)"/><line x1="340" y1="30" x2="368" y2="30" marker-end="url(#wl2)"/><line x1="520" y1="30" x2="548" y2="30" marker-end="url(#wl2)"/></g>
+<g font-size="9.5" font-weight="800" text-anchor="middle">
+<rect x="550" y="80" width="160" height="40" rx="9" fill="#fdecef" stroke="#e11d48"/><text x="630" y="96" fill="#be123c">Instagram</text><text x="630" y="110" font-size="8" font-weight="600" fill="#6b7280">publish your work</text>
+<rect x="370" y="80" width="150" height="40" rx="9" fill="#e7f6ec" stroke="#16a34a"/><text x="445" y="96" fill="#15803d">Reddit</text><text x="445" y="110" font-size="8" font-weight="600" fill="#6b7280">get critique</text>
+<rect x="190" y="80" width="150" height="40" rx="9" fill="#e6f6f4" stroke="#0d9488"/><text x="265" y="96" fill="#0d9488">Pinterest</text><text x="265" y="110" font-size="8" font-weight="600" fill="#6b7280">discover new directions</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1.1"><path d="M630,50 L630,80" marker-end="url(#wl2)" fill="none"/><path d="M550,100 L520,100" marker-end="url(#wl2)" fill="none"/><path d="M370,100 L340,100" marker-end="url(#wl2)" fill="none"/></g>
+<text x="360" y="170" font-size="10" fill="#9aa2af" text-anchor="middle">The loop closes: Pinterest → Reddit → Instagram → shoot → publish → critique → back to Pinterest for new direction.</text>
+</svg></div>
+<div class="dcard"><div class="dk">Cinema</div><div class="dt">Discover → acquire → consume → understand → discuss → connect</div><svg class="dsvg" viewBox="0 0 720 60" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="wl3" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#4f46e5"/></marker></defs>
+<g font-size="9" font-weight="800" text-anchor="middle" fill="#2b3340">
+<rect x="4" y="14" width="94" height="34" rx="8" fill="#e6f6f4" stroke="#0d9488"/><text x="51" y="35">Pinterest</text>
+<rect x="106" y="14" width="94" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="153" y="35">Reddit</text>
+<rect x="208" y="14" width="130" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="273" y="35">Telegram/streaming</text>
+<rect x="346" y="14" width="94" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="393" y="35">Reddit</text>
+<rect x="448" y="14" width="94" height="34" rx="8" fill="#fdecef" stroke="#e11d48"/><text x="495" y="35">Instagram</text>
+<rect x="550" y="14" width="166" height="34" rx="8" fill="#1c2431"/><text x="633" y="35" fill="#fff">Screenings / clubs</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1"><line x1="98" y1="31" x2="104" y2="31" marker-end="url(#wl3)"/><line x1="200" y1="31" x2="206" y2="31" marker-end="url(#wl3)"/><line x1="338" y1="31" x2="344" y2="31" marker-end="url(#wl3)"/><line x1="440" y1="31" x2="446" y2="31" marker-end="url(#wl3)"/><line x1="542" y1="31" x2="548" y2="31" marker-end="url(#wl3)"/></g>
+</svg></div>
+</section>
+
+<section class="view" id="view-pin-danger"><div class="vhead"><div class="kick">The same trap as Reels and doomscrolling</div><h1>The Infinite-Inspiration Trap</h1><p class="lede">Pinterest can quietly become endless aesthetic consumption — collecting apartments you never redecorate, outfits you never wear, trips you never take.</p></div>
+<div class="dcard"><div class="dk">The rule that fixes it</div><div class="dt">Every board must eventually produce a real-world decision</div><svg class="dsvg" viewBox="0 0 720 220" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="pd1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#16a34a"/></marker></defs>
+<g font-size="10" font-weight="800">
+<rect x="10" y="10" width="220" height="50" rx="10" fill="#eef0fb" stroke="#4f46e5"/><text x="120" y="30" fill="#4f46e5" text-anchor="middle">Board: Men's Fashion</text><text x="120" y="48" font-size="8.5" font-weight="600" fill="#6b7280" text-anchor="middle">→ 5 recurring styles → 3 silhouettes → buy → wear</text>
+<rect x="250" y="10" width="220" height="50" rx="10" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="30" fill="#15803d" text-anchor="middle">Board: Photography</text><text x="360" y="48" font-size="8.5" font-weight="600" fill="#6b7280" text-anchor="middle">→ 50 compositions → 10 techniques → recreate 5</text>
+<rect x="490" y="10" width="220" height="50" rx="10" fill="#e6f6f4" stroke="#0d9488"/><text x="600" y="30" fill="#0d9488" text-anchor="middle">Board: Delhi</text><text x="600" y="48" font-size="8.5" font-weight="600" fill="#6b7280" text-anchor="middle">→ 30 places → shortlist 10 → visit 5</text>
+</g>
+<rect x="150" y="90" width="420" height="46" rx="10" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="110" font-size="11" font-weight="800" fill="#15803d" text-anchor="middle">Inspiration → synthesis → action</text><text x="360" y="126" font-size="9" fill="#6b7280" text-anchor="middle">the healthy loop</text>
+<rect x="150" y="150" width="420" height="46" rx="10" fill="#fdecef" stroke="#e11d48"/><text x="360" y="170" font-size="11" font-weight="800" fill="#be123c" text-anchor="middle">Inspiration → more inspiration → more inspiration</text><text x="360" y="186" font-size="9" fill="#9a2540" text-anchor="middle">the trap</text>
+</svg></div>
+<div class="warn" style="margin:20px"><b>Rule —</b> Set an explicit "extraction point" per board — a count of saves, or a deadline — after which you must pull 3–5 recurring patterns and turn them into one real decision. If a board only ever grows, it's not doing its job.</div>
+</section>
+
+<section class="view" id="view-full-os"><div class="vhead"><div class="kick">The complete system</div><h1>The Complete Internet OS</h1><p class="lede">Four platforms, four jobs, one loop that always points back into real life and returns richer.</p></div>
+<div class="dcard"><div class="dk">The full diagram</div><div class="dt">Internet → four platforms → real world → experience → internet</div><svg class="dsvg" viewBox="0 0 720 320" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif"><defs><marker id="fo1" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L6,3 L0,6 Z" fill="#9aa2af"/></marker></defs>
+<rect x="290" y="10" width="140" height="32" rx="9" fill="#1c2431"/><text x="360" y="31" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">INTERNET</text>
+<g stroke="#9aa2af" stroke-width="1"><line x1="360" y1="42" x2="90" y2="70"/><line x1="360" y1="42" x2="280" y2="70"/><line x1="360" y1="42" x2="470" y2="70"/><line x1="360" y1="42" x2="660" y2="70"/></g>
+<g font-size="10" font-weight="800" text-anchor="middle">
+<rect x="20" y="70" width="140" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="90" y="92" fill="#4f46e5">TELEGRAM</text>
+<rect x="210" y="70" width="140" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="280" y="92" fill="#15803d">REDDIT</text>
+<rect x="400" y="70" width="140" height="34" rx="8" fill="#e6f6f4" stroke="#0d9488"/><text x="470" y="92" fill="#0d9488">PINTEREST</text>
+<rect x="590" y="70" width="140" height="34" rx="8" fill="#fdecef" stroke="#e11d48"/><text x="660" y="92" fill="#be123c">INSTAGRAM</text>
+</g>
+<g font-size="9" font-weight="700" fill="#6b7280" text-anchor="middle">
+<text x="90" y="122">Resources</text><text x="280" y="122">Ideas</text><text x="470" y="122">Taste</text><text x="660" y="122">People</text>
+</g>
+<g font-size="9.5" font-weight="800" text-anchor="middle">
+<rect x="30" y="140" width="120" height="30" rx="15" fill="#f7f8fd" stroke="#dfe1f5"/><text x="90" y="160" fill="#42506a">Consume</text>
+<rect x="220" y="140" width="120" height="30" rx="15" fill="#f7f8fd" stroke="#dfe1f5"/><text x="280" y="160" fill="#42506a">Understand</text>
+<rect x="410" y="140" width="120" height="30" rx="15" fill="#f7f8fd" stroke="#dfe1f5"/><text x="470" y="160" fill="#42506a">Visualise</text>
+<rect x="600" y="140" width="120" height="30" rx="15" fill="#f7f8fd" stroke="#dfe1f5"/><text x="660" y="160" fill="#42506a">Connect</text>
+</g>
+<g stroke="#9aa2af" stroke-width="1"><line x1="90" y1="170" x2="270" y2="210"/><line x1="280" y1="170" x2="330" y2="210"/><line x1="470" y1="170" x2="400" y2="210"/><line x1="660" y1="170" x2="450" y2="210"/></g>
+<rect x="270" y="210" width="180" height="34" rx="9" fill="#1c2431"/><text x="360" y="232" font-size="11" font-weight="800" fill="#fff" text-anchor="middle">REAL WORLD</text>
+<g stroke="#9aa2af" stroke-width="1"><line x1="360" y1="244" x2="230" y2="272"/><line x1="360" y1="244" x2="360" y2="272"/><line x1="360" y1="244" x2="490" y2="272"/></g>
+<g font-size="9.5" font-weight="800" text-anchor="middle">
+<rect x="160" y="272" width="140" height="30" rx="15" fill="#eef0fb" stroke="#4f46e5"/><text x="230" y="292" fill="#4f46e5">Learn</text>
+<rect x="290" y="272" width="140" height="30" rx="15" fill="#e7f6ec" stroke="#16a34a"/><text x="360" y="292" fill="#15803d">Do</text>
+<rect x="420" y="272" width="140" height="30" rx="15" fill="#fdecef" stroke="#e11d48"/><text x="490" y="292" fill="#be123c">Meet</text>
+</g>
+</svg><p class="dp">Learn, Do, Meet all converge into <b>Experience</b>, which feeds back into the Internet — completing the loop rather than closing it off.</p></div>
+<div class="dcard"><div class="dk">The question each platform answers</div><div class="dt">A one-line prompt per platform, plus the web underneath</div><svg class="dsvg" viewBox="0 0 720 200" xmlns="http://www.w3.org/2000/svg" font-family="-apple-system,Segoe UI,Roboto,sans-serif">
+<g font-size="10" font-weight="800">
+<rect x="10" y="10" width="700" height="34" rx="8" fill="#eef0fb" stroke="#4f46e5"/><text x="30" y="32" fill="#4f46e5">Telegram</text><text x="480" y="32" font-size="9.5" font-weight="600" fill="#6b7280">"What resources exist?"</text>
+<rect x="10" y="50" width="700" height="34" rx="8" fill="#e7f6ec" stroke="#16a34a"/><text x="30" y="72" fill="#15803d">Reddit</text><text x="480" y="72" font-size="9.5" font-weight="600" fill="#6b7280">"What do people who care about this think?"</text>
+<rect x="10" y="90" width="700" height="34" rx="8" fill="#e6f6f4" stroke="#0d9488"/><text x="30" y="112" fill="#0d9488">Pinterest</text><text x="480" y="112" font-size="9.5" font-weight="600" fill="#6b7280">"What could this look like?"</text>
+<rect x="10" y="130" width="700" height="34" rx="8" fill="#fdecef" stroke="#e11d48"/><text x="30" y="152" fill="#be123c">Instagram</text><text x="480" y="152" font-size="9.5" font-weight="600" fill="#6b7280">"Who's doing this, and what's their life like?"</text>
+<rect x="10" y="170" width="700" height="24" rx="6" fill="#1c2431"/><text x="360" y="187" font-size="10" font-weight="700" fill="#fff" text-anchor="middle">The web / Google — "Where does this information exist?" — connective tissue underneath all four</text>
+</g>
+</svg></div>
+<div class="take"><h4>The takeaway</h4><p>Google finds the territory. Pinterest shows what it looks like. Telegram finds the resources. Reddit interrogates the ideas. Instagram finds the people. <b>The real world tests all of it</b> — and feeds the whole system back again.</p></div>
+</section>
+
+</div></main></div>
+<script>
+(function(){
+var btns=document.querySelectorAll('.side nav button');
+btns.forEach(function(b){b.addEventListener('click',function(){
+btns.forEach(function(x){x.classList.remove('active')});
+b.classList.add('active');
+document.querySelectorAll('.view').forEach(function(v){v.classList.remove('active')});
+document.getElementById('view-'+b.dataset.view).classList.add('active');
+window.scrollTo(0,0);
+});});
+})();
+</script>
+</body></html>
