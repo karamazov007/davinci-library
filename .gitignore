@@ -3,3 +3,13 @@ node_modules/
 *.pyc
 __pycache__/
 *_in_hub.html
+
+# local safety snapshots — never commit (each is ~11 MB)
+knowledge-hub.backup*
+knowledge-hub.*.bak
+knowledge-hub.pre*
+*.backup-*.html
+_khub_snap*.html
+
+# deliberate trash pile
+_to_delete/
